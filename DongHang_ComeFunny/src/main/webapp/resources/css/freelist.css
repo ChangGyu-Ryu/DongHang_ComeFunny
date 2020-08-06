@@ -1,0 +1,39 @@
+@charset "UTF-8";
+
+@media screen and (min-width: 1200px){
+	.freelist {
+	    width: 1200px;
+	    margin: 0 auto; 
+	} 
+}
+
+.freelist__header {
+	margin-top: 70px;
+}
+
+.freelist__table {
+	width: 100%;
+	min-width: 1200px;
+	text-align: center;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+
+table
+{
+	width: 100%;
+    border-collapse:separate;
+    border-spacing:0 20px;
+}
+
+th,td {
+	width: 80px;
+	text-align: center;
+}
+
+th:nth-child(2) {
+	color: red;
+	width: 900px;
+}
+

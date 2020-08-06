@@ -49,10 +49,10 @@
 	
 	<!-- 1. aop 오토 프록시 추가 -->
 	<!-- 주의 : common.aop.LogAop 패키지 및 클래스 부터 생성 후 설정 -->
-<!-- 	<aop:aspectj-autoproxy /> -->
+	<aop:aspectj-autoproxy />
 	<!-- 1-1. aop가 개입하여 메소드 실행때마다 로그기록 남기기 위한 bean 설정 -->
 	<!-- bean 추가 하기 전에 commn.aop 패키지 아래 LogAop 클래스 생성해야 인식 가능 -->
-<!-- 	<beans:bean name="logAop" class="common.aop.LogAop"></beans:bean> -->
+	<beans:bean name="logAop" class="common.aop.LogAop"></beans:bean>
 
 	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
 	<resources mapping="/resources/**" location="/resources/" />
@@ -63,7 +63,16 @@
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
 	
-	<context:component-scan base-package="com.DongHang_ComeFunny.www" />
+	<!-- 인터셉터 등록 -->
+	<interceptors>
+		<interceptor>
+		<!-- 모든 요청이 인터셉터 거치도록 작성 -->
+		<mapping path="/**"/>
+		<beans:bean class="common.interceptor.AuthInterceptor"></beans:bean>
+		</interceptor>
+	</interceptors>
+	
+	<context:component-scan base-package="com.DongHang_ComeFunny.www.*" />
 	
 	
 	

@@ -1,0 +1,42 @@
+@charset "UTF-8";
+
+
+* {
+   padding: 0;
+   margin: 0;
+}
+
+/* 가운데 정렬 */
+/* body { */
+/*    margin: 0 auto; */
+/*    width: 1200px; */
+/* } 
+
+/* header위치 잡아주기 */
+
+#header {
+    position: relative;
+    width: 1200px;
+    height: 50px;
+    overflow: hidden;
+    margin: 0 auto;
+    padding-bottom:18px;
+}
+
+
+
+/* 로고 */
+.logo {
+   width: 100%;
+   margin: 0 auto;
+   padding: 0 auto;
+   
+   display: inline-block;
+   text-align: left;
+}
+.logo-img {
+   width: 200px;
+   height: 56px;
+   display: inline-block;
+   padding-left: 0px;
+}
