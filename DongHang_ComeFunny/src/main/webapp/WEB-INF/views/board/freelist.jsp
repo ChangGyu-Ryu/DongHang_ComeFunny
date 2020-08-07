@@ -5,8 +5,11 @@
 <c:import url="/WEB-INF/views/layout/header.jsp" />    
 <div class = "freelist"> 
 <div class = "freelist__header">
-<h1>FREELIST</h1>
-<hr>
+	<div class = "freelist__header__label">
+		<h2>Community</h2>
+	</div>
+	<span class = "freelist__header__title">자유게시판</span>
+
 </div>
 <div class = "freelist__table">
 	<table>
@@ -20,8 +23,8 @@
 	</tr>
 	<c:forEach var="i" begin="0" end="20">
 	<tr>
-		<td><c:out value="${i}" /></td>
-		<td><c:out value="${i}" /></td>
+		<td><a href="#"><c:out value="${i}" /></a></td>
+		<td><a href="#"><c:out value="${i}" /></a></td>
 		<td><c:out value="${i}" /></td>
 		<td><c:out value="${i}" /></td>
 		<td><c:out value="${i}" /></td>
