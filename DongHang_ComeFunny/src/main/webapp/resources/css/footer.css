@@ -30,7 +30,7 @@ a {
     font-size: 0;
     white-space: nowrap;
     text-align: center;
-    margin: 115px;
+    padding-top: 115px;
 }
 
 #footer .links li:first-child {

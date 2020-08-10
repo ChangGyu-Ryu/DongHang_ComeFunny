@@ -72,7 +72,7 @@
 		</interceptor>
 	</interceptors>
 	
-	<context:component-scan base-package="com.DongHang_ComeFunny.www.*" />
+	<context:component-scan base-package="com.DongHang_ComeFunny.www, com.DongHang_ComeFunny.www.*" />
 	
 	
 	

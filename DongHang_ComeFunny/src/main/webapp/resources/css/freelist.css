@@ -38,8 +38,10 @@
     font-weight: 700;
     border: 0 solid transparent;
     transition: background .1s ease;
-   
   
+}
+.freelist__header__label span {
+   	font-size: 1.2rem;
 }
 
 .freelist__header__label:after {
@@ -148,10 +150,74 @@
 	color: rgba(0, 0, 0, 0.95) !important;
 }
 
-.freelist__table a:link {
+.freelist__table a:link, .freelist__paging a:link {
 	color: rgba(0, 0, 0, 0.87);
 }
 
-.freelist__table a:visited {
+.freelist__table a:visited, .freelist__paging a:visited {
 	color: rgba(0, 0, 0, 0.87);
 }
+
+.freelist__button {
+	margin-top: 20px;
+	
+}
+
+
+
+.freelist__button__write {
+	cursor: pointer;
+    display: inline-block;
+    min-height: 1em;
+    outline: 0;
+    border: none;
+    vertical-align: baseline;
+    background: #e0e1e2 none;
+/*     font-family: Lato,'Helvetica Neue',Arial,Helvetica,sans-serif; */
+    margin: 0 .25em 0 0;
+    padding: .78571429em 1.5em .78571429em;
+    text-transform: none;
+    font-weight: 700;
+    line-height: 1em;
+    font-style: normal;
+    text-align: center;
+    text-decoration: none;
+    border-radius: .28571429rem;
+    user-select: none;
+	-webkit-tap-highlight-color: transparent;
+	
+	
+	background-color: #00B5AD;
+	color: #FFFFFF;
+	text-shadow: none;
+	background-image: none;
+	-webkit-box-shadow: 0px 0em 0px 0px rgba(34, 36, 38, 0.15) inset;
+	       box-shadow: 0px 0em 0px 0px rgba(34, 36, 38, 0.15) inset;
+}
+
+.freelist__button__write:hover {
+	background-color: #009c95;
+	color: #FFFFFF;
+	text-shadow: none;
+}
+
+.freelist__button__write:active {
+	background-color: #00827c;
+	color: #FFFFFF;
+	text-shadow: none;
+}
+
+.freelist__paging {
+	margin-top: 20px;
+	text-align: center;
+}
+.freelist__paging a {
+	padding-left: 10px;
+}
+
+.freelist_search {
+	margin-left: auto;
+	margin-right: auto;
+}
+
+
