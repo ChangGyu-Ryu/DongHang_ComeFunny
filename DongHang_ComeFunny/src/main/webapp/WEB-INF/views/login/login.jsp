@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-
+<link rel="stylesheet" href="<%=request.getContextPath() %>/resources/css/login.css" />
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 
 <!-- 부트스트랩 -->
@@ -104,13 +104,11 @@
 </head>
 <body>
 
-<div class="ui middle aligned center aligned grid">
-  <div class="column">
+<div class="ui middle aligned center aligned grid " id="login__background__image">
+  <div id="login__background"></div>
+  <div class="column" id="login__column">
     <h2 class="ui teal image header">
-      <img src="<%=request.getContextPath() %>/resources/image/header/logo.png" class="image">
-      <div class="content">
-        	로그인
-      </div>
+      <img src="<%=request.getContextPath() %>/resources/image/header/logo.png" class="image" id="login__logo__image">
     </h2>
     <form class="ui large form">
       <div class="ui stacked segment">
