@@ -3,23 +3,15 @@
 <!DOCTYPE html>
 <html>
 <head>
-<link rel="stylesheet" href="<%=request.getContextPath() %>/resources/css/login.css" />
+<link rel="stylesheet" href="<%=request.getContextPath() %>/resources/css/login/login.css" />
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-
-<!-- 부트스트랩 -->
-<!-- 합쳐지고 최소화된 최신 CSS -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
-<!-- 부가적인 테마 -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
-<!-- 합쳐지고 최소화된 최신 자바스크립트 -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 
 <!-- fontawesome 아이콘 -->
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
 
 <!-- semantic ui -->
-<link rel="stylesheet" type="text/css" href="<%=request.getContextPath() %>/resources/css/semantic/semantic.min.css">
-<script src="<%=request.getContextPath() %>/resources/css/semantic/semantic.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css" integrity="sha512-8bHTC73gkZ7rZ7vpqUQThUDhqcNFyYi2xgDgPDHc+GXVGHXq+xPjynxIopALmOPqzo9JZj0k6OqqewdGO3EsrQ==" crossorigin="anonymous" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js" integrity="sha512-dqw6X88iGgZlTsONxZK9ePmJEFrmHwpuMrsUChjAw1mRUhUITE5QU9pkcSox+ynfLhL15Sv2al5A0LVyDCmtUw==" crossorigin="anonymous"></script>
 
   <!-- Standard Meta -->
   <meta charset="UTF-8">
@@ -28,26 +20,6 @@
 
   <!-- Site Properties -->
   <title>Login Example - Semantic</title>
-  <link rel="stylesheet" type="text/css" href="<%=request.getContextPath() %>/resources/css/semantic/components/reset.css">
-  <link rel="stylesheet" type="text/css" href="<%=request.getContextPath() %>/resources/css/semantic/components/site.css">
-
-  <link rel="stylesheet" type="text/css" href="<%=request.getContextPath() %>/resources/css/semantic/components/container.css">
-  <link rel="stylesheet" type="text/css" href="<%=request.getContextPath() %>/resources/css/semantic/components/grid.css">
-  <link rel="stylesheet" type="text/css" href="<%=request.getContextPath() %>/resources/css/semantic/components/header.css">
-  <link rel="stylesheet" type="text/css" href="<%=request.getContextPath() %>/resources/css/semantic/components/image.css">
-  <link rel="stylesheet" type="text/css" href="<%=request.getContextPath() %>/resources/css/semantic/components/menu.css">
-
-  <link rel="stylesheet" type="text/css" href="<%=request.getContextPath() %>/resources/css/semantic/components/divider.css">
-  <link rel="stylesheet" type="text/css" href="<%=request.getContextPath() %>/resources/css/semantic/components/segment.css">
-  <link rel="stylesheet" type="text/css" href="<%=request.getContextPath() %>/resources/css/semantic/components/form.css">
-  <link rel="stylesheet" type="text/css" href="<%=request.getContextPath() %>/resources/css/semantic/components/input.css">
-  <link rel="stylesheet" type="text/css" href="<%=request.getContextPath() %>/resources/css/semantic/components/button.css">
-  <link rel="stylesheet" type="text/css" href="<%=request.getContextPath() %>/resources/css/semantic/components/list.css">
-  <link rel="stylesheet" type="text/css" href="<%=request.getContextPath() %>/resources/css/semantic/components/message.css">
-  <link rel="stylesheet" type="text/css" href="<%=request.getContextPath() %>/resources/css/semantic/components/icon.css">
-
-  <script src="<%=request.getContextPath() %>/resources/css/semantic/components/form.js"></script>
-  <script src="<%=request.getContextPath() %>/resources/css/semantic/components/transition.js"></script>
 
   <style type="text/css">
     body {
@@ -132,7 +104,10 @@
     </form>
 
     <div class="ui message">
-      New to us? <a href="#">Sign Up</a>
+      새로 오셨나요? &emsp; <a href="#">Sign Up</a>
+    </div>
+    <div class="ui fluid large yellow submit button" style="background-color: #FEE500; padding: 1px 0;">
+      <img src="<%=request.getContextPath() %>/resources/image/login/kakao_login_medium_wide.png">
     </div>
   </div>
 </div>

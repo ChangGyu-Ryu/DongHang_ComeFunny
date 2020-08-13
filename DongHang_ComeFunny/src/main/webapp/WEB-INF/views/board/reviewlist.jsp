@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
     
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<c:import url="/WEB-INF/views/layout/header.jsp" />    
+<c:import url="/WEB-INF/views/board/boardheader.jsp" />    
 <div class = "reviewlist"> 
 	<div class = "reviewlist__header">
 		<div class = "reviewlist__header__label">
@@ -23,8 +23,8 @@
 		</tr>
 		<c:forEach var="i" begin="0" end="10">
 		<tr>
-			<td><a href="#"><c:out value="${i}" /></a></td>
-			<td><a href="#"><c:out value="${i}" /></a></td>
+			<td><a href="/board/reviewview"><c:out value="${i}" /></a></td>
+			<td><a href="/board/reviewview"><c:out value="${i}" /></a></td>
 			<td><c:out value="${i}" /></td>
 			<td>20/08/05</td>
 			<td><c:out value="${i}" /></td>
@@ -34,7 +34,7 @@
 		</table>
 	</div>
 	<div class="reviewlist__button">
-		<button class ="reviewlist__button__write" type="button" onclick="location.href='#'">글쓰기</button>
+		<button class ="reviewlist__button__write" type="button" onclick="location.href='/board/reviewwrite'">글쓰기</button>
 	</div>
 	
 	<nav class = "text-center">
@@ -83,4 +83,4 @@
 	
 
 
-<c:import url="/WEB-INF/views/layout/footer.jsp" />
+<c:import url="/WEB-INF/views/board/boardfooter.jsp" />

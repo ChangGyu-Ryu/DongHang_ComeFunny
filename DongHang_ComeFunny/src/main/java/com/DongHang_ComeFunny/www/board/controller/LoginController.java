@@ -10,4 +10,7 @@ public class LoginController {
 	@RequestMapping(value = "/login/login", method=RequestMethod.GET)
 	public void login() {}
 	
+	@RequestMapping(value = "/login/join", method=RequestMethod.GET)
+	public void join() {}
+	
 }
