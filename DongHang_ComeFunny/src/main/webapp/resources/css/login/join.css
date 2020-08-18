@@ -1,7 +1,7 @@
 @charset "UTF-8";
 
 #join__background__image {
-	background-image : url(../image/login/donghang_1.jpg);
+	background-image : url(/resources/image/login/donghang_1.jpg);
 	background-repeat:no-repeat; 
 	background-size: cover; 
 	display:block; 
@@ -32,5 +32,34 @@
 
 #join__logo__image {
 	width: 13.5em
+}
+
+#join__label {
+	width : 120px;
+}
+
+#join__label__birth {
+	width : 100%;
+	margin-right: 16px;
+}
+
+#yy {
+	margin-right: 10px;
+}
+#dd {
+	margin-left: 10px;
+}
+
+.ui.form .inline.fields .field>.selection.dropdown {
+	min-width : 4.5em;
+}
+
+#join__label__gender {
+	width: 86px;
+}
+
+#join__signin {
+	margin-left: 11px;
+	width: 272px;
 }
 

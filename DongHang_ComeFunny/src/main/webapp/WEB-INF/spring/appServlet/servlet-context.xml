@@ -20,8 +20,9 @@
 	<annotation-driven />
 	<!-- 2. 트랜잭션 어노테이션을 관리하는 태그 추가 -->
 	<!-- 주의 : 해당 태그들은  mapper에 select, update, insert, delete 작성하고 
-	serviceimpl	클래스까지 작성하고나서 주석해제 해야함
- 	<tx:annotation-driven proxy-target-class="false"/>
+	serviceimpl	클래스까지 작성하고나서 주석해제 해야함 -->
+	<!-- 
+ 	<tx:annotation-driven proxy-target-class="false"/> 
 	<beans:bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<beans:property name="dataSource" ref="dataSource"></beans:property>
 	</beans:bean>
@@ -45,8 +46,8 @@
 		<aop:pointcut expression="execution(* com.DongHang_ComeFunny.www..*.*ServiceImpl.*(..))"
 		 id="requiredTx" />
 		<aop:advisor advice-ref="txAdvice" pointcut-ref="requiredTx"/>
-	</aop:config> -->
-	
+	</aop:config> 
+	-->
 	<!-- 1. aop 오토 프록시 추가 -->
 	<!-- 주의 : common.aop.LogAop 패키지 및 클래스 부터 생성 후 설정 -->
 	<aop:aspectj-autoproxy />
@@ -63,16 +64,8 @@
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
 	
-	<!-- 인터셉터 등록 -->
-	<interceptors>
-		<interceptor>
-		<!-- 모든 요청이 인터셉터 거치도록 작성 -->
-		<mapping path="/**"/>
-		<beans:bean class="common.interceptor.AuthInterceptor"></beans:bean>
-		</interceptor>
-	</interceptors>
-	
 	<context:component-scan base-package="com.DongHang_ComeFunny.www, com.DongHang_ComeFunny.www.*" />
+	
 	
 	
 	

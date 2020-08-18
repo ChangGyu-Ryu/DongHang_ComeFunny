@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="FREE">
+
+    	<insert id="insertFree">
+    		INSERT INTO tb_freeboard
+    			(fbuno, fbtitle, fbcontent, fbwrittendate)
+    		VALUES
+    			(
+    			 #{fbuno}
+    			, #{fbtitle}
+    			, #{fbcontent}
+    			, sysdate
+    			)
+    	</insert>
+    	<insert id="insertFile">
+    		INSERT INTO
+    			tb_freefile
+    			(fffbno, fforiginfilename, ffstoredfilename, ffsavepath, ffsize)
+    		VALUES
+    			(
+    			tb_freeboard_seq.currval
+    			,#{originFileName}
+    			,#{storedFileName}
+    			,#{savePath}
+    			,#{fileSize}
+    			)
+    	</insert>
+
+    	<select id="selectFreeList" resultType="HashMap">
+    		SELECT * FROM
+    			( SELECT rownum rnum, UF.* FROM (
+    				SELECT
+    					u.uno, u.userid, u.unick, u.uname,
+    					f.fbno, f.fbuno, f.fbtitle, f.fbcontent, f.fbwrittendate, f.fbhitscnt
+    				FROM tb_user u, tb_freeboard f
+    				WHERE f.fbuno = u.uno
+    					AND u.uisleave = 0
+    					AND f.fbisdel = 0
+    					ORDER BY f.fbno DESC
+    				) UF
+    			) UFR
+    		WHERE rnum BETWEEN #{start} and #{end} 
+    	</select>
+    	
+    	<select id="selectContentCnt" resultType="int">
+    		SELECT count(*) from tb_freeboard
+    	</select>
+    	
+    	
+    	<select id="selectFreeDetail" resultType="HashMap">
+    		SELECT * FROM 
+    			( SELECT
+    				u.uno, u.userid, u.uname, u.unick, 
+    				f.fbno, f.fbuno, f.fbtitle, f.fbcontent, f.fbwrittendate, f.fbhitscnt
+    			  FROM tb_user u, tb_freeboard f 
+    			  WHERE f.fbuno = u.uno
+    			) UF
+    		WHERE fbno = #{fbno}
+    	</select>
+    	
+    	<select id="selectFileWithFree" resultType="HashMap">
+    		SELECT * FROM
+    			( SELECT
+    				f.fbno, f.fbuno, f.fbtitle, f.fbcontent, f.fbwrittendate, f.fbhitscnt,
+    				ff.ffno, ff.fffbno, ff.fforiginfilename, ff.ffstoredfilename, ff.ffsize, ff.ffsavepath
+    			  FROM tb_freeboard f, tb_freefile ff
+    			  WHERE f.fbno = ff.fffbno
+    			  	ORDER BY ff.ffno DESC 
+    			) FFF
+    		WHERE fbno = #{fbno}
+    	</select>
+    	
+<!--     	<update id="updateHit" parameterType="int"> -->
+<!--     	UPDATE tb_freeboard -->
+<!-- 			SET fbhitscnt = fbhitscnt + 0.5 -->
+<!-- 			WHERE fbno = #{fbno} -->
+<!--     	</update> -->
+    	<update id="updateHit">
+    	UPDATE tb_freeboard
+			SET fbhitscnt = fbhitscnt + 1
+			WHERE fbno = #{FBNO}
+    	</update>
+    	
+    	<select id="selectFreeFile" resultType="HashMap">
+    		SELECT
+    		*
+    		FROM tb_freefile
+    		WHERE ffno = #{ffno}
+    	</select>
+    	
+    	<update id="updateFileIsDel">
+    		UPDATE
+    			tb_freefile
+    		SET
+    			ffisdel = 1
+    		WHERE
+    			ffno = #{ffno}
+    			
+    	
+    	</update>
+    	
+
+</mapper>

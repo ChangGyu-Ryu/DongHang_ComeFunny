@@ -21,13 +21,13 @@
 			<th>조회수</th>
 			
 		</tr>
-		<c:forEach var="i" begin="0" end="10">
+		<c:forEach items="${freeData.flist }" var="free">
 		<tr>
-			<td><a href="/board/freeview"><c:out value="${i}" /></a></td>
-			<td><a href="/board/freeview"><c:out value="${i}" /></a></td>
-			<td><c:out value="${i}" /></td>
-			<td>20/08/05</td>
-			<td><c:out value="${i}" /></td>
+			<td>${free.FBNO}</td>
+			<td><a href="<%=request.getContextPath() %>/board/freeview?fbno=${free.FBNO }">${free.FBTITLE }</a></td>
+			<td>${free.UNICK }</td>
+			<td>${free.FBWRITTENDATE }</td>
+			<td>${free.FBHITSCNT }</td>
 		</tr>
 		</c:forEach>
 		</table>
@@ -35,24 +35,43 @@
 	<div class="freelist__button">
 		<button class ="freelist__button__write" type="button" onclick="location.href='/board/freewrite'">글쓰기</button>
 	</div>
-	
 	<nav class = "text-center">
 		<ul class="pagination">
 			<li>
-				<a href="#" aria-label="Previous">
-					<span aria-hidden="true">&laquo;</span>
+				<a href="<%=request.getContextPath() %>/board/freelist" aria-label="Previous">
+					<span aria-hidden="true"><i class="fas fa-angle-double-left"></i></span>
 				</a>
 			</li>
-			<li class="active"><a href="#">1</a></li>
-			<li><a href="#">2</a></li>
-			<li><a href="#">3</a></li>
-			<li><a href="#">4</a></li>
-			<li><a href="#">5</a></li>
-			<li>
-				<a href="#" aria-label="Next">
-				<span aria-hidden="true">&raquo;</span>
-				</a>
-			</li>
+			
+			<c:choose>	
+				<c:when test="${paging.cPage > 1 }">
+					<li><a href="<%=request.getContextPath() %>/board/freelist?cPage=${paging.cPage-1}"> <i class="fas fa-angle-left"></i> </a></li>
+				</c:when>
+				<c:otherwise>
+					<li><a href="<%=request.getContextPath() %>/board/freelist?cPage=${paging.cPage}"> <i class="fas fa-angle-left"></i> </a></li>
+				</c:otherwise>
+			</c:choose>
+				
+<%-- 				<li class="active"><a href="<%=request.getContextPath() %>/board/freelist?cPage=${page}"><span>${page }</span></a></li> --%>
+			<c:forEach begin="${paging.blockStart }" end="${paging.blockEnd }" var="page">
+				<c:choose>
+					<c:when test="${paging.cPage eq page}">
+						<li class="active"><a href="<%=request.getContextPath() %>/board/freelist?cPage=${page}"><span>${page}</span></a></li>
+					</c:when>
+					<c:otherwise>
+						<li><a href="<%=request.getContextPath() %>/board/freelist?cPage=${page}"><span>${page}</span></a></li>
+					</c:otherwise>
+				</c:choose>
+			</c:forEach>
+			<c:choose>
+				<c:when test="${paging.cPage eq paging.lastPage }">
+					<li><a href="<%= request.getContextPath() %>/board/freelist?cPage=${paging.cPage}"><i class="fas fa-angle-right"></i></a></li>
+				</c:when>
+				<c:otherwise>
+					<li><a href="<%= request.getContextPath() %>/board/freelist?cPage=${paging.cPage+1}"><i class="fas fa-angle-right"></i></a></li>
+				</c:otherwise>
+			</c:choose>
+			<li><a href="<%= request.getContextPath() %>/board/freelist?cPage=${paging.lastPage }" aria-label="Next"><i class="fas fa-angle-double-right"></i></a></li>
 		</ul>
 	</nav>
 	

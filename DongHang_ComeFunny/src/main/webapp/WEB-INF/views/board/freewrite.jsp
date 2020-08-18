@@ -13,12 +13,32 @@
 // 스마트 에디터 내용을 <textarea>반영해주는 함수
 function submitContents(elClickedObj) {
 	// 에디터의 내용이 textarea에 적용된다.
-	oEditors.getById["boardsContent"].exec("UPDATE_CONTENTS_FIELD", []);
+	oEditors.getById["fbcontent"].exec("UPDATE_CONTENTS_FIELD", []);
 
 	try {
 		elClickedObj.form.submit(); // <form> submit 수행
 	} catch(e) {}
 }
+</script>
+
+<script type="text/javascript">
+$(document).ready(function() {
+	
+	//작성버튼 동작
+	$("#btnWrite").click(function() {
+
+		// 스마트에디터의 내용을 <textarea>에 적용
+		submitContents( $("#btnWrite") );
+		
+		// form submit
+		$("form").submit();
+	});
+	
+	//취소버튼 동작
+	$("#btnCancel").click(function() {
+		history.go(-1);
+	});
+});
 </script>
 
 
@@ -31,11 +51,12 @@ function submitContents(elClickedObj) {
 		<span class = "freewrite__header__title">글쓰기</span>
 	</div>
 	<div class = "freewrite__table">
+		<form action="<%= request.getContextPath() %>/board/freeUploadImpl" method="post" enctype="multipart/form-data">
 		<table>
 		<tr>
 			<td>제목</td>
 			<td>
-				<input type="text" class="form-control" placeholder="제목을 입력하세요.">
+				<input type="text" class="form-control" name = "fbtitle" placeholder="제목을 입력하세요.">
 			</td>
 		</tr>
 		<tr>
@@ -49,19 +70,20 @@ function submitContents(elClickedObj) {
 		</tr>
 		<tr>
 			<td colspan="2">
-				<textarea id="boardContent" name="boardContent" style="width: 100%;"></textarea>
+				<textarea id="fbcontent" name="fbcontent" style="width: 100%;"></textarea>
 			</td>
 		</tr>
 		<tr>			
 			<td>파일업로드</td>
-			<td><input type="file" multiple/></td>
+			<td><input type="file" name="files" multiple/></td>
 		</tr>
 		<tr>			
 			<td colspan="2" class="freewrite__button">
-				<button class ="freelist__button__write" type="button" onclick="location.href='#'">글쓰기</button>
+				<button class ="freewrite__button__write" type="submit" id="btnWrite">글쓰기</button>
 			</td>
 		</tr>
 		</table>
+		</form>
 	</div>
 	
 
@@ -79,7 +101,7 @@ function submitContents(elClickedObj) {
 var oEditors = [];
 nhn.husky.EZCreator.createInIFrame({
 	oAppRef: oEditors,
-	elPlaceHolder: "boardContent", // 에디터가 적용되는 <textarea>의 id
+	elPlaceHolder: "fbcontent", // 에디터가 적용되는 <textarea>의 id
 	sSkinURI: "/resources/se2/SmartEditor2Skin.html", // 에디터 스킨
 	fCreator: "createSEditor2",
 	htParams: {

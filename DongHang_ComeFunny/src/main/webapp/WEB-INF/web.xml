@@ -51,10 +51,10 @@
 		</init-param>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
-		
+
 	<servlet-mapping>
 		<servlet-name>appServlet</servlet-name>
-		<!-- 3. url에 .do 붙이기 -->		
+	<!-- 3. url에 .do 붙이기 -->		
 		<!-- <url-pattern>*.do</url-pattern> -->
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>

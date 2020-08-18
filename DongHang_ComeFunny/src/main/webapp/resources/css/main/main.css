@@ -275,7 +275,7 @@ a {
 /**do랑  go랑 이름 잘못씀... 헷갈렸다...**/
 
 #dobest{
-	padding: 0px 6px;
+	padding: 0px 7px;
 	margin-bottom: 20px;
 }
 
@@ -316,7 +316,7 @@ a {
 
 /*함께해요 전용*/
 #gobest{
-	padding: 0px 6px;
+	padding: 0px 7px;
 }
 
 .gobest{
@@ -413,7 +413,7 @@ a {
 /*best메이트 전용*/
 
 #bestmate{
-	padding: 0px 6px;
+	padding: 0px 7px;
 	text-align: center;
 }
 
@@ -535,7 +535,7 @@ figure.mateprofile.hover p {
 .reviewbest{
     display: inline-block;
     padding: 25px;
-    margin: 10px 8px;
+    margin: 10px 9px;
     line-height: 2;
     background-color: rgba(115, 162, 191, 0.5);
     border-radius: 5px;
