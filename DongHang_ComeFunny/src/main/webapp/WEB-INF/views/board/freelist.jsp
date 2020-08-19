@@ -2,8 +2,11 @@
     pageEncoding="UTF-8"%>
     
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<c:import url="/WEB-INF/views/board/boardheader.jsp" />    
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<c:import url="/WEB-INF/views/board/boardheader.jsp" />   
+
 <div class = "freelist"> 
+
 	<div class = "freelist__header">
 		<div class = "freelist__header__label">
 			<span>Community</span>
@@ -26,7 +29,8 @@
 			<td>${free.FBNO}</td>
 			<td><a href="<%=request.getContextPath() %>/board/freeview?fbno=${free.FBNO }">${free.FBTITLE }</a></td>
 			<td>${free.UNICK }</td>
-			<td>${free.FBWRITTENDATE }</td>
+			<td><fmt:formatDate var="dateMMDD" value="${free.FBWRITTENDATE }" pattern="MM-dd"/>
+				${dateMMDD }</td>
 			<td>${free.FBHITSCNT }</td>
 		</tr>
 		</c:forEach>

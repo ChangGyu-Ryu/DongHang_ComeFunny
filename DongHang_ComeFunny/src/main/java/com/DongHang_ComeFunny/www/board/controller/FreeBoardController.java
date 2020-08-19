@@ -62,7 +62,7 @@ public class FreeBoardController {
 		} else {
 			mav.addObject("alertMsg", "로그인 후에 이용해주시기 바랍니다.");
 			mav.addObject("url", "../user/login");
-			mav.setViewName("/common/result");
+			mav.setViewName("common/result");
 		}
 		
 		
@@ -82,7 +82,7 @@ public class FreeBoardController {
 		
 		mav.addObject("paging", commandMap.get("paging"));
 		mav.addObject("freeData", commandMap);
-		mav.setViewName("/board/freelist");
+		mav.setViewName("board/freelist");
 		
 		return mav;
 	}
@@ -92,10 +92,11 @@ public class FreeBoardController {
 	public ModelAndView freeView(int fbno) {
 		ModelAndView mav = new ModelAndView();
 		Map<String, Object> free = freeBoardService.selectFreeView(fbno);
+//		System.out.println("[controller] + freemodifyImpl" + ((Map)free.get("detail")).get("FBUNO"));
 		System.out.println("[ controller ] fview Map : " + free);
 		if(free.get("detail") != null) {
 			mav.addObject("fview", free);
-			mav.setViewName("/board/freeview");
+			mav.setViewName("board/freeview");
 		} else {
 			mav.addObject("alertMsg", "해당 게시물이 존재하지 않습니다.");
 			mav.addObject("url", "freelist");
@@ -135,13 +136,13 @@ public class FreeBoardController {
 		return downFile;
 	}
 	
-	@RequestMapping("/freemodify")
+	@RequestMapping(value="/freemodify", method = RequestMethod.GET)
 	public ModelAndView freeModify(int fbno) {
 		ModelAndView mav = new ModelAndView();
 		Map<String,Object> free = freeBoardService.selectFreeView(fbno);
 		if(free.get("detail") != null) {
 			mav.addObject("fview", free);
-			mav.setViewName("/board/freemodify");
+			mav.setViewName("board/freemodify");
 		} else {
 			mav.addObject("alertMsg", "해당 게시물이 존재하지 않습니다.");
 			mav.addObject("url", "freelist");
@@ -152,19 +153,128 @@ public class FreeBoardController {
 		
 	}
 	
-	@RequestMapping("/freedeletefile")
+	@RequestMapping(value="/freedeletefile", method = RequestMethod.GET)
 	@ResponseBody
 	public String freeDeleteFile(int ffno) {
 		
-		int res = freeBoardService.freeDeleteFile(ffno);
+		int res = freeBoardService.deleteFreeFile(ffno);
+		
+		System.out.println("[controller] freeDeleteFile 메소드 반환값 : "+ res);
 		if( res > 0 ) {
-			return "";
+			return "#f"+ffno;
 		} else {
 			return "fail";
 		}
 		
 	}
 	
+	@RequestMapping(value="/freemodifyImpl", method = RequestMethod.POST)
+	public ModelAndView freeModifyImpl(
+			FreeBoard freeboard
+			,@RequestParam List<MultipartFile> files
+			, HttpSession session
+			, int fbno
+			) throws FileException {
+		
+		ModelAndView mav = new ModelAndView();
+		Map<String,Object> free = freeBoardService.selectFreeView(fbno);
+		System.out.println("[controller] + freemodifyImpl" + ((Map)free.get("detail")).get("USERID"));
+		String root = session.getServletContext().getRealPath("/");
+		
+		
+		User sessionUser = (User)session.getAttribute("logInInfo");
+		if(sessionUser == null) {
+			mav.addObject("alertMsg", "로그인 후에 이용해주시기 바랍니다.");
+			mav.addObject("url", "../user/login");
+			mav.setViewName("common/result");
+			return mav;
+		}
+		int res=0;
+		if(sessionUser.getUserid().equals(((Map)free.get("detail")).get("USERID"))) {
+			res = freeBoardService.updateFreeModify(freeboard, files, root);
+		} 
+		
+		if( res > 0) {
+			mav.addObject("fview",free);
+			mav.setViewName("redirect: freeview?fbno="+fbno);
+		} else {
+			mav.addObject("alertMsg", "해당 게시물에 접근할 권한이 없습니다.");
+			mav.addObject("url", "freelist");
+			mav.setViewName("common/result");
+		}
+		return mav;
+	}
+	
+	@RequestMapping(value="/freedelete", method = RequestMethod.GET)
+	public ModelAndView freeDelete(
+			int fbno
+			, String userid
+			, HttpSession session) {
+		
+		ModelAndView mav = new ModelAndView();
+		
+		User sessionUser = (User)session.getAttribute("logInInfo");
+		if(sessionUser == null) {
+			mav.addObject("alertMsg", "로그인 후에 이용해주시기 바랍니다.");
+			mav.addObject("url", "../user/login");
+			mav.setViewName("common/result");
+			return mav;
+		}
+		
+		int res=0;
+		Map<String,Object> free = freeBoardService.selectFreeView(fbno);
+		if(sessionUser.getUserid().equals(((Map)free.get("detail")).get("USERID"))) {
+			res = freeBoardService.deleteFreeBoard(fbno);
+		} 
+		
+		if(res > 0) {
+			mav.addObject("alertMsg", "게시물 삭제에 성공했습니다.");
+			mav.addObject("url", "freelist");
+			mav.setViewName("common/result");
+		}else {
+			mav.addObject("alertMsg", "해당 게시물에 접근할 권한이 없습니다.");
+			mav.addObject("url", "freelist");
+			mav.setViewName("common/result");
+		}
+		
+		return mav;
+	}
+	
+	@RequestMapping(value="freecommentwriteImpl", method = RequestMethod.POST)
+	public ModelAndView freeCommentWrite(
+			HttpSession session
+			, int fbno
+			) {
+		ModelAndView mav = new ModelAndView();
+		
+		User sessionUser = (User)session.getAttribute("logInInfo");
+		if(sessionUser == null) {
+			mav.addObject("alertMsg", "로그인 후에 이용해주시기 바랍니다.");
+			mav.addObject("url", "../user/login");
+			mav.setViewName("common/result");
+			return mav;
+		}
+		
+		int res=0;
+		Map<String,Object> free = freeBoardService.selectFreeView(fbno);
+		System.out.println("[controller] freeCommentWrite : "+free.get("detail"));
+		if(sessionUser.getUserid().equals(((Map)free.get("detail")).get("USERID"))) {
+			res = freeBoardService.insertFreeComment(fbno);
+		} 
+		
+		if( res > 0) {
+			mav.addObject("fview",free);
+			mav.setViewName("redirect: freeview?fbno="+fbno);
+		} else {
+			mav.addObject("alertMsg", "댓글 내용을 입력해주세요.");
+			mav.addObject("url", "redirect: freeview?fbno="+fbno);
+			mav.setViewName("common/result");
+		}
+		
+		
+		return mav;
+	}
+
 	@RequestMapping(value = "/reviewlist", method = RequestMethod.GET)
 	public void reviewList() {}
 	

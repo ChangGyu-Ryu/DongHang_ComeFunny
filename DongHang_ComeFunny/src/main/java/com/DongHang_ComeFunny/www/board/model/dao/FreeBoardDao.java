@@ -52,15 +52,41 @@ public class FreeBoardDao {
 	}
 
 	// 파일 db 완전 삭제 코드
-	public int deleteFile(int ffno) {
-		return sqlSession.delete("FREE.deleteFile", ffno);
+//	public int deleteFile(int ffno) {
+//		return sqlSession.delete("FREE.deleteFile", ffno);
+//	}
+//	
+	// 파일 db isdel update 코드
+	public int updateFileIsDel(int ffno) {
+		return sqlSession.update("FREE.updateFileIsDel", ffno);
+	}
+
+	public int updateFree(FreeBoard free) {
+		return sqlSession.update("FREE.updateFree",free);
+	}
+
+	public int modifyFreeFile(Map<String, Object> data) {
+		return sqlSession.insert("FREE.modifyFreeFile",data);
+	}
+
+	public int deleteFreeFileByFbno(int fbno) {
+		return sqlSession.update("FREE.updateFileIsDelByFbno", fbno);
+	}
+
+	public int deleteFreeBoard(int fbno) {
+		return sqlSession.update("FREE.updateFreeBoardIsDel", fbno);
+	}
+
+	public List<Map<String, Object>> selectFreeDetailWithComment(int fbno) {
+		return sqlSession.selectList("FREE.selectFreeDetailWithComment", fbno);
 	}
 	
-	// 파일 db isdel update 코드
-//	public int updateFileIsDel(int ffno) {
-//		return sqlSession.update("FREE.updateFileIsDel", ffno);
-//	}
+	public int insertFreeComment(Map<String, Object> data) {
+		return sqlSession.insert("FREE.insertFreeComment", data);
+	}
 
+
+	
 
 
 }

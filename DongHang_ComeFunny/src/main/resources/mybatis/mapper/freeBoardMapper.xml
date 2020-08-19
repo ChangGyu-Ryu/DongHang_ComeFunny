@@ -44,10 +44,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     				) UF
     			) UFR
     		WHERE rnum BETWEEN #{start} and #{end} 
+
     	</select>
     	
     	<select id="selectContentCnt" resultType="int">
     		SELECT count(*) from tb_freeboard
+    		WHERE fbisdel = 0
     	</select>
     	
     	
@@ -58,6 +60,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     				f.fbno, f.fbuno, f.fbtitle, f.fbcontent, f.fbwrittendate, f.fbhitscnt
     			  FROM tb_user u, tb_freeboard f 
     			  WHERE f.fbuno = u.uno
+    			  	AND	u.uisleave = 0
+    			  	AND f.fbisdel = 0
     			) UF
     		WHERE fbno = #{fbno}
     	</select>
@@ -69,6 +73,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     				ff.ffno, ff.fffbno, ff.fforiginfilename, ff.ffstoredfilename, ff.ffsize, ff.ffsavepath
     			  FROM tb_freeboard f, tb_freefile ff
     			  WHERE f.fbno = ff.fffbno
+    			  		AND f.fbisdel = 0
+    			  		AND ff.ffisdel = 0
     			  	ORDER BY ff.ffno DESC 
     			) FFF
     		WHERE fbno = #{fbno}
@@ -83,6 +89,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     	UPDATE tb_freeboard
 			SET fbhitscnt = fbhitscnt + 1
 			WHERE fbno = #{FBNO}
+				AND fbisdel = 0
     	</update>
     	
     	<select id="selectFreeFile" resultType="HashMap">
@@ -90,7 +97,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     		*
     		FROM tb_freefile
     		WHERE ffno = #{ffno}
+    			AND ffisdel = 0
     	</select>
+    	
+    	<delete id="deleteFile">
+    		DELETE
+    		FROM tb_freefile 
+    		WHERE ffno = #{ffno}
+    			AND ffisdel = 0
+    	</delete>
     	
     	<update id="updateFileIsDel">
     		UPDATE
@@ -99,9 +114,78 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     			ffisdel = 1
     		WHERE
     			ffno = #{ffno}
-    			
-    	
     	</update>
+    	
+    	<update id="updateFree">
+    		UPDATE
+    			tb_freeboard
+    		SET
+  				fbtitle = #{fbtitle},
+  				fbcontent = #{fbcontent}
+    		WHERE
+    			fbno = #{fbno}
+    			AND fbisdel = 0
+    	</update>
+    	<insert id="modifyFreeFile">
+    		INSERT INTO
+    			tb_freefile
+    			(fffbno, fforiginfilename, ffstoredfilename, ffsavepath, ffsize)
+    		VALUES
+    			(
+    			#{fbno}
+    			,#{originFileName}
+    			,#{storedFileName}
+    			,#{savePath}
+    			,#{fileSize}
+    			)
+    	</insert>
+    	
+    	<update id="updateFileIsDelByFbno">
+    	 UPDATE
+    			tb_freefile
+    		SET
+    			ffisdel = 1
+    		WHERE
+    			fffbno = #{fbno}
+    	</update>
+    	<update id="updateFreeBoardIsDel">
+    	UPDATE
+    			tb_freeboard
+    		SET
+    			fbisdel = 1
+    		WHERE
+    			fbno = #{fbno}
+    	</update>
+    	
+    	<select id="selectFreeDetailWithComment" resultType="HashMap">
+    	    SELECT * FROM
+    			( SELECT
+    				u.uno, u.userid, u.unick, u.uname,
+    				f.fbno, f.fbuno, f.fbtitle, f.fbcontent, f.fbwrittendate, f.fbhitscnt,
+    				fc.fcno, fc.fcfbno, fc.fcuno, fc.fccontent, fc.fcwrittendate
+    			  FROM tb_user u, tb_freeboard f, tb_freecomment fc
+    			  WHERE f.fbuno = u.uno
+    			  	AND fc.fcuno = u.uno
+    			  	AND fc.fcfbno = f.fbno
+    			  	AND u.uisleave = 0
+    			  	AND f.fbisdel = 0
+    			  	AND fc.fcisdel = 0
+    			  	ORDER BY fc.fcno DESC 
+    			) FFF
+    		WHERE fbno = #{fbno}
+    	</select>
+    	
+    	<insert id="insertFreeComment">
+    	INSERT INTO
+    		tb_freecomment(fcfbno, fcuno, fccontent, fcwrittendate)
+    	VALUES
+    		(
+    		#{FBNO}
+    		,#{UNO}
+    		,#{FCCONTENT}
+    		,sysdate
+    		)
+    	</insert>
     	
 
 </mapper>

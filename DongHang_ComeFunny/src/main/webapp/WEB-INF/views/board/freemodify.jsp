@@ -57,13 +57,15 @@ $(document).ready(function() {
 			<td>제목</td>
 			<td>
 				<input type="hidden" name="fbno" value="${fview.detail.FBNO}"/>
-				<input type="text" class="form-control" name = "fbtitle" value="${fview.detail.FBTITLE}">
+				<input type="text" class="form-control" name = "fbtitle" value="${fview.detail.FBTITLE}" >
 			</td>
 		</tr>
 		<tr>
 			<td>작성자</td>
 			<td>
-				<div><span>donghangId</span></div>
+				<div><input type="hidden" name="userid" value=""/>
+					 <span>${fview.detail.UNICK }</span>
+					 </div>
 			</td>
 		</tr>
 		<tr>			
@@ -83,7 +85,7 @@ $(document).ready(function() {
 		
 				<tr>			
 			<td colspan="2">
-				<div class="freeview__table__download">
+				<div class="freemodify__table__download">
 					<span>업로드된 파일 </span>
 			</div>
 			</td>
@@ -91,20 +93,20 @@ $(document).ready(function() {
 		</tr>
 		
 		<c:forEach items="${fview.filelist }" var="file" varStatus="status">
-		<tr>			
+		<tr id='f${file.FFNO}'>			
 			<td colspan="2">
-				<div class="freemodfiy__table__download">
+				<div class="freemodify__table__download">
 					<span>${status.count}. : &nbsp;</span>
 					
-				 <a href="javascript:deleteFile('${file.FFNO }')">
-					${file.FFORIGINFILENAME}<i class="fas fa-times"></i></a>
-			</div>
+				 <a href="javascript:deleteFile('${file.FFNO }')" style="text-decoration: none;">
+					${file.FFORIGINFILENAME} &nbsp; <i class="fas fa-times"></i></a>
+				</div>
 			</td>
 		</tr>
 		</c:forEach>
 		<tr>			
 			<td colspan="2" class="freemodify__button">
-				<button class ="freemodify__button__modify" type="submit" id="btnModify">글쓰기</button>
+				<button class ="freemodify__button__modify" type="submit" id="btnModify">수정하기</button>
 			</td>
 		</tr>
 		</table>
@@ -148,14 +150,15 @@ nhn.husky.EZCreator.createInIFrame({
          //http request body 설정
          //xhr.send() : 전송할 데이터가 있다면 파라미터에 넣어서 보내주면 된다.
          xhr.send('ffno='+FFNO);
+         console.dir(xhr.response);
          xhr.addEventListener('load',function(){
-            var cssSelector = xhr.response;
-            if(cssSelector != 'fail'){
-            console.dir(document.querySelector(cssSelector));
-            document.querySelector(cssSelector).outerHTML = '';
-         } else {
-            alert("파일 삭제에 실패하였습니다.");
-         }   
-      })
-   }
+             var cssSelector = xhr.response;
+             if(cssSelector != 'fail'){
+             console.dir(document.querySelector(cssSelector));
+             document.querySelector(cssSelector).outerHTML = '';
+          } else {
+             alert("파일 삭제에 실패하였습니다.");
+          }   
+       })
+    }
 </script>

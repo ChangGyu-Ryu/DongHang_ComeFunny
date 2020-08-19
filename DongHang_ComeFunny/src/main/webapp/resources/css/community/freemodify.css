@@ -143,7 +143,7 @@
 	text-align: start;
 }
 
-.freemodify__table tr:nth-child(6) td:first-child{
+.freemodify__table tr:last-child td:first-child{
 	text-align: end;
 }
 
@@ -205,9 +205,9 @@
 	text-shadow: none;
 }
 
-.freemodify__table__download, .freemodify__comment__download {
-	display: flex;
-	
+.freemodify__table__download, .freemodify__table__downloadlist, .freemodify__comment__download {
+	text-align: left;
+	 
 }
 
 

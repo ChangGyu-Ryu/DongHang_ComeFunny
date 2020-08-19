@@ -37,7 +37,14 @@ public interface FreeBoardService {
 
 	public Map<String, Object> selectFreeView(int fbno);
 
-	public int freeDeleteFile(int ffno);  
+	public int deleteFreeFile(int ffno);
+
+	public int updateFreeModify(FreeBoard freeboard, List<MultipartFile> files, String root) throws FileException;
+
+	public int deleteFreeBoard(int fbno);
+
+	public int insertFreeComment(int fbno);
+
 	
 	
 }

@@ -131,14 +131,19 @@
 			</div>
 			<c:if test="${logInInfo.userid == fview.detail.USERID }">
 				<div>
-					<button class ="freeview__button__modify" type="button" onclick="location.href='/board/freemodify?fbno=${fview.detail.FBNO}&userid=${fview.detail.USERID}'">수정</button>
-					<button class ="freeview__button__delete" type="button" onclick="location.href='#'">삭제</button>
+					<button class ="freeview__button__modify" onclick="submitData('freemodify?fbno=${fview.detail.FBNO}&userid=${fview.detail.USERID}')">수정</button>
+					<button class ="freeview__button__delete" onclick="submitData('/board/freedelete?fbno=${fview.detail.FBNO}&userid=${fview.detail.USERID}')">삭제</button>
+					<button class ="freeview__button__delete" onclick="location.href='/board/freecommentwriteImpl'">삭제</button>
 				</div>
 			</c:if>
 			
 			
 		</div>
-
+		<form action="/board/freecommentwriteImpl" method="post">
+			<input type="hidden" name="fbno" value="${fview.detail.FBNO}"/>
+			<input type="text" name="fccontent"/>
+			<button>전송</button>
+		</form>
 	
 
 </div>	
@@ -148,9 +153,9 @@
 
 <script type="text/javascript">
    
-//    function submitData(url){
-//       location.href = url;
-//    } 
+   function submitData(url){
+      location.href = url;
+   } 
    
    function downloadFile(ofname, rfname){
        location.href = "freedownload?"
