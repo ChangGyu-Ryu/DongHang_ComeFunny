@@ -289,10 +289,21 @@
 
 	
 	<!-- 나의 동행(함께 가요) 삭제 -->
-	<update id="deleteMyGoDhList">
-		UPDATE tb_goboard
-		set gbisdel = 1
-		where gbno=#{gbNo}
+	<update id="deleteMyDhList">
+		<choose>
+			<when test="cate eq '함께가요'">
+				UPDATE tb_goboard
+				set gbisdel = 1
+				where gbno=#{bno}	
+			</when>
+			
+			<when test="cate eq '함께해요'">
+				UPDATE tb_doboard
+				set dbisdel = 1
+				where dbno=#{bno}	
+			</when>
+		</choose>
+		
 	</update>
 	
 	
@@ -322,14 +333,14 @@
 	<select id="selectrecruitList" resultType="Map"> 
 		<choose>
 			<when test="gbcategory eq '함께가요'">
-				SELECT gastatus, gano, uno, unick, (to_char(sysdate,'YYYY')-substr(ubirth,1,4)+1)age, ugender 
+				SELECT gastatus, gacategory, gano, uno, unick, (to_char(sysdate,'YYYY')-substr(ubirth,1,4)+1)age, ugender 
 		        FROM tb_goapply, tb_user
 		        WHERE gauno = uno
 		        AND gagbno= #{gbno}
 		        ORDER BY gano desc
 			</when>
 			<when test="gbcategory eq '함께해요'">
-				SELECT dastatus, dano, uno, unick, (to_char(sysdate,'YYYY')-substr(ubirth,1,4)+1)age, ugender 
+				SELECT dastatus, dacategory, dano, uno, unick, (to_char(sysdate,'YYYY')-substr(ubirth,1,4)+1)age, ugender 
 		        FROM tb_doapply, tb_user
 		        WHERE dauno = uno
 		        AND dadbno= #{gbno}
@@ -340,5 +351,53 @@
 		
 		
 	</select>
+	
+	
+	<!-- 함께 가요 수락 -->
+	<update id="acceptApply" parameterType="int">
+		<choose>
+			<when test="cate eq 0">
+				UPDATE tb_goapply
+				SET gastatus = 1
+				WHERE gano = #{bano}
+				AND gauno = #{aplyuno}
+			</when>
+		
+			<when test="cate eq 1">
+				UPDATE tb_doapply
+				SET dastatus = 1
+				WHERE dano = #{bano}
+				AND dauno = #{aplyuno}
+			</when>
+		</choose>
+	</update>
+	
+	<!-- 함께 가요 거절 -->
+	<update id="acceptRefuse" parameterType="int">
+		<choose>
+			<when test="cate eq 0">
+				UPDATE tb_goapply
+				SET gastatus = 2
+				WHERE gano = #{bano}
+				AND gauno = #{aplyuno}
+			</when>
+		
+			<when test="cate eq 1">
+				UPDATE tb_doapply
+				SET dastatus = 2
+				WHERE dano = #{bano}
+				AND dauno = #{aplyuno}
+			</when>
+		</choose>
+	</update>
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 </mapper>

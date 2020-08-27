@@ -121,11 +121,7 @@ public interface FboardListService {
 //	 */
 	public Map<String, Object> selectMyGoDhList(int cPage, int cntPerPage, int uno);
 
-	/**
-	 * 나의 동행(함께 가요) 삭제
-	 * @param goboard
-	 */
-	public void deleteGoMyDhList(GoBoard goboard);
+	
 
 	/**
 	 * 나의 동행(함께 가요) 관리
@@ -135,6 +131,30 @@ public interface FboardListService {
 	 * @return
 	 */
 	public Map<String, Object> selectrecruitList(String gbcategory, int gbno, int cPage, int cntPerPage);
+
+	
+
+	/**
+	 * 신청 수락
+	 * @param aplyuno : 신청자 uno
+	 * @param bano : 신청 번호
+	 * @param cate : 0 >> 함께 가요  | 1 >> 함께 해요
+	 */
+	public void acceptApply(int aplyuno, int bano, int cate);
+
+	/**
+	 * 신청 거절
+	 * @param aplyuno : 신청자 uno
+	 * @param bano : 신청번호 
+	 * @param cate : 0 >> 함께 가요 | 1 >> 함께 해요
+	 */
+	public void acceptRefuse(int aplyuno, int bano, int cate);
+
+	/**
+	 * 나의 동행 삭제 
+	 * @param param
+	 */
+	public void deleteMyDhList(String param);
 
 	/**
 	 * 니의동행(함께 가요)

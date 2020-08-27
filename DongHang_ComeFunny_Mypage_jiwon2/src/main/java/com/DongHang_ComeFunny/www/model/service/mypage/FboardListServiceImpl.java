@@ -199,11 +199,6 @@ public class FboardListServiceImpl implements FboardListService{
 	}
 
 	@Override
-	public void deleteGoMyDhList(GoBoard goboard) {
-		fboardlistDao.deleteGoMyDhList(goboard);
-	}
-
-	@Override
 	public Map<String, Object> selectrecruitList(String gbcategory, int gbno, int cPage, int cntPerPage) {
 		Map<String, Object> commandMap = new HashMap<String, Object>();
 		List<User> recruitedList = fboardlistDao.selectrecruitList(gbno,gbcategory);
@@ -211,6 +206,31 @@ public class FboardListServiceImpl implements FboardListService{
 		commandMap.put("recruitedList", recruitedList);
 		return commandMap ;
 	}
+
+	//신청수락
+	@Override
+	public void acceptApply(int aplyuno, int bano, int cate) {
+		fboardlistDao.acceptApply(aplyuno , bano, cate);
+	}
+
+	//신청 거절
+	@Override
+	public void acceptRefuse(int aplyuno, int bano, int cate) {
+		fboardlistDao.acceptRefuse(aplyuno , bano, cate);
+		
+	}
+
+	//나의 동행 관리
+	@Override
+	public void deleteMyDhList(String param) {
+		String data[] = param.split(",");
+		int bno = Integer.parseInt(data[0]);
+		String cate = data[1];
+		fboardlistDao.deleteMyDhList(bno,cate);
+		
+	}
+
+	
 		
 
 

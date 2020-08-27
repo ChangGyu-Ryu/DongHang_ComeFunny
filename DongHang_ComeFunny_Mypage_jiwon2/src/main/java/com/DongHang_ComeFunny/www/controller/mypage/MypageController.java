@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import javax.naming.spi.DirStateFactory.Result;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -243,12 +244,12 @@ public class MypageController {
 //			return mav;
 //		
 //		}
-	//나의 동행(함께가요)삭제
+	//나의 동행삭제
 	@ResponseBody
 	@RequestMapping(value = "/mydonghang/delete",  method = RequestMethod.POST)
 	public int deletemydonghang(HttpSession session, @RequestParam(value="deleteChk")List<String> chArr, GoBoard goboard) {
-//		System.out.println("ajax 통신 성공");
-//		System.out.println("chArr : " + chArr);
+		System.out.println("ajax 통신 성공");
+		System.out.println("chArr : " + chArr);
 		
 		User sessionUser = new User();
 		sessionUser.setuNo(5);
@@ -264,10 +265,24 @@ public class MypageController {
 		int gbno = 0;
 		
 		if(uno != null || uno!="") {
-			for(String i : chArr) {
-				gbno = Integer.parseInt(i);
-				goboard.setGbNo(gbno);
-				fboardlistservice.deleteGoMyDhList(goboard);
+//			for(String i : chArr) {
+//				gbno = Integer.parseInt(i);
+//				goboard.setGbNo(gbno);
+//				fboardlistservice.deleteGoMyDhList(goboard);
+//			}
+			
+			String param = "";
+			System.out.println("size : "+chArr.size());
+			if(chArr.size() == 2) {
+				param = chArr.get(0)+","+chArr.get(1);
+				fboardlistservice.deleteMyDhList(param);
+				System.out.println("param : " + param);
+			}else {
+				for(int i=0; i<chArr.size(); i++) {
+					System.out.println(chArr.get(i));
+					param = chArr.get(i);		
+					fboardlistservice.deleteMyDhList(param);
+				}
 			}
 			result=1;
 		}
@@ -305,10 +320,6 @@ public class MypageController {
 //	}
 	
 	
-	
-	
-	
-	
 	//나의 동행(함께가요) 모달
 	@ResponseBody
 	@RequestMapping(value = "/mydonghang/admin",  method = RequestMethod.POST)
@@ -337,6 +348,74 @@ public class MypageController {
 		return map;
 	}
 		
+	
+	
+	//나의동행관리 수락 처리
+	@ResponseBody
+	@RequestMapping(value = "/mydonghang/adminrecruit",  method = RequestMethod.POST)
+	public int adminRecruit(HttpSession session, @RequestParam(value="agreeChk")List<String> agreeChk) {
+		User sessionUser = new User();
+		sessionUser.setuNo(5);
+	    //회원정보를 세선에 담기
+	    session.setAttribute("loginInfo", sessionUser);
+		
+	    //세션 부르기
+		sessionUser= (User) session.getAttribute("loginInfo");
+		
+		String uno = Integer.toString(sessionUser.getuNo());
+		
+		
+		System.out.println("/mydonghang/admin ajax 통신 성공");
+		System.out.println("agreeChk : " + agreeChk);
+		
+		int result = 0;
+		
+		int aplyuno = Integer.parseInt(agreeChk.get(0)); // 신청자 uno
+		int bano =  Integer.parseInt(agreeChk.get(1)); // apply table 번호
+		int cate = Integer.parseInt(agreeChk.get(2)); //0 : 함께 가요  | 1 : 함께 해요
+		
+		if(uno != null || uno!="") {
+			fboardlistservice.acceptApply(aplyuno, bano, cate);				
+			result = 1;
+		}
+		
+		return result;
+	}
+	
+	//나의동행관리 거절 처리
+	@ResponseBody
+	@RequestMapping(value = "/mydonghang/refuserecruit",  method = RequestMethod.POST)
+	public int refuseRecruit(HttpSession session, @RequestParam(value="refuseChk")List<String> refuseChk) {
+		User sessionUser = new User();
+		sessionUser.setuNo(5);
+	    //회원정보를 세선에 담기
+	    session.setAttribute("loginInfo", sessionUser);
+		
+	    //세션 부르기
+		sessionUser= (User) session.getAttribute("loginInfo");
+		
+		String uno = Integer.toString(sessionUser.getuNo());
+		
+		
+		System.out.println("/mydonghang/admin ajax 통신 성공");
+		System.out.println("agreeChk : " + refuseChk);
+		
+		int result = 0;
+		
+		int aplyuno = Integer.parseInt(refuseChk.get(0)); // 신청자 uno
+		int bano =  Integer.parseInt(refuseChk.get(1)); // apply table 번호
+		int cate = Integer.parseInt(refuseChk.get(2)); //0 : 함께 가요  | 1 : 함께 해요
+		
+		if(uno != null || uno!="") {
+			fboardlistservice.acceptRefuse(aplyuno, bano, cate);				
+			result = 1;
+		}
+		
+		return result;
+	}
+
+	
+	
 	//댓글 게시판 JSP 띄우기
 	@RequestMapping(value = "/commentlist",  method = RequestMethod.GET)
 	public ModelAndView commentlist(@RequestParam(required = false, defaultValue = "1")int cPage, HttpSession session) {

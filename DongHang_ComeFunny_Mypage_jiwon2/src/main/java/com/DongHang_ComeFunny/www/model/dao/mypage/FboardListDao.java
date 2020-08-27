@@ -202,10 +202,7 @@ public class FboardListDao {
 		return sqlSession.selectOne("Fboard.selectRecruitNumCnt", param);
 	}
 
-	//나의 동행 (함께 가요) 리스트 삭제
-	public void deleteGoMyDhList(GoBoard goboard) {
-		sqlSession.update("Fboard.deleteMyGoDhList", goboard);	
-	}
+	
 
 //	//(함께 가요)동행 신청자 리스트 카운트
 //	public int selectrecruitContentCnt(int gbno , String gbcategory) {		
@@ -216,12 +213,40 @@ public class FboardListDao {
 //		return sqlSession.selectOne("Fboard.selectrecruitContentCnt",param);
 //	}
 	
+	//신청자 리스트
 	public List<User> selectrecruitList(int gbno, String gbcategory) {
 		Map<String, Object> param = new HashMap<String, Object>();
 		param.put("gbno", gbno);
 		param.put("gbcategory", gbcategory);
 		return sqlSession.selectList("Fboard.selectrecruitList", param);
 	}
-	
+
+	//신청 수락
+	public void acceptApply(int aplyuno, int bano, int cate) {
+		Map<String, Object> param = new HashMap<String, Object>();
+		param.put("aplyuno", aplyuno);
+		param.put("bano", bano);
+		param.put("cate", cate);
+		sqlSession.update("Fboard.acceptApply", param);		
+	}
+
+	//신청 거절
+	public void acceptRefuse(int aplyuno, int bano, int cate) {
+		Map<String, Object> param = new HashMap<String, Object>();
+		param.put("aplyuno", aplyuno);
+		param.put("bano", bano);
+		param.put("cate", cate);
+		sqlSession.update("Fboard.acceptRefuse", param);	
+		
+	}
+
+	//나의 동행리스트 삭제
+	public void deleteMyDhList(int bno, String cate) {
+		Map<String, Object> param = new HashMap<String, Object>();
+		param.put("bno", bno);
+		param.put("cate", cate);
+		sqlSession.update("Fboard.deleteMyDhList", param);
+	}
+
 	
 }

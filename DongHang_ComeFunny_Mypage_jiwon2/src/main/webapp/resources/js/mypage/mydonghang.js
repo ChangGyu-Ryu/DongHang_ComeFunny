@@ -235,15 +235,15 @@ $(document).ready(function () {
 				$.ajax({
 					url : "/mypage/applydonghang/delete"
 						,type : "post"
-							,data : { deleteChk : checkArr }
-				,traditional : true
-				,success : function(result){
-					if(result ==1){
-						location.href=window.document.URL;
-					}else{
-						alert("삭제 실패");
-					}
-				}
+						,data : { deleteChk : checkArr }
+						,traditional : true
+						,success : function(result){
+							if(result ==1){
+								location.href=window.document.URL;
+							}else{
+								alert("삭제 실패");
+							}
+						}
 				
 				});
 			}
@@ -293,7 +293,7 @@ $(document).ready(function () {
 	});
 	
 	
-	//나의 동행 관리(함께 해요)
+	//나의 동행 삭제
 	$(".deleteGoMyDhBtn").click(function(){
 		console.log("click");
 
@@ -307,6 +307,11 @@ $(document).ready(function () {
  				console.log($(this).val());
 				checkArr.push($(this).val());
 			});
+			console.log(checkArr);
+			console.log(checkArr[1]);
+			console.log(checkArr[2]);
+			console.log(checkArr[1]);
+			
 			
 			if(checkArr==null || checkArr ==""){
 				confirm_val = confirm("삭제할 대상을 선택해 주세요.");
@@ -315,14 +320,16 @@ $(document).ready(function () {
 				$.ajax({
 					url : "/mypage/mydonghang/delete"
 					,type : "post"
+					,dataType : "json"
+				    ,contentType : "application/x-www-form-urlencoded; charset=UTF-8"
 					,data : { deleteChk : checkArr }
 				    ,traditional : true
 				    ,success : function(result){
-					if(result ==1){
-						location.href=window.document.URL;
-					}else{
-						alert("삭제 실패");
-					}
+						if(result ==1){
+							location.href=window.document.URL;
+						}else{
+							alert("삭제 실패");
+						}
 				    }
 				
 				});
@@ -358,11 +365,11 @@ $(document).ready(function () {
 //						alert("vvvvvv");
 						var element = document.getElementById("tableval");						
 //						console.log(element.innerHTML);
-//						console.log(data.recruitedList);
+						console.log(data.recruitedList);
 //						console.log(data.recruitedList[0].AGE);
 						$.each(data.recruitedList,function(index,item){
 							
-							console.log("들어온 닉네임 : "+ item.UNIK);
+//							console.log("들어온 닉네임 : "+ item.UNIK);
 							var gender = "";
 							var status = "";
 							
@@ -374,10 +381,25 @@ $(document).ready(function () {
 								status="<td>수락 완료</td>";
 							}else if(item.GASTATUS == 2){
 								status="<td>거절 완료</td>";
+							}else if(item.DASTATUS == 1){
+								status="<td>수락 완료</td>";
+							}else if(item.DASTATUS == 2){
+								status="<td>거절 완료</td>";
 							}else{
-								status ='<td><button class="agreeBtn" onclick="agree('+item.UNO+');" style="color: #fff;" value="'+item.UNO+'">수락</button>'
-								 + '<button class="refuseBtn" onclick="disagree('+item.UNO+');" style="color: #fff;" value="'+item.UNO+'">거절</button>'
-								 + '</td>';
+								if(item.GACATEGORY == "함께가요"){
+									var cate = 0;
+//									status ='<td><button class="agreeBtn" onclick="agree('+item.UNO+','+item.GANO+');" style="color: #fff;" value="'+item.UNO+'">수락</button>'
+									status ='<td><button class="agreeBtn" onclick="agree('+item.UNO+','+item.GANO+','+cate+');" style="color: #fff;" value="'+item.UNO+'">수락</button>'
+									+ '<button class="refuseBtn" onclick="disagree('+item.UNO+','+item.GANO+','+cate+');" style="color: #fff;" value="'+item.UNO+'">거절</button>'
+									+ '</td>';
+									
+								}else if(item.DACATEGORY == "함께해요"){
+									var cate = 1;
+									status ='<td><button class="agreeBtn" onclick="agree('+item.UNO+','+item.DANO+','+cate+');" style="color: #fff;" value="'+item.UNO+'">수락</button>'
+									+ '<button class="refuseBtn" onclick="disagree('+item.UNO+','+item.DANO+','+cate+');" style="color: #fff;" value="'+item.UNO+'">거절</button>'
+									+ '</td>';
+									
+								}
 							}
 							
 							element.innerHTML += "<tr>"
@@ -464,61 +486,104 @@ $(document).ready(function () {
 	
 })
 
-function agree(param) {
-	console.log("확인  : " + param);
+function agree(uno, bano, cate) {
+	console.log("수락 uno  : " + uno);
+	console.log("수락 gano  : " + bano);
+	console.log("수락 cate  : " + cate);
 
+	var checkArr = new Array();
+	
+	checkArr.push(uno);
+	checkArr.push(bano);
+	checkArr.push(cate);
+	console.log(checkArr);
+	
 	$("#agreementPop").css({
 		  visibility: "visible"
 		  ,opacity: "1"
 	});		
 	$('#agreebtn').click(function() {
-		$("#agreementPop2").css({
-			visibility: "visible"
-			,opacity: "1"
-		})
-		$("#agreementPop").css({
-			  visibility: "hidden"
-			  ,opacity: "0"
-		});	
+		
+		$.ajax({
+			url : "/mypage/mydonghang/adminrecruit"
+			,type : "post"
+			,data : { agreeChk : checkArr }
+		    ,traditional : true
+		    ,success : function(result){
+				if(result ==1){
+					$("#agreementPop2").css({
+						visibility: "visible"
+						,opacity: "1"
+					})
+					$("#agreementPop").css({
+						  visibility: "hidden"
+						  ,opacity: "0"
+					});	
+				}else{
+					alert("수락실패");
+				}
+		    }
+		
+		});
+		
+		
+		
+		
+		
 //		location.href=window.document.URL;
 		
 	})
 	
-	$.ajax({
-		url : "/mypage/mydonghang/delete"
-		,type : "post"
-		,data : { deleteChk : checkArr }
-	    ,traditional : true
-	    ,success : function(result){
-		if(result ==1){
-			location.href=window.document.URL;
-		}else{
-			alert("삭제 실패");
-		}
-	    }
-	
-	});
 	
 	
 }
 
 
-function disagree(dparam) {
-	console.log("확인  : " + dparam);
+function disagree(uno, bano , cate) {
+	
+	console.log("거절 uno  : " + uno);
+	console.log("거절 gano  : " + bano);
+	console.log("거절 cate  : " + cate);
+
+	var checkArr = new Array();
+	
+	checkArr.push(uno);
+	checkArr.push(bano);
+	checkArr.push(cate);
+	console.log(checkArr);
+	
+	
 	$("#refusedPop").css({
 		  visibility: "visible"
 		  ,opacity: "1"
 	});
 	$('.refusedbt').click(function() {
 		console.log("거절버튼");
-		$("#refusedPop2").css({
-			visibility: "visible"
-			,opacity: "1"
+		
+		$.ajax({
+			url : "/mypage/mydonghang/refuserecruit"
+			,type : "post"
+			,data : { refuseChk : checkArr }
+		    ,traditional : true
+		    ,success : function(result){
+				if(result ==1){
+					$("#refusedPop2").css({
+						visibility: "visible"
+						,opacity: "1"
+					});
+					$("#refusedPop").css({
+						visibility: "hidden"
+						,opacity: "0"
+					});
+				}else{
+					alert("거절실패");
+				}
+		    }
+		
 		});
-		$("#refusedPop").css({
-			visibility: "hidden"
-			,opacity: "0"
-		});
+		
+		
+		
 //		location.href=window.document.URL;
 	})
 }

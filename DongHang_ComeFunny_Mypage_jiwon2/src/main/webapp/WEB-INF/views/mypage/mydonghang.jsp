@@ -72,8 +72,8 @@ function hiddenmodal() {
 	<!-- 나의 동행 관리 테이블 -->
 	<div id="donghangform">
 		<div id="donghangformTitle">나의 동행 관리</div>
-		<button id="goBtn" onclick="location.href='/mypage/applydonghang'" style="box-shadow: 4px 4px 4px 1px #00000060 inset;">함께 가요</button>
-		<button id="doBtn" onclick="location.href='/mypage/doapplydonghang'">함께 해요</button>
+<!-- 		<button id="goBtn" onclick="location.href='/mypage/applydonghang'" style="box-shadow: 4px 4px 4px 1px #00000060 inset;">함께 가요</button> -->
+<!-- 		<button id="doBtn" onclick="location.href='/mypage/doapplydonghang'">함께 해요</button> -->
 		<button id="deleteBtn" class="deleteGoMyDhBtn" type="button">삭제</button>
 	
 		<table id="donghangtable" class="table table-hover table-bordered">
@@ -89,23 +89,24 @@ function hiddenmodal() {
 		
 			<c:forEach items="${GoMyDhData}" var="mygodh" varStatus="sts">				
 				<tr>
-					<td style="vertical-align: inherit;"><input type="checkbox" id="mygodhgbno" class="deleteChk" value="${mygodh.gbNo}"/></td>
+					<td style="vertical-align: inherit;"><input type="checkbox" id="mygodhgbno" class="deleteChk" value="${mygodh.gbNo},${mygodh.gbcategory}"/></td>
 					<td style="vertical-align: inherit;"><a><fmt:formatDate var="date" value="${mygodh.gbWrittenDate}" pattern="YYYY-MM-dd" />${date}</a></td>
 					<td style="vertical-align: inherit;"><a href="<%= request.getContextPath()%>/board/doboard}">${mygodh.gbcategory}</a></td>
 					<td style="vertical-align: inherit;"><a href="<%= request.getContextPath()%>/board/fboarddetail?fbno=${mygodh.gbUNo}">${mygodh.gbTitle}</a></td>
 					<c:choose>
 						<c:when test="${recruitnum[sts.index]eq mygodh.gbRecruitNumber}">
-						 	<td style="vertical-align: inherit;"><a id="joinerNum"><span style="color: red;">${recruitnum[sts.index]}</span> / ${mygodh.gbRecruitNumber}</a></td>					
+						 	<td style="vertical-align: inherit;"><a id="joinerNum"><span style="color: red;">${recruitnum[sts.index]}</span> / ${mygodh.gbRecruitNumber}</a></td>
+						 	<td style="vertical-align: inherit;"></td>					
 						</c:when>
 						<c:otherwise>
 							<td style="vertical-align: inherit;"><a id="joinerNum"><span style="color: #5D7CA6 ;">${recruitnum[sts.index]}</span> / ${mygodh.gbRecruitNumber}</a></td>					
+							<td style="vertical-align: inherit;"><button  value="${mygodh.gbNo},${mygodh.gbcategory}"  class="adminBtn btn"  id=gbnobt style="color: #fff;">관리</button></td>
 						</c:otherwise>
 					
 					</c:choose>
 					
 <%-- 					<td style="vertical-align: inherit;"><button onclick="visiblemodal()" value="${mygodh.gbNo}" class="adminBtn btn" style="color: #fff;">관리</button></td> --%>
 <%-- location.href='?cPage=${paging.currentPage}&gbno=${mygodh.gbNo}&#applyAdminPopup' --%>
-					<td style="vertical-align: inherit;"><button  value="${mygodh.gbNo},${mygodh.gbcategory}"  class="adminBtn btn"  id=gbnobt style="color: #fff;">관리</button></td>
 <%-- 					<td style="vertical-align: inherit; visibility: hidden;"><button value="${mygodh.gbcategory}" id="catebt" class="adminBtn btn" style="color: #fff;">관리</button></td> --%>
 <%-- 					onclick="location.href='?cPage=${paging.currentPage}&gbno=${mygodh.gbNo}&#applyAdminPopup'"<!--  --> --%>
 				</tr>
@@ -178,7 +179,7 @@ function hiddenmodal() {
 
 <div id="applyAdminPopup" class="overlay">
 	<div class="popup">
-		<p>신청현황 관리 [함께가요]</p>
+		<p>신청현황 관리 <small style="color: #ff5858;"> *해당창을 벗어나면 변경사항은 더 이상 수정이 불가능 합니다.</small></p>
 		<a class="close" onclick="location.href='/mypage/mydonghang?cPage=${paging.currentPage}'">&times;</a>
 <!-- 		<a class="close" onclick="history.go(-1)">&times;</a> -->
 		
