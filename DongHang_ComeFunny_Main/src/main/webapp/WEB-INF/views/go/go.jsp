@@ -77,11 +77,9 @@
 						+ "&theme=" + themeValue +"&area=" + areaValue + "&state=" + stateValue
 				, dataType: "html"
 				, success : function(data){
-					alert("AJAX 성공");
-					console.log($('#gobest')); 
-					$("#gobest").empty(); //비우는 코드 근데 값이 다 null이면 전체보여줘야함
-					
-					
+					console.log("AJAX 성공");
+					console.log(data.age); //데이터안의  age?
+ 					$("#go-list").html(data);
 				}
 				, error: function(request,status,error) {
 					console.log("/go/filter?age="+ageValue + "&gender=" + genderValue 
@@ -152,9 +150,9 @@
 					+ "&theme=" + themeValue +"&area=" + areaValue + "&state=" + stateValue
 			, dataType: "html"
 			, success : function(data){
-				alert("AJAX 성공");
-// 				console.log($('#gobest')); 
-				$("#gobest").empty(); //비우는 코드 근데 값이 다 null이면 전체보여줘야함
+				console.log("AJAX 성공 - 버튼 해제");
+// 				$("#gobest").empty(); //비우는 코드 근데 값이 다 null이면 전체보여줘야함
+				$("#go-list").html(data);
 			}
 			, error: function(request,status,error) {
 				console.log("/go/filter?age="+ageValue + "&gender=" + genderValue 
@@ -163,8 +161,6 @@
 				alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error)
 			}
 		});
-		
-		
 
 	}
 
@@ -298,8 +294,8 @@ $(document).ready(function() {
 	
 	<!-- content list -->
 	<!-- 하단 리스트 -->
-	<div class="go-list">
-		
+	<div id="go-list">
+	
 		<div>
 		<!-- 정렬 드롭다운 -->
 		<div class="dropdown" >
@@ -374,6 +370,7 @@ $(document).ready(function() {
             	 	</c:choose>
 				</c:forEach>
                  </span>
+                 <span> · </span>
                  <c:choose>
                      <c:when test="${go.GBRECRUITGENDER eq 0 }" >성별 무관</c:when>
                      <c:when test="${go.GBRECRUITGENDER eq 1 }" >남성만</c:when>

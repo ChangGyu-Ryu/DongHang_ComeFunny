@@ -64,7 +64,7 @@ public class GoService {
 		
 		Map<String,Object> commandMap = new HashMap<String, Object>();
 		
-		if(search != null) {
+//		if(search != null) {
 			
 			Map<String, Object> searchMap = new HashMap<>();
 			searchMap.putAll(search); //검색값넣기
@@ -73,10 +73,10 @@ public class GoService {
 			List<Map<String,Object>> list = goDao.selectSearchList(search) ;
 			commandMap.put("glist",list);
 			
-		} else { //키워드 없을경우
-			List<Map<String, Object>> list = goDao.selectGoList(map);
-			commandMap.put("glist", list);
-		}
+//		} else { //키워드 없을경우
+//			List<Map<String, Object>> list = goDao.selectGoList(map);
+//			commandMap.put("glist", list);
+//		}
 			
 		return commandMap;
 	}
@@ -86,27 +86,28 @@ public class GoService {
 		
 		Map<String,Object> commandMap = new HashMap<String, Object>();
 		
-		if(search != null) {
+		if(search != null) { //서치가 null이 아니면
 			Map<String, Object> searchMap = new HashMap<>();
 			searchMap.putAll(search); //검색값넣기
 			
 			//키워드로 검색된 게시글 조회
-			List<Map<String,Object>> list = goDao.selectSearchList(search) ;
-			commandMap.put("glist",list);
+			List<Map<String,Object>> list = goDao.selectFilterList(filter, search) ;
+			commandMap.put("glist", list);
 			
 		} 
 //			else if (filter != null) {
 //			List<Map<String, Object>> list = goDao.selectGoList(map);
 //			commandMap.put("glist", list);
 //		} 
-			else { //서치하기 전에
-			Map<String, Object> filterMap = new HashMap<>();
-			filterMap.putAll(filter);
-			
-			List<Map<String,Object>> list = goDao.selectFilterList(filter) ;
-			commandMap.put("glist",list);
-		}
-			
+//			else { //서치하기 전에
+//			Map<String, Object> filterMap = new HashMap<>();
+//			filterMap.putAll(filter);
+//			
+//			List<Map<String,Object>> list = goDao.selectFilterList(filter) ;
+//			commandMap.put("glist",list);
+//		}
+		
+		
 		return commandMap;
 	}
 
