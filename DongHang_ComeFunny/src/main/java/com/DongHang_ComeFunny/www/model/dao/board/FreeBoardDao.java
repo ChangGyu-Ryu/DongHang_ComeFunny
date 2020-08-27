@@ -89,6 +89,7 @@ public class FreeBoardDao {
 		return sqlSession.selectOne("FREE.selectFreeFile",ffNo);
 	}
 
+<<<<<<< HEAD
 	/**
 	 * 게시글 파일 삭제(isDel = 0 -> 1)
 	 * @param ffNo - 파일 번호
@@ -104,6 +105,20 @@ public class FreeBoardDao {
 	 */
 	public int deleteFile(int ffNo) {
 		return sqlSession.delete("FREE.deleteFile", ffNo);
+=======
+	// 파일 db 완전 삭제 코드
+//	public int deleteFile(int ffno) {
+//		return sqlSession.delete("FREE.deleteFile", ffno);
+//	}
+//	
+	/**
+	 * 게시글 파일 삭제(isDel = 0 -> 1)
+	 * @param ffNo - 파일 번호
+	 * @return 성공 : 1, 실패 : 0
+	 */
+	public int updateFileIsDel(int ffNo) {
+		return sqlSession.update("FREE.updateFileIsDel", ffNo);
+>>>>>>> initial MessagrChat setting
 	}
 
 	/**
@@ -129,17 +144,30 @@ public class FreeBoardDao {
 	 * @param fbNo - 게시판 번호로 파일 삭제
 	 * @return 성공 : 1, 실패 : 0
 	 */
+<<<<<<< HEAD
 //	public int deleteFreeFileByFbno(int fbNo) {
 //		return sqlSession.update("FREE.updateFileIsDelByFbno", fbNo);
 //	}
 
 	/**
 	 * 게시판 게시글 완전 삭제하기
+=======
+	public int deleteFreeFileByFbno(int fbNo) {
+		return sqlSession.update("FREE.updateFileIsDelByFbno", fbNo);
+	}
+
+	/**
+	 * 게시판 게시글 삭제하기
+>>>>>>> initial MessagrChat setting
 	 * @param fbNo - 게시판 번호로 게시글 삭제
 	 * @return 성공 : 1, 실패 : 0
 	 */
 	public int deleteFreeBoard(int fbNo) {
+<<<<<<< HEAD
 		return sqlSession.delete("FREE.deleteFreeBoard", fbNo);
+=======
+		return sqlSession.update("FREE.updateFreeBoardIsDel", fbNo);
+>>>>>>> initial MessagrChat setting
 	}
 
 	/**
@@ -175,6 +203,7 @@ public class FreeBoardDao {
 	 * @param freeComment
 	 * @return 성공 : 1, 실패 : 0
 	 */
+<<<<<<< HEAD
 //	public int updateFreeCommentIsDEl(FreeComment freeComment) {
 //		return sqlSession.update("FREE.updateFreeCommentIsDEl",freeComment);
 //	}
@@ -185,6 +214,10 @@ public class FreeBoardDao {
 	 */
 	public int deleteFreeComment(FreeComment freeComment) {
 		return sqlSession.delete("FREE.deleteFreeComment",freeComment);
+=======
+	public int updateFreeCommentIsDEl(FreeComment freeComment) {
+		return sqlSession.update("FREE.updateFreeCommentIsDEl",freeComment);
+>>>>>>> initial MessagrChat setting
 	}
 
 	/**
