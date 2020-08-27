@@ -277,6 +277,43 @@
 		</dependency>
 		
 		
+		<!-- 11. test 관련 dependency 생성-->
+		<dependency>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>spring-test</artifactId>
+		    <version>5.2.6.RELEASE</version>
+		    <scope>test</scope>
+		</dependency>
+		
+		<!-- 12.
+		 hamcrest
+		 assertTha(T, Matcher)
+		 hamcrest: Matcher타임을 반환하는 메서드를 제공 -->
+		<dependency>
+		    <groupId>org.hamcrest</groupId>
+		    <artifactId>hamcrest-library</artifactId>
+		    <version>1.3</version>
+		    <scope>test</scope>
+		</dependency>
+		
+		<dependency>
+		    <groupId>org.hamcrest</groupId>
+		    <artifactId>hamcrest-all</artifactId>
+		    <version>1.3</version>
+		    <scope>test</scope>
+		</dependency>
+		
+		<!-- 13. mock객체를 대신 만들어주는 라이브러리
+			 mock객체 : 테스트를 위해서 생성하는 객체 -->
+		<dependency>
+		    <groupId>org.mockito</groupId>
+		    <artifactId>mockito-all</artifactId>
+		    <version>1.10.19</version>
+		    <scope>test</scope>
+		</dependency>
+		
+
+		
 		
 	
 		<!-- Test -->

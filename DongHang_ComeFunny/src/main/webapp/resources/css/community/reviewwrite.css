@@ -152,9 +152,13 @@
 	padding-left: 0;
 }
 
-.reviewwrite__table tr:nth-child(8) td:first-child{
+/* .reviewwrite__table tr:nth-child(8) td:first-child{ */
+/* 	text-align: end; */
+/* } */
+.reviewwrite__table tr:last-child td:first-child{
 	text-align: end;
 }
+
 
 
 .reviewwrite__table a:link, .reviewlist__paging a:link {
@@ -216,6 +220,10 @@
 
 .reviewwrite__host__grade {
 	width: 11.666667%;
+}
+
+.reviewwrtie__finddh__input {
+	width: 700px;
 }
 
 

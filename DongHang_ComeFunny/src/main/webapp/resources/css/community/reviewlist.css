@@ -7,6 +7,9 @@
 	} 
 }
 
+.reviewlist{
+	min-height: 420px;
+}
 
 .reviewlist__header {
 	margin-top: 70px;

@@ -59,6 +59,7 @@ public class FileUtil {
 			mf.transferTo(file);
 //		} catch (IllegalStateException | IOException e) {
 		} catch (Exception e) {
+			e.printStackTrace();
 			throw new FileException("F_ERROR_01");
 		}
 	}

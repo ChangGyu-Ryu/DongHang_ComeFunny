@@ -136,11 +136,11 @@
 	width: 10%;
 }
 
-.reviewview__table__title, .reviewview__comment__title {
+.reviewview__comment__title {
 	display: flex;
 }
 
-.reviewview__table__header, .reviewview__comment__header, .reviewview__table__target {
+.reviewview__table__header, .reviewview__comment__header, .reviewview__table__target, .reviewview__table__title  {
 	display: flex;
 	justify-content: space-between;
 }

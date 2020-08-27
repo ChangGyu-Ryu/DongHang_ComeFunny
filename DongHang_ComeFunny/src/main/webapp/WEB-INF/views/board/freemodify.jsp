@@ -5,6 +5,7 @@
 <c:import url="/WEB-INF/views/board/boardheader.jsp" />   
 
 <!-- 스마트 에디터2 라이브러리 -->
+<script src="/resources/bower_components/jquery/dist/jquery.min.js"></script>   
 <script type="text/javascript"
  src="/resources/se2/js/service/HuskyEZCreator.js" charset="utf-8"></script>
 
@@ -13,7 +14,7 @@
 // 스마트 에디터 내용을 <textarea>반영해주는 함수
 function submitContents(elClickedObj) {
 	// 에디터의 내용이 textarea에 적용된다.
-	oEditors.getById["fbcontent"].exec("UPDATE_CONTENTS_FIELD", []);
+	oEditors.getById["fbContent"].exec("UPDATE_CONTENTS_FIELD", []);
 
 	try {
 		elClickedObj.form.submit(); // <form> submit 수행
@@ -56,14 +57,14 @@ $(document).ready(function() {
 		<tr>
 			<td>제목</td>
 			<td>
-				<input type="hidden" name="fbno" value="${fview.detail.FBNO}"/>
-				<input type="text" class="form-control" name = "fbtitle" value="${fview.detail.FBTITLE}" >
+				<input type="hidden" name="fbNo" value="${fview.detail.FBNO}"/>
+				<input type="text" class="form-control" name = "fbTitle" value="${fview.detail.FBTITLE}" >
 			</td>
 		</tr>
 		<tr>
 			<td>작성자</td>
 			<td>
-				<div><input type="hidden" name="userid" value=""/>
+				<div><input type="hidden" name="userId" value=""/>
 					 <span>${fview.detail.UNICK }</span>
 					 </div>
 			</td>
@@ -73,7 +74,7 @@ $(document).ready(function() {
 		</tr>
 		<tr>
 			<td colspan="2">
-				<textarea id="fbcontent" name="fbcontent" style="width: 100%;">
+				<textarea id="fbContent" name="fbContent" style="width: 100%;">
 				 ${fview.detail.FBCONTENT }
 				</textarea>
 			</td>
@@ -83,7 +84,7 @@ $(document).ready(function() {
 			<td><input type="file" name="files" multiple/></td>
 		</tr>
 		
-				<tr>			
+		<tr>			
 			<td colspan="2">
 				<div class="freemodify__table__download">
 					<span>업로드된 파일 </span>
@@ -128,7 +129,7 @@ $(document).ready(function() {
 var oEditors = [];
 nhn.husky.EZCreator.createInIFrame({
 	oAppRef: oEditors,
-	elPlaceHolder: "fbcontent", // 에디터가 적용되는 <textarea>의 id
+	elPlaceHolder: "fbContent", // 에디터가 적용되는 <textarea>의 id
 	sSkinURI: "/resources/se2/SmartEditor2Skin.html", // 에디터 스킨
 	fCreator: "createSEditor2",
 	htParams: {
@@ -149,7 +150,7 @@ nhn.husky.EZCreator.createInIFrame({
          xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
          //http request body 설정
          //xhr.send() : 전송할 데이터가 있다면 파라미터에 넣어서 보내주면 된다.
-         xhr.send('ffno='+FFNO);
+         xhr.send('ffNo='+FFNO);
          console.dir(xhr.response);
          xhr.addEventListener('load',function(){
              var cssSelector = xhr.response;

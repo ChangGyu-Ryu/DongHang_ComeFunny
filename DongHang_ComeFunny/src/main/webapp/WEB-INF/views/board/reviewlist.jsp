@@ -2,7 +2,10 @@
     pageEncoding="UTF-8"%>
     
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <c:import url="/WEB-INF/views/board/boardheader.jsp" />    
+<script src="/resources/bower_components/jquery/dist/jquery.min.js"></script>  
+<script src="/resources/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 <div class = "reviewlist"> 
 	<div class = "reviewlist__header">
 		<div class = "reviewlist__header__label">
@@ -21,16 +24,17 @@
 			<th>추천수</th>
 			<th>조회수</th>
 		</tr>
-		<c:forEach var="i" begin="0" end="10">
-		<tr>
-			<td><a href="/board/reviewview"><c:out value="${i}" /></a></td>
-			<td><a href="/board/reviewview"><c:out value="${i}" /></a></td>
-			<td><c:out value="${i}" /></td>
-			<td>20/08/05</td>
-			<td><c:out value="${i}" /></td>
-			<td><c:out value="${i}" /></td>
-		</tr>
-		</c:forEach>
+			<c:forEach items="${reviewData.flist }" var="review">
+			<tr>
+				<td>${review.RBNO}</td>
+				<td><a href="<%=request.getContextPath() %>/board/reviewview?rbNo=${review.RBNO }">${review.RBTITLE }</a></td>
+				<td>${review.UNICK }</td>
+				<td><fmt:formatDate var="dateMMDD" value="${review.RBWRITTENDATE }" pattern="MM-dd"/>
+					${dateMMDD }</td>
+				<td>${review.RBRECOMMENDCNT }</td>
+				<td>${review.RBHITSCNT }</td>
+			</tr>
+			</c:forEach>
 		</table>
 	</div>
 	<div class="reviewlist__button">
@@ -39,46 +43,189 @@
 	
 	<nav class = "text-center">
 		<ul class="pagination">
-			<li>
-				<a href="#" aria-label="Previous">
-					<span aria-hidden="true">&laquo;</span>
-				</a>
-			</li>
-			<li class="active"><a href="#">1</a></li>
-			<li><a href="#">2</a></li>
-			<li><a href="#">3</a></li>
-			<li><a href="#">4</a></li>
-			<li><a href="#">5</a></li>
-			<li>
-				<a href="#" aria-label="Next">
-				<span aria-hidden="true">&raquo;</span>
-				</a>
-			</li>
+			<c:choose>
+				<c:when test="${searchKinds eq null || searchText eq null}">
+					<li>
+						<a href="<%=request.getContextPath() %>/board/reviewlist" aria-label="Previous">
+							<span aria-hidden="true"><i class="fas fa-angle-double-left"></i></span>
+						</a>
+					</li>
+					<c:choose>	
+						<c:when test="${paging.cPage > 1 }">
+							<li><a href="<%=request.getContextPath() %>/board/reviewlist?cPage=${paging.cPage-1}"> <i class="fas fa-angle-left"></i> </a></li>
+						</c:when>
+						<c:otherwise>
+							<li><a href="<%=request.getContextPath() %>/board/reviewlist?cPage=${paging.cPage}"> <i class="fas fa-angle-left"></i> </a></li>
+						</c:otherwise>
+					</c:choose>
+						
+					<c:forEach begin="${paging.blockStart }" end="${paging.blockEnd }" var="page">
+						<c:choose>
+							<c:when test="${paging.cPage eq page}">
+								<li class="active"><a href="<%=request.getContextPath() %>/board/reviewlist?cPage=${page}"><span>${page}</span></a></li>
+							</c:when>
+							<c:otherwise>
+								<li><a href="<%=request.getContextPath() %>/board/reviewlist?cPage=${page}"><span>${page}</span></a></li>
+							</c:otherwise>
+						</c:choose>
+					</c:forEach>
+					<c:choose>
+						<c:when test="${paging.cPage eq paging.lastPage }">
+							<li><a href="<%= request.getContextPath() %>/board/reviewlist?cPage=${paging.cPage}"><i class="fas fa-angle-right"></i></a></li>
+						</c:when>
+						<c:otherwise>
+							<li><a href="<%= request.getContextPath() %>/board/reviewlist?cPage=${paging.cPage+1}"><i class="fas fa-angle-right"></i></a></li>
+						</c:otherwise>
+					</c:choose>
+					<li><a href="<%= request.getContextPath() %>/board/reviewlist?cPage=${paging.lastPage }" aria-label="Next"><i class="fas fa-angle-double-right"></i></a></li>
+				</c:when>
+				<c:when test="${searchKinds eq 'uNick' && searchText ne null}">
+					<li>
+						<a href="<%=request.getContextPath() %>/board/reviewlist?searchKinds=${searchKinds }&searchText=${searchText }" aria-label="Previous">
+							<span aria-hidden="true"><i class="fas fa-angle-double-left"></i></span>
+						</a>
+					</li>				
+					<c:choose>	
+						<c:when test="${paging.cPage > 1 }">
+							<li><a href="<%=request.getContextPath() %>/board/reviewlist?searchKinds=${searchKinds }&searchText=${searchText }&cPage=${paging.cPage-1}"> <i class="fas fa-angle-left"></i> </a></li>
+						</c:when>
+						<c:otherwise>
+							<li><a href="<%=request.getContextPath() %>/board/reviewlist?searchKinds=${searchKinds }&searchText=${searchText }&cPage=${paging.cPage}"> <i class="fas fa-angle-left"></i> </a></li>
+						</c:otherwise>
+					</c:choose>
+						
+					<c:forEach begin="${paging.blockStart }" end="${paging.blockEnd }" var="page">
+						<c:choose>
+							<c:when test="${paging.cPage eq page}">
+								<li class="active"><a href="<%=request.getContextPath() %>/board/reviewlist?searchKinds=${searchKinds }&searchText=${searchText }&cPage=${page}"><span>${page}</span></a></li>
+							</c:when>
+							<c:otherwise>
+								<li><a href="<%=request.getContextPath() %>/board/reviewlist?searchKinds=${searchKinds }&searchText=${searchText }&cPage=${page}"><span>${page}</span></a></li>
+							</c:otherwise>
+						</c:choose>
+					</c:forEach>
+					<c:choose>
+						<c:when test="${paging.cPage eq paging.lastPage }">
+							<li><a href="<%= request.getContextPath() %>/board/reviewlist?searchKinds=${searchKinds }&searchText=${searchText }&cPage=${paging.cPage}"><i class="fas fa-angle-right"></i></a></li>
+						</c:when>
+						<c:otherwise>
+							<li><a href="<%= request.getContextPath() %>/board/reviewlist?searchKinds=${searchKinds }&searchText=${searchText }&cPage=${paging.cPage+1}"><i class="fas fa-angle-right"></i></a></li>
+						</c:otherwise>
+					</c:choose>
+					<li><a href="<%= request.getContextPath() %>/board/reviewlist?searchKinds=${searchKinds }&searchText=${searchText }&cPage=${paging.lastPage }" aria-label="Next"><i class="fas fa-angle-double-right"></i></a></li>
+				</c:when>
+				<c:when test="${searchKinds eq 'rbTitle' && searchText ne null}">
+					<li>
+						<a href="<%=request.getContextPath() %>/board/reviewlist?searchKinds=${searchKinds }&searchText=${searchText }" aria-label="Previous">
+							<span aria-hidden="true"><i class="fas fa-angle-double-left"></i></span>
+						</a>
+					</li>					
+					<c:choose>	
+						<c:when test="${paging.cPage > 1 }">
+							<li><a href="<%=request.getContextPath() %>/board/reviewlist?searchKinds=${searchKinds }&searchText=${searchText }&cPage=${paging.cPage-1}"> <i class="fas fa-angle-left"></i> </a></li>
+						</c:when>
+						<c:otherwise>
+							<li><a href="<%=request.getContextPath() %>/board/reviewlist?searchKinds=${searchKinds }&searchText=${searchText }&cPage=${paging.cPage}"> <i class="fas fa-angle-left"></i> </a></li>
+						</c:otherwise>
+					</c:choose>
+						
+					<c:forEach begin="${paging.blockStart }" end="${paging.blockEnd }" var="page">
+						<c:choose>
+							<c:when test="${paging.cPage eq page}">
+								<li class="active"><a href="<%=request.getContextPath() %>/board/reviewlist?searchKinds=${searchKinds }&searchText=${searchText }&cPage=${page}"><span>${page}</span></a></li>
+							</c:when>
+							<c:otherwise>
+								<li><a href="<%=request.getContextPath() %>/board/reviewlist?searchKinds=${searchKinds }&searchText=${searchText }&cPage=${page}"><span>${page}</span></a></li>
+							</c:otherwise>
+						</c:choose>
+					</c:forEach>
+					<c:choose>
+						<c:when test="${paging.cPage eq paging.lastPage }">
+							<li><a href="<%= request.getContextPath() %>/board/reviewlist?searchKinds=${searchKinds }&searchText=${searchText }&cPage=${paging.cPage}"><i class="fas fa-angle-right"></i></a></li>
+						</c:when>
+						<c:otherwise>
+							<li><a href="<%= request.getContextPath() %>/board/reviewlist?searchKinds=${searchKinds }&searchText=${searchText }&cPage=${paging.cPage+1}"><i class="fas fa-angle-right"></i></a></li>
+						</c:otherwise>
+					</c:choose>
+					<li><a href="<%= request.getContextPath() %>/board/reviewlist?searchKinds=${searchKinds }&searchText=${searchText }&cPage=${paging.lastPage }" aria-label="Next"><i class="fas fa-angle-double-right"></i></a></li>
+				</c:when>
+				<c:when test="${searchKinds eq 'rbContent' && searchText ne null}">
+					<li>
+						<a href="<%=request.getContextPath() %>/board/reviewlist?searchKinds=${searchKinds }&searchText=${searchText }" aria-label="Previous">
+							<span aria-hidden="true"><i class="fas fa-angle-double-left"></i></span>
+						</a>
+					</li>					
+					<c:choose>	
+						<c:when test="${paging.cPage > 1 }">
+							<li><a href="<%=request.getContextPath() %>/board/reviewlist?searchKinds=${searchKinds }&searchText=${searchText }&cPage=${paging.cPage-1}"> <i class="fas fa-angle-left"></i> </a></li>
+						</c:when>
+						<c:otherwise>
+							<li><a href="<%=request.getContextPath() %>/board/reviewlist?searchKinds=${searchKinds }&searchText=${searchText }&cPage=${paging.cPage}"> <i class="fas fa-angle-left"></i> </a></li>
+						</c:otherwise>
+					</c:choose>
+						
+					<c:forEach begin="${paging.blockStart }" end="${paging.blockEnd }" var="page">
+						<c:choose>
+							<c:when test="${paging.cPage eq page}">
+								<li class="active"><a href="<%=request.getContextPath() %>/board/reviewlist?searchKinds=${searchKinds }&searchText=${searchText }&cPage=${page}"><span>${page}</span></a></li>
+							</c:when>
+							<c:otherwise>
+								<li><a href="<%=request.getContextPath() %>/board/reviewlist?searchKinds=${searchKinds }&searchText=${searchText }&cPage=${page}"><span>${page}</span></a></li>
+							</c:otherwise>
+						</c:choose>
+					</c:forEach>
+					<c:choose>
+						<c:when test="${paging.cPage eq paging.lastPage }">
+							<li><a href="<%= request.getContextPath() %>/board/reviewlist?searchKinds=${searchKinds }&searchText=${searchText }&cPage=${paging.cPage}"><i class="fas fa-angle-right"></i></a></li>
+						</c:when>
+						<c:otherwise>
+							<li><a href="<%= request.getContextPath() %>/board/reviewlist?searchKinds=${searchKinds }&searchText=${searchText }&cPage=${paging.cPage+1}"><i class="fas fa-angle-right"></i></a></li>
+						</c:otherwise>
+					</c:choose>
+					<li><a href="<%= request.getContextPath() %>/board/reviewlist?searchKinds=${searchKinds }&searchText=${searchText }&cPage=${paging.lastPage }" aria-label="Next"><i class="fas fa-angle-double-right"></i></a></li>
+				</c:when>
+			</c:choose>
 		</ul>
 	</nav>
 	
+	<form class="form-inline col-lg-offset-4 col-lg-6" action="/board/reviewlistSearch" method="post">
+	  <div class="form-group">
+	      <div class="input-group">
+	      		<select class="form-control" id="searchKinds" name="searchKinds">
+					<option value="rbTitle">제목</option>
+					<option value="rbContent">내용</option>
+					<option value="uNick">글쓴이</option>
+				</select>
+		  </div>
+		  <div class="input-group">
+	      	<input type="text" class="form-control" name="searchText" id="searchText" aria-label="...">
+	      </div>
+	      <div class="input-group">
+	      	<button class="btn btn-default" type="submit" id="searchList">&ensp;&ensp;<span class="glyphicon glyphicon-search" aria-hidden="true"></span>&ensp;&ensp;</button>
+	      </div>
+	    </div>
+	</form>
 
-	<div class="col-lg-offset-4 col-lg-4">
-		<div class="input-group">
-			<div class="input-group-btn">
-    	  		<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">전체 <span class="caret"></span></button>
-      			<ul class="dropdown-menu" role="menu">
-	        		<li><a href="#">글쓴이+제목</a></li>
-    	    		<li><a href="#">글쓴이</a></li>
-        			<li><a href="#">제목</a></li>
-      			</ul>
-    		</div>
-    		<input type="text" class="form-control" aria-label="...">
-    		<span class="input-group-btn">
-	        	<button class="btn btn-default" type="button"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
-        	</span>
-  		</div>
-	</div>
-	
 	
 	
 </div>
+<script type="text/javascript">
 
+// $(document).ready(function () {
+
+// 	 $("#searchList").on("click", function () {
+//          var searchKinds = $("#searchKinds").val();
+//          var searchText = $("#searchText").val();
+//          console.dir(searchKinds);
+//          console.dir(searchText);
+         
+// 	 });
+
+// 	});
+
+
+</script>
+	
 	
 	
 

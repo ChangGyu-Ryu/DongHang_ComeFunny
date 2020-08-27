@@ -15,7 +15,7 @@
 	
 	<insert id="insertUser">
 		INSERT INTO tb_user (userid, upw, uname, ubirth, ugender, unick, uphone, umail, uaddress)
-		VALUES (#{userid}, #{upw}, #{uname}, #{ubirth}, #{ugender}, #{unick}, #{uphone}, #{umail}, #{uaddress} )
+		VALUES (#{userId}, #{uPw}, #{uName}, #{uBirth}, #{uGender}, #{uNick}, #{uPhone}, #{uMail}, #{uAddress} )
 	</insert>	
 	
 </mapper>

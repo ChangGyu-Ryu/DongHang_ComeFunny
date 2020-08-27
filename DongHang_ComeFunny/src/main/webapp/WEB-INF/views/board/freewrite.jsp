@@ -3,7 +3,7 @@
     
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:import url="/WEB-INF/views/board/boardheader.jsp" />   
-
+<script src="/resources/bower_components/jquery/dist/jquery.min.js"></script>   
 <!-- 스마트 에디터2 라이브러리 -->
 <script type="text/javascript"
  src="/resources/se2/js/service/HuskyEZCreator.js" charset="utf-8"></script>
@@ -13,7 +13,7 @@
 // 스마트 에디터 내용을 <textarea>반영해주는 함수
 function submitContents(elClickedObj) {
 	// 에디터의 내용이 textarea에 적용된다.
-	oEditors.getById["fbcontent"].exec("UPDATE_CONTENTS_FIELD", []);
+	oEditors.getById["fbContent"].exec("UPDATE_CONTENTS_FIELD", []);
 
 	try {
 		elClickedObj.form.submit(); // <form> submit 수행
@@ -56,13 +56,13 @@ $(document).ready(function() {
 		<tr>
 			<td>제목</td>
 			<td>
-				<input type="text" class="form-control" name = "fbtitle" placeholder="제목을 입력하세요.">
+				<input type="text" class="form-control" name = "fbTitle" placeholder="제목을 입력하세요.">
 			</td>
 		</tr>
 		<tr>
 			<td>작성자</td>
 			<td>
-				<div><span>donghangId</span></div>
+				<div><span>${logInInfo.uNick }</span></div>
 			</td>
 		</tr>
 		<tr>			
@@ -70,7 +70,7 @@ $(document).ready(function() {
 		</tr>
 		<tr>
 			<td colspan="2">
-				<textarea id="fbcontent" name="fbcontent" style="width: 100%;"></textarea>
+				<textarea id="fbContent" name="fbContent" style="width: 100%;"></textarea>
 			</td>
 		</tr>
 		<tr>			
@@ -101,7 +101,7 @@ $(document).ready(function() {
 var oEditors = [];
 nhn.husky.EZCreator.createInIFrame({
 	oAppRef: oEditors,
-	elPlaceHolder: "fbcontent", // 에디터가 적용되는 <textarea>의 id
+	elPlaceHolder: "fbContent", // 에디터가 적용되는 <textarea>의 id
 	sSkinURI: "/resources/se2/SmartEditor2Skin.html", // 에디터 스킨
 	fCreator: "createSEditor2",
 	htParams: {

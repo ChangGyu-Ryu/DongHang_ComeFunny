@@ -7,6 +7,9 @@
 	} 
 }
 
+.freelist{
+	min-height: 420px;
+}
 
 .freelist__header {
 	margin-top: 70px;

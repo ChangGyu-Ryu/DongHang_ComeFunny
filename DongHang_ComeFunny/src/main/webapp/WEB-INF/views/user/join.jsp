@@ -25,7 +25,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
   <!-- Site Properties -->
-  <title>join Example - Semantic</title>
+  <title>DHComeFunny :: 회원가입</title>
 
   <style type="text/css">
     body {
@@ -68,7 +68,7 @@
 			            	<div class="three wide field"></div>
 			            	<div class="nine wide field">
 			                	<label id="join__label">아이디</label> 
-			                	<input type="text" name="userid"
+			                	<input type="text" name="userId"
 			                        placeholder="아이디를 입력해주세요.">
 			                </div>
 			                <div class="five wide field"> 
@@ -81,7 +81,7 @@
 			            	<div class="three wide field"></div>
 			            	<div class="nine wide field">
 			                	<label id="join__label">비밀번호</label> 
-			                	<input type="text" name="upw"
+			                	<input type="password" name="uPw"
 			                        placeholder="비밀번호를 입력해 주세요.">
 			                </div>
 			                <div class="five wide field"> 
@@ -107,7 +107,7 @@
 			            	<div class="three wide field"></div>
 			            	<div class="nine wide field">
 			                	<label id="join__label">이름</label> 
-			                	<input type="text" name="uname"
+			                	<input type="text" name="uName"
 			                        placeholder="이름을 입력해 주세요.">
 			                </div>
 			                <div class="five wide field"> 
@@ -117,7 +117,7 @@
 			            	<div class="three wide field"></div>
 			            	<div class="nine wide field">
 			                	<label id="join__label">연락처</label> 
-			                	<input type="text" name="uphone"
+			                	<input type="text" name="uPhone"
 			                        placeholder="-를 제외하고 입력해주세요.">
 			                </div>
 			                <div class="five wide field"> 
@@ -127,7 +127,7 @@
 			            	<div class="three wide field"></div>
 			            	<div class="nine wide field">
 			                	<label id="join__label">닉네임</label> 
-			                	<input type="text" name="unick"
+			                	<input type="text" name="uNick"
 			                        placeholder="닉네임을 입력해 주세요.">
 			                </div>
 			                <div class="five wide field"> 
@@ -166,13 +166,13 @@
 			                	<label id="join__label__gender">성별</label>
 			                	<div class="five wide field"> 
 			                		<div class="ui radio checkbox">
-			                			<input type="radio" name="ugender" value="0" class="hidden">
+			                			<input type="radio" name="uGender" value="0" class="hidden">
 			                        </div>
 			                        <label>남</label>
 			                    </div>
 			                	<div class="five wide field"> 
 			                		<div class="ui radio checkbox">
-			                			<input type="radio" name="ugender" value="1" class="hidden">
+			                			<input type="radio" name="uGender" value="1" class="hidden">
 			                        </div>
 			                        <label>여</label>
 			                    </div>
@@ -184,7 +184,7 @@
 			            	<div class="three wide field"></div>
 			            	<div class="nine wide field">
 			                	<label id="join__label">이메일</label> 
-			                	<input type="email" name="umail"
+			                	<input type="email" name="uMail"
 			                        placeholder="donghang@donghang.com">
 			                </div>
 			                <div class="five wide field"> 
@@ -194,7 +194,7 @@
 			            	<div class="three wide field"></div>
 			            	<div class="nine wide field">
 			                	<label id="join__label">주소</label> 
-			                	<input type="text" name="uaddress"
+			                	<input type="text" name="uAddress"
 			                        placeholder="donghang@donghang.com">
 			                </div>
 			                <div class="five wide field"> 
