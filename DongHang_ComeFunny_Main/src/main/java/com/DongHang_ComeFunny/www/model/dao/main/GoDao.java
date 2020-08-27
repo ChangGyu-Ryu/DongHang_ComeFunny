@@ -1,5 +1,6 @@
 package com.DongHang_ComeFunny.www.model.dao.main;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -26,8 +27,6 @@ public class GoDao {
 	}
 	
 	public int insertGoTheme(List<String> theme) {
-		
-		
 		return sqlSession.insert("GO.insertgotheme", theme);
 	}
 	
@@ -44,12 +43,17 @@ public class GoDao {
 	
 	//검색포함
 	public List<Map<String, Object>> selectSearchList(Map<String, Object> search) {
-		System.out.println("[GODAO]");
+		System.out.println("[GODAO : selectSearchList]");
 		return sqlSession.selectList("GO.selectgosearch", search);
 	}
 
-	public List<Map<String, Object>> selectFilterList(Map<String, Object> filter) {
-		return sqlSession.selectList("GO.selectfilter", filter);
+	public List<Map<String, Object>> selectFilterList(Map<String, Object> filter, Map<String, Object> search) {
+		System.out.println("[GODAO : selectFilterList]");
+		Map<String, Object> param = new HashMap<String, Object>();
+	      param.put("filter", filter);
+	      param.put("search", search);
+	      
+		return sqlSession.selectList("GO.selectfilter", param);
 	}
 	
 }

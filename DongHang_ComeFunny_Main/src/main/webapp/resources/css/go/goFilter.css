@@ -1,0 +1,125 @@
+@charset "UTF-8";
+
+
+#go-list{
+	width: 1000px;
+}
+
+#gobest{
+	padding: 1px;
+	margin-bottom: 100px;
+	
+}
+
+.gobest{
+	display: inline-block;
+    padding: 15px;
+    margin: 10px 4px;
+    line-height: 2;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    transition: border .2s ease-in-out;
+    width: 320px;
+    max-height: 250px;
+}
+
+.gobest-title{
+	height: 100px;
+}
+
+
+.goprofile{
+	vertical-align: top;
+}
+
+.goprofile img{
+	width: 92px;
+	height: 92px;
+	display: inline-block;
+}
+
+.goname{
+	font-size: 18px;
+	font-weight: 500;
+/* 	margin-bottom: 10px; */
+}
+
+.gotitle{
+	width: 180px;
+	line-height: 1.8;
+    font-size: 16px;
+}
+
+.gothemebox{
+	font-size: 12px;
+}
+
+.gotag{
+    margin: 8px 3px;
+    position: relative;
+    z-index: 1;
+    color: #fff;
+    display: inline-block;
+    font-size: 14px;
+    background: rgb(3, 88, 140); /*모집중*/
+    padding: 0px 20px;
+    display: inline-block;
+    border-radius: 15px;
+}
+
+.gotag2{
+    margin: 8px 3px;
+    position: relative;
+    z-index: 1;
+    color: #fff;
+    display: inline-block;
+    font-size: 14px;
+    background: #dfdfdf; /*모집 마감*/
+    padding: 0px 20px;
+    display: inline-block;
+    border-radius: 15px;
+}
+
+.goheart{
+	float:right;
+	margin-right: 10px;
+}
+
+.goheart img{
+	width: 40px;
+}
+
+/* 리스트 마지막 동행모집 */
+.gofinish{
+	display: inline-block;
+    padding: 15px;
+    margin: 10px 5px;
+    background-color: #fff;
+    transition: border .2s ease-in-out;
+    width: 320px;
+	height: 240px;
+}
+
+.gottile{
+	margin-top: 10px;
+	line-height: 1.5;
+	font-size: 20px;
+	font-weight: 600;
+}
+
+.goarrow{
+    margin: 10px;
+    width: 65px;
+    height: 65px;
+    border: 3px solid black;
+    text-align: center;
+    border-radius: 50%;
+    background-color: black;
+}
+
+.goarrow span{
+	padding: 8px;
+    font-size: 40px;
+    color: white;
+}

@@ -88,13 +88,37 @@
 			left outer join (select gcgbno, LISTAGG(gcvalue, ',') WITHIN GROUP  (order by gcvalue) as themecheck
 			from tb_gocheck where gccate='theme' group by gcgbno) themecheck on g.gbno = themecheck.gcgbno
 		where  g.gbtitle || g.gbcontent LIKE '%' || #{searchText}  || '%'
-			<trim prefix="and (" prefixOverrides="OR" suffix=")">
-				<if test="age != null"> <!-- 나이 -->
-					
-				
-				
+		
+				<if test="filter.area!= null"> <!-- 지역 -->
+				and 
+					<foreach collection="filter" item="area" index="index" separator = " or ">
+						gbrecruitarea = #{area}
+					</foreach>
 				</if>
-			</trim>
+				<if test="gender != null"> <!-- 성별 -->
+				and 
+					<foreach collection="filter" index="index" separator = " or " >
+						gbrecruitgender = #{gender}
+					</foreach>
+				</if>
+				<if test="state != null"> <!-- 상태 -->
+				and 
+					<foreach collection="filter" index="index" separator = " or " >
+						gbrecruitstatus = #{state}
+					</foreach>
+				</if>
+				<if test="theme != null"> <!-- 테마 -->
+				and 
+					<foreach collection="filter" index="index" separator = " or " >
+						themecheck like '%' || #{theme} || '%'
+					</foreach>
+				</if>
+				<if test="age != null"> <!-- 나이 -->
+				and
+					<foreach collection="filter" index="index" separator = " or " >
+						agecheck like '%' || #{age} || '%'
+					</foreach>
+				</if>
 	</select>
 	
 	

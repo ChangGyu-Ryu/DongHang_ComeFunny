@@ -43,6 +43,11 @@ public class GoController {
 		return "/go/goDetail";
 	}
 	
+	@RequestMapping(value="/go/goFilter", method=RequestMethod.GET)
+	public void gofilter() {
+	}
+	
+	
 	
 	//폼 입력하기 (파일첨부까지)
 //	@RequestMapping(value="/go/gowrite", method=RequestMethod.POST)
@@ -117,7 +122,7 @@ public class GoController {
 			
 			//검색 전 리스트 출력
 //			List<Map<String,Object>> list = goService.selectGoList(commandMap);
-			Map<String,Object> list = goService.selectSearchList(search, commandMap);
+			Map<String, Object> list = goService.selectSearchList(search, commandMap);
 			
 			System.out.println(list);
 			mav.addObject("list", list);
@@ -218,7 +223,7 @@ public class GoController {
 			mav.addObject("searchText", searchText);
 			mav.addObject("filter", filter);
 			
-			mav.setViewName("redirect:/go"); 
+			mav.setViewName("/go/goFilter"); 
 			
 			System.out.println("****************ajax보자*************");
 			System.out.println(mav);
