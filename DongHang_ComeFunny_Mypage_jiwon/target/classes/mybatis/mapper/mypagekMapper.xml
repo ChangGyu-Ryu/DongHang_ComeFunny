@@ -1,0 +1,344 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Fboard">
+	
+	<!-- 페이징 전체 글 갯수 -->
+	<select id="selectFbContentCnt" resultType="int">
+		SELECT count(*) FROM tb_freeboard
+		WHERE fbuno=#{uno}
+	</select>
+	
+	<!-- 댓글 수  -->
+	<select id="selectFcommentCnt" resultType="int">
+		SELECT count(*) FROM tb_freecomment
+		WHERE fcuno=#{uno}
+	</select>
+	
+	<!-- 자유게시판 목록 -->
+	<select id="selectFboardList" resultType="FBOARD">
+		SELECT *
+		FROM(
+			SELECT rownum rnum, n1.*
+			FROM(
+				SELECT * FROM tb_freeboard
+				WHERE fbuno=#{uno}
+				ORDER BY fbwrittendate desc
+			)n1				
+		)WHERE rnum BETWEEN #{p.start} AND #{p.end}
+		AND fbuno=#{uno}	
+	</select>	
+	
+	<!-- 자유게시판 삭제 -->
+	<delete id="deleteFboardList">
+		DELETE tb_freeboard
+		WHERE fbno = #{fbNo}
+	</delete>
+	
+	<!-- 후기게시판 페이지 수 -->
+	<select id="selectRbContentCnt" resultType="int">
+		SELECT count(*) FROM tb_reviewboard
+		WHERE rbuno=#{uno}
+	</select>
+	
+	<!-- 후기 게시판 댓글 수  -->
+	<select id="selectRbcommentCnt" resultType="int">
+		SELECT count(*) FROM tb_reviewcomment
+		WHERE rcuno=#{uno}
+	</select>
+	
+	<!-- 후기게시판 목록 -->
+	<select id="selectRboardList" resultType="RBOARD">
+		SELECT rbno, rbuno, rbtitle, rbwrittendate, rbrecommendcnt, rbhitscnt
+		FROM(
+			SELECT rownum rnum, n1.*
+			FROM(
+				SELECT * FROM tb_reviewboard
+				WHERE rbuno=#{uno}
+				ORDER BY rbwrittendate desc
+			)n1				
+		)WHERE rnum BETWEEN #{p.start} AND #{p.end}
+		AND rbuno=#{uno}	
+	</select>
+	
+	<!-- 후기 게시판 삭제 -->
+	<delete id="deleteRboardList">
+		DELETE tb_reviewboard
+		WHERE rbno = #{rbNo}
+	</delete>
+	
+	
+	<!-- 댓글 전체 글 갯수 -->
+	<select id="selectCbContentCnt" resultType="int">
+		SELECT count(*) FROM tb_freecomment
+		WHERE fcuno=#{uno}
+	</select>
+	
+	<!-- 댓글(자유게시판) 목록 -->
+	<select id="selectFcmtList" resultType="FCOMMENT">
+		SELECT * FROM(
+    		SELECT rownum rnum, n1.* FROM(
+        		SELECT * FROM tb_freecomment
+       			WHERE fcuno=#{uno}
+        		ORDER BY fcwrittendate desc
+        		)n1
+    		)WHERE rnum BETWEEN #{p.start} AND #{p.end}
+     		 AND fcuno=#{uno} 	
+	</select>
+	
+	<!-- 댓글(자유게시판) 삭제 -->
+	<delete id="deletefcmtList">
+		DELETE tb_freecomment
+		WHERE fcno = #{fcNo}
+	</delete>
+	
+	
+	<!-- 댓글(후기) 수 -->
+	<select id="selectRcmtContentCnt" resultType="int">
+		SELECT count(*) FROM tb_reviewcomment
+		WHERE rcuno=#{uno}
+	</select>
+	
+	<!-- 댓글(자유게시판) 목록 -->
+	<select id="selectRcmtList" resultType="RCOMMENT">
+		SELECT * FROM(
+    		SELECT rownum rnum, n1.* FROM(
+        		SELECT * FROM tb_reviewcomment
+       			WHERE rcuno=#{uno}
+        		ORDER BY rcwrittendate desc
+        		)n1
+    		)WHERE rnum BETWEEN #{p.start} AND #{p.end}
+     		 AND rcuno=#{uno} 	
+	</select>
+	
+	<!-- 댓글(자유게시판) 삭제 -->
+	<delete id="deleteRcmtList">
+		DELETE tb_reviewcomment
+		WHERE rcno = #{rcNo}
+	</delete>
+	
+	
+	<!-- 결제 내역 수  -->
+	<select id="selectPmContentCnt" resultType="int">
+		SELECT count(*) FROM tb_order
+		WHERE ouno=#{uno}
+		AND is_delete = 0	
+	</select>
+	
+	<!-- 복권구매 내역 -->
+	<select id="selectPmList" resultType="ORDER">
+		SELECT * FROM(
+    		SELECT rownum rnum, n1.* FROM(
+        		SELECT * FROM tb_order
+       			WHERE ouno=#{uno}
+       			AND is_delete = 0
+        		ORDER BY pono desc
+        		)n1
+    		)WHERE rnum BETWEEN #{p.start} AND #{p.end}
+     		 AND ouno=#{uno} 
+     		 AND is_delete = 0	
+	</select>
+	
+	<!-- 보유하고 있는 복권 수량 -->
+	<select id="selecTkCnt" resultType="int">
+		SELECT udhtcnt FROM tb_user
+		WHERE uno=#{uno}
+	</select>
+	
+	<!-- 복권 구매내역 삭제 -->
+	<update id="deletepmList">
+		UPDATE tb_order
+		set is_delete = 1
+		where pono=#{pONo}
+	</update>
+	
+	
+	<!-- 신청한 동행 게시물 갯수 -->
+	<select id="selectApDhContentCnt" resultType="int">
+		SELECT count(*) FROM tb_goapply
+		WHERE gauno=#{uno}
+		
+	</select>
+	
+	
+	<!-- 신청한 동행 게시물 목록 -->
+	<select id="selectApDhList" resultType="Map">
+		SELECT * FROM(
+			SELECT rownum rnum, n1.*
+			FROM(
+				SELECT tb_goapply.*,tb_goboard.*,tu.* 
+                FROM (
+	                SELECT DISTINCT(tb_user.unick),tb_user.uno FROM tb_user,tb_goboard
+	                WHERE uno = gbuno
+	            )tu ,tb_goapply, tb_goboard
+				WHERE gagbno=gbno
+				AND gbuno = tu.uno
+				AND gauno=#{uno}
+				ORDER BY gbwrittendate desc
+			)n1				
+		)WHERE rnum BETWEEN #{p.start} AND #{p.end}
+        AND gauno=#{uno}	
+	</select>
+	
+	<!-- 신청한 동행 게시물 삭제 -->
+	<delete id="deleteApDhList">
+		DELETE tb_goapply
+		WHERE gano = #{gaNo}
+	</delete>
+	
+	
+	<!-- (do)신청한 동행 게시물 갯수 -->
+	<select id="selectDoApDhContentCnt" resultType="int">
+		SELECT count(*) FROM tb_doapply
+		WHERE dauno=#{uno}
+	</select>
+	
+	
+	<!-- (do)신청한 동행 게시물 목록 -->
+	<select id="selectDoApDhList" resultType="Map">
+		SELECT * FROM(
+			SELECT rownum rnum, n1.*
+			FROM(
+				SELECT tb_doapply.*,tb_doboard.*,tu.* 
+                FROM (SELECT DISTINCT(tb_user.unick),tb_user.uno FROM tb_user,tb_doboard
+                WHERE uno = dbuno
+                )tu ,tb_doapply, tb_doboard
+				WHERE dadbno=dbno
+                AND dbuno = tu.uno
+                AND dauno=#{uno}
+				ORDER BY dbwrittendate desc
+			)n1				
+		)WHERE rnum BETWEEN #{p.start} AND #{p.end}
+        AND dauno=#{uno}	
+	</select>
+	
+	<!-- (do)신청한 동행 게시물 삭제 -->
+	<delete id="deleteDoAplyDhList">
+		DELETE tb_doapply
+		WHERE dano = #{daNo}
+	</delete>
+	
+	<!-- 나의 동행 함께 가요 카운트 -->
+	<select id="selectMyGoDhContentCnt" resultType="int">
+		SELECT count(*)
+		FROM((select * from tb_goboard where gbuno = #{uno})
+		UNION(select * from tb_doboard where dbuno = #{uno}))
+		WHERE gbisdel = 0
+	</select>
+	
+	<!-- 나의 동행 리스트 -->
+	<select id="selectMyGoDhList" resultType="GOBOARD">
+		<!-- SELECT * FROM(
+		    SELECT rownum rnum,n1.* 
+		    FROM(
+		       SELECT DISTINCT(go.gbno), go.gbuno, go.gbwrittendate, go.gbtitle, go.gbrecruitnumber FROM tb_goboard go,tb_goapply aply 
+		       WHERE gbno = gagbno
+		       AND gastatus = 1
+		       ORDER BY gbwrittendate desc
+		    )n1    
+		)WHERE rnum BETWEEN #{p.start} AND #{p.end}
+		 AND gbuno = 5 -->
+		SELECT * FROM(
+		    SELECT rownum rnum,n1.* 
+		    FROM(
+		        SELECT go.gbno,go.gbuno, go.gbwrittendate, go.gbtitle, go.gbrecruitnumber, go.gbcategory 
+		        FROM( (select * from tb_goboard where gbuno = #{uno})
+                UNION(select * from tb_doboard where dbuno = #{uno}))go
+		        WHERE gbisdel = 0
+		        ORDER BY gbwrittendate desc
+		    )n1    
+		)WHERE rnum BETWEEN #{p.start} AND #{p.end}
+		 AND gbuno = #{uno}
+         
+	</select>
+	
+	<!-- 현재 수락된 인원 -->
+	<select id="selectRecruitNumCnt" parameterType="Map" resultType="int">
+			<!-- SELECT count(*) FROM
+		<choose>
+			<when test="gbcategory eq '함께가요'">
+				 tb_goapply
+				WHERE gagbno = #{gbNo}
+				AND gastatus=1
+			</when>	
+			<when test="gbcategory eq '함께해요'">
+				 tb_doapply
+				WHERE dadbno = #{gbNo}
+				AND dastatus=1
+			</when>		
+		</choose>	-->
+			SELECT count(*) FROM
+		<choose>
+			<when test="gbcategory eq '함께가요'">
+				tb_goapply, tb_user
+				WHERE gauno = uno
+				AND gagbno= #{gbno}
+				AND gastatus=1
+				ORDER BY gano desc
+			</when>
+			<when test="gbcategory eq '함께해요'">
+				tb_doapply, tb_user
+				WHERE dauno = uno
+				AND dadbno= #{gbno}
+				AND dastatus=1
+				ORDER BY dano desc
+			</when>	
+		</choose>
+		
+	</select>
+
+	
+	<!-- 나의 동행(함께 가요) 삭제 -->
+	<update id="deleteMyGoDhList">
+		UPDATE tb_goboard
+		set gbisdel = 1
+		where gbno=#{gbNo}
+	</update>
+	
+	
+	
+	<!-- 나의 동행(함께 가요) 관리 리스트 카운트-->
+	<select id="selectrecruitContentCnt" parameterType="Map" resultType="int">
+			SELECT count(*) FROM
+		<choose>
+			<when test="gbcategory eq '함께가요'">
+				tb_goapply, tb_user
+				WHERE gauno = uno
+				AND gagbno= #{gbno}
+				ORDER BY gano desc
+			</when>
+			<when test="gbcategory eq '함께해요'">
+				tb_doapply, tb_user
+				WHERE dauno = uno
+				AND dadbno= #{gbno}
+				ORDER BY dano desc
+			</when>	
+		</choose>
+				
+	</select>
+	
+	
+	<!-- 나의 동행(함께 가요) 관리 리스트 -->
+	<select id="selectrecruitList" resultType="Map"> 
+		<choose>
+			<when test="gbcategory eq '함께가요'">
+				SELECT gastatus, gano, uno, unick, (to_char(sysdate,'YYYY')-substr(ubirth,1,4)+1)age, ugender 
+		        FROM tb_goapply, tb_user
+		        WHERE gauno = uno
+		        AND gagbno= #{gbno}
+		        ORDER BY gano desc
+			</when>
+			<when test="gbcategory eq '함께해요'">
+				SELECT dastatus, dano, uno, unick, (to_char(sysdate,'YYYY')-substr(ubirth,1,4)+1)age, ugender 
+		        FROM tb_doapply, tb_user
+		        WHERE dauno = uno
+		        AND dadbno= #{gbno}
+		        ORDER BY dano desc
+			</when>
+		
+		</choose>
+		
+		
+	</select>
+	
+</mapper>
