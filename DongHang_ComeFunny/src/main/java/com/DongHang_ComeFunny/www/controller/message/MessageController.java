@@ -1,4 +1,4 @@
-package com.DongHang_ComeFunny.wwwmessage;
+package com.DongHang_ComeFunny.www.controller.message;
 
 import java.sql.Date;
 import java.text.ParseException;
@@ -123,11 +123,15 @@ public class MessageController {
 	}
 
 	@RequestMapping(value = "/message/send", method = RequestMethod.GET)
-	public ModelAndView messageSend(int msno) {
+	public ModelAndView messageSend(String msno) {
+		
 		ModelAndView mav = new ModelAndView();
-		Map<String, Object> message = messageService.selectMessage(msno);
+		if (msno !=null) {
+		Map<String, Object> message = messageService.selectMessage(Integer.parseInt(msno));
+		
 		User user = (User) message.get("receiver");
 		mav.addObject("message", message);
+		}
 		mav.setViewName("message/messagesend");
 		return mav;
 	}
@@ -173,7 +177,7 @@ public class MessageController {
 	@ResponseBody
 	public Map<String, Object> messageSearchUserId(String userId) {
 		String[] arr = null;
-		int val = 0;
+		int val = 0;	
 		User user = new User();
 		Map<String, Object> map = new HashMap<String, Object>();
 		arr = userId.split("-");

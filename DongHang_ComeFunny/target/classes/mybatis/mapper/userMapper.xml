@@ -17,6 +17,7 @@
 		INSERT INTO tb_user (userid, upw, uname, ubirth, ugender, unick, uphone, umail, uaddress)
 		VALUES (#{userId}, #{uPw}, #{uName}, #{uBirth}, #{uGender}, #{uNick}, #{uPhone}, #{uMail}, #{uAddress} )
 	</insert>	
+	
 	<select id = "selectMemberByUserId" resultType="USER">
 		SELECT
 			uno, userid, upw, uname, ubirth, ugender, unick, uphone, umail, uaddress, udhtcnt, uregdate
