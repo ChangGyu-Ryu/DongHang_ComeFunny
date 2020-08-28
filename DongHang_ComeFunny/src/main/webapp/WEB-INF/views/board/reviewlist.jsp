@@ -51,17 +51,17 @@
 						</a>
 					</li>
 					<c:choose>	
-						<c:when test="${paging.cPage > 1 }">
-							<li><a href="<%=request.getContextPath() %>/board/reviewlist?cPage=${paging.cPage-1}"> <i class="fas fa-angle-left"></i> </a></li>
+						<c:when test="${paging.currentPage > 1 }">
+							<li><a href="<%=request.getContextPath() %>/board/reviewlist?cPage=${paging.currentPage-1}"> <i class="fas fa-angle-left"></i> </a></li>
 						</c:when>
 						<c:otherwise>
-							<li><a href="<%=request.getContextPath() %>/board/reviewlist?cPage=${paging.cPage}"> <i class="fas fa-angle-left"></i> </a></li>
+							<li><a href="<%=request.getContextPath() %>/board/reviewlist?cPage=${paging.currentPage}"> <i class="fas fa-angle-left"></i> </a></li>
 						</c:otherwise>
 					</c:choose>
 						
 					<c:forEach begin="${paging.blockStart }" end="${paging.blockEnd }" var="page">
 						<c:choose>
-							<c:when test="${paging.cPage eq page}">
+							<c:when test="${paging.currentPage eq page}">
 								<li class="active"><a href="<%=request.getContextPath() %>/board/reviewlist?cPage=${page}"><span>${page}</span></a></li>
 							</c:when>
 							<c:otherwise>
@@ -70,11 +70,11 @@
 						</c:choose>
 					</c:forEach>
 					<c:choose>
-						<c:when test="${paging.cPage eq paging.lastPage }">
-							<li><a href="<%= request.getContextPath() %>/board/reviewlist?cPage=${paging.cPage}"><i class="fas fa-angle-right"></i></a></li>
+						<c:when test="${paging.currentPage eq paging.lastPage }">
+							<li><a href="<%= request.getContextPath() %>/board/reviewlist?cPage=${paging.currentPage}"><i class="fas fa-angle-right"></i></a></li>
 						</c:when>
 						<c:otherwise>
-							<li><a href="<%= request.getContextPath() %>/board/reviewlist?cPage=${paging.cPage+1}"><i class="fas fa-angle-right"></i></a></li>
+							<li><a href="<%= request.getContextPath() %>/board/reviewlist?cPage=${paging.currentPage+1}"><i class="fas fa-angle-right"></i></a></li>
 						</c:otherwise>
 					</c:choose>
 					<li><a href="<%= request.getContextPath() %>/board/reviewlist?cPage=${paging.lastPage }" aria-label="Next"><i class="fas fa-angle-double-right"></i></a></li>
@@ -86,17 +86,17 @@
 						</a>
 					</li>				
 					<c:choose>	
-						<c:when test="${paging.cPage > 1 }">
-							<li><a href="<%=request.getContextPath() %>/board/reviewlist?searchKinds=${searchKinds }&searchText=${searchText }&cPage=${paging.cPage-1}"> <i class="fas fa-angle-left"></i> </a></li>
+						<c:when test="${paging.currentPage > 1 }">
+							<li><a href="<%=request.getContextPath() %>/board/reviewlist?searchKinds=${searchKinds }&searchText=${searchText }&cPage=${paging.currentPage-1}"> <i class="fas fa-angle-left"></i> </a></li>
 						</c:when>
 						<c:otherwise>
-							<li><a href="<%=request.getContextPath() %>/board/reviewlist?searchKinds=${searchKinds }&searchText=${searchText }&cPage=${paging.cPage}"> <i class="fas fa-angle-left"></i> </a></li>
+							<li><a href="<%=request.getContextPath() %>/board/reviewlist?searchKinds=${searchKinds }&searchText=${searchText }&cPage=${paging.currentPage}"> <i class="fas fa-angle-left"></i> </a></li>
 						</c:otherwise>
 					</c:choose>
 						
 					<c:forEach begin="${paging.blockStart }" end="${paging.blockEnd }" var="page">
 						<c:choose>
-							<c:when test="${paging.cPage eq page}">
+							<c:when test="${paging.currentPage eq page}">
 								<li class="active"><a href="<%=request.getContextPath() %>/board/reviewlist?searchKinds=${searchKinds }&searchText=${searchText }&cPage=${page}"><span>${page}</span></a></li>
 							</c:when>
 							<c:otherwise>
@@ -105,11 +105,11 @@
 						</c:choose>
 					</c:forEach>
 					<c:choose>
-						<c:when test="${paging.cPage eq paging.lastPage }">
-							<li><a href="<%= request.getContextPath() %>/board/reviewlist?searchKinds=${searchKinds }&searchText=${searchText }&cPage=${paging.cPage}"><i class="fas fa-angle-right"></i></a></li>
+						<c:when test="${paging.currentPage eq paging.lastPage }">
+							<li><a href="<%= request.getContextPath() %>/board/reviewlist?searchKinds=${searchKinds }&searchText=${searchText }&cPage=${paging.currentPage}"><i class="fas fa-angle-right"></i></a></li>
 						</c:when>
 						<c:otherwise>
-							<li><a href="<%= request.getContextPath() %>/board/reviewlist?searchKinds=${searchKinds }&searchText=${searchText }&cPage=${paging.cPage+1}"><i class="fas fa-angle-right"></i></a></li>
+							<li><a href="<%= request.getContextPath() %>/board/reviewlist?searchKinds=${searchKinds }&searchText=${searchText }&cPage=${paging.currentPage+1}"><i class="fas fa-angle-right"></i></a></li>
 						</c:otherwise>
 					</c:choose>
 					<li><a href="<%= request.getContextPath() %>/board/reviewlist?searchKinds=${searchKinds }&searchText=${searchText }&cPage=${paging.lastPage }" aria-label="Next"><i class="fas fa-angle-double-right"></i></a></li>
@@ -121,17 +121,17 @@
 						</a>
 					</li>					
 					<c:choose>	
-						<c:when test="${paging.cPage > 1 }">
-							<li><a href="<%=request.getContextPath() %>/board/reviewlist?searchKinds=${searchKinds }&searchText=${searchText }&cPage=${paging.cPage-1}"> <i class="fas fa-angle-left"></i> </a></li>
+						<c:when test="${paging.currentPage > 1 }">
+							<li><a href="<%=request.getContextPath() %>/board/reviewlist?searchKinds=${searchKinds }&searchText=${searchText }&cPage=${paging.currentPage-1}"> <i class="fas fa-angle-left"></i> </a></li>
 						</c:when>
 						<c:otherwise>
-							<li><a href="<%=request.getContextPath() %>/board/reviewlist?searchKinds=${searchKinds }&searchText=${searchText }&cPage=${paging.cPage}"> <i class="fas fa-angle-left"></i> </a></li>
+							<li><a href="<%=request.getContextPath() %>/board/reviewlist?searchKinds=${searchKinds }&searchText=${searchText }&cPage=${paging.currentPage}"> <i class="fas fa-angle-left"></i> </a></li>
 						</c:otherwise>
 					</c:choose>
 						
 					<c:forEach begin="${paging.blockStart }" end="${paging.blockEnd }" var="page">
 						<c:choose>
-							<c:when test="${paging.cPage eq page}">
+							<c:when test="${paging.currentPage eq page}">
 								<li class="active"><a href="<%=request.getContextPath() %>/board/reviewlist?searchKinds=${searchKinds }&searchText=${searchText }&cPage=${page}"><span>${page}</span></a></li>
 							</c:when>
 							<c:otherwise>
@@ -140,11 +140,11 @@
 						</c:choose>
 					</c:forEach>
 					<c:choose>
-						<c:when test="${paging.cPage eq paging.lastPage }">
-							<li><a href="<%= request.getContextPath() %>/board/reviewlist?searchKinds=${searchKinds }&searchText=${searchText }&cPage=${paging.cPage}"><i class="fas fa-angle-right"></i></a></li>
+						<c:when test="${paging.currentPage eq paging.lastPage }">
+							<li><a href="<%= request.getContextPath() %>/board/reviewlist?searchKinds=${searchKinds }&searchText=${searchText }&cPage=${paging.currentPage}"><i class="fas fa-angle-right"></i></a></li>
 						</c:when>
 						<c:otherwise>
-							<li><a href="<%= request.getContextPath() %>/board/reviewlist?searchKinds=${searchKinds }&searchText=${searchText }&cPage=${paging.cPage+1}"><i class="fas fa-angle-right"></i></a></li>
+							<li><a href="<%= request.getContextPath() %>/board/reviewlist?searchKinds=${searchKinds }&searchText=${searchText }&cPage=${paging.currentPage+1}"><i class="fas fa-angle-right"></i></a></li>
 						</c:otherwise>
 					</c:choose>
 					<li><a href="<%= request.getContextPath() %>/board/reviewlist?searchKinds=${searchKinds }&searchText=${searchText }&cPage=${paging.lastPage }" aria-label="Next"><i class="fas fa-angle-double-right"></i></a></li>
@@ -156,17 +156,17 @@
 						</a>
 					</li>					
 					<c:choose>	
-						<c:when test="${paging.cPage > 1 }">
-							<li><a href="<%=request.getContextPath() %>/board/reviewlist?searchKinds=${searchKinds }&searchText=${searchText }&cPage=${paging.cPage-1}"> <i class="fas fa-angle-left"></i> </a></li>
+						<c:when test="${paging.currentPage > 1 }">
+							<li><a href="<%=request.getContextPath() %>/board/reviewlist?searchKinds=${searchKinds }&searchText=${searchText }&cPage=${paging.currentPage-1}"> <i class="fas fa-angle-left"></i> </a></li>
 						</c:when>
 						<c:otherwise>
-							<li><a href="<%=request.getContextPath() %>/board/reviewlist?searchKinds=${searchKinds }&searchText=${searchText }&cPage=${paging.cPage}"> <i class="fas fa-angle-left"></i> </a></li>
+							<li><a href="<%=request.getContextPath() %>/board/reviewlist?searchKinds=${searchKinds }&searchText=${searchText }&cPage=${paging.currentPage}"> <i class="fas fa-angle-left"></i> </a></li>
 						</c:otherwise>
 					</c:choose>
 						
 					<c:forEach begin="${paging.blockStart }" end="${paging.blockEnd }" var="page">
 						<c:choose>
-							<c:when test="${paging.cPage eq page}">
+							<c:when test="${paging.currentPage eq page}">
 								<li class="active"><a href="<%=request.getContextPath() %>/board/reviewlist?searchKinds=${searchKinds }&searchText=${searchText }&cPage=${page}"><span>${page}</span></a></li>
 							</c:when>
 							<c:otherwise>
@@ -175,11 +175,11 @@
 						</c:choose>
 					</c:forEach>
 					<c:choose>
-						<c:when test="${paging.cPage eq paging.lastPage }">
-							<li><a href="<%= request.getContextPath() %>/board/reviewlist?searchKinds=${searchKinds }&searchText=${searchText }&cPage=${paging.cPage}"><i class="fas fa-angle-right"></i></a></li>
+						<c:when test="${paging.currentPage eq paging.lastPage }">
+							<li><a href="<%= request.getContextPath() %>/board/reviewlist?searchKinds=${searchKinds }&searchText=${searchText }&cPage=${paging.currentPage}"><i class="fas fa-angle-right"></i></a></li>
 						</c:when>
 						<c:otherwise>
-							<li><a href="<%= request.getContextPath() %>/board/reviewlist?searchKinds=${searchKinds }&searchText=${searchText }&cPage=${paging.cPage+1}"><i class="fas fa-angle-right"></i></a></li>
+							<li><a href="<%= request.getContextPath() %>/board/reviewlist?searchKinds=${searchKinds }&searchText=${searchText }&cPage=${paging.currentPage+1}"><i class="fas fa-angle-right"></i></a></li>
 						</c:otherwise>
 					</c:choose>
 					<li><a href="<%= request.getContextPath() %>/board/reviewlist?searchKinds=${searchKinds }&searchText=${searchText }&cPage=${paging.lastPage }" aria-label="Next"><i class="fas fa-angle-double-right"></i></a></li>

@@ -261,8 +261,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				( SELECT  uno, userid, uname, unick, gd.*
 					FROM tb_user u INNER JOIN 
 						( SELECT * FROM tb_goboard g
+							WHERE gbisdel = 0
 				        	UNION ALL
 				        	SELECT * FROM tb_doboard d
+				        	WHERE dbisdel = 0
 				        ) gd 
 				    on u.uno = gd.gbuno
 				) gdc
@@ -282,8 +284,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				( SELECT  uno, userid, uname, unick, gd.*
 					FROM tb_user u INNER JOIN 
 						( SELECT * FROM tb_goboard g
+						  WHERE gbisdel = 0 
 				        	UNION ALL
-				        	SELECT * FROM tb_doboard d
+				          SELECT * FROM tb_doboard d
+				          WHERE dbisdel = 0
 				        ) gd 
 				    on u.uno = gd.gbuno
 				) gdr
@@ -304,8 +308,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				( SELECT  uno, userid, uname, unick, gd.*
 					FROM tb_user u INNER JOIN 
 						( SELECT * FROM tb_goboard g
+							WHERE gbisdel = 0
 				        	UNION ALL
 				        	SELECT * FROM tb_doboard d
+				        	WHERE dbisdel = 0
 				        ) gd 
 				    on u.uno = gd.gbuno
 				) gdc
@@ -317,9 +323,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				( SELECT  uno, userid, uname, unick, gd.*
 					FROM tb_user u INNER JOIN 
 						( SELECT * FROM tb_goboard g
+							WHERE gbisdel = 0
 				        	UNION ALL
 				        	SELECT * FROM tb_doboard d
-				        ) gd 
+				        	WHERE dbisdel = 0
+				        ) gd  
 				    on u.uno = gd.gbuno
 				) gdr
 				) gdrr
