@@ -25,6 +25,7 @@
 		<typeAlias type="com.DongHang_ComeFunny.www.model.vo.ReviewBoard" alias="ReviewBoard"/>
 		<typeAlias type="com.DongHang_ComeFunny.www.model.vo.ReviewComment" alias="ReviewComment"/>
 		<typeAlias type="com.DongHang_ComeFunny.www.model.vo.User" alias="USER"/>
+		<typeAlias type="com.DongHang_ComeFunny.www.model.vo.Message" alias="MESSAGE"/>
 	</typeAliases>
 
 

@@ -24,4 +24,16 @@ public class UserDao {
 		
 		return session.insert("User.insertUser", user);
 	}
+	public User selectMemberByUserId(String userid) {
+		return session.selectOne("USER.selectMemberByUserId",userid);
+	}
+
+	public User selectMemberByUno(int uno) {
+		return session.selectOne("USER.selectMemberByUno", uno);
+	}
+
+	public User selectMemberByUserNick(String nick) {
+		return session.selectOne("USER.selectMemberByNick",nick);
+	}
+
 }
