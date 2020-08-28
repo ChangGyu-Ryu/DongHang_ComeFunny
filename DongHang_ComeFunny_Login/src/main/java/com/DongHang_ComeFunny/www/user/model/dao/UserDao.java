@@ -29,10 +29,9 @@ public class UserDao {
       return session.selectOne("USER.idChk", user);
    }
    
-//   public User findId(User user) {
-//      
-//      return session.find("USER.findId", user);
-//   }
+   public String fId(String uname, String umail) {
+		return session.selectOne("USER.fId", uname);
+	}
 
 //   public User findPassword(String umail) {
 //      return session.selectOne("USER.findPassword", umail);

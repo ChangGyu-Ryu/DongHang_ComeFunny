@@ -68,13 +68,21 @@ public class UserServiceImpl implements UserService {
       
       return userDao.insertUser(user);
    }
-//   @Override
-//   public User findId(User user) {
-//      
-//      
-//      
-//      return null;
-//   }
+   
+   @Override
+	public String fId(String uname, String umail) {
+
+		String result = "";
+
+		try {
+			result = userDao.fId(uname, umail);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return result;
+
+	}
    /*
    @Override
    public boolean userEmailCheck(String umail, String userid) {

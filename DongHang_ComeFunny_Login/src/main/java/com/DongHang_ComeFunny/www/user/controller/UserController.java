@@ -80,18 +80,6 @@ public class UserController {
       String birthDay = request.getParameter("ubirthdd");
       user.setUbirth(birthYear+birthMonth+birthDay);
 
-//      int result = userService.idChk(user);
-//      try {
-//         if(result ==1 ) {
-//            return "/user/join";
-//         } else if(result == 0) {
-//            userService.insertUser(user);
-//         }
-//      } catch (Exception e) {
-//         throw new RuntimeException();
-//         e.printStackTrace();
-//      }
-//      return "redirect:/";
       int res = userService.insertUser(user);
       if(res > 0) {
          //addAttribute : ModelAndView의 addObject와 같다
@@ -115,13 +103,22 @@ public class UserController {
       userService.idChk(user, response);
    }
    
-//   //아이디 찾기 페이지
-//   @RequestMapping(value="/fId", method=RequestMethod.GET)
-//   public ModelAndView fId() {
-//      ModelAndView mav = new ModelAndView();
-//      mav.setViewName("/user/fId");
-//      return mav;
-//   }
+ //아이디 찾기 페이지
+ 	@RequestMapping(value="/fId", method=RequestMethod.GET)
+ 	public String fId() {
+ 		return "/user/fId";
+ 	}
+ 	
+ 	//아이디 찾기 액션
+ 	@RequestMapping(value="/fId", method=RequestMethod.POST)
+ 	@ResponseBody
+ 	public String fId(@RequestParam(value="uname", required=true) String uname
+ 			, @RequestParam(value="umail", required=true) String umail) {
+ 		
+ 		String result = userService.fId(uname, umail);
+ 		
+ 		return result;
+ 	}
 /*
 
    //아이디 찾기

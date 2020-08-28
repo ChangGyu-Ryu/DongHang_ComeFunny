@@ -87,7 +87,7 @@ $(function idChk(){
       })
    });
 })
-//주석
+
 $(document).ready(function() {
    //시작 시 아이디에 포커스
    $('#userid').focus();

@@ -21,6 +21,53 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
+<script
+  src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+
+<script type="text/javascript">
+
+$(document).ready(function() {
+	// 팝업 히든 불러오기
+	$('#subBtn').click(function() {
+		$('#background_modal').show();
+	});
+});
+
+//아이디  값 저장하기 위한 변수
+var idV = "";
+// 아이디 값 받고 출력하는 ajax
+var idSearch_click = function(){
+	$.ajax({
+		type:"POST",
+		url:"${pageContext.request.contextPath}/user/userSearch?uname="
+				+$('#uname').val()+"&umail="+$('#email').val(),
+		success:function(data){
+			if(data == 0){
+				$('#id_value').text("회원 정보를 확인해주세요!");	
+			} else {
+				$('#id_value').text(data);
+				// 아이디값 별도로 저장
+				idV = data;
+			}
+		}
+	});
+}
+
+</script>
+
+<body>
+
+  <div id="background_modal" class="background_modal" style="display: none;">
+	<div class="modal_contents">
+		<h4>
+			<b>회원님의 아이디는</b><span class="close">&times;</span>
+		</h4><br>
+			<h2 id="id_value"></h2>
+		<br>
+		<button type="button" id="loginBtn" onclick="location.htef='login.jsp'">로그인 하기</button>
+	</div>
+</div>
+
 <div class="ui middle aligned center aligned grid " id="fId__background__image">
   <div id="fId__background"></div>
   <div class="column" id="fId__column">
@@ -32,11 +79,11 @@
       <div class="ui stacked segment">
       
         <div class="field">
-            <input type="text" name="uName" placeholder="User Name">
+            <input type="text" id="uname" name="uName" placeholder="User Name">
         </div>
         
         <div class="field">
-            <input type="text" name="email" placeholder="E-mail address">
+            <input type="text" id="email" name="umail" placeholder="E-mail address">
         </div>
 		</div>
       <div class="ui error message"></div>
@@ -44,8 +91,8 @@
     </form>
 
     <div>
-    	<button id=subBtn class="ui teal button">아이디 찾기</button>
-    	<button id=cancelBtn class="ui teal button">돌아가기</button>
+    	<button id=subBtn class="ui teal button" onclick="idSearch_click">아이디 찾기</button>
+    	<button id=cancelBtn class="ui teal button" onclick="location.htef='login.jsp'">돌아가기</button>
     </div>
   </div>
 </div>

@@ -32,13 +32,14 @@ public interface UserService {
     */
    public void idChk(String user, HttpServletResponse response) throws Exception;   
    
-//   /**
-//    * 아이디 찾기
-//    * @param user - 회원정보가 담긴 객체
-//    * @return User - 회원정보
-//    */
-//   public User findId(User user);
-//
+   /**
+	 * 아이디 찾기
+	 * @param uname - 회원이름
+	 * @param umail - 회원 메일 주소
+	 * @return - result 찾은 아이디
+	 */
+	public String fId(String uname, String umail);
+
 //   /**
 //    * 비밀번호 찾기 이메일 인증
 //    * @param userId - 회원 아이디
