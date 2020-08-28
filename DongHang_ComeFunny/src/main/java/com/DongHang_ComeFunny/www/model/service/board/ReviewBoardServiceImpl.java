@@ -140,9 +140,15 @@ public class ReviewBoardServiceImpl implements ReviewBoardService {
 		FileUtil fileUtil = new FileUtil();
 		// 3. 파일 저장경로에 있는 파일 삭제 처리
 		fileUtil.deleteFile(fileData.get(("RFSAVEPATH")));
+<<<<<<< HEAD
+		// 4. isdel 컬럼값 0 -> 1로 변경
+//		int res = reviewBoardDao.updateFileIsDel(rfNo); // isdel 0을 1로 변경
+		int res = reviewBoardDao.deleteFile(rfNo); // 완전삭제
+=======
 //		int res = reviewBoardDao.deleteFile(rfno); // 파일완전 삭제
 		// 4. isdel 컬럼값 0 -> 1로 변경
 		int res = reviewBoardDao.updateFileIsDel(rfNo); // isdel 0을 1로 변경
+>>>>>>> initial MessagrChat setting
 		return res;
 	}
 	
@@ -199,8 +205,13 @@ public class ReviewBoardServiceImpl implements ReviewBoardService {
 	@Override
 	public int deleteReviewBoard(int rbNo) {
 		// 1. 게시글 번호로 해당 게시글에 업로드된 파일 삭제
+<<<<<<< HEAD
+//		reviewBoardDao.deleteReviewFileByRbno(rbNo);
+		// 2. 게시글 번호로 해당 게시글 완전 삭제
+=======
 		reviewBoardDao.deleteReviewFileByRbno(rbNo);
 		// 2. 게시글 번호로 해당 게시글 삭제
+>>>>>>> initial MessagrChat setting
 		int res = reviewBoardDao.deleteReviewBoard(rbNo);
 		// 성공 : 1, 실패 : 0
 		return res;
@@ -261,7 +272,13 @@ public class ReviewBoardServiceImpl implements ReviewBoardService {
 	@Override
 	public int deleteReviewComment(ReviewComment reviewComment) {
 		// 1. 댓글 삭제 시, isdel=0을 1로 변경
+<<<<<<< HEAD
+//		return reviewBoardDao.updateReviewCommentIsDEl(reviewComment);
+		// 2. 댓글 완전 삭제
+		return reviewBoardDao.deleteReviewComment(reviewComment);
+=======
 		return reviewBoardDao.updateReviewCommentIsDEl(reviewComment);
+>>>>>>> initial MessagrChat setting
 	}
 	
 	/**

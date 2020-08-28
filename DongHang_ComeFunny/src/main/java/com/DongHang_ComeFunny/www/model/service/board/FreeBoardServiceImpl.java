@@ -139,9 +139,16 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 		FileUtil fileUtil = new FileUtil();
 		// 3. 파일 저장경로에 있는 파일 삭제 처리
 		fileUtil.deleteFile(fileData.get(("FFSAVEPATH")));
+<<<<<<< HEAD
+
+		// 4. isdel 컬럼값 0 -> 1로 변경
+//		int res = freeBoardDao.updateFileIsDel(ffNo); // isdel 0을 1로 변경
+		int res = freeBoardDao.deleteFile(ffNo); // 파일완전 삭제
+=======
 //		int res = freeBoardDao.deleteFile(ffno); // 파일완전 삭제
 		// 4. isdel 컬럼값 0 -> 1로 변경
 		int res = freeBoardDao.updateFileIsDel(ffNo); // isdel 0을 1로 변경
+>>>>>>> initial MessagrChat setting
 		return res;
 	}
 	
@@ -197,8 +204,13 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 	 */
 	@Override
 	public int deleteFreeBoard(int fbNo) {
+<<<<<<< HEAD
+		// 1. 게시글 번호로 해당 게시글에 업로드된 파일 삭제(isDel = 1)
+//		freeBoardDao.deleteFreeFileByFbno(fbNo);
+=======
 		// 1. 게시글 번호로 해당 게시글에 업로드된 파일 삭제
 		freeBoardDao.deleteFreeFileByFbno(fbNo);
+>>>>>>> initial MessagrChat setting
 		// 2. 게시글 번호로 해당 게시글 삭제
 		int res = freeBoardDao.deleteFreeBoard(fbNo);
 		// 성공 : 1, 실패 : 0
@@ -260,7 +272,13 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 	@Override
 	public int deleteFreeComment(FreeComment freeComment) {
 		// 1. 댓글 삭제 시, isdel=0을 1로 변경
+<<<<<<< HEAD
+//		return freeBoardDao.updateFreeCommentIsDEl(freeComment);
+		// 2. 댓글 완전 삭제
+		return freeBoardDao.deleteFreeComment(freeComment);
+=======
 		return freeBoardDao.updateFreeCommentIsDEl(freeComment);
+>>>>>>> initial MessagrChat setting
 	}
 	
 	/**
