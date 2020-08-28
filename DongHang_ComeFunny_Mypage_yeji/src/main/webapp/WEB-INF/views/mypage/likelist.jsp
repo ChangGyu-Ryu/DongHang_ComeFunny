@@ -110,9 +110,14 @@ function like_cancel(dbNo) {
 			<c:forEach items="${likeList }" var="list" varStatus="i">
 			<div class="likebox" id="likeboxdelete${list.DBNO }"> 
 				<figure class="like_img_box">
+				<c:if test="${empty list.DISTOREDIMGNAME }">
+					<img class="like_img" alt="찜이미지" src="<%=request.getContextPath() %>/resources/upload/default.png">
+				</c:if>	
+				<c:if test="${not empty list.DISTOREDIMGNAME }">
 					<img class="like_img" alt="찜이미지" src="<%=request.getContextPath() %>/resources/upload/${list.DISTOREDIMGNAME }">
+				</c:if>	
 					<figcaption>
-						 <p><a href="<%=request.getContextPath() %>/do/dodetail?dbno=${list.DBNO }">${list.DBTITLE }</a></p>
+						 <p><a style="color: white;" href="<%=request.getContextPath() %>/do/dodetail?dbno=${list.DBNO }">${list.DBTITLE }</a></p>
 					</figcaption>				
 				</figure>
 				<button id="like_cancel${i.count }" class="like_cancel" style="display: none;" onclick="like_cancel(${list.DBNO})" value="${list.DBNO }">X</button>

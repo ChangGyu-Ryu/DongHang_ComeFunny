@@ -155,7 +155,7 @@ $(document).ready(function() {
 		
 	}
 </script>
-<script type="text/javascript">
+<!-- <script type="text/javascript">
 $(document).ready(function() {
 	
 	$(".deleteProfileImgBtn").click(function(){
@@ -199,7 +199,7 @@ $(document).ready(function() {
 	
 })
 </script>
-
+ -->
 <script type="text/javascript">
 	function selectUrl(url){
 		var root = '<%=request.getContextPath()%>';

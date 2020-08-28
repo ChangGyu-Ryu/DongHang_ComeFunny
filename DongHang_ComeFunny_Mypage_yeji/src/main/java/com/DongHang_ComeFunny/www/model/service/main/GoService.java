@@ -110,12 +110,35 @@ public class GoService {
 		//함께가요 상세 글 정보, 작성자 프로필 이미지
 		Map<String, Object> goBoardUserInfo =  goDao.selectGoUserInfo(gbNo);
 		
+		//함께가요 상세 체크박스
+		List<GoCheck> goCheck = goDao.selectGocheck(gbNo);
+		
+		//호스트 평점
+		List<Map<String, Object>> hostReview = goDao.selectGoHostReview(gbNo);
+		
+		//호스트 평점 후기 갯수
+		int hostReviewCnt = goDao.selecthostReviewCnt(gbNo);
+		
+		//함께가요 동행신청 목록
+		List<Map<String, Object>> goDhApplylist = goDao.selectgoDhApplylist(gbNo);
+		
 		
 		Map<String,Object> goDetailInfo = new HashMap<String, Object>();
 		goDetailInfo.put("goBoardUserInfo", goBoardUserInfo);
+		goDetailInfo.put("goCheck", goCheck);
+		goDetailInfo.put("hostReview", hostReview);
+		goDetailInfo.put("hostReviewCnt", hostReviewCnt);
+		goDetailInfo.put("goDhApplylist", goDhApplylist);
+		
+		
 		
 				
 		return goDetailInfo;
+	}
+	
+	//함께가요 동행 신청하기
+	public int insertGoDhApply(int gbNo, int uNo) {
+		return goDao.insertGoDhApply(gbNo, uNo);
 	}
 
 	

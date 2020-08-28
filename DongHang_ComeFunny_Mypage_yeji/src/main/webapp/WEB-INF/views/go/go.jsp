@@ -77,11 +77,9 @@
                   + "&theme=" + themeValue +"&area=" + areaValue + "&state=" + stateValue
             , dataType: "html"
             , success : function(data){
-               alert("AJAX 성공");
-               console.log($('#gobest')); 
-               $("#gobest").empty(); //비우는 코드 근데 값이 다 null이면 전체보여줘야함
-               
-               
+               console.log("AJAX 성공");
+               console.log(data.age); //데이터안의  age?
+                $("#go-list").html(data);
             }
             , error: function(request,status,error) {
                console.log("/go/filter?age="+ageValue + "&gender=" + genderValue 
@@ -152,9 +150,9 @@
                + "&theme=" + themeValue +"&area=" + areaValue + "&state=" + stateValue
          , dataType: "html"
          , success : function(data){
-            alert("AJAX 성공");
-//             console.log($('#gobest')); 
-            $("#gobest").empty(); //비우는 코드 근데 값이 다 null이면 전체보여줘야함
+            console.log("AJAX 성공 - 버튼 해제");
+//             $("#gobest").empty(); //비우는 코드 근데 값이 다 null이면 전체보여줘야함
+            $("#go-list").html(data);
          }
          , error: function(request,status,error) {
             console.log("/go/filter?age="+ageValue + "&gender=" + genderValue 
@@ -163,8 +161,6 @@
             alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error)
          }
       });
-      
-      
 
    }
 
@@ -298,8 +294,8 @@ $(document).ready(function() {
    
    <!-- content list -->
    <!-- 하단 리스트 -->
-   <div class="go-list">
-      
+   <div id="go-list">
+   
       <div>
       <!-- 정렬 드롭다운 -->
       <div class="dropdown" >
@@ -329,12 +325,12 @@ $(document).ready(function() {
          <div class="gobest-title">
             <div class="goprofile ialign">
             <a href="/go/goDetail?gbNo=${go.GBNO }"> <!-- 사진 클릭시 이동 -->
-            <span aria-hidden="true"></span>
-               <c:if test="${go.UFORIGINFILENAME eq null}"> <!-- 사진이 null이면 default -->
+               <span aria-hidden="true"></span>
+               <c:if test="${go.UFSTOREDFILENAME eq null}"> <!-- 사진이 null이면 default -->
                    <img src="<%=request.getContextPath() %>/resources/upload/default.png" alt="공백" class="img-circle" />
                </c:if>
-               <c:if test="${go.UFORIGINFILENAME ne null}">
-                  <img src="<%=request.getContextPath() %>/resources/upload/${go.UFORIGINFILENAME}" alt="프로필사진" class="img-circle" />
+               <c:if test="${go.UFSTOREDFILENAME ne null}">
+                  <img src="<%=request.getContextPath() %>/resources/upload/${go.UFSTOREDFILENAME}" alt="프로필사진" class="img-circle" />
                </c:if>
             </a>
             </div>
@@ -358,21 +354,24 @@ $(document).ready(function() {
          </div>
          <div class="margintop">
             <div class="gothemebox"><span>
-            <c:set var="keyword" value="${fn:split(go.GCVALUE,',')}"></c:set>
-            <c:forEach items="${keyword}" var="word">
+             <c:set var="keyword" value="${fn:split(go.AGECHECK,',')}"></c:set>
+                   <c:forEach items="${keyword}" var="age">
+                      <span>${age }</span>
+               </c:forEach>
+                 <span>
+            <c:set var="keyword" value="${fn:split(go.THEMECHECK,',')}"></c:set>
+            <c:forEach items="${keyword}" var="theme">
                 <c:choose>
-                     <c:when test="${word eq 'food' }" ><span> · </span> 음식</c:when>
-                     <c:when test="${word eq 'photo' }" ><span> · </span> 사진</c:when>
-                     <c:when test="${word eq 'seeing' }" ><span> · </span> 관광</c:when>
-                     <c:when test="${word eq 'drink' }" ><span> · </span> 술</c:when>
-                     <c:when test="${word eq 'shopping' }" ><span> · </span> 쇼핑</c:when>
-                     <c:when test="${word eq 'etc' }" ><span> · </span>기타</c:when>
-                     <c:otherwise>${word}</c:otherwise>
-                </c:choose>
+                     <c:when test="${theme eq 'food' }" ><span> · </span> 음식</c:when>
+                     <c:when test="${theme eq 'photo' }" ><span> · </span> 사진</c:when>
+                     <c:when test="${theme eq 'seeing' }" ><span> · </span> 관광</c:when>
+                     <c:when test="${theme eq 'drink' }" ><span> · </span> 술</c:when>
+                     <c:when test="${theme eq 'shopping' }" ><span> · </span> 쇼핑</c:when>
+                     <c:when test="${theme eq 'etc' }" ><span> · </span>기타</c:when>
+                   </c:choose>
             </c:forEach>
                  </span>
-                 <span> · </span> 
-                 <span>
+                 <span> · </span>
                  <c:choose>
                      <c:when test="${go.GBRECRUITGENDER eq 0 }" >성별 무관</c:when>
                      <c:when test="${go.GBRECRUITGENDER eq 1 }" >남성만</c:when>
@@ -383,7 +382,7 @@ $(document).ready(function() {
              
             <div class="gothemebox">${go.GBLIKECNT }명이 찜하고 있습니다</div>
             <div>
-            <span >
+            <span>
             <c:choose>
                      <c:when test="${go.GBRECRUITSTATUS eq 0 }" ><span class="gotag">모집중</span></c:when>
                      <c:when test="${go.GBRECRUITSTATUS eq 1 }" ><span class="gotag2">모집마감</span></c:when>

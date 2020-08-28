@@ -50,6 +50,34 @@ public class GoController {
 	   
    }
    
+   //함께가요 동행 신청
+   @RequestMapping(value="/go/goApply", method=RequestMethod.POST)
+   @ResponseBody
+   public int goApply(int gbNo, Model model, HttpSession session) {
+	   
+	   //로그인 구현 전 
+	   //임의로 객체에 회원정보 담기
+	   User sessionUser = new User();
+	   sessionUser.setuNo(30);
+
+	   //회원정보를 세선에 담기
+	   session.setAttribute("login", sessionUser);
+	   
+	   int uNo = ((User)(session.getAttribute("login"))).getuNo();
+	   
+	   System.out.println("gbNo" + gbNo);
+	   
+	   int res = goService.insertGoDhApply(gbNo, uNo);
+	   
+	   if(res > 0) {
+			return 1;
+		} else {
+			return 0;
+		}
+
+	   
+   }
+   
    
    //폼 입력하기 (파일첨부까지)
 //   @RequestMapping(value="/go/gowrite", method=RequestMethod.POST)
@@ -90,8 +118,7 @@ public class GoController {
          
          //임의로 세션값 넣기
          User sessionUser = new User(); //임의로 세션값 생성
-         sessionUser.setuNo(4);
-         sessionUser.setUserId("test2");
+         sessionUser.setuNo(2);
          
          session.setAttribute("login", sessionUser); //세션에 세션값 넣기
          

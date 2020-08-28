@@ -9,7 +9,7 @@
  	<select id="selectPwCheck" resultType="int">
  		select count(*)
  		from tb_user
- 		where userId = #{userId} and uPw = #{uPw }
+ 		where userId = #{userId} and uPw = #{uPw } and UISLEAVE = 0
  	</select>
  	
  	<!-- 개인정보 수정 -->
@@ -17,21 +17,21 @@
  		update tb_user
  		set uNick = #{uNick }, uMail = #{uMail},
  			uPw = #{uPw }, uPhone = #{uPhone}
- 		where userId = #{userId }
+ 		where userId = #{userId } and UISLEAVE = 0
  	</update>
  	
  	<!-- 회원정보 조회 -->
  	<select id="getUserInfo" resultType="USER">
  		select * 
  		from tb_user
- 		where uno = #{uNo }
+ 		where uno = #{uNo } and UISLEAVE = 0
  	</select>
  	
  	
  	<!-- 프로필 이미지 조회 -->
  	<select id="selectUserImg" resultType="USERFILE">
  		select * from tb_userFile
- 		where ufuno = #{uNo}
+ 		where ufuno = #{uNo} and UFISDEL = 0
  	</select>
  	
  	<insert id="insertUserImg">
@@ -49,17 +49,17 @@
  	
  	<!-- 원본 프로필이미지로 변경(프로필 삭제) -->
  	<delete id="deleteProfileImg">
- 		delete from tb_userFile
- 		where ufuno = #{uNo }
+ 		 delete from tb_userFile
+ 		 where ufuno = #{uNo }
  	</delete>
  	
  	<!-- 함께해요 찜목록 조회 -->
  	<select id="selectLikelist" resultType="Map">
  		select BOARD.dbno, BOARD.dbtitle, IMG.distoredimgname 
  		from tb_doboard BOARD 
- 		join tb_doimg IMG 
+ 		left join tb_doimg IMG 
  			on BOARD.dbno = IMG.didbno 
- 		where dbno IN (select dldbno from tb_dolike where dluno=#{uNo})
+ 		where dbno IN (select dldbno from tb_dolike where dluno=#{uNo}  and DBISDEL = 0) 
  		order by BOARD.dbno
  	</select>
  	
@@ -83,7 +83,7 @@
     		from(
         		select BOARD.gbno, BOARD.gbuno, U.userId, BOARD.gbtitle, BOARD.gbwrittendate
         		from tb_goboard BOARD join tb_user U on BOARD.gbuno = U.uno
-        		where gbno IN (select glgbno from tb_golike where gluno=#{uNo })
+        		where gbno IN (select glgbno from tb_golike where gluno=#{uNo } and GBISDEL = 0)
     		)n1
 		)
 		where rnum BETWEEN  #{p.start} AND #{p.end}
