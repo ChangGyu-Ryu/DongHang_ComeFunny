@@ -76,12 +76,10 @@ a,a:link,a:visited,a:hover{
 	cursor: pointer;
 }
 .adminBtn{
-/* 	padding: 0.3em; */
-    margin: 0px 2.3em 0 0;
-    float: right;
     font-size: 11px;
-    background: #999;
+    background: #bbb;
     border-radius: 2px;
+    
 }
 
 .adminBtn:hover{
@@ -112,13 +110,14 @@ a,a:link,a:visited,a:hover{
 }
 
 .popup {
-  margin: 10% auto;
-  padding: 2%;
-  background: #fff;
-  border-radius: 5px;
-  width: 40%;
-  position: relative;
-  transition: all 5s ease-in-out;
+    margin: 10% auto;
+    padding: 2%;
+    background: #fff;
+    border-radius: 5px;
+    width: 40%;
+    position: relative;
+    transition: all 5s ease-in-out;
+    min-width: 600px;
 }
 
 .popup .close {
@@ -135,9 +134,16 @@ a,a:link,a:visited,a:hover{
   color: #333;
 }
 .popup .content {
-  max-height: 30%;
-  overflow: auto;
+/*   max-height: 30%; */
+  overflow: scroll;
   margin-top: 4%;
+  height: 19.4em;
+}
+.popup .content2 {
+/*   max-height: 30%; */
+  overflow: scroll;
+  margin-top: 4%;
+  height: 19.4em;
 }
 
 @media screen and (max-width: 700px){
@@ -190,6 +196,7 @@ a,a:link,a:visited,a:hover{
     color: #fff;
     font-size: 13px;
     border-radius: 3px;
+    border-style: none;
 }
 .refuseBtn{
 	padding: 0.3em 0.5em;
@@ -198,8 +205,15 @@ a,a:link,a:visited,a:hover{
     color: #fff;
     font-size: 13px;
     border-radius: 3px;
+    border-style: none;
 }
-
+/* .fixed_top{ */
+/*    display:inline-table; */
+/*    position:absolute; */
+/*    top:10%; */
+/*    width:calc(100% - 17px); */
+/*    background:#ccc; */
+/* } */
 
 /* 확인 모달 */
 .chkOverlay {
@@ -208,7 +222,7 @@ a,a:link,a:visited,a:hover{
   bottom: 0;
   left: 0;
   right: 0;
-  background: rgba(0, 0, 0, 0.7);
+  background: rgba(0, 0, 0, 0.3);
   transition: opacity 200ms;
   visibility: hidden;
   opacity: 0;
@@ -218,7 +232,7 @@ a,a:link,a:visited,a:hover{
   opacity: 1;
 }
 .chkPopup {
-  margin: 10% auto;
+  margin: 15% auto;
   padding: 2%;
   background: #fff;
   border-radius: 5px;
@@ -226,6 +240,7 @@ a,a:link,a:visited,a:hover{
   position: relative;
   transition: all 2s ease-in-out;
   text-align: center;
+  min-width: 260px;
 }
 
 .chkPopup .close {
@@ -277,9 +292,27 @@ a,a:link,a:visited,a:hover{
 
 #myDongHang {
 	min-height: 479px;
+	min-width: 750px;
 }
 
-
+/* 각게시판댓글로 이동하는 버튼 */
+#goBtn{
+	background: #73A2BF;
+    margin: 0 0.5em;
+    height: 2em;
+    width: 5.8em;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+}
+#doBtn{
+	background: #ffa352 ;
+    height: 2em;
+    width: 5.8em;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+}
 
 
 
