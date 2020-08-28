@@ -51,6 +51,7 @@ a,a:link,a:visited,a:hover{
 #myBoardForm{
 	width: 70%;
 	margin: 0 auto;
+	min-height: 326px;
 }
 #myBoardFormTitle{
 	display: inline-block;

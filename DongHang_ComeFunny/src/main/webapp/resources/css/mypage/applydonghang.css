@@ -41,6 +41,7 @@ a,a:link,a:visited,a:hover{
 #donghangform{
 	width: 70%;
 	margin: 0 auto;
+	min-height: 326px;
 }
 #donghangformTitle{
 	display: inline-block;
