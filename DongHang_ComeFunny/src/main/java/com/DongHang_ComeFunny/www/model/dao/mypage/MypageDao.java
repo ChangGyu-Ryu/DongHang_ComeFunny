@@ -66,6 +66,15 @@ public class MypageDao {
 		return session.insert("MYPAGE.insertUserImg", map);
 	}
 	
+	//방법1. 기존 프로필 사진 삭제 처리
+	public int updateUserImgIsDel() {
+		return session.update("MYPAGE.updateUserImgIsDel");
+	}
+	//방법2. 서버 업로드폴더에서 파일 삭제 및 Db에서도 해당 파일정보 삭제
+	public int deleteUserFile() {
+		return session.delete("MYPAGE.deleteUserFile");
+	}
+	
 	//프로필 이미지 수정
 	public int updateUserImg(Map<String, Object> map) {
 		return session.update("MYPAGE.updateUserImg", map);
@@ -113,6 +122,8 @@ public class MypageDao {
 	public int deleteGoLike(GoLike golike) {
 		return session.delete("MYPAGE.deleteGoLike", golike);
 	}
+
+
 
 	
 	

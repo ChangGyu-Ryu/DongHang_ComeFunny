@@ -484,6 +484,18 @@
     			,#{savePath})
  	</insert>
  	
+ 	<!-- 기존 프로필 사진 삭제 -->
+ 	<update id="updateUserImgIsDel">
+ 		update tb_userfile
+ 			SET ufisdel = 1
+ 		WHERE ufno = (SELECT MAX(ufno) from tb_userfile)
+ 	</update>
+ 	
+ 	<delete id="deleteUserFile">
+ 		DELETE tb_userfile
+ 		WHERE ufno = (SELECT MAX(ufno) from tb_userfile)
+ 	</delete>
+ 	
  	<!-- 프로필 이미지 수정 -->
  	<update id="updateUserImg" >
  		update tb_userFile
