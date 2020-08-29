@@ -40,11 +40,13 @@ $(document).ready(function() {
 	/*============== 비밀번호 모달 ============== */
 		
 	//비밀번호 확인 눌렀을 때 "개인정보 모달"을 띄워진다
-	$("#modal_pw_ok").click(function() {
-		console.log("2");
-		modal2.classList.toggle("show-modal");
-		modal.classList.toggle("show-modal"); 
-	});
+// 	$("#modal_pw_ok").click(function() {
+// 		console.log("2");
+		
+// 		modal2.classList.toggle("show-modal");
+// 		modal.classList.toggle("show-modal"); 
+		
+// 	});
 	
 	//비밀번호 모달 "닫기 버튼"을 눌렀을 때
 	$("#close").click(function() {
@@ -101,16 +103,110 @@ $(document).ready(function() {
 })
 </script>   
 
-
 <script type="text/javascript">
-function ProfileChanage(){ 
-	alert('개인정보 수정이 완료 되었습니다.'); 
-}
+	var ajaxFlag = false;
+	//아이디 중복 체크
+	function xmlPwCheck() {
+		
+		var modal = document.querySelector(".addmodal"); //비밀번호 확인 모달
+		var modal2 = document.querySelector(".editmodal"); //개인정보 수정 모달
+		
+		//사용자가 입력한 pwcheck값을 받아온다
+		var uPw = document.querySelector('#uPw').value;
+// 		var userId = document.querySelector('#userId').value;
+		
+		//XMLHttpRequest 객체 생성
+		// 전체 페이지의 새로고침없이도 URL 로부터 데이터를 받아올 수 있다
+		var xhr = new XMLHttpRequest();
+		
+		//Http Request Message의 시작줄 작성
+		xhr.open('POST','<%=request.getContextPath()%>/mypage/pwcheck');
+		
+		//Http Request Message의 header 작성
+		// open()후, send()전에 setRequestHeader()를 호출
+		// F12에서 Content-Type을 지정
+		xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+		
+		//body에 데이터 작성하고 전송
+		xhr.send('uPw='+uPw);
+		
+		//ajax 통신이 끝나고 (load) 실행할 콜백함수 등록
+		xhr.addEventListener('load', function() {
+			
+			//메모장 참고
+			//response body 있는 데이터를 받아옴
+			var data = xhr.response;
+			
+			console.log(data);
+			
+			if(data == 1) {
+				ajaxFlag = true;
+				alert("비밀번호가 일치합니다.");
 
-function imgChanage(){ 
-	alert('프로필 수정이 완료 되었습니다.'); 
-}
+			 	modal2.classList.toggle("show-modal");
+			 	modal.classList.toggle("show-modal"); 	
+			
+			} else {
+				ajaxFlag = false;
+				alert("비밀번호가 일치 하지 않습니다.");
+				
+			}
+		})
+		
+	}
 </script>
+<!-- <script type="text/javascript">
+$(document).ready(function() {
+	
+	$(".deleteProfileImgBtn").click(function(){
+	    console.log("삭제버튼클릭");
+
+	    var confirm_val = confirm("프로필 이미지를 삭제하시겠습니까?");
+	 
+	    if(confirm_val){
+	       
+	       var checkArr = new Array();
+	       
+	       $("input[class='deleteChk']:checked").each(function() {
+	          console.log($(this).val());
+	          checkArr.push($(this).val());
+	       });
+	       
+	       if(checkArr==null || checkArr ==""){
+	          confirm_val = confirm("삭제할 대상을 선택해 주세요.");
+	       }else{
+	          
+	          $.ajax({
+	             url : "/mypage/deletegolike"
+	             ,type : "post"
+	             ,data : { deleteChk : checkArr }
+	          	,traditional : true
+	          	,success : function(result){
+	             	if(result == 1){
+	                	alert("함께가요 찜목록이 삭제되었습니다.");
+	                	location.href=window.document.URL;
+	             	}else{
+	                	alert("삭제 실패");
+	             }
+	          }
+	          
+	          });
+	       }
+	       
+	 
+	    }
+	 })
+	
+})
+</script>
+ -->
+<script type="text/javascript">
+	function selectUrl(url){
+		var root = '<%=request.getContextPath()%>';
+		document.querySelector('#form-data').action = root + url;
+	}
+</script>
+
 </head>
 <body>
 <c:import url="mypage_header.jsp" />
@@ -121,42 +217,66 @@ function imgChanage(){
 	<div class="profile_title">프로필</div>
 	<p class="info_Agree">*일부정보가 ComeFunny 서비스를 사용하는 다른 사람에게 표시 될 수 있습니다.</p>
 	<div class="my_Profile">
-		<img class="my_Profile_img" alt="프로필 사진" src="/resources/image/mypage/profile.jpg">		
-		<img class="crown" alt="왕관이아이콘" src="/resources/image/mypage/crown.png">
-		<img class="camera" id="camera" alt="카메라이아이콘" src="/resources/image/mypage/camera.png">
+		<div>
+			<div style="width: 140px; height: 140px; border-radius: 100%;">
+			
+			<!-- 프로필 기본 이미지 -->
+			<c:if test="${empty loginInfo.userImg.ufStoredFileName }">
+				<img class="my_Profile_img" alt="프로필 사진" src="<%=request.getContextPath() %>/resources/upload/default.png">					
+			</c:if>
+			
+			<!-- 사용자가 변경한 이미지 -->
+			<c:if test="${not empty loginInfo.userImg.ufStoredFileName }">
+				<img class="my_Profile_img" alt="프로필 사진" src="<%=request.getContextPath() %>/resources/upload/${loginInfo.userImg.ufStoredFileName }">					
+			</c:if>
+			</div>
+			
+			<img class="crown" alt="왕관이아이콘" src="<%=request.getContextPath() %>/resources/image/mypage/crown.png">
+			<img class="camera" id="camera" alt="카메라이아이콘" src="<%=request.getContextPath() %>/resources/image/mypage/camera.png">
+		</div>
 		<div id="my_info3">
-			<p class="uid">아이디</p>
-			<p class="unick">닉네임</p>
+				<p class="uid" id="userId" name="userId">${loginInfo.user.userId }</p>
+				<p class="unick">${loginInfo.user.uNick }</p>
 		</div>
 	</div>
 	<div id="my_info2">
 		<div class="my_info2_list">
 			<div class="my_info2_item">이름</div>
-			<div class="my_info2_data" style="margin-left: 120px;">홍길동</div>
+			<div class="my_info2_data" style="margin-left: 120px;">${loginInfo.user.uName }</div>
 		</div>
 		<div class="my_info2_list">
 			<div class="my_info2_item">생년월일</div>
-			<div class="my_info2_data" style="margin-left: 80px;">1999-10-10</div>
+			<div class="my_info2_data" style="margin-left: 80px;">${loginInfo.user.uBirth }</div>
 		</div>
 		<div class="my_info2_list">
 			<div class="my_info2_item">성별</div>
-			<div class="my_info2_data" style="margin-left: 128px;">남</div>
+			<div class="my_info2_data" style="margin-left: 128px;">
+				<c:choose>
+					<c:when test="${loginInfo.user.uGender eq '1'}">
+						남자
+					</c:when>
+					<c:when test="${loginInfo.user.uGender eq '2'}">
+						여자
+					</c:when> 
+				</c:choose>
+			</div>
 		</div>
 		<div class="my_info2_list">
 			<div class="my_info2_item">전화번호</div>
-			<div class="my_info2_data" style="margin-left: 77px;">010-1234-5678</div>
+			<div class="my_info2_data" style="margin-left: 77px;">${loginInfo.user.uPhone }</div>
 		</div>
 		<div class="my_info2_list">
 			<div class="my_info2_item">이메일</div>
-			<div class="my_info2_data" style="margin-left: 80px;">hong@naver.com</div>
+			<div class="my_info2_data" style="margin-left: 80px;">${loginInfo.user.uMail }</div>
 		</div>
 		<div class="my_info2_list">
 			<div class="my_info2_item">비밀번호</div>
-			<div class="my_info2_data" style="margin-left: 100px;">****</div>
+			<input type="password" class="my_info2_data upw" readonly="readonly"
+				value="${loginInfo.user.uPw }">
 		</div>
 	</div>
 	<div style="">
-		<img id="more" class="more" alt="플러스아이콘" src="/resources/image/mypage/more.png">
+		<img id="more" class="more" alt="플러스아이콘" src="<%=request.getContextPath() %>/resources/image/mypage/more.png">
 	</div>
 </div>
 </div>
@@ -170,50 +290,55 @@ function imgChanage(){
 		<div class="modal_content">
 			<div class="modal_item">비밀번호</div>
 			<div class="modal_pw">
-				<input type="text" id="pwcheck" name="pwcheck" required="required"/>
+				<input type="password" id="uPw" name="uPw" required="required"/>
 			</div>
 		</div>
-	<button id="modal_pw_ok" class="modal_pw_ok">확인</button>
+		<button type="button" id="modal_pw_ok" class="modal_pw_ok" onclick="xmlPwCheck()">확인</button>
 	</div>
 </div>
 
 <!-- 개인정보 수정 모달 -->		
 <div class="editmodal" id="editmodal">
-	<form action="#" method="post">
+	<form action="<%= request.getContextPath() %>/mypage/profile" method="post">
 	<div class="cmodal-content">
 		<span class="modal_close" id="close2">&times;</span>
 		<div class="modal_title">프로필 관리</div>
 		<table class="modal_content2">
   			<tr class="modal_element2">
           		<td class="modal_name">이름</td>
-   				<td><input class="modal_readonly" type="text" value="홍길동" readonly /></td>
+   				<td><input id="uName" name="uName" class="modal_readonly" type="text" value="${loginInfo.user.uName }" readonly /></td>
    				<td class="modal_name">생년월일</td>
-    			<td><input class="modal_readonly" type="text" value="1997-03-03" readonly /></td>
+    			<td><input id="uBirth" name="uBirth" class="modal_readonly" type="text" value="${loginInfo.user.uBirth }" readonly /></td>
   			</tr>
   			<tr>
   				<td class="modal_name">아이디</td>
-    			<td><input class="modal_readonly" type="text" value="id홍길동" readonly /></td>
+    			<td><input id="userId" name="userId" class="modal_readonly" type="text" value="${loginInfo.user.userId }" readonly /></td>
     			<td class="modal_name">성별</td>
-    			<td><input class="modal_readonly" type="text" value="남성" readonly/></td>
+    			<td>
+    				<c:if test="${loginInfo.user.uGender eq '1'}">
+    					<input id="uGender" name="uGender" class="modal_readonly" type="text" value="남성" readonly disabled="disabled"/>
+    				</c:if>
+    				<c:if test="${loginInfo.user.uGender eq '2'}">
+    					<input id="uGender" name="uGender" class="modal_readonly" type="text" value="여성" readonly disabled="disabled"/>
+    				</c:if>
+    			</td>
+    			
 			</tr>
 	      	<tr>
           		<td class="modal_name">닉네임</td>
-    			<td><input class="modal_write" type="text" value="길동"/></td>
+    			<td><input id="uNick" name="uNick" class="modal_write" type="text" value="${loginInfo.user.uNick }"/></td>
           		<td class="modal_name">이메일</td>
-          		<td><input class="modal_write" type="text" value="hong@gamil.com"></td>
+          		<td><input id="uMail" name="uMail" class="modal_write" type="text" value="${loginInfo.user.uMail }"></td>
         	</tr>
   			<tr>
           		<td class="modal_name">비밀번호</td>
-    			<td><input class="modal_write" type="text" value="****"  /></td>
+    			<td><input id="uPw" name="uPw" class="modal_write" type="text" value="${loginInfo.user.uPw }"  /></td>
     			<td class="modal_name">전화번호</td>
-    			<td><input class="modal_write" type="text" value="010-1111-2222" /></td>
+    			<td><input id="uPhone" name="uPhone" class="modal_write" type="text" value="${loginInfo.user.uPhone }" /></td>
         	</tr>
 		</table>
 		
-		<button id="modal_change" class="modal_ok" onclick="ProfileChanage();">수정</button>
-		
-<!-- 		<button id="editsubmit">수정</button> -->
-<!-- 		<button id="deletesubmit">삭제</button> -->
+		<button id="modal_change" class="modal_ok"">수정</button>
 	</div>
 	</form>
 </div>
@@ -224,13 +349,21 @@ function imgChanage(){
      	<span class="modal_close" id="close3">&times;</span>
 		<div class="modal_title">프로필 관리</div>
 		<p id="modal_pwcheck">프로필 사진 선택</p>
-		<div class="modal_content">
-			<div class="modal_filetext">파일</div>
-			<div class="modal_pw">
-				<input type="file" id="pwcheck" name="pwcheck" required="required"/>
+		<form id="form-data" action="" method="post" enctype="multipart/form-data">
+			<div class="modal_content">
+				<div class="modal_filetext">파일</div>
+				<div class="modal_pw">
+					<input  type="file" id="file" name="files" />
+				</div>
 			</div>
-		</div>
-	<button id="modal_ok2" class="modal_pw_ok" onclick="imgChanage();">확인</button>
+			<c:if test="${not empty loginInfo.userImg.ufStoredFileName }">
+				<button id="modal_defaultImg" onclick="selectUrl('/mypage/changeDeafultImg')">원본으로 변경</button>
+				<button id="modal_ok2" class="modal_pw_ok" onclick="selectUrl('/mypage/changeProfile')">프로필 수정</button>
+			</c:if>
+			<c:if test="${empty loginInfo.userImg.ufStoredFileName }">
+				<button id="modal_insertImg" onclick="selectUrl('/mypage/insertProfile')">프로필 등록</button>
+			</c:if>
+		</form>
 	</div>
 </div>
 
