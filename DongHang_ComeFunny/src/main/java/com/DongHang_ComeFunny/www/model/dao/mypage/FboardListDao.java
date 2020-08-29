@@ -82,6 +82,38 @@ public class FboardListDao {
 		sqlSession.delete("MYPAGE.deleteRboardList", rboard);
 		
 	}
+	
+	// ------------------------------------------------------------------
+	//동행 평점 개수
+	public ReviewBoard selectReviewBoardByDH(ReviewBoard rboard) {
+		return sqlSession.selectOne("MYPAGE.selectReviewBoardByDH", rboard);
+	}
+
+	public Map<String, Object> selectReviewGbAvg(int rbGbNo) {
+		return sqlSession.selectOne("MYPAGE.selectReviewGbAvg", rbGbNo);
+	}
+
+	public Map<String, Object> selectReviewDbAvg(int rbDbNo) {
+		return sqlSession.selectOne("MYPAGE.selectReviewDbAvg", rbDbNo);
+	}
+
+	public int selectReviewBoardByRbGbNo(int rbGbNo) {
+		return sqlSession.selectOne("MYPAGE.selectReviewBoardByRbGbNo", rbGbNo);
+	}
+
+	public int selectReviewBoardByRbDbNo(int rbDbNo) {
+		return sqlSession.selectOne("MYPAGE.selectReviewBoardByRbDbNo", rbDbNo);
+	}
+	
+	public int updateGoAvgByZero(Map<String, Object> reviewStarGo) {
+		return sqlSession.update("MYPAGE.updateGoAvgByZero", reviewStarGo);
+	}
+
+	public int updateDoAvgByZero(Map<String, Object> reviewStarDo) {
+		return sqlSession.update("MYPAGE.updateDoAvgByZero", reviewStarDo);
+	}
+	
+	//--------------------------------------------------------------
 //	//후기게시판 리스트 삭제(IsDel=1)
 //	public void deleteRboardList(ReviewBoard rboard) {
 ////		System.out.println(rboard);
@@ -277,6 +309,11 @@ public class FboardListDao {
 		param.put("cate", cate);
 		sqlSession.delete("MYPAGE.deleteMyDhList", param);
 	}
+
+
+
+
+
 
 	
 }

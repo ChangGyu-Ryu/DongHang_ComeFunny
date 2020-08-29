@@ -128,6 +128,8 @@ $(document).ready(function() {
 		<tr >			
 			<td colspan="2">
 			<div class= "reviewview__table__target ">
+				<input type="hidden" name="gbNo" id="gbNo" value="${donghang.DHNO}">
+				<input type="hidden" name="gbCategory" id="gbCategory" value="${donghang.DHCATEGORY}">
 				<div>${donghang.DHCATEGORY} &ensp;|| &nbsp; ${donghang.DHTITLE}</div>
 
 			</div>
@@ -191,7 +193,7 @@ $(document).ready(function() {
 			<c:if test="${logInInfo.userId == rview.detail.USERID }">
 				<div>
 					<button class ="reviewview__button__modify" onclick="submitData('reviewmodify?rbNo=${rview.detail.RBNO}&userId=${rview.detail.USERID}')">수정</button>
-					<button class ="reviewview__button__delete" onclick="submitData('/board/reviewdelete?rbNo=${rview.detail.RBNO}&userId=${rview.detail.USERID}')">삭제</button>
+					<button class ="reviewview__button__delete" onclick="submitData('/board/reviewdelete?rbNo=${rview.detail.RBNO}&userId=${rview.detail.USERID}&gbNo=${donghang.DHNO}&gbCategory=${donghang.DHCATEGORY}')">삭제</button>
 				</div>
 			</c:if>
 			

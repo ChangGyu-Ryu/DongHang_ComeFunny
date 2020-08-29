@@ -74,6 +74,49 @@ public class FboardListServiceImpl implements FboardListService{
 	}
 
 	@Override
+	public ReviewBoard selectReviewBoardByDH(ReviewBoard rboard) {
+		return fboardlistDao.selectReviewBoardByDH(rboard);
+	}
+	
+	@Override
+	public int updateDhStarBydelete(ReviewBoard review) {
+		// 1. 결과값 넣을 빈 int 값 생성
+		int result = 0;
+		if(review.getRbGbNo() > 0 ) {
+			int cntgb = fboardlistDao.selectReviewBoardByRbGbNo(review.getRbGbNo());
+			if( cntgb > 1) {
+				Map<String, Object> reviewStarGo = fboardlistDao.selectReviewGbAvg(review.getRbGbNo());
+				reviewStarGo.put("gbNo",review.getRbGbNo());
+				result = fboardlistDao.updateGoAvgByZero(reviewStarGo);
+				return result;
+			} else {
+				Map<String,Object> reviewZero = new HashMap<>();
+				reviewZero.put("RBDHSTARAVG",0);
+				reviewZero.put("RBHOSTSTARAVG",0);
+				reviewZero.put("gbNo",review.getRbGbNo());
+				result = fboardlistDao.updateGoAvgByZero(reviewZero);
+				return result;
+			}
+		} else if(review.getRbDbNo() > 0) {
+			int cntdb = fboardlistDao.selectReviewBoardByRbDbNo(review.getRbDbNo());
+			if( cntdb > 1 ) {
+				Map<String, Object> reviewStarDo = fboardlistDao.selectReviewDbAvg(review.getRbDbNo());
+				reviewStarDo.put("gbNo",review.getRbDbNo());
+				result = fboardlistDao.updateDoAvgByZero(reviewStarDo);
+				return result;
+			} else {
+				Map<String,Object> reviewZero = new HashMap<>();
+				reviewZero.put("RBDHSTARAVG",0);
+				reviewZero.put("RBHOSTSTARAVG",0);
+				reviewZero.put("gbNo",review.getRbDbNo());
+				result = fboardlistDao.updateDoAvgByZero(reviewZero);
+				return result;
+			}
+		}
+		return result;
+	}
+
+	@Override
 	public Map<String, Object> selectFcmtList(int cPage, int cntPerPage, int uno) {
 		Map<String, Object> commandMap = new HashMap<String, Object>();
 		Paging p = new Paging(fboardlistDao.selectCbContentCnt(uno), cPage, cntPerPage);

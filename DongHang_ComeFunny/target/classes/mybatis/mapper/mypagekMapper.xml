@@ -77,7 +77,57 @@
 <!-- 		set rbisdel = 1 -->
 <!-- 		where rbno=#{rbNo}	 -->
 <!-- 	</update> -->
+	<!-- 후기 게시글 삭제시 발생하는 평균 별점 재계산 및 후기 다시 쓸 수 있게 만들기 -->
+	<!-- 동행 평점 개수 조회 -->
+	<select id = "selectReviewBoardByDH" resultType="RBOARD">
+		SELECT * FROM tb_reviewboard
+		WHERE rbno = #{rbNo}
+	</select>
 	
+	<select id="selectReviewGbAvg" resultType="HashMap">
+		SELECT ROUND(AVG(rbdhstar), 1) AS RBDHSTARAVG, ROUND(AVG(rbhoststar), 1) AS RBHOSTSTARAVG FROM
+   			tb_reviewboard
+   		WHERE rbgbno = #{rbGbNo}
+	</select>
+	
+	<select id="selectReviewDbAvg" resultType="HashMap">
+		SELECT ROUND(AVG(rbdhstar), 1) AS RBDHSTARAVG, ROUND(AVG(rbhoststar), 1) AS RBHOSTSTARAVG FROM
+  			tb_reviewboard
+  		WHERE rbdbno = #{rbDbNo}
+	</select>
+
+	<select id = "selectReviewBoardByRbGbNo" resultType="int">
+   		SELECT COUNT(*) FROM
+   			tb_reviewboard
+   		WHERE rbgbno = #{rbGbNo}
+   	</select>
+   	
+   	<select id = "selectReviewBoardByRbDbNo" resultType="int">
+   		SELECT COUNT(*) FROM
+   			tb_reviewboard
+   		WHERE rbdbno = #{rbDbNo}
+   	</select>
+
+	<update id="updateGoAvgByZero">
+  		UPDATE
+  			tb_goboard
+  		SET
+  			gbdhstaravg = #{RBDHSTARAVG},
+  			gbhoststaravg = #{RBHOSTSTARAVG},
+  			gbstarcnt = 0
+  		WHERE gbno = #{gbNo}
+	</update>	
+	
+	<update id="updateDoAvgByZero">
+   		UPDATE
+   			tb_doboard
+   		SET
+   			dbdhstaravg = #{RBDHSTARAVG},
+   			dbhoststaravg = #{RBHOSTSTARAVG},
+   			dbstarcnt = 0
+   		WHERE dbno = #{gbNo}
+	</update>
+    	
 	
 	<!-- 댓글 전체 글 갯수 -->
 	<select id="selectCbContentCnt" resultType="int">

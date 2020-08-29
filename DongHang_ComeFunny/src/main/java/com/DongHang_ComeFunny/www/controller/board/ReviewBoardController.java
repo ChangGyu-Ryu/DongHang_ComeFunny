@@ -504,21 +504,21 @@ public class ReviewBoardController {
 		System.out.println("[controller] reviewModifyImpl 받은 파라미터값 Map(donghangMap)  : "+ donghangMap);
 		// ---------------------------------------------------------------------------------------------
 		
-		if(donghangMap.get("beforeGbCategory").equals(donghangMap.get("gbCateogry"))) {
-			if(donghangMap.get("beforeGbCategory").equals("함께가요")) {
+		if(donghangMap.get("beforeGbCategory").equals("함께가요")) {
+			if(donghangMap.get("gbCategory").equals("함께가요")) {
 				reviewboard.setRbGbNo(gbNo);
 				reviewboard.setRbDbNo(0);
-			} else if(donghangMap.get("beforeGbCategory").equals("함께해요")) {
+			} else if(donghangMap.get("gbCategory").equals("함께해요")) {
 				reviewboard.setRbGbNo(0);
 				reviewboard.setRbDbNo(gbNo);
 			}
-		} else {
-			if(donghangMap.get("beforeGbCategory").equals("함께가요")) {
-				reviewboard.setRbGbNo(0);
-				reviewboard.setRbDbNo(gbNo);
-			} else if(donghangMap.get("beforeGbCategory").equals("함께해요")) {
+		} else if(donghangMap.get("beforeGbCategory").equals("함께해요")){
+			if(donghangMap.get("gbCategory").equals("함께가요")) {
 				reviewboard.setRbGbNo(gbNo);
 				reviewboard.setRbDbNo(0);
+			} else if(donghangMap.get("gbCategory").equals("함께해요")) {
+				reviewboard.setRbGbNo(0);
+				reviewboard.setRbDbNo(gbNo);
 			}
 		}
 		
@@ -552,15 +552,13 @@ public class ReviewBoardController {
 		// 8. 세션 회원아이디와 후기게시판 글 작성자의 회원아이디 값이 같을 경우
 		if(sessionUser.getUserId().equals(((Map)commandMap.get("detail")).get("USERID"))) {
 			reviewboard.setRbUNo(sessionUser.getuNo());
-		
-			reviewBoardService.updateDhStarInModify(donghangMap);
 			// 9. 파라미터값 Service에 전달 후 int 값 반환
 			//    ( 성공 : 1, 실패 : 0 )
 			res = reviewBoardService.updateReviewModify(reviewboard, files, root);
+		
+			reviewBoardService.updateDhStarInModify(donghangMap, reviewboard);
 		} 
 		
-		Map<String,Object> commandMap2 = reviewBoardService.selectReviewView(reviewboard.getRbNo());
-		System.out.println("이건 뭐야?"+commandMap2);
 		// 10. 게시글 수정 성공한다면,
 		if( res > 0) {
 			// 11. ModelAndView에 VO 및 View 이름값 넣기
@@ -586,8 +584,16 @@ public class ReviewBoardController {
 	@RequestMapping(value="/reviewdelete", method = RequestMethod.GET)
 	public ModelAndView reviewDelete(
 			int rbNo
+			, @RequestParam int gbNo
+			, @RequestParam String gbCategory
 			, String userId
 			, HttpSession session) {
+		// 0. 받은 파라미터값 Map으로 넣기
+		Map<String, Object> donghangMap = new HashMap<>();
+		donghangMap.put("gbNo", gbNo);
+		donghangMap.put("gbCategory", gbCategory);
+		
+		
 		// 1. 모델앤뷰 객체 생성
 		ModelAndView mav = new ModelAndView();
 		// 2. 세션에 저장된 로그인 정보를 'User' VO에 저장
@@ -615,22 +621,24 @@ public class ReviewBoardController {
 			// 8. 파라미터값 Service에 전달 후 int 값 반환
 			//    ( 성공 : 1, 실패 : 0 )
 			res = reviewBoardService.deleteReviewBoard(rbNo);
+			
+			res = reviewBoardService.updateDhStarBydelete(donghangMap, rbNo);
 		} 
 		
 		// 9. 게시글 삭제 성공한다면,
-		if(res > 0) {
+//		if(res > 0) {
 			// 10. view페이지 : /WEB-INF/views/common 폴더 안에 result.jsp
 			// 10-1. 경고메세지 출력 후 지정된 url로 페이지 이동
 			mav.addObject("alertMsg", "게시물 삭제에 성공했습니다.");
 			mav.addObject("url", "reviewlist");
 			mav.setViewName("common/result");
-		} else {
-			// 11. view페이지 : /WEB-INF/views/common 폴더 안에 result.jsp
-			// 11-1. 경고메세지 출력 후 지정된 url로 페이지 이동
-			mav.addObject("alertMsg", "해당 게시물에 접근할 권한이 없습니다.");
-			mav.addObject("url", "reviewlist");
-			mav.setViewName("common/result");
-		}
+//		} else {
+//			// 11. view페이지 : /WEB-INF/views/common 폴더 안에 result.jsp
+//			// 11-1. 경고메세지 출력 후 지정된 url로 페이지 이동
+//			mav.addObject("alertMsg", "해당 게시물에 접근할 권한이 없습니다.");
+//			mav.addObject("url", "reviewlist");
+//			mav.setViewName("common/result");
+//		}
 		// 12. 데이터 처리가 완료된 모델(VO)값과 보여질 페이지(jsp)를 반환한다.
 		return mav;
 	}

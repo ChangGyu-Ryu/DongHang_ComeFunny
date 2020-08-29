@@ -1,5 +1,6 @@
 package com.DongHang_ComeFunny.www.controller.mypage;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -817,12 +818,17 @@ public class MypageController {
 		
 		int result = 0;
 		int rbno = 0;
-		
+		//동행후기 조회
+
 		if(uno != null || uno!="") {
 			for(String i : chArr) {
 				rbno = Integer.parseInt(i);
 				rboard.setRbNo(rbno);
+				ReviewBoard review = fboardlistservice.selectReviewBoardByDH(rboard);
+				fboardlistservice.updateDhStarBydelete(review);
 				fboardlistservice.deleteRboardList(rboard);
+				
+
 			}
 			result=1;
 		}

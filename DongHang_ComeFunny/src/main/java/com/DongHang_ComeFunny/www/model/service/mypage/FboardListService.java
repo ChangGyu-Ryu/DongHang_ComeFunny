@@ -42,7 +42,19 @@ public interface FboardListService {
 	 * @param rboard
 	 */
 	public void deleteRboardList(ReviewBoard rboard);
-
+	
+	/**
+	 * 동행 후기 조회
+	 * @param rboard
+	 * @return
+	 */
+	public ReviewBoard selectReviewBoardByDH(ReviewBoard rboard);
+	
+	/**
+	 * 동행 평점 초기화
+	 * @param review
+	 */
+	public int updateDhStarBydelete(ReviewBoard review);
 	
 	/**
 	 * 댓글 목록 띄우기
@@ -162,6 +174,9 @@ public interface FboardListService {
 	 * @param param
 	 */
 	public void deleteMyDhList(String param);
+
+	
+
 
 
 

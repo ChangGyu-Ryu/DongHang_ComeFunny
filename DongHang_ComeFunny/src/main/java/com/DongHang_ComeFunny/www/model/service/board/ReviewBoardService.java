@@ -139,7 +139,7 @@ public interface ReviewBoardService {
 	 */
 	public Map<String, Object> selectDoBoardView(int rbDbNo);
 
-	public int updateDhStarInModify(Map<String, Object> donghangMap);
+	public int updateDhStarInModify(Map<String, Object> donghangMap, ReviewBoard review);
 
 	public int insertReviewBoardLike(ReviewLike reviewlike);
 
@@ -154,6 +154,9 @@ public interface ReviewBoardService {
 	public int getBoardRec(ReviewRecommend reviewrecommend);
 
 	public int selectDHApplyList(int getuNo);
+
+	public int updateDhStarBydelete(Map<String, Object> donghangMap, int rbNo);
+
 
 
 

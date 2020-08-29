@@ -354,13 +354,39 @@ public class ReviewBoardDao {
 		return sqlSession.selectOne("REVIEW.selectReviewNo", rbUNo);
 	}
 	
-	public Map<String, Object> selectReviewAvg(int rbNo) {
-		return sqlSession.selectOne("REVIEW.selectReviewAvg", rbNo);
+	public Map<String, Object> selectReviewGbAvg(int gbNo) {
+		return sqlSession.selectOne("REVIEW.selectReviewGbAvg", gbNo);
+	}
+	
+	public Map<String, Object> selectReviewDbAvg(int gbNo) {
+		return sqlSession.selectOne("REVIEW.selectReviewDbAvg", gbNo);
 	}
 
 	public int updateGoAvg(Map<String, Object> reviewStar) {
 		return sqlSession.update("REVIEW.updateGoAvg", reviewStar);
 	}
+
+	public int updateDoAvg(Map<String, Object> reviewStar) {
+		return sqlSession.update("REVIEW.updateDoAvg", reviewStar);
+	}
+
+	public int selectReviewBoardByRbGbNo(int gbNo) {
+		return sqlSession.selectOne("REVIEW.selectReviewBoardByRbGbNo", gbNo);
+	}
+
+	public int selectReviewBoardByRbDbNo(int gbNo) {
+		return sqlSession.selectOne("REVIEW.selectReviewBoardByRbDbNo", gbNo);
+	}
+
+	public int updateGoAvgByZero(Map<String, Object> reviewZero) {
+		return sqlSession.update("REVIEW.updateGoAvgByZero", reviewZero);
+	}
+
+	public int updateDoAvgByZero(Map<String, Object> reviewZero) {
+		return sqlSession.update("REVIEW.updateDoAvgByZero", reviewZero);
+	}
+
+
 
 
 

@@ -126,6 +126,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   				,rbcontent = #{rbContent}
   				,rbdhstar = #{rbDhStar}
   				,rbhoststar = #{rbHostStar}
+  				,rbgbno = #{rbGbNo}
+  				,rbdbno = #{rbDbNo}
     		WHERE
     			rbno = #{rbNo}
     			AND rbisdel = 0
@@ -273,6 +275,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				                    *
 				                  FROM tb_goapply ga, tb_goboard gb
 				                  WHERE ga.gagbno = gb.gbno
+				                  AND gb.gbstarcnt = 0
 				                  ORDER BY gbwrittendate DESC
 				                 )
 				          WHERE gauno = #{uNo}
@@ -282,6 +285,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				                    *
 				                  FROM tb_doapply da, tb_doboard db
 				                  WHERE da.dadbno = db.dbno
+				                  AND db.dbstarcnt = 0
 				                  ORDER BY dbwrittendate DESC
 				                 )
 				          WHERE dauno = #{uNo}
@@ -308,6 +312,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				                    *
 				                  FROM tb_goapply ga, tb_goboard gb
 				                  WHERE ga.gagbno = gb.gbno
+				                  AND gb.gbstarcnt = 0
 				                  ORDER BY gbwrittendate DESC
 				                 )
 				          WHERE gauno = #{uNo}
@@ -317,6 +322,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				                    *
 				                  FROM tb_doapply da, tb_doboard db
 				                  WHERE da.dadbno = db.dbno
+				                  AND db.dbstarcnt = 0
 				                  ORDER BY dbwrittendate DESC
 				                 )
 				          WHERE dauno = #{uNo}
@@ -344,6 +350,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				                    *
 				                  FROM tb_goapply ga, tb_goboard gb
 				                  WHERE ga.gagbno = gb.gbno
+				                  AND gb.gbstarcnt = 0
 				                  ORDER BY gbwrittendate DESC
 				                 )
 				          WHERE gauno = #{uNo}
@@ -353,6 +360,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				                    *
 				                  FROM tb_doapply da, tb_doboard db
 				                  WHERE da.dadbno = db.dbno
+				                  AND db.dbstarcnt = 0
 				                  ORDER BY dbwrittendate DESC
 				                 )
 				          WHERE dauno = #{uNo}
@@ -385,6 +393,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				                    *
 				                  FROM tb_goapply ga, tb_goboard gb
 				                  WHERE ga.gagbno = gb.gbno
+				                  AND gb.gbstarcnt = 0
 				                  ORDER BY gbwrittendate DESC
 				                 )
 				          WHERE gauno = #{uNo}
@@ -394,6 +403,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				                    *
 				                  FROM tb_doapply da, tb_doboard db
 				                  WHERE da.dadbno = db.dbno
+				                  AND db.dbstarcnt = 0
 				                  ORDER BY dbwrittendate DESC
 				                 )
 				          WHERE dauno = #{uNo}
@@ -632,6 +642,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			                        *
 			                      FROM tb_goapply ga, tb_goboard gb
 			                      WHERE ga.gagbno = gb.gbno
+			                      AND gb.gbstarcnt = 0
 			                      ORDER BY gbwrittendate DESC
 			                     )
 			              WHERE gauno = #{uNo}
@@ -641,6 +652,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			                        *
 			                      FROM tb_doapply da, tb_doboard db
 			                      WHERE da.dadbno = db.dbno
+			                      AND db.dbstarcnt = 0
 			                      ORDER BY dbwrittendate DESC
 			                     )
 			              WHERE dauno = #{uNo}
@@ -654,10 +666,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     		WHERE rbuno = #{rbUNo}
     		
     	</select>
-    	<select id = "selectReviewAvg" resultType="HashMap">
-			SELECT ROUND(AVG(rbdhstar)) AS RBDHSTARAVG, ROUND(AVG(rbhoststar)) AS RBHOSTSTARAVG FROM
+    	<select id = "selectReviewGbAvg" resultType="HashMap">
+			SELECT ROUND(AVG(rbdhstar), 1) AS RBDHSTARAVG, ROUND(AVG(rbhoststar), 1) AS RBHOSTSTARAVG FROM
     			tb_reviewboard
-    		WHERE rbno = #{rbNo}
+    		WHERE rbgbno = #{gbNo}
+    	</select>
+    	<select id = "selectReviewDbAvg" resultType="HashMap">
+			SELECT ROUND(AVG(rbdhstar), 1) AS RBDHSTARAVG, ROUND(AVG(rbhoststar), 1) AS RBHOSTSTARAVG FROM
+    			tb_reviewboard
+    		WHERE rbdbno = #{gbNo}
     	</select>
     	
     	<update id = "updateGoAvg">
@@ -665,8 +682,51 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     			tb_goboard
     		SET
     			gbdhstaravg = #{RBDHSTARAVG},
-    			gbhoststaravg = #{RBHOSTSTARAVG}
+    			gbhoststaravg = #{RBHOSTSTARAVG},
+    			gbstarcnt = 1
     		WHERE gbno = #{gbNo}
+    	</update>
+    	
+    	<update id = "updateDoAvg">
+    		UPDATE
+    			tb_doboard
+    		SET
+    			dbdhstaravg = #{RBDHSTARAVG},
+    			dbhoststaravg = #{RBHOSTSTARAVG},
+    			dbstarcnt = 1
+    		WHERE dbno = #{gbNo}
+    	</update>
+    	
+    	<select id = "selectReviewBoardByRbGbNo" resultType="int">
+    		SELECT COUNT(*) FROM
+    			tb_reviewboard
+    		WHERE rbgbno = #{gbNo}
+    	</select>
+    	
+    	<select id = "selectReviewBoardByRbDbNo" resultType="int">
+    		SELECT COUNT(*) FROM
+    			tb_reviewboard
+    		WHERE rbdbno = #{gbNo}
+    	</select>
+    	
+    	<update id="updateGoAvgByZero">
+    		UPDATE
+    			tb_goboard
+    		SET
+    			gbdhstaravg = #{RBDHSTARAVG},
+    			gbhoststaravg = #{RBHOSTSTARAVG},
+    			gbstarcnt = 0
+    		WHERE gbno = #{gbNo}
+    	</update>
+    	
+    	<update id="updateDoAvgByZero">
+    		UPDATE
+    			tb_doboard
+    		SET
+    			dbdhstaravg = #{RBDHSTARAVG},
+    			dbhoststaravg = #{RBHOSTSTARAVG},
+    			dbstarcnt = 0
+    		WHERE dbno = #{gbNo}
     	</update>
     	
 </mapper>

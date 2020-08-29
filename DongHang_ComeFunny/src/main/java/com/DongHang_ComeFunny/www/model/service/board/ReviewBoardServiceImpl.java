@@ -383,35 +383,19 @@ public class ReviewBoardServiceImpl implements ReviewBoardService {
 
 		// 1. 결과값 넣을 빈 int 값 생성
 		int result = 0;
+		int gbNo = Integer.parseInt(donghangMap.get("gbNo").toString());
+		
+//		int rbNo = reviewBoardDao.selectReviewNo(review.getRbUNo());
+		
+		
 		if(donghangMap.get("gbCategory").equals("함께가요")) {
-//			int ghStarCntPlusOne = reviewBoardDao.updateGoBoardStarCnt(donghangMap);
-//			System.out.println("[ServiceImpl] updateDhStar ghStarCntPlustOne 성공 1, 실패 0 : "+ghStarCntPlusOne);
-////			System.out.println("카테고리는 함께가요");
-//			// 2-0. 함께가요 별점개수 조회
-//			int gbStarCnt = reviewBoardDao.selectGoBoardStarCnt(donghangMap);
-//			donghangMap.put("gbStarCnt", gbStarCnt);
-//			System.out.println("[ServiceImpl] updateDhStar ghStarCnt : "+gbStarCnt);
-//			// 2. 카테고리명이 함께가요라면, 함께가요 테이블 업데이트
-//			result = reviewBoardDao.updateGoBoardStar(donghangMap);
-			int gbNo = Integer.parseInt(donghangMap.get("gbNo").toString());
-			
-			int rbUNo = reviewBoardDao.selectReviewNo(review.getRbUNo());
-			
-			Map<String,Object> reviewStar = reviewBoardDao.selectReviewAvg(rbUNo);
-			reviewStar.put("gbNo", gbNo);
-			result = reviewBoardDao.updateGoAvg(reviewStar);
-			
-
+			Map<String,Object> reviewStarGo = reviewBoardDao.selectReviewGbAvg(gbNo);
+			reviewStarGo.put("gbNo",gbNo);
+			result = reviewBoardDao.updateGoAvg(reviewStarGo);
 		} else if(donghangMap.get("gbCategory").equals("함께해요")) {
-			int dhStarCntPlusOne = reviewBoardDao.updateDoBoardStarCnt(donghangMap);
-			System.out.println("[ServiceImpl] updateDhStar ghStarCntPlustOne 성공 1, 실패 0 : "+dhStarCntPlusOne);
-//			System.out.println("카테고리는 함께해요");
-			// 3-0. 함께해요 별점개수 조회
-			int dbStarCnt = reviewBoardDao.selectDoBoardStarCnt(donghangMap);
-			donghangMap.put("dbStarCnt", dbStarCnt);
-			System.out.println("[ServiceImpl] updateDhStar ghStarCnt : "+dbStarCnt);
-			// 3. 카테고리명이 함께해요라면, 함께해요 테이블 업데이트
-			result = reviewBoardDao.updateDoBoardStar(donghangMap);
+			Map<String,Object> reviewStarDo = reviewBoardDao.selectReviewDbAvg(gbNo);
+			reviewStarDo.put("gbNo",gbNo);
+			result = reviewBoardDao.updateDoAvg(reviewStarDo);
 		}
 		// 성공 : 1, 실패 : 0
 		return result;
@@ -438,66 +422,94 @@ public class ReviewBoardServiceImpl implements ReviewBoardService {
 	}
 	
 	@Override
-	public int updateDhStarInModify(Map<String, Object> donghangMap) {
+	public int updateDhStarInModify(Map<String, Object> donghangMap, ReviewBoard review) {
 		
 
 		// 1. 결과값 넣을 빈 int 값 생성
 		int result = 0;
-		if(donghangMap.get("beforeGbCategory").equals(donghangMap.get("gbCateogry"))) {
-			if(donghangMap.get("beforeGbCategory").equals("함께가요")) {
-				// 2-0. 함께가요 별점개수 조회
-				int beforeGbStarCnt = reviewBoardDao.selectGoBoardStarCntBefore(donghangMap);
-				int gbStarCnt = reviewBoardDao.selectGoBoardStarCnt(donghangMap);
-				donghangMap.put("beforeGbStarCnt", beforeGbStarCnt);
-				donghangMap.put("gbStarCnt", gbStarCnt);
+		int gbNo = Integer.parseInt(donghangMap.get("gbNo").toString());
+		System.out.println("여기gbno는"+gbNo);
+		int beforeGbNo = Integer.parseInt(donghangMap.get("beforeGbNo").toString());
+//		
+		System.out.println("여기beforeGbNo는"+beforeGbNo);
+//		int rbNo = review.getRbNo();
+		
+//		Map<String,Object> reviewStarAfter = reviewBoardDao.selectReviewAvg(rbNo);
+//		reviewStarAfter.put("gbNo", gbNo);
+//		
+//		Map<String,Object> reviewStarBefore = reviewBoardDao.selectReviewAvg(rbNo);
+//		reviewStarBefore.put("gbNo", beforeGbNo);
+		
+		
+		if(donghangMap.get("beforeGbCategory").equals("함께가요")) {
+			if(donghangMap.get("gbCategory").equals("함께가요")) {
+				Map<String,Object> reviewStarGoBefore = reviewBoardDao.selectReviewGbAvg(beforeGbNo);
+				if(reviewStarGoBefore != null) {
+					reviewStarGoBefore.put("gbNo",beforeGbNo);
+					result = reviewBoardDao.updateGoAvg(reviewStarGoBefore);
+				} else {
+					Map<String,Object> reviewZero = new HashMap<>();
+					reviewZero.put("RBDHSTARAVG",0);
+					reviewZero.put("RBHOSTSTARAVG",0);
+					reviewZero.put("gbNo",beforeGbNo);
+					result = reviewBoardDao.updateGoAvgByZero(reviewZero);
+				}
 				
-				// 2. 카테고리명이 함께가요라면, 함께가요 테이블 업데이트
-					result = reviewBoardDao.updateGoBoardStarBefore(donghangMap);
-					result = reviewBoardDao.updateGoBoardStarAfter(donghangMap);
-					result = reviewBoardDao.updateReviewGoBoardNo(donghangMap);
-
-			} else if(donghangMap.get("beforeGbCategory").equals("함께해요")) {
-				// 3-0. 함께해요 별점개수 조회
-				int beforeDbStarCnt = reviewBoardDao.selectDoBoardStarCntBefore(donghangMap);
-				int dbStarCnt = reviewBoardDao.selectDoBoardStarCnt(donghangMap);
-				donghangMap.put("beforeDbStarCnt", beforeDbStarCnt);
-				donghangMap.put("dbStarCnt", dbStarCnt);
-				// 3. 카테고리명이 함께해요라면, 함께해요 테이블 업데이트
-				result = reviewBoardDao.updateDoBoardStarBefore(donghangMap);
-				result = reviewBoardDao.updateDoBoardStarAfter(donghangMap);
-				result = reviewBoardDao.updateReviewDoBoardNo(donghangMap);
+				Map<String,Object> reviewStarGo = reviewBoardDao.selectReviewGbAvg(gbNo);
+				reviewStarGo.put("gbNo",gbNo);
+				result = reviewBoardDao.updateGoAvg(reviewStarGo);
+			} else if(donghangMap.get("gbCategory").equals("함께해요")) {
+				Map<String,Object> reviewStarGoBefore = reviewBoardDao.selectReviewGbAvg(beforeGbNo);
+				if(reviewStarGoBefore != null) {
+					reviewStarGoBefore.put("gbNo",beforeGbNo);
+					result = reviewBoardDao.updateGoAvgByZero(reviewStarGoBefore);
+				} else {
+					Map<String,Object> reviewZero = new HashMap<>();
+					reviewZero.put("RBDHSTARAVG",0);
+					reviewZero.put("RBHOSTSTARAVG",0);
+					reviewZero.put("gbNo",beforeGbNo);
+					result = reviewBoardDao.updateGoAvgByZero(reviewZero);
+				}
+				
+				Map<String,Object> reviewStarDo = reviewBoardDao.selectReviewDbAvg(gbNo);
+				reviewStarDo.put("gbNo",gbNo);
+				result = reviewBoardDao.updateDoAvg(reviewStarDo);
 			}
-			
-		} else {
-			if(donghangMap.get("beforeGbCategory").equals("함께가요")) {
-				// 2-0. 함께가요 별점개수 조회
-				int beforeGbStarCnt = reviewBoardDao.selectGoBoardStarCntBefore(donghangMap);
-				int gbStarCnt = reviewBoardDao.selectGoBoardStarCnt(donghangMap);
-				donghangMap.put("gbStarCnt", gbStarCnt);
-				donghangMap.put("beforeGbStarCnt", beforeGbStarCnt);
-				// 2. 카테고리명이 함께가요라면, 함께가요 테이블 업데이트
-				result = reviewBoardDao.updateGoBoardStarBefore(donghangMap);
+		} else if(donghangMap.get("beforeGbCategory").equals("함께해요")){
+			if(donghangMap.get("gbCategory").equals("함께가요")) {
+				Map<String,Object> reviewStarDoBefore = reviewBoardDao.selectReviewDbAvg(beforeGbNo);
+				if(reviewStarDoBefore != null) {
+					reviewStarDoBefore.put("gbNo",beforeGbNo);
+					result = reviewBoardDao.updateDoAvg(reviewStarDoBefore);
+				} else {
+					Map<String,Object> reviewZero = new HashMap<>();
+					reviewZero.put("RBDHSTARAVG",0);
+					reviewZero.put("RBHOSTSTARAVG",0);
+					reviewZero.put("gbNo",beforeGbNo);
+					result = reviewBoardDao.updateDoAvgByZero(reviewZero);
+				}
 				
-				int dbStarCnt = reviewBoardDao.selectDoBoardStarCnt(donghangMap);
-				donghangMap.put("dbStarCnt", dbStarCnt);
-				result = reviewBoardDao.updateDoBoardStarAfter(donghangMap);
-				result = reviewBoardDao.updateReviewDoBoardNo(donghangMap);
-			} else if(donghangMap.get("beforeGbCategory").equals("함께해요")) {
-				// 3-0. 함께해요 별점개수 조회
-				int beforeDbStarCnt = reviewBoardDao.selectDoBoardStarCntBefore(donghangMap);
-				int dbStarCnt = reviewBoardDao.selectDoBoardStarCnt(donghangMap);
-				donghangMap.put("beforeDbStarCnt", beforeDbStarCnt);
-				donghangMap.put("dbStarCnt", dbStarCnt);
-				// 3. 카테고리명이 함께해요라면, 함께해요 테이블 업데이트
-				result = reviewBoardDao.updateDoBoardStarBefore(donghangMap);
+				Map<String,Object> reviewStarGo = reviewBoardDao.selectReviewGbAvg(gbNo);
+				reviewStarGo.put("gbNo",gbNo);
+				result = reviewBoardDao.updateGoAvg(reviewStarGo);
+			} else if(donghangMap.get("gbCategory").equals("함께해요")) {
+				Map<String,Object> reviewStarDoBefore = reviewBoardDao.selectReviewDbAvg(beforeGbNo);
+				if(reviewStarDoBefore != null) {
+					reviewStarDoBefore.put("gbNo",beforeGbNo);
+					result = reviewBoardDao.updateDoAvg(reviewStarDoBefore);
+				} else {
+					Map<String,Object> reviewZero = new HashMap<>();
+					reviewZero.put("RBDHSTARAVG",0);
+					reviewZero.put("RBHOSTSTARAVG",0);
+					reviewZero.put("gbNo",beforeGbNo);
+					result = reviewBoardDao.updateDoAvgByZero(reviewZero);
+				}
 				
-				int gbStarCnt = reviewBoardDao.selectGoBoardStarCnt(donghangMap);
-				donghangMap.put("gbStarCnt", gbStarCnt);
-				result = reviewBoardDao.updateGoBoardStarAfter(donghangMap);
-				result = reviewBoardDao.updateReviewGoBoardNo(donghangMap);
+				Map<String,Object> reviewStarDoAfter = reviewBoardDao.selectReviewDbAvg(gbNo);
+				reviewStarDoAfter.put("gbNo",gbNo);
+				result = reviewBoardDao.updateDoAvg(reviewStarDoAfter);
 			}
 		}
-		
 		return result;
 	}
 
@@ -542,5 +554,50 @@ public class ReviewBoardServiceImpl implements ReviewBoardService {
 	@Override
 	public int selectDHApplyList(int getuNo) {
 		return reviewBoardDao.selectDHApplyList(getuNo);
+	}
+	
+	@Override
+	public int updateDhStarBydelete(Map<String, Object> donghangMap, int rbNo) {
+		// 1. 결과값 넣을 빈 int 값 생성
+		int result = 0;
+		int gbNo = Integer.parseInt(donghangMap.get("gbNo").toString());
+		
+//		int rbNo = reviewBoardDao.selectReviewNo(review.getRbUNo());
+		
+		
+		if(donghangMap.get("gbCategory").equals("함께가요")) {
+			int cntgb = reviewBoardDao.selectReviewBoardByRbGbNo(gbNo);
+			if( cntgb > 0) {
+				Map<String,Object> reviewStarGo = reviewBoardDao.selectReviewGbAvg(gbNo);
+				reviewStarGo.put("gbNo",gbNo);
+				result = reviewBoardDao.updateGoAvgByZero(reviewStarGo);
+				return result;
+			} else {
+				Map<String,Object> reviewZero = new HashMap<>();
+				reviewZero.put("RBDHSTARAVG",0);
+				reviewZero.put("RBHOSTSTARAVG",0);
+				reviewZero.put("gbNo",gbNo);
+				
+				result = reviewBoardDao.updateGoAvgByZero(reviewZero);
+				return result;
+			}
+		} else if(donghangMap.get("gbCategory").equals("함께해요")) {
+			int cntdb = reviewBoardDao.selectReviewBoardByRbDbNo(gbNo);
+			if( cntdb > 0 ) {
+				Map<String,Object> reviewStarDo = reviewBoardDao.selectReviewDbAvg(gbNo);
+				reviewStarDo.put("gbNo",gbNo);
+				result = reviewBoardDao.updateDoAvgByZero(reviewStarDo);
+				return result;
+			} else {
+				Map<String,Object> reviewZero = new HashMap<>();
+				reviewZero.put("RBDHSTARAVG",0);
+				reviewZero.put("RBHOSTSTARAVG",0);
+				reviewZero.put("gbNo",gbNo);
+				result = reviewBoardDao.updateDoAvgByZero(reviewZero);
+				return result;
+			}
+		}
+		// 성공 : 1, 실패 : 0
+		return result;
 	}
 }
