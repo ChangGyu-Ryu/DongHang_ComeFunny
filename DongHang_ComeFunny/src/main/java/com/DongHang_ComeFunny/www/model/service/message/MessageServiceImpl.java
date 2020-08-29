@@ -222,4 +222,34 @@ public class MessageServiceImpl implements MessageService {
 		}
 		return ress;
 	}
+
+	@Override
+	public Map<String, Object> selectMyMsgList(User user, int cPage, int cntPerPage) {
+		Map<String, Object> commandMap = new HashMap<>();
+		Paging page = new Paging(messageDao.selectMyMsgCnt(user.getuNo()), cPage, cntPerPage);
+		List<Map<String, Object>> mList = messageDao.selectMyMsgList(page, user.getuNo());
+		commandMap.put("mList", mList);
+		commandMap.put("paging", page);
+		return commandMap;
+	}
+
+	@Override
+	public Map<String, Object> selectStoreMsgList(User user, int cPage, int cntPerPage) {
+		Map<String, Object> commandMap = new HashMap<>();
+		Paging page = new Paging(messageDao.selectStoreMsgCnt(user.getuNo()), cPage, cntPerPage);
+		List<Map<String, Object>> mList = messageDao.selectStoreMsgList(page, user.getuNo());
+		commandMap.put("mList", mList);
+		commandMap.put("paging", page);
+		return commandMap;
+	}
+
+	@Override
+	public Map<String, Object> selectSendList(User user, int cPage, int cntPerPage) {
+		Map<String, Object> commandMap = new HashMap<>();
+		Paging page = new Paging(messageDao.selectSendMsgCnt(user.getuNo()), cPage, cntPerPage);
+		List<Map<String, Object>> mList = messageDao.selectSendList(page, user.getuNo());
+		commandMap.put("mList", mList);
+		commandMap.put("paging", page);
+		return commandMap;
+	}
 }

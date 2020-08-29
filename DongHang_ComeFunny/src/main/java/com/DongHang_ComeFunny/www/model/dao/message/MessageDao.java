@@ -19,16 +19,49 @@ public class MessageDao {
 	SqlSessionTemplate sqlSession;
 
 	public int selectContentCnt(int uno) {
-		return sqlSession.selectOne("MESSAGE.selectContentCnt", uno);
+		return sqlSession.selectOne("MESSAGE.selectReceiveMsgCnt", uno);
+	}
+	public int selectSendMsgCnt(int  uno) {
+		return sqlSession.selectOne("MESSAGE.selectSendMsgCnt", uno);
 	}
 
+	public int selectStoreMsgCnt(int  uno) {
+		return sqlSession.selectOne("MESSAGE.selectStoredMsgCnt", uno);
+	}
+
+	public int selectMyMsgCnt(int  uno) {
+		return sqlSession.selectOne("MESSAGE.selectMyMsgCnt", uno);
+	}
 	public List<Map<String, Object>> selectMessageList(Paging page, int uno) {
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("paging", page);
 		map.put("uno", uno);
+		System.out.println("=============");
+		System.out.println(page);
 		return sqlSession.selectList("MESSAGE.selectMessageList", map);
 	}
+	public List<Map<String, Object>> selectMyMsgList(Paging page, int uno) {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("paging", page);
+		map.put("uno", uno);
+		return sqlSession.selectOne("MESSAGE.selectMyMsgList",map);
+	}
 
+	public List<Map<String, Object>> selectStoreMsgList(Paging page, int uno) {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("paging", page);
+		map.put("uno", uno);
+		return sqlSession.selectOne("MESSAGE.selectStoreMsgList",map);
+	}
+
+	public List<Map<String, Object>> selectSendList(Paging page, int uno) {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("paging", page);
+		map.put("uno", uno);
+		System.out.println("=============");
+		System.out.println(page);
+		return sqlSession.selectOne("MESSAGE.selectSendMsgList",map);
+	}
 	public int deleteArr(int[] nums) {
 		int res = 0;
 		for (int val : nums) {
@@ -65,5 +98,9 @@ public class MessageDao {
 		// TODO Auto-generated method stub
 		return sqlSession.selectOne("MESSAGE.selectSequence");
 	}
+
+
+
+
 
 }

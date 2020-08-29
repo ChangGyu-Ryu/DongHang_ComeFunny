@@ -14,25 +14,31 @@ import com.DongHang_ComeFunny.www.model.vo.User;
 public interface MessageService {
 
 
-	Map<String, Object> selectMessageList(User logUser, int cPage, int cntPerPage);
+	public Map<String, Object> selectMessageList(User logUser, int cPage, int cntPerPage);
 
-	int deleteArray(String[] arr);
+	public int deleteArray(String[] arr);
 
-	int delete(String res);
+	public int delete(String res);
 
-	int storeArray(String[] arr);
+	public int storeArray(String[] arr);
 
-	int store(String res);
+	public int store(String res);
 
-	Map<String, Object> selectMessage(int msno);
+	public Map<String, Object> selectMessage(int msno);
 
-	User selectUserIdById(String string);
+	public User selectUserIdById(String string);
 
-	User selectUserIdByNick(String string);
+	public User selectUserIdByNick(String string);
 
-	int sendMailList(String[] arr, User sender, Message sendMessage);
+	public int sendMailList(String[] arr, User sender, Message sendMessage);
 
-	int SendMail(String receiverId, User sender, Message sendMessage);
+	public int SendMail(String receiverId, User sender, Message sendMessage);
+
+	public Map<String, Object> selectMyMsgList(User logUser, int cPage, int cntPerPage);
+
+	public Map<String, Object> selectStoreMsgList(User logUser, int cPage, int cntPerPage);
+
+	public Map<String, Object> selectSendList(User logUser, int cPage, int cntPerPage);
 
 	
 }

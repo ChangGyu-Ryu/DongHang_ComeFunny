@@ -28,7 +28,7 @@ public class MessageController {
 	@Autowired
 	UserService userService;
 	@RequestMapping(value = "/message/receivelist", method = RequestMethod.GET)
-	public ModelAndView sendList(@RequestParam(required = false, defaultValue = "1") int cPage, HttpSession session) {
+	public ModelAndView receiveList(@RequestParam(required = false, defaultValue = "1") int cPage, HttpSession session) {
 		ModelAndView mav = new ModelAndView();
 		int cntPerPage = 10;
 		User logUser = (User) session.getAttribute("logInInfo");
@@ -41,7 +41,49 @@ public class MessageController {
 		mav.setViewName("message/receivelist");
 		return mav;
 	}
+	@RequestMapping(value = "/message/sendlist", method = RequestMethod.GET)
+	public ModelAndView sendList(@RequestParam(required = false, defaultValue = "1") int cPage, HttpSession session) {
+		ModelAndView mav = new ModelAndView();
+		int cntPerPage = 10;
+		User logUser = (User) session.getAttribute("logInInfo");
+		logUser = userService.selectMemberByUserId(logUser.getUserId());
 
+		Map<String, Object> commandMap = messageService.selectSendList(logUser, cPage, cntPerPage);
+
+		mav.addObject("paging", commandMap.get("paging"));
+		mav.addObject("SendMsgData", commandMap);
+		mav.setViewName("message/sendlist");
+		return mav;
+	}
+	@RequestMapping(value = "/message/mymsglist", method = RequestMethod.GET)
+	public ModelAndView myMsgList(@RequestParam(required = false, defaultValue = "1") int cPage, HttpSession session) {
+		ModelAndView mav = new ModelAndView();
+		int cntPerPage = 10;
+		User logUser = (User) session.getAttribute("logInInfo");
+		logUser = userService.selectMemberByUserId(logUser.getUserId());
+		System.out.println(logUser);
+		Map<String, Object> commandMap = messageService.selectMyMsgList(logUser, cPage, cntPerPage);
+
+		mav.addObject("paging", commandMap.get("paging"));
+		mav.addObject("MyMsgData", commandMap);
+		System.out.println(commandMap);
+		mav.setViewName("message/mymsglist");
+		return mav;
+	}
+	@RequestMapping(value = "/message/storelist", method = RequestMethod.GET)
+	public ModelAndView storeMsgList(@RequestParam(required = false, defaultValue = "1") int cPage, HttpSession session) {
+		ModelAndView mav = new ModelAndView();
+		int cntPerPage = 10;
+		User logUser = (User) session.getAttribute("logInInfo");
+		logUser = userService.selectMemberByUserId(logUser.getUserId());
+
+		Map<String, Object> commandMap = messageService.selectStoreMsgList(logUser, cPage, cntPerPage);
+
+		mav.addObject("paging", commandMap.get("paging"));
+		mav.addObject("storeData", commandMap);
+		mav.setViewName("message/storelist");
+		return mav;
+	}
 	@RequestMapping(value = "/message/delete", method = RequestMethod.GET)
 	public ModelAndView Delete(String msno, HttpSession session) {
 		String res = msno;

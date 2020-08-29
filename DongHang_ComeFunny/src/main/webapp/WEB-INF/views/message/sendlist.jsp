@@ -28,9 +28,8 @@
 			<div id="mail_top_btn" onclick=fn_userDel()
 				style="margin-left: 2px; border-radius: 5px 0px 0px 5px;">삭제</div>
 			<div id="mail_top_btn" onclick=fn_userStore()
-				style="border-width: 2px 0px 2px 0px;">보관</div>
-			<div id="mail_top_btn" onclick=fn_userReply()
-				style="border-radius: 0px 5px 5px 0px;">답장</div>
+				style="border-width: 2px 2px 2px 0px; border-radius: 0px 5px 5px 0px;">보관</div>
+
 
 		</div>
 		<div>
@@ -49,15 +48,15 @@
 						<tbody>
 							<tr>
 
-								<c:forEach items="${ReceiveMsgData.mList }" var="receive">
+								<c:forEach items="${SendMsgData.mList }" var="send">
 									<tr>
 										<td><input name="RowCheck" class="RowCheck"
-											type="checkbox" value="${receive.MSNO }"
+											type="checkbox" value="${send.MSNO }"
 											onclick="rowChk(this);" /></td>
 										<td><a
-											href="<%=request.getContextPath() %>/message/messageview?msno=${receive.MSNO }">${receive.USERID }</a></td>
-										<td>${receive.MSTITLE }</td>
-										<td><fmt:formatDate value="${receive.MSWRITTENTIME}"
+											href="<%=request.getContextPath() %>/message/messageview?msno=${send.MSNO }">${send.USERID }</a></td>
+										<td>${send.MSTITLE }</td>
+										<td><fmt:formatDate value="${send.MSWRITTENTIME}"
 												pattern="yyyy-MM-dd HH:mm" /></td>
 									</tr>
 								</c:forEach>
@@ -77,18 +76,18 @@
 </div>
 <%-- 	<c:choose>
 				<li><a
-					href="<%=request.getContextPath()%>/message/receivelist"
+					href="<%=request.getContextPath()%>/message/sendlist"
 					aria-label="Previous"> <span aria-hidden="true"><i
 							class="fas fa-angle-double-left"></i></span>
 				</a></li>
 				<c:choose>
 					<c:when test="${paging.cPage > 1 }">
-						<li><a href="<%=request.getContextPath() %>/message/receivelist?cPage=${paging.cPage-1}">
+						<li><a href="<%=request.getContextPath() %>/message/sendlist?cPage=${paging.cPage-1}">
 								<i class="fas fa-angle-left"></i>
 						</a></li>
 					</c:when>
 					<c:otherwise>
-						<li><a href="<%=request.getContextPath() %>/message/receivelist?cPage=${paging.cPage}">
+						<li><a href="<%=request.getContextPath() %>/message/sendlist?cPage=${paging.cPage}">
 								<i class="fas fa-angle-left"></i>
 						</a></li>
 					</c:otherwise>
@@ -97,22 +96,22 @@
 				<c:forEach begin="${paging.blockStart }" end="${paging.blockEnd }" var="page">
 					<c:choose>
 						<c:when test="${paging.cPage eq page}">
-							<li class="active"><a href="<%=request.getContextPath() %>/message/receivelist?cPage=${page}"><span>${page}</span></a></li>
+							<li class="active"><a href="<%=request.getContextPath() %>/message/sendlist?cPage=${page}"><span>${page}</span></a></li>
 						</c:when>
 						<c:otherwise>
-							<li><a href="<%=request.getContextPath() %>/message/receivelist?cPage=${page}"><span>${page}</span></a></li>
+							<li><a href="<%=request.getContextPath() %>/message/sendlist?cPage=${page}"><span>${page}</span></a></li>
 						</c:otherwise>
 					</c:choose>
 				</c:forEach>
 				<c:choose>
 					<c:when test="${paging.cPage eq paging.lastPage }">
-						<li><a href="<%= request.getContextPath() %>/message/receivelist?cPage=${paging.cPage}"><iclass="fas fa-angle-right"></i></a></li>
+						<li><a href="<%= request.getContextPath() %>/message/sendlist?cPage=${paging.cPage}"><iclass="fas fa-angle-right"></i></a></li>
 					</c:when>
 					<c:otherwise>
-						<li><a href="<%= request.getContextPath() %>/message/receivelist?cPage=${paging.cPage+1}"><iclass="fas fa-angle-right"></i></a></li>
+						<li><a href="<%= request.getContextPath() %>/message/sendlist?cPage=${paging.cPage+1}"><iclass="fas fa-angle-right"></i></a></li>
 					</c:otherwise>
 				</c:choose>
-				<li><a href="<%= request.getContextPath() %>/message/receivelist=${paging.lastPage }"aria-label="Next"><i class="fas fa-angle-double-right"></i></a></li>
+				<li><a href="<%= request.getContextPath() %>/message/sendlist=${paging.lastPage }"aria-label="Next"><i class="fas fa-angle-double-right"></i></a></li>
 			</c:choose>	
  --%>
 
