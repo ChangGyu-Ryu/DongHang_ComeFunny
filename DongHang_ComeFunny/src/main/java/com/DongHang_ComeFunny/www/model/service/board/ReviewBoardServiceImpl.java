@@ -13,6 +13,7 @@ import com.DongHang_ComeFunny.www.model.vo.ReviewBoard;
 import com.DongHang_ComeFunny.www.model.vo.ReviewComment;
 import com.DongHang_ComeFunny.www.model.vo.ReviewLike;
 import com.DongHang_ComeFunny.www.model.vo.ReviewRecommend;
+import com.DongHang_ComeFunny.www.model.vo.User;
 
 import common.exception.FileException;
 import common.util.FileUtil;
@@ -323,7 +324,7 @@ public class ReviewBoardServiceImpl implements ReviewBoardService {
 	 */
 	@Override
 	public Map<String, Object> selectDongHangSearchList(int cPage, int cntPerPage,
-			Map<String, Object> searchDongHangList) {
+			Map<String, Object> searchDongHangList, User sessionUser) {
 		// 1. 빈 커맨드 객체 생성
 		Map<String,Object> commandMap = new HashMap<String, Object>();
 		// 2. 페이징 객체 생성과 동시에 파라미터값(전체 검색된 게시글 개수, 현재페이지, 페이지당 게시글 개수) 넣기
@@ -354,7 +355,10 @@ public class ReviewBoardServiceImpl implements ReviewBoardService {
 		} else {
 			// 6. 키워드 없을 경우 전체 게시글 리스트 조회
 			Paging searchPage = new Paging(reviewBoardDao.selectDongHangContentCnt(), cPage, cntPerPage);
-			List<Map<String, Object>> flist = reviewBoardDao.selectDongHangList(page);
+			Map<String, Object> userno = new HashMap<>();
+			userno.put("paging", searchPage);
+			userno.put("uNo", sessionUser.getuNo());
+			List<Map<String, Object>> flist = reviewBoardDao.selectDongHangList(userno);
 			commandMap.put("flist", flist);
 			commandMap.put("paging", searchPage);
 		}
@@ -368,7 +372,7 @@ public class ReviewBoardServiceImpl implements ReviewBoardService {
 	 * @return - 성공 : 1, 실패 : 0
 	 */
 	@Override
-	public int updateDhStar(Map<String, Object> donghangMap) {
+	public int updateDhStar(Map<String, Object> donghangMap, ReviewBoard review) {
 		// -----------------------파라미터 값 제대로 받아오는지 확인--------------
 		System.out.println("[ServiceImpl] updateDhStar donghangMap : " + donghangMap);
 		System.out.println("[ServiceImpl] updateDhStar donghangMap(gbNo) : " + donghangMap.get("gbNo"));
@@ -380,15 +384,24 @@ public class ReviewBoardServiceImpl implements ReviewBoardService {
 		// 1. 결과값 넣을 빈 int 값 생성
 		int result = 0;
 		if(donghangMap.get("gbCategory").equals("함께가요")) {
-			int ghStarCntPlusOne = reviewBoardDao.updateGoBoardStarCnt(donghangMap);
-			System.out.println("[ServiceImpl] updateDhStar ghStarCntPlustOne 성공 1, 실패 0 : "+ghStarCntPlusOne);
-//			System.out.println("카테고리는 함께가요");
-			// 2-0. 함께가요 별점개수 조회
-			int gbStarCnt = reviewBoardDao.selectGoBoardStarCnt(donghangMap);
-			donghangMap.put("gbStarCnt", gbStarCnt);
-			System.out.println("[ServiceImpl] updateDhStar ghStarCnt : "+gbStarCnt);
-			// 2. 카테고리명이 함께가요라면, 함께가요 테이블 업데이트
-			result = reviewBoardDao.updateGoBoardStar(donghangMap);
+//			int ghStarCntPlusOne = reviewBoardDao.updateGoBoardStarCnt(donghangMap);
+//			System.out.println("[ServiceImpl] updateDhStar ghStarCntPlustOne 성공 1, 실패 0 : "+ghStarCntPlusOne);
+////			System.out.println("카테고리는 함께가요");
+//			// 2-0. 함께가요 별점개수 조회
+//			int gbStarCnt = reviewBoardDao.selectGoBoardStarCnt(donghangMap);
+//			donghangMap.put("gbStarCnt", gbStarCnt);
+//			System.out.println("[ServiceImpl] updateDhStar ghStarCnt : "+gbStarCnt);
+//			// 2. 카테고리명이 함께가요라면, 함께가요 테이블 업데이트
+//			result = reviewBoardDao.updateGoBoardStar(donghangMap);
+			int gbNo = Integer.parseInt(donghangMap.get("gbNo").toString());
+			
+			int rbUNo = reviewBoardDao.selectReviewNo(review.getRbUNo());
+			
+			Map<String,Object> reviewStar = reviewBoardDao.selectReviewAvg(rbUNo);
+			reviewStar.put("gbNo", gbNo);
+			result = reviewBoardDao.updateGoAvg(reviewStar);
+			
+
 		} else if(donghangMap.get("gbCategory").equals("함께해요")) {
 			int dhStarCntPlusOne = reviewBoardDao.updateDoBoardStarCnt(donghangMap);
 			System.out.println("[ServiceImpl] updateDhStar ghStarCntPlustOne 성공 1, 실패 0 : "+dhStarCntPlusOne);
@@ -524,5 +537,10 @@ public class ReviewBoardServiceImpl implements ReviewBoardService {
 	@Override
 	public int getBoardRec(ReviewRecommend reviewrecommend) {
 		return reviewBoardDao.getBoardRec(reviewrecommend);
+	}
+	
+	@Override
+	public int selectDHApplyList(int getuNo) {
+		return reviewBoardDao.selectDHApplyList(getuNo);
 	}
 }

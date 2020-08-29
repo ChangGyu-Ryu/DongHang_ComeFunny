@@ -39,6 +39,7 @@ public class ReviewBoardController {
 	private ReviewBoardService reviewBoardService;
 	
 	// ⑴ 게시글 작성페이지 이동
+	@SuppressWarnings("unused")
 	// url : /board/reviewwirte - GET
 	// parameter : 
 	// HttpSession session - 로그인 세션정보(uno) : 게시글 작성자(fbuno)
@@ -51,18 +52,28 @@ public class ReviewBoardController {
 		// 3. 로그인을 했을 경우 
 		// 	세션정보가 담긴 회원정보가 Not Null일때 ( User Not Null )
 		//	= 빈 세션이 아닐때( HttpSession Not Null )
+		int result = reviewBoardService.selectDHApplyList(sessionUser.getuNo());
+		
+		if( result == 0) {
+			mav.addObject("alertMsg", "작성 할 수 있는 후기게시글이 존재하지 않습니다. 먼저 동행 신청을 해주시기 바랍니다.");
+			mav.addObject("url", "reviewlist");
+			mav.setViewName("common/result");
+			return mav;
+		}
+		
 		if(sessionUser != null) {
 			// 4. view페이지 : /WEB-INF/views/board 폴더 안에 reviewwrite.jsp
 			mav.setViewName("/board/reviewwrite");
+			return mav;
 		} else {
 			// 5-1. view페이지 : /WEB-INF/views/common 폴더 안에 result.jsp
 			// 5-2. 경고메세지 출력 후 지정된 url로 페이지 이동
 			mav.addObject("alertMsg", "로그인 후에 이용해주시기 바랍니다.");
 			mav.addObject("url", "../user/login");
 			mav.setViewName("common/result");
+			return mav;
 		}
 		// 6. 데이터 처리가 완료된 모델(VO)값과 보여질 페이지(jsp)를 반환한다. 
-		return mav;
 	}
 	
 	@RequestMapping(value="reviewUploadImpl", method = RequestMethod.POST)
@@ -123,12 +134,12 @@ public class ReviewBoardController {
 		if(sessionUser != null) {
 			// 5. ReviewBoard 파일업로드한 회원정보(rbuno, 외래키)에 로그인 세션정보(uno, 기본키) 값 넣기
 			review.setRbUNo(sessionUser.getuNo());
-			// 5-0. 후기에서 받은 별점, 함께가요, 함께해요 별점 평균 및 개수 업데이트
-			reviewBoardService.updateDhStar(donghangMap);
 			// 5-1. 파라미터값 Service에 전달  
 			//      - ReviewBoard, List<MultiPart>, root 
 			//        (후기게시판, 파일, 업로드 경로)
 			reviewBoardService.insertReview(review, files, root);
+			// 5-0. 후기에서 받은 별점, 함께가요, 함께해요 별점 평균 및 개수 업데이트
+			reviewBoardService.updateDhStar(donghangMap, review);
 			// 5-2. Service에서 처리한 후, view 페이지 지정
 			//		view페이지 : /WEB-INF/views/board 폴더 안에 reviewlist.jsp
 			mav.setViewName("redirect: /board/reviewlist");
@@ -738,6 +749,7 @@ public class ReviewBoardController {
 	public ModelAndView reviewFindDh(
 			String searchDHcategory,
 			String searchKeyword,
+			HttpSession session,
 			@RequestParam(required = false, defaultValue = "1") int cPage) {
 		ModelAndView mav = new ModelAndView();
 		
@@ -748,12 +760,15 @@ public class ReviewBoardController {
 		System.out.println("[controller] reviewfinddh - cPage : "+cPage);
 		// -----------------------------------------------------------------
 		
+		// 0. 세션에 저장된 로그인 정보를 'User' VO에 저장
+		User sessionUser = (User)session.getAttribute("logInInfo");
 		// 2. Map 객체 생성 - 검색 카테고리와 키워드를 저장
 		Map<String,Object> searchDongHangList = new HashMap<>();
 		// 3. key-value쌍으로 "serachKinds" = "파라미터로 불러온 검색 카테고리"
 		//    , "searchText" = "파라미터로 불러온 검색 키워드" Map에 넣기 
 		searchDongHangList.put("searchDHcategory", searchDHcategory);
 		searchDongHangList.put("searchKeyword", searchKeyword);
+		searchDongHangList.put("uNo", sessionUser.getuNo());
 		
 		// -----------Map에 검색 카테고리와 키워드 제대로 저장되었는지 확인-----------
 		System.out.println("[controller] reviewfinddh - Map{key=value} : " + searchDongHangList);
@@ -765,7 +780,7 @@ public class ReviewBoardController {
 		// 5. 파라미터값 Service에 전달 후 Map에 저장
 		//    - cPage, cntPerPage, searchReviewList 
 		//     (현재페이지, 페이지당 보여줄 게시글 개수, 검색 카테고리와 키워드가 담긴 Map)
-		Map<String,Object> commandMap = reviewBoardService.selectDongHangSearchList(cPage, cntPerPage, searchDongHangList);
+		Map<String,Object> commandMap = reviewBoardService.selectDongHangSearchList(cPage, cntPerPage, searchDongHangList, sessionUser);
 		
 		//--------------------------------------
 		// 검색키워드가 없을 시, 리스트 검색
@@ -800,6 +815,7 @@ public class ReviewBoardController {
 	public ModelAndView reviewFinddhSearch(
 									String searchDHcategory,
 									String searchKeyword,
+									HttpSession session,
 									@RequestParam(required = false, defaultValue = "1") int cPage) {
 		// 1. 모델앤뷰 객체 생성
 		ModelAndView mav = new ModelAndView();
@@ -811,12 +827,15 @@ public class ReviewBoardController {
 		System.out.println("[controller] reviewlistSearch - cPage : "+cPage);
 		// -----------------------------------------------------------------
 		
+		// 0. 세션에 저장된 로그인 정보를 'User' VO에 저장
+		User sessionUser = (User)session.getAttribute("logInInfo");
 		// 2. Map 객체 생성 - 검색 카테고리와 키워드를 저장
 		Map<String,Object> searchDongHangList = new HashMap<>();
 		// 3. key-value쌍으로 "serachKinds" = "파라미터로 불러온 검색 카테고리"
 		//    , "searchText" = "파라미터로 불러온 검색 키워드" Map에 넣기 
 		searchDongHangList.put("searchDHcategory", searchDHcategory);
 		searchDongHangList.put("searchKeyword", searchKeyword);
+		searchDongHangList.put("uNo", sessionUser.getuNo());
 		
 		// -----------Map에 검색 카테고리와 키워드 제대로 저장되었는지 확인-----------
 		System.out.println("[controller] reviewlistSearch - Map{key=value} : " + searchDongHangList);
@@ -826,7 +845,7 @@ public class ReviewBoardController {
 		//    -> 1페이지당 10개의 게시글
 		int cntPerPage = 10;
 		// 5. 파라미터값 Service에 전달 후 Map에 저장
-		Map<String,Object> commandMap = reviewBoardService.selectDongHangSearchList(cPage, cntPerPage, searchDongHangList);
+		Map<String,Object> commandMap = reviewBoardService.selectDongHangSearchList(cPage, cntPerPage, searchDongHangList, sessionUser);
 		
 		//------------------ Service에서 처리한 데이터값 출력-----------------------
 		System.out.println("[controller] reviewlistSearch - commandMap : " + commandMap);

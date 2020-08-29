@@ -9,6 +9,7 @@ import com.DongHang_ComeFunny.www.model.vo.ReviewBoard;
 import com.DongHang_ComeFunny.www.model.vo.ReviewComment;
 import com.DongHang_ComeFunny.www.model.vo.ReviewLike;
 import com.DongHang_ComeFunny.www.model.vo.ReviewRecommend;
+import com.DongHang_ComeFunny.www.model.vo.User;
 
 import common.exception.FileException;
 
@@ -111,17 +112,18 @@ public interface ReviewBoardService {
 	 * @param cPage - 현재 페이지
 	 * @param cntPerPage - 페이지당 조회될 게시글 개수
 	 * @param searchDongHangList - 검색 카테고리, 키워드가 담긴 객체
+	 * @param sessionUser 
 	 * @return
 	 */
 	public Map<String, Object> selectDongHangSearchList(int cPage, int cntPerPage,
-			Map<String, Object> searchDongHangList);
+			Map<String, Object> searchDongHangList, User sessionUser);
 
 	/**
 	 * 함께가요, 함께해요 게시글에서 별점 평균 및 별점 개수 수정
 	 * @param donghangMap - 파라미터로 받아온 기본키가 담긴 함께가요, 함께해요 맵(gbNo, gbTitle, gbCategory, rbDhStar, rbHostStar)
 	 * @return - 성공 : 1, 실패 : 0
 	 */
-	public int updateDhStar(Map<String, Object> donghangMap);
+	public int updateDhStar(Map<String, Object> donghangMap, ReviewBoard review);
 	
 	/**
 	 * 함께가요 게시글 조회
@@ -150,6 +152,8 @@ public interface ReviewBoardService {
 	public int insertReviewBoardRec(ReviewRecommend reviewrecommend);
 	
 	public int getBoardRec(ReviewRecommend reviewrecommend);
+
+	public int selectDHApplyList(int getuNo);
 
 
 

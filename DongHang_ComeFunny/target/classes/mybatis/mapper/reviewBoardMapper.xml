@@ -268,12 +268,24 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			SELECT COUNT(*) FROM 
 				( SELECT  uno, userid, uname, unick, gd.*
 					FROM tb_user u INNER JOIN 
-						( SELECT * FROM tb_goboard g
-							WHERE gbisdel = 0
-				        	UNION ALL
-				        	SELECT * FROM tb_doboard d
-				        	WHERE dbisdel = 0
-				        ) gd 
+				        ( SELECT * FROM
+				                ( SELECT
+				                    *
+				                  FROM tb_goapply ga, tb_goboard gb
+				                  WHERE ga.gagbno = gb.gbno
+				                  ORDER BY gbwrittendate DESC
+				                 )
+				          WHERE gauno = #{uNo}
+				          UNION ALL
+				          SELECT * FROM
+				                ( SELECT
+				                    *
+				                  FROM tb_doapply da, tb_doboard db
+				                  WHERE da.dadbno = db.dbno
+				                  ORDER BY dbwrittendate DESC
+				                 )
+				          WHERE dauno = #{uNo}
+				        ) gd  
 				    on u.uno = gd.gbuno
 				) gdc
 				<trim prefix= "WHERE" prefixOverrides="AND">
@@ -291,12 +303,24 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			SELECT rownum rnum, gdr.* FROM
 				( SELECT  uno, userid, uname, unick, gd.*
 					FROM tb_user u INNER JOIN 
-						( SELECT * FROM tb_goboard g
-						  WHERE gbisdel = 0 
-				        	UNION ALL
-				          SELECT * FROM tb_doboard d
-				          WHERE dbisdel = 0
-				        ) gd 
+				        ( SELECT * FROM
+				                ( SELECT
+				                    *
+				                  FROM tb_goapply ga, tb_goboard gb
+				                  WHERE ga.gagbno = gb.gbno
+				                  ORDER BY gbwrittendate DESC
+				                 )
+				          WHERE gauno = #{uNo}
+				          UNION ALL
+				          SELECT * FROM
+				                ( SELECT
+				                    *
+				                  FROM tb_doapply da, tb_doboard db
+				                  WHERE da.dadbno = db.dbno
+				                  ORDER BY dbwrittendate DESC
+				                 )
+				          WHERE dauno = #{uNo}
+				        ) gd  
 				    on u.uno = gd.gbuno
 				) gdr
 				<trim prefix= "WHERE" prefixOverrides="OR">
@@ -315,26 +339,64 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			SELECT COUNT(*) FROM 
 				( SELECT  uno, userid, uname, unick, gd.*
 					FROM tb_user u INNER JOIN 
-						( SELECT * FROM tb_goboard g
-							WHERE gbisdel = 0
-				        	UNION ALL
-				        	SELECT * FROM tb_doboard d
-				        	WHERE dbisdel = 0
-				        ) gd 
+				        ( SELECT * FROM
+				                ( SELECT
+				                    *
+				                  FROM tb_goapply ga, tb_goboard gb
+				                  WHERE ga.gagbno = gb.gbno
+				                  ORDER BY gbwrittendate DESC
+				                 )
+				          WHERE gauno = #{uNo}
+				          UNION ALL
+				          SELECT * FROM
+				                ( SELECT
+				                    *
+				                  FROM tb_doapply da, tb_doboard db
+				                  WHERE da.dadbno = db.dbno
+				                  ORDER BY dbwrittendate DESC
+				                 )
+				          WHERE dauno = #{uNo}
+				        ) gd  
 				    on u.uno = gd.gbuno
 				) gdc
 		</select>
 		
 		<select id="selectDongHangList" resultType="HashMap">
-			SELECT * FROM (
-			SELECT rownum rnum, gdr.* FROM
+<!-- 			SELECT * FROM ( -->
+<!-- 			SELECT rownum rnum, gdr.* FROM -->
+<!-- 				( SELECT  uno, userid, uname, unick, gd.* -->
+<!-- 					FROM tb_user u INNER JOIN  -->
+<!-- 						( SELECT * FROM tb_goboard g -->
+<!-- 							WHERE gbisdel = 0 -->
+<!-- 				        	UNION ALL -->
+<!-- 				        	SELECT * FROM tb_doboard d -->
+<!-- 				        	WHERE dbisdel = 0 -->
+<!-- 				        ) gd   -->
+<!-- 				    on u.uno = gd.gbuno -->
+<!-- 				) gdr -->
+<!-- 				) gdrr -->
+<!-- 				WHERE rnum between #{paging.start} and #{paging.end} -->
+				SELECT * FROM (
+				SELECT rownum rnum, gdr.* FROM
 				( SELECT  uno, userid, uname, unick, gd.*
-					FROM tb_user u INNER JOIN 
-						( SELECT * FROM tb_goboard g
-							WHERE gbisdel = 0
-				        	UNION ALL
-				        	SELECT * FROM tb_doboard d
-				        	WHERE dbisdel = 0
+				    FROM tb_user u INNER JOIN 
+				        ( SELECT * FROM
+				                ( SELECT
+				                    *
+				                  FROM tb_goapply ga, tb_goboard gb
+				                  WHERE ga.gagbno = gb.gbno
+				                  ORDER BY gbwrittendate DESC
+				                 )
+				          WHERE gauno = #{uNo}
+				          UNION ALL
+				          SELECT * FROM
+				                ( SELECT
+				                    *
+				                  FROM tb_doapply da, tb_doboard db
+				                  WHERE da.dadbno = db.dbno
+				                  ORDER BY dbwrittendate DESC
+				                 )
+				          WHERE dauno = #{uNo}
 				        ) gd  
 				    on u.uno = gd.gbuno
 				) gdr
@@ -357,6 +419,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     	</select>
     	
     	<update id="updateGoBoardStar">
+<!--     		UPDATE -->
+<!--     			tb_goboard -->
+<!--     		SET -->
+<!--     			gbdhstaravg = ROUND( ( (gbdhstaravg * (#{gbStarCnt} - 1 ) ) + #{rbDhStar} ) / #{gbStarCnt} , 1 ), -->
+<!--     			gbhoststaravg = ROUND( ( ( gbhoststaravg * (#{gbStarCnt} - 1 ) ) + #{rbHostStar} ) / #{gbStarCnt} , 1 ) -->
+<!--     		WHERE gbno = #{gbNo} -->
     		UPDATE
     			tb_goboard
     		SET
@@ -554,5 +622,51 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     		WHERE rrcrbno = #{rrcRbNo}
     			AND rrcuno = #{rrcUNo}
     	</select>
+    	
+    	<select id = "selectDHApplyList" resultType="int">
+    		SELECT COUNT(*) FROM 
+			    (SELECT  uno, userid, uname, unick, gd.*
+			        FROM tb_user u INNER JOIN 
+			            ( SELECT * FROM
+			                    ( SELECT
+			                        *
+			                      FROM tb_goapply ga, tb_goboard gb
+			                      WHERE ga.gagbno = gb.gbno
+			                      ORDER BY gbwrittendate DESC
+			                     )
+			              WHERE gauno = #{uNo}
+			              UNION ALL
+			              SELECT * FROM
+			                    ( SELECT
+			                        *
+			                      FROM tb_doapply da, tb_doboard db
+			                      WHERE da.dadbno = db.dbno
+			                      ORDER BY dbwrittendate DESC
+			                     )
+			              WHERE dauno = #{uNo}
+			            ) gd  
+			        on u.uno = gd.gbuno )
+    	</select>
+    	
+    	<select id = "selectReviewNo" resultType="int">
+    		SELECT MAX(rbno) FROM
+    			tb_reviewboard
+    		WHERE rbuno = #{rbUNo}
+    		
+    	</select>
+    	<select id = "selectReviewAvg" resultType="HashMap">
+			SELECT ROUND(AVG(rbdhstar)) AS RBDHSTARAVG, ROUND(AVG(rbhoststar)) AS RBHOSTSTARAVG FROM
+    			tb_reviewboard
+    		WHERE rbno = #{rbNo}
+    	</select>
+    	
+    	<update id = "updateGoAvg">
+    		UPDATE
+    			tb_goboard
+    		SET
+    			gbdhstaravg = #{RBDHSTARAVG},
+    			gbhoststaravg = #{RBHOSTSTARAVG}
+    		WHERE gbno = #{gbNo}
+    	</update>
     	
 </mapper>

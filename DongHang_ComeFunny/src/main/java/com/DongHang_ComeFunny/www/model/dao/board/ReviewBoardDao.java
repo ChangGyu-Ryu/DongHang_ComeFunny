@@ -244,11 +244,11 @@ public class ReviewBoardDao {
 
 	/**
 	 * 페이징을 포함하여 동행게시글 리스트 조회
-	 * @param page - 페이징 객체
+	 * @param userno - 페이징 객체
 	 * @return 리스트로 반환
 	 */
-	public List<Map<String, Object>> selectDongHangList(Paging page) {
-		return sqlSession.selectList("REVIEW.selectDongHangList", page);
+	public List<Map<String, Object>> selectDongHangList(Map<String, Object> userno) {
+		return sqlSession.selectList("REVIEW.selectDongHangList", userno);
 	}
 	public int updateGoBoardStarCnt(Map<String, Object> donghangMap) {
 		return sqlSession.update("REVIEW.updateGoBoardStarCnt", donghangMap);
@@ -345,6 +345,23 @@ public class ReviewBoardDao {
 	public int getBoardRec(ReviewRecommend reviewrecommand) {
 		return sqlSession.selectOne("REVIEW.getBoardRec", reviewrecommand);
 	}
+
+	public int selectDHApplyList(int getuNo) {
+		return sqlSession.selectOne("REVIEW.selectDHApplyList", getuNo);
+	}
+
+	public int selectReviewNo(int rbUNo) {
+		return sqlSession.selectOne("REVIEW.selectReviewNo", rbUNo);
+	}
+	
+	public Map<String, Object> selectReviewAvg(int rbNo) {
+		return sqlSession.selectOne("REVIEW.selectReviewAvg", rbNo);
+	}
+
+	public int updateGoAvg(Map<String, Object> reviewStar) {
+		return sqlSession.update("REVIEW.updateGoAvg", reviewStar);
+	}
+
 
 
 
