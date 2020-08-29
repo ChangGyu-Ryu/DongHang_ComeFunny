@@ -104,21 +104,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     			AND rfisdel = 0
     	</select>
     	
+<!--     	<update id="updateFileIsDel"> -->
+<!--     		UPDATE -->
+<!--     			tb_reviewfile -->
+<!--     		SET -->
+<!--     			rfisdel = 1 -->
+<!--     		WHERE -->
+<!--     			rfno = #{rfNo} -->
+<!--     	</update> -->
     	<delete id="deleteFile">
     		DELETE
-    		FROM tb_reviewfile 
+    			FROM tb_reviewfile 
     		WHERE rfno = #{rfNo}
-    			AND rfisdel = 0
     	</delete>
-    	
-    	<update id="updateFileIsDel">
-    		UPDATE
-    			tb_reviewfile
-    		SET
-    			rfisdel = 1
-    		WHERE
-    			rfno = #{rfNo}
-    	</update>
     	
     	<update id="updateReview">
     		UPDATE
@@ -146,22 +144,27 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	   			)
     	</insert>
     	
-    	<update id="updateFileIsDelByRbno">
-    	 	UPDATE
-    			tb_reviewfile
-    		SET
-    			rfisdel = 1
-    		WHERE
-    			rfrbno = #{rbNo}
-    	</update>
-    	<update id="updateReviewBoardIsDel">
-    		UPDATE
+<!--     	<update id="updateFileIsDelByRbno"> -->
+<!--     	 	UPDATE -->
+<!--     			tb_reviewfile -->
+<!--     		SET -->
+<!--     			rfisdel = 1 -->
+<!--     		WHERE -->
+<!--     			rfrbno = #{rbNo} -->
+<!--     	</update> -->
+<!--     	<update id="updateReviewBoardIsDel"> -->
+<!--     		UPDATE -->
+<!--     			tb_reviewboard -->
+<!--     		SET -->
+<!--     			rbisdel = 1 -->
+<!--     		WHERE -->
+<!--     			rbno = #{rbNo} -->
+<!--     	</update> -->
+    	<delete id="deleteReviewBoard">
+    		DELETE FROM
     			tb_reviewboard
-    		SET
-    			rbisdel = 1
-    		WHERE
-    			rbno = #{rbNo}
-    	</update>
+    		WHERE rbno = #{rbNo}
+    	</delete>
     	
     	<insert id="insertReviewComment">
 	    	INSERT INTO
@@ -197,13 +200,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     		WHERE rcno = #{rcNo}
     	</update>
     	
-    	<update id="updateReviewCommentIsDEl">
-    		UPDATE
+<!--     	<update id="updateReviewCommentIsDEl"> -->
+<!--     		UPDATE -->
+<!--     			tb_reviewcomment -->
+<!--     		SET -->
+<!--     			rcisdel = 1 -->
+<!--     		WHERE rcno = #{rcNo} -->
+<!--     	</update> -->
+    	<delete id="deleteReviewComment">
+    		DELETE FROM
     			tb_reviewcomment
-    		SET
-    			rcisdel = 1
     		WHERE rcno = #{rcNo}
-    	</update>
+    	</delete>
     	
     	<select id="selectReviewSearchCnt" resultType="int">
 			SELECT COUNT(*) FROM
@@ -261,8 +269,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				( SELECT  uno, userid, uname, unick, gd.*
 					FROM tb_user u INNER JOIN 
 						( SELECT * FROM tb_goboard g
+							WHERE gbisdel = 0
 				        	UNION ALL
 				        	SELECT * FROM tb_doboard d
+				        	WHERE dbisdel = 0
 				        ) gd 
 				    on u.uno = gd.gbuno
 				) gdc
@@ -282,8 +292,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				( SELECT  uno, userid, uname, unick, gd.*
 					FROM tb_user u INNER JOIN 
 						( SELECT * FROM tb_goboard g
+						  WHERE gbisdel = 0 
 				        	UNION ALL
-				        	SELECT * FROM tb_doboard d
+				          SELECT * FROM tb_doboard d
+				          WHERE dbisdel = 0
 				        ) gd 
 				    on u.uno = gd.gbuno
 				) gdr
@@ -304,8 +316,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				( SELECT  uno, userid, uname, unick, gd.*
 					FROM tb_user u INNER JOIN 
 						( SELECT * FROM tb_goboard g
+							WHERE gbisdel = 0
 				        	UNION ALL
 				        	SELECT * FROM tb_doboard d
+				        	WHERE dbisdel = 0
 				        ) gd 
 				    on u.uno = gd.gbuno
 				) gdc
@@ -317,9 +331,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				( SELECT  uno, userid, uname, unick, gd.*
 					FROM tb_user u INNER JOIN 
 						( SELECT * FROM tb_goboard g
+							WHERE gbisdel = 0
 				        	UNION ALL
 				        	SELECT * FROM tb_doboard d
-				        ) gd 
+				        	WHERE dbisdel = 0
+				        ) gd  
 				    on u.uno = gd.gbuno
 				) gdr
 				) gdrr

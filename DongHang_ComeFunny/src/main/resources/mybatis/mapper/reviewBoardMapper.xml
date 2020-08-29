@@ -104,6 +104,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     			AND rfisdel = 0
     	</select>
     	
+<<<<<<< HEAD
+<!--     	<update id="updateFileIsDel"> -->
+<!--     		UPDATE -->
+<!--     			tb_reviewfile -->
+<!--     		SET -->
+<!--     			rfisdel = 1 -->
+<!--     		WHERE -->
+<!--     			rfno = #{rfNo} -->
+<!--     	</update> -->
+    	<delete id="deleteFile">
+    		DELETE
+    			FROM tb_reviewfile 
+    		WHERE rfno = #{rfNo}
+    	</delete>
+    	
+=======
     	<delete id="deleteFile">
     		DELETE
     		FROM tb_reviewfile 
@@ -120,6 +136,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     			rfno = #{rfNo}
     	</update>
     	
+>>>>>>> initial MessagrChat setting
     	<update id="updateReview">
     		UPDATE
     			tb_reviewboard
@@ -146,6 +163,29 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	   			)
     	</insert>
     	
+<<<<<<< HEAD
+<!--     	<update id="updateFileIsDelByRbno"> -->
+<!--     	 	UPDATE -->
+<!--     			tb_reviewfile -->
+<!--     		SET -->
+<!--     			rfisdel = 1 -->
+<!--     		WHERE -->
+<!--     			rfrbno = #{rbNo} -->
+<!--     	</update> -->
+<!--     	<update id="updateReviewBoardIsDel"> -->
+<!--     		UPDATE -->
+<!--     			tb_reviewboard -->
+<!--     		SET -->
+<!--     			rbisdel = 1 -->
+<!--     		WHERE -->
+<!--     			rbno = #{rbNo} -->
+<!--     	</update> -->
+    	<delete id="deleteReviewBoard">
+    		DELETE FROM
+    			tb_reviewboard
+    		WHERE rbno = #{rbNo}
+    	</delete>
+=======
     	<update id="updateFileIsDelByRbno">
     	 	UPDATE
     			tb_reviewfile
@@ -162,6 +202,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     		WHERE
     			rbno = #{rbNo}
     	</update>
+>>>>>>> initial MessagrChat setting
     	
     	<insert id="insertReviewComment">
 	    	INSERT INTO
@@ -197,6 +238,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     		WHERE rcno = #{rcNo}
     	</update>
     	
+<<<<<<< HEAD
+<!--     	<update id="updateReviewCommentIsDEl"> -->
+<!--     		UPDATE -->
+<!--     			tb_reviewcomment -->
+<!--     		SET -->
+<!--     			rcisdel = 1 -->
+<!--     		WHERE rcno = #{rcNo} -->
+<!--     	</update> -->
+    	<delete id="deleteReviewComment">
+    		DELETE FROM
+    			tb_reviewcomment
+    		WHERE rcno = #{rcNo}
+    	</delete>
+=======
     	<update id="updateReviewCommentIsDEl">
     		UPDATE
     			tb_reviewcomment
@@ -204,6 +259,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     			rcisdel = 1
     		WHERE rcno = #{rcNo}
     	</update>
+>>>>>>> initial MessagrChat setting
     	
     	<select id="selectReviewSearchCnt" resultType="int">
 			SELECT COUNT(*) FROM
@@ -261,8 +317,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				( SELECT  uno, userid, uname, unick, gd.*
 					FROM tb_user u INNER JOIN 
 						( SELECT * FROM tb_goboard g
+<<<<<<< HEAD
+							WHERE gbisdel = 0
 				        	UNION ALL
 				        	SELECT * FROM tb_doboard d
+				        	WHERE dbisdel = 0
+=======
+				        	UNION ALL
+				        	SELECT * FROM tb_doboard d
+>>>>>>> initial MessagrChat setting
 				        ) gd 
 				    on u.uno = gd.gbuno
 				) gdc
@@ -282,8 +345,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				( SELECT  uno, userid, uname, unick, gd.*
 					FROM tb_user u INNER JOIN 
 						( SELECT * FROM tb_goboard g
+<<<<<<< HEAD
+						  WHERE gbisdel = 0 
+				        	UNION ALL
+				          SELECT * FROM tb_doboard d
+				          WHERE dbisdel = 0
+=======
 				        	UNION ALL
 				        	SELECT * FROM tb_doboard d
+>>>>>>> initial MessagrChat setting
 				        ) gd 
 				    on u.uno = gd.gbuno
 				) gdr
@@ -304,8 +374,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				( SELECT  uno, userid, uname, unick, gd.*
 					FROM tb_user u INNER JOIN 
 						( SELECT * FROM tb_goboard g
+<<<<<<< HEAD
+							WHERE gbisdel = 0
 				        	UNION ALL
 				        	SELECT * FROM tb_doboard d
+				        	WHERE dbisdel = 0
+=======
+				        	UNION ALL
+				        	SELECT * FROM tb_doboard d
+>>>>>>> initial MessagrChat setting
 				        ) gd 
 				    on u.uno = gd.gbuno
 				) gdc
@@ -317,9 +394,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				( SELECT  uno, userid, uname, unick, gd.*
 					FROM tb_user u INNER JOIN 
 						( SELECT * FROM tb_goboard g
+<<<<<<< HEAD
+							WHERE gbisdel = 0
+				        	UNION ALL
+				        	SELECT * FROM tb_doboard d
+				        	WHERE dbisdel = 0
+				        ) gd  
+=======
 				        	UNION ALL
 				        	SELECT * FROM tb_doboard d
 				        ) gd 
+>>>>>>> initial MessagrChat setting
 				    on u.uno = gd.gbuno
 				) gdr
 				) gdrr
