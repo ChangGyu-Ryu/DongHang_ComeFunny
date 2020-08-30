@@ -34,6 +34,7 @@
 		
 		<typeAlias type="com.DongHang_ComeFunny.www.model.vo.UserFile" alias="USERFILE"/>
       	<typeAlias type="com.DongHang_ComeFunny.www.model.vo.GoCheck" alias="GOCHECK"/>
+        <typeAlias type="com.DongHang_ComeFunny.www.model.vo.Message" alias="MESSAGE"/>
 	</typeAliases>
 
 
