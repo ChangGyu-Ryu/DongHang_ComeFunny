@@ -5,6 +5,8 @@
 <head>
 <link rel="stylesheet" href="<%=request.getContextPath() %>/resources/css/login.css" />
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
+
 
 <!-- fontawesome 아이콘 -->
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
@@ -106,8 +108,12 @@
       <img src="<%=request.getContextPath() %>/resources/image/login/kakao_login_medium_wide.png">
     </div>
     <div>
-    	<button id=fIdBtn class="ui teal button">아이디 찾기</button>
-    	<button id=fPwBtn class="ui teal button">비밀번호 찾기</button>
+    	<a href="<%=request.getContextPath()%>/user/fId">
+    		<button id=fIdBtn class="ui teal button">아이디 찾기</button>
+    	</a>
+    	<a href="<%=request.getContextPath()%>/user/fPw">
+    		<button id=fPwBtn class="ui teal button">비밀번호 찾기</button>
+    	</a>
     </div>
   </div>
 </div>

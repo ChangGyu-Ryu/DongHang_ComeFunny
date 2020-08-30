@@ -25,6 +25,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.DongHang_ComeFunny.www.user.model.service.UserService;
 import com.DongHang_ComeFunny.www.user.model.vo.User;
+import com.fasterxml.jackson.databind.JsonNode;
 
 import common.exception.MailException;
 
@@ -43,27 +44,53 @@ public class UserController {
       return mav;
    }
 
-   @RequestMapping(value="/loginimple", method=RequestMethod.POST)
-   public String loginImpl(
-         @RequestParam Map<String, Object> commandMap
-         , HttpSession session
-         , Model model
-         ) {
-
-      User res = userService.selectMember(commandMap);
-      //로그인에 성공한다면
-      if(res != null) {
-         session.setAttribute("logInInfo", res);
-         model.addAttribute("alertMsg", "로그인 성공~!");
-         model.addAttribute("url", "login");
-      } else {
-         model.addAttribute("alertMsg", "로그인 실패~!");
-         model.addAttribute("url", "join");
-      }
-
-      return "common/result";
-
+   @RequestMapping(value = "/oauth", produces = "application/json")
+   public String kakaoLogin(@RequestParam("code") String code, Model model, HttpSession session) {
+       System.out.println("로그인 할때 임시 코드값");
+       //카카오 홈페이지에서 받은 결과 코드
+       System.out.println(code);
+       System.out.println("로그인 후 결과값");
+       
+       //카카오 rest api 객체 선언
+       KakaoController kr = new KakaoController();
+       //결과값을 node에 담아줌
+       JsonNode node = kr.getKakaoUserInfo(code);
+       //결과값 출력
+       System.out.println(node);
+       //노드 안에 있는 access_token값을 꺼내 문자열로 변환
+       String token = node.get("access_token").toString();
+       //세션에 담아준다.
+       session.setAttribute("token", token);
+       
+       return "/board/freelist";
    }
+
+  @RequestMapping(value="/loginimple", method=RequestMethod.POST)
+  public String loginImpl(
+        @RequestParam Map<String, Object> commandMap
+        , HttpSession session
+        , Model model
+        ) {
+     
+//     String kakaoUrl = kakaoController.getAuthorizationUrl(session);
+//
+//       /* 생성한 인증 URL을 View로 전달 */
+//       model.addAttribute("kakao_url", kakaoUrl);
+
+     User res = userService.selectMember(commandMap);
+     //로그인에 성공한다면
+     if(res != null) {
+        session.setAttribute("logInInfo", res);
+        model.addAttribute("alertMsg", "로그인 성공~!");
+        model.addAttribute("url", "login");
+     } else {
+        model.addAttribute("alertMsg", "로그인 실패~!");
+        model.addAttribute("url", "join");
+     }
+
+     return "/board/freelist";
+
+  }
 
    @RequestMapping(value="/join", method=RequestMethod.GET)
    public ModelAndView join() {
