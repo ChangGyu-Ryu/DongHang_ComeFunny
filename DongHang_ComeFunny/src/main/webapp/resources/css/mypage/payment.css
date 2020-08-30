@@ -38,11 +38,21 @@ a,a:link,a:visited,a:hover{
 }
 
 /**** 테이블 ******/
-
+#deleteBtn{
+	background: #5D7CA6;
+    float: right;
+    margin: 1.5em 0.3em 0 0;
+    height: 2.3em;
+    width: 4.5em;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+}
 
 #myPaymentList{
 	width: 70%;
 	margin: 0 auto;
+	min-width: 500px;
 }
 #myPaymentTitle{
 	margin-top: 2em;

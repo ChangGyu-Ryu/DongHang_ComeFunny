@@ -92,18 +92,21 @@ public class ReviewBoardDao {
 		return sqlSession.selectOne("REVIEW.selectReviewFile",rfNo);
 	}
 
-	// 파일 db 완전 삭제 코드
-//	public int deleteFile(int rfno) {
-//		return sqlSession.delete("REVIEW.deleteFile", rfno);
-//	}
-//	
 	/**
-	 * 게시글 파일 삭제(isDel = 0 -> 1)
+//	 * 게시글 파일 삭제(isDel = 0 -> 1)
+//	 * @param rfNo - 파일 번호
+//	 * @return 성공 : 1, 실패 : 0
+//	 */
+//	public int updateFileIsDel(int rfNo) {
+//		return sqlSession.update("REVIEW.updateFileIsDel", rfNo);
+//	}
+	/**
+	 * 게시글 파일 완전 삭제
 	 * @param rfNo - 파일 번호
 	 * @return 성공 : 1, 실패 : 0
 	 */
-	public int updateFileIsDel(int rfNo) {
-		return sqlSession.update("REVIEW.updateFileIsDel", rfNo);
+	public int deleteFile(int rfNo) {
+		return sqlSession.delete("REVIEW.deleteFile", rfNo);
 	}
 
 	/**
@@ -129,17 +132,25 @@ public class ReviewBoardDao {
 	 * @param rbNo - 게시판 번호로 파일 삭제
 	 * @return 성공 : 1, 실패 : 0
 	 */
-	public int deleteReviewFileByRbno(int rbNo) {
-		return sqlSession.update("REVIEW.updateFileIsDelByRbno", rbNo);
-	}
+//	public int deleteReviewFileByRbno(int rbNo) {
+//		return sqlSession.update("REVIEW.updateFileIsDelByRbno", rbNo);
+//	}
 
 	/**
-	 * 게시판 게시글 삭제하기
+	 * 게시판 게시글 삭제하기(isdel = 1)
 	 * @param rbNo - 게시판 번호로 게시글 삭제
 	 * @return 성공 : 1, 실패 : 0
 	 */
+//	public int deleteReviewBoard(int rbNo) {
+//		return sqlSession.update("REVIEW.updateReviewBoardIsDel", rbNo);
+//	}
+//	/**
+//	 * 게시판 게시글 삭제하기(완전삭제)
+//	 * @param rbNo - 게시판 번호로 게시글 삭제
+//	 * @return 성공 : 1, 실패 : 0
+//	 */
 	public int deleteReviewBoard(int rbNo) {
-		return sqlSession.update("REVIEW.updateReviewBoardIsDel", rbNo);
+		return sqlSession.delete("REVIEW.deleteReviewBoard", rbNo);
 	}
 
 	/**
@@ -174,8 +185,16 @@ public class ReviewBoardDao {
 	 * @param reviewComment
 	 * @return 성공 : 1, 실패 : 0
 	 */
-	public int updateReviewCommentIsDEl(ReviewComment reviewComment) {
-		return sqlSession.update("REVIEW.updateReviewCommentIsDEl",reviewComment);
+//	public int updateReviewCommentIsDEl(ReviewComment reviewComment) {
+//		return sqlSession.update("REVIEW.updateReviewCommentIsDEl",reviewComment);
+//	}
+	/**
+	 * 게시판 댓글 내용 완전 삭제
+	 * @param reviewComment
+	 * @return 성공 : 1, 실패 : 0
+	 */
+	public int deleteReviewComment(ReviewComment reviewComment) {
+		return sqlSession.delete("REVIEW.deleteReviewComment",reviewComment);
 	}
 
 	/**

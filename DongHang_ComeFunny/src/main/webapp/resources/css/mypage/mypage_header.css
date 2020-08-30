@@ -65,6 +65,8 @@ a {
 .main_menu {
    padding: 5px 200px;
    box-shadow: 0px 6px 4px #ddd;
+   width: 100%;
+   min-width: 900px;
 }
 
 .dropbtn {

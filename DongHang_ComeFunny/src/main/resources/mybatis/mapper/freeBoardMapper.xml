@@ -100,21 +100,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     			AND ffisdel = 0
     	</select>
     	
+<!--     	<update id="updateFileIsDel"> -->
+<!--     		UPDATE -->
+<!--     			tb_freefile -->
+<!--     		SET -->
+<!--     			ffisdel = 1 -->
+<!--     		WHERE -->
+<!--     			ffno = #{ffNo} -->
+<!--     	</update> -->
     	<delete id="deleteFile">
-    		DELETE
-    		FROM tb_freefile 
+    		DELETE FROM 
+    			tb_freefile 
     		WHERE ffno = #{ffNo}
-    			AND ffisdel = 0
     	</delete>
-    	
-    	<update id="updateFileIsDel">
-    		UPDATE
-    			tb_freefile
-    		SET
-    			ffisdel = 1
-    		WHERE
-    			ffno = #{ffNo}
-    	</update>
     	
     	<update id="updateFree">
     		UPDATE
@@ -148,14 +146,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     		WHERE
     			fffbno = #{fbNo}
     	</update>
-    	<update id="updateFreeBoardIsDel">
-    		UPDATE
+<!--     	<update id="updateFreeBoardIsDel"> -->
+<!--     		UPDATE -->
+<!--     			tb_freeboard -->
+<!--     		SET -->
+<!--     			fbisdel = 1 -->
+<!--     		WHERE -->
+<!--     			fbno = #{fbNo} -->
+<!--     	</update> -->
+    	<delete id="deleteFreeBoard">
+    		DELETE FROM
     			tb_freeboard
-    		SET
-    			fbisdel = 1
-    		WHERE
-    			fbno = #{fbNo}
-    	</update>
+    		WHERE fbno = #{fbNo}
+    	</delete>
     	
     	<insert id="insertFreeComment">
 	    	INSERT INTO
@@ -191,13 +194,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     		WHERE fcno = #{fcNo}
     	</update>
     	
-    	<update id="updateFreeCommentIsDEl">
-    		UPDATE
-    			tb_freecomment
-    		SET
-    			fcisdel = 1
+<!--     	<update id="updateFreeCommentIsDEl"> -->
+<!--     		UPDATE -->
+<!--     			tb_freecomment -->
+<!--     		SET -->
+<!--     			fcisdel = 1 -->
+<!--     		WHERE fcno = #{fcNo} -->
+<!--     	</update> -->
+    	<delete id="deleteFreeComment">
+    		DELETE FROM	tb_freecomment
     		WHERE fcno = #{fcNo}
-    	</update>
+    	</delete>
     	
     	<select id="selectFreeSearchCnt" resultType="int">
 			SELECT COUNT(*) FROM

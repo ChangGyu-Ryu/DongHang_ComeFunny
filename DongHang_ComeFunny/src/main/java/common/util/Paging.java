@@ -1,9 +1,23 @@
+/**
+ * @PackageName: common.util
+ * @FileName : Paging.java
+ * @Date : 2020. 4. 20.
+ * @프로그램 설명 : 
+ * @author 
+ */
 package common.util;
 
+/**
+ * @PackageName: common.util
+ * @FileName : Paging.java
+ * @Date : 2020. 4. 20.
+ * @프로그램 설명 : 
+ * @author 
+ */
 public class Paging {
 	
 	//현재 페이지
-	private int cPage;
+	private int currentPage;
 	//전체 게시물 수
 	private int total;
 	//페이지당 게시물 수
@@ -23,18 +37,20 @@ public class Paging {
 	//sql에서 사용할 끝 값
 	private int end;
 	
-	public Paging() {	}
+	public Paging() {
+		
+	}
 	
-	public Paging(int total, int cPage, int cntPerPage) {
+	public Paging(int total, int currentPage, int cntPerPage) {
 		
 		this.total = total;
-		this.cPage = cPage;
+		this.currentPage = currentPage;
 		this.cntPerPage = cntPerPage;
 		//
 		calAllPage(total,cntPerPage);
-		calBlockEnd(cPage, blockCnt);
+		calBlockEnd(currentPage, blockCnt);
 		calBlockStart(blockEnd, blockCnt);
-		calEnd(cPage, cntPerPage);
+		calEnd(currentPage, cntPerPage);
 		calStart();
 	}
 	
@@ -45,9 +61,9 @@ public class Paging {
 	}
 	
 	//블럭당  끝 페이지 넘버 구하기
-	public void calBlockEnd(int cPage, int blockCnt) {
+	public void calBlockEnd(int currentPage, int blockCnt) {
 		
-		blockEnd = ((cPage-1)/blockCnt+1) * blockCnt;
+		blockEnd = ((currentPage-1)/blockCnt+1) * blockCnt;
 		if(lastPage < blockEnd) {
 			blockEnd = lastPage;
 		}
@@ -55,27 +71,27 @@ public class Paging {
 	
 	//블럭당 시작 페이지 넘버 구하기
 	public void calBlockStart(int blockEnd, int blockCnt) {
-		blockStart = ((cPage-1)/blockCnt) * blockCnt+1;
+		blockStart = ((currentPage-1)/blockCnt) * blockCnt+1;
 		if(blockStart  <  1) {
 			blockStart = 1;
 		}
 	}
 	
 	//DB쿼리에서 사용할 끝값 구하기
-	public void calEnd(int cPage, int cntPerPage) {
-		end = cPage * cntPerPage;
+	public void calEnd(int currentPage, int cntPerPage) {
+		end = currentPage * cntPerPage;
 	}
 	
 	public void calStart() {
 		start = end - cntPerPage + 1;
 	}
 
-	public int getcPage() {
-		return cPage;
+	public int getCurrentPage() {
+		return currentPage;
 	}
 
-	public void setcPage(int cPage) {
-		this.cPage = cPage;
+	public void setCurrentPage(int currentPage) {
+		this.currentPage = currentPage;
 	}
 
 	public int getTotal() {
@@ -144,10 +160,9 @@ public class Paging {
 
 	@Override
 	public String toString() {
-		return "Paging [cPage=" + cPage + ", total=" + total + ", cntPerPage=" + cntPerPage + ", blockCnt=" + blockCnt
-				+ ", blockStart=" + blockStart + ", blockEnd=" + blockEnd + ", lastPage=" + lastPage + ", start="
-				+ start + ", end=" + end + "]";
+		return "Paging [currentPage=" + currentPage + ", total=" + total + ", cntPerPage=" + cntPerPage + ", blockCnt="
+				+ blockCnt + ", blockStart=" + blockStart + ", blockEnd=" + blockEnd + ", lastPage=" + lastPage
+				+ ", start=" + start + ", end=" + end + "]";
 	}
-	
-	
+
 }

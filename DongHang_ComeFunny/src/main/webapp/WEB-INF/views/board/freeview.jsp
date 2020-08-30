@@ -65,7 +65,8 @@
 		
 		<div class="freeview__button">
 			<div>
-				<button class ="freeview__button__list" type="button" onclick="location.href='/board/freelist'">목록</button>
+<!-- 				<button class ="freeview__button__list" type="button" onclick="location.href='/board/freelist'">목록</button> -->
+				<button class ="freeview__button__list" type="button" onclick="history.go(-1)">목록</button>
 			</div>
 			<c:if test="${logInInfo.userId == fview.detail.USERID }">
 				<div>
