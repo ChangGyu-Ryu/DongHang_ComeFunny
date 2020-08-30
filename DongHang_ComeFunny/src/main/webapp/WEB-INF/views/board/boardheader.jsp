@@ -5,7 +5,7 @@
 <head>
 <!-- styles.css -->
 <link rel="stylesheet" href="<%=request.getContextPath() %>/resources/css/community/styles.css" />
-<link rel="stylesheet" href="<%=request.getContextPath() %>/resources/css/community/mail.css" />
+ 
 <!-- jQuery -->
 <!-- <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script> -->
 

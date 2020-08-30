@@ -17,7 +17,7 @@ public class ChatController {
 		ModelAndView mav = new ModelAndView();
 		User sessionUser = (User)session.getAttribute("logInInfo");		
 		if(sessionUser != null) {
-			mav.setViewName("/chat/char");
+			mav.setViewName("/chat/chat");
 		} else {
 			mav.addObject("alertMsg", "로그인 후에 이용해주시기 바랍니다.");
 			mav.addObject("url", "../user/login");

@@ -20,7 +20,6 @@ public interface UserService {
 	 * @return int - 가입완료 : 1 가입실패 : 0
 	 */
 	public int insertUser(User user);
-
+	
 	public User selectMemberByUserId(String userId);
-
 }

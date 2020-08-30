@@ -94,7 +94,6 @@ public class ReviewBoardDao {
 		return sqlSession.selectOne("REVIEW.selectReviewFile",rfNo);
 	}
 
-<<<<<<< HEAD
 	/**
 //	 * 게시글 파일 삭제(isDel = 0 -> 1)
 //	 * @param rfNo - 파일 번호
@@ -110,20 +109,6 @@ public class ReviewBoardDao {
 	 */
 	public int deleteFile(int rfNo) {
 		return sqlSession.delete("REVIEW.deleteFile", rfNo);
-=======
-	// 파일 db 완전 삭제 코드
-//	public int deleteFile(int rfno) {
-//		return sqlSession.delete("REVIEW.deleteFile", rfno);
-//	}
-//	
-	/**
-	 * 게시글 파일 삭제(isDel = 0 -> 1)
-	 * @param rfNo - 파일 번호
-	 * @return 성공 : 1, 실패 : 0
-	 */
-	public int updateFileIsDel(int rfNo) {
-		return sqlSession.update("REVIEW.updateFileIsDel", rfNo);
->>>>>>> initial MessagrChat setting
 	}
 
 	/**
@@ -149,7 +134,6 @@ public class ReviewBoardDao {
 	 * @param rbNo - 게시판 번호로 파일 삭제
 	 * @return 성공 : 1, 실패 : 0
 	 */
-<<<<<<< HEAD
 //	public int deleteReviewFileByRbno(int rbNo) {
 //		return sqlSession.update("REVIEW.updateFileIsDelByRbno", rbNo);
 //	}
@@ -169,19 +153,6 @@ public class ReviewBoardDao {
 //	 */
 	public int deleteReviewBoard(int rbNo) {
 		return sqlSession.delete("REVIEW.deleteReviewBoard", rbNo);
-=======
-	public int deleteReviewFileByRbno(int rbNo) {
-		return sqlSession.update("REVIEW.updateFileIsDelByRbno", rbNo);
-	}
-
-	/**
-	 * 게시판 게시글 삭제하기
-	 * @param rbNo - 게시판 번호로 게시글 삭제
-	 * @return 성공 : 1, 실패 : 0
-	 */
-	public int deleteReviewBoard(int rbNo) {
-		return sqlSession.update("REVIEW.updateReviewBoardIsDel", rbNo);
->>>>>>> initial MessagrChat setting
 	}
 
 	/**
@@ -216,7 +187,6 @@ public class ReviewBoardDao {
 	 * @param reviewComment
 	 * @return 성공 : 1, 실패 : 0
 	 */
-<<<<<<< HEAD
 //	public int updateReviewCommentIsDEl(ReviewComment reviewComment) {
 //		return sqlSession.update("REVIEW.updateReviewCommentIsDEl",reviewComment);
 //	}
@@ -227,10 +197,6 @@ public class ReviewBoardDao {
 	 */
 	public int deleteReviewComment(ReviewComment reviewComment) {
 		return sqlSession.delete("REVIEW.deleteReviewComment",reviewComment);
-=======
-	public int updateReviewCommentIsDEl(ReviewComment reviewComment) {
-		return sqlSession.update("REVIEW.updateReviewCommentIsDEl",reviewComment);
->>>>>>> initial MessagrChat setting
 	}
 
 	/**
