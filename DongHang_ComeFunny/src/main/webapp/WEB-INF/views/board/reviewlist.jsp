@@ -6,6 +6,32 @@
 <c:import url="/WEB-INF/views/board/boardheader.jsp" />    
 <script src="/resources/bower_components/jquery/dist/jquery.min.js"></script>  
 <script src="/resources/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+
+<script type="text/javascript">
+
+	    function callFunction(){
+		console.dir('clicekd');
+		
+		<c:forEach items="${rticket.tlist}" var="ticket">
+			<c:forEach items="${reviewData.flist }" var="review">
+			<c:if test = "${ticket.DHTRBNO == review.RBNO}">
+				location.href="<%=request.getContextPath() %>/board/reviewview?rbNo=<c:out value='${review.RBNO}'/>";
+				return;
+			</c:if>
+			</c:forEach>
+		</c:forEach>
+		var confirm_val = confirm("해당 후기게시글 조회 시 동행복권 1장이 소모됩니다.");
+		console.dir(confirm_val);
+		if(confirm_val){
+			<c:forEach items="${reviewData.flist }" var="review">
+				location.href="<%=request.getContextPath() %>/board/reviewview?rbNo=<c:out value='${review.RBNO}'/>";
+			</c:forEach>
+		} else {
+			location.href='javascript:history.go(0)';
+		}
+	}
+
+</script>
 <div class = "reviewlist"> 
 	<div class = "reviewlist__header">
 		<div class = "reviewlist__header__label">
@@ -27,7 +53,7 @@
 			<c:forEach items="${reviewData.flist }" var="review">
 			<tr>
 				<td>${review.RBNO}</td>
-				<td><a href="<%=request.getContextPath() %>/board/reviewview?rbNo=${review.RBNO }">${review.RBTITLE }</a></td>
+				<td><a href="javascript:void(0)"onclick="callFunction();return false;"class="reveiwView">${review.RBTITLE }</a></td>
 				<td>${review.UNICK }</td>
 				<td><fmt:formatDate var="dateMMDD" value="${review.RBWRITTENDATE }" pattern="MM-dd"/>
 					${dateMMDD }</td>

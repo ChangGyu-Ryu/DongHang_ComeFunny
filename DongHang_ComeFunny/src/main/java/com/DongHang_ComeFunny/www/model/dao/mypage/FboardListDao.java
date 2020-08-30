@@ -17,6 +17,7 @@ import com.DongHang_ComeFunny.www.model.vo.Order;
 import com.DongHang_ComeFunny.www.model.vo.PayMent;
 import com.DongHang_ComeFunny.www.model.vo.ReviewBoard;
 import com.DongHang_ComeFunny.www.model.vo.ReviewComment;
+import com.DongHang_ComeFunny.www.model.vo.ReviewDhTicket;
 import com.DongHang_ComeFunny.www.model.vo.User;
 
 import common.util.Paging;
@@ -29,13 +30,13 @@ public class FboardListDao {
 	//자유게시판 게시글수 카운트 
 	public int selectFbContentCnt(int uno) { 
 		
-		return sqlSession.selectOne("Fboard.selectFbContentCnt", uno);
+		return sqlSession.selectOne("MYPAGE.selectFbContentCnt", uno);
 	}
 
 	//자유게시판 댓글 띄우기
 	public int selectFcommentCnt(int uno) {
 		
-		return sqlSession.selectOne("Fboard.selectFcommentCnt", uno);
+		return sqlSession.selectOne("MYPAGE.selectFcommentCnt", uno);
 	}
 
 	//자유게시판 리스트 띄우기
@@ -43,14 +44,14 @@ public class FboardListDao {
 		Map<String, Object> param = new HashMap<String, Object>();
 		param.put("p",p);
 		param.put("uno", uno);
-		return sqlSession.selectList("Fboard.selectFboardList", param);
+		return sqlSession.selectList("MYPAGE.selectFboardList", param);
 	}
 
 
 	//자유게시판 게시글 삭제
 	public void deleteFboardList(FreeBoard fboard) {
 //		System.out.println(fboard);
-		sqlSession.delete("Fboard.deleteFboardList", fboard);
+		sqlSession.delete("MYPAGE.deleteFboardList", fboard);
 	}
 //	//자유게시판 게시글 삭제(IsDel=1)
 //	public void deleteFboardList(FreeBoard fboard) {
@@ -60,12 +61,12 @@ public class FboardListDao {
 
 	//후기게시판 게시글수 카운트 
 	public int selectRbContentCnt(int uno) {
-		return sqlSession.selectOne("Fboard.selectRbContentCnt", uno);
+		return sqlSession.selectOne("MYPAGE.selectRbContentCnt", uno);
 	}
 
 	//후게시판 댓글 띄우기
 	public int selectRbcommentCnt(int uno) {
-		return sqlSession.selectOne("Fboard.selectRbcommentCnt", uno);
+		return sqlSession.selectOne("MYPAGE.selectRbcommentCnt", uno);
 	}
 
 	//후기게시판 리스트 띄우기
@@ -73,15 +74,47 @@ public class FboardListDao {
 		Map<String, Object> param = new HashMap<String, Object>();
 		param.put("p",p);
 		param.put("uno", uno);
-		return sqlSession.selectList("Fboard.selectRboardList", param);
+		return sqlSession.selectList("MYPAGE.selectRboardList", param);
 	}
 
 	//후기게시판 리스트 삭제
 	public void deleteRboardList(ReviewBoard rboard) {
 //		System.out.println(rboard);
-		sqlSession.delete("Fboard.deleteRboardList", rboard);
+		sqlSession.delete("MYPAGE.deleteRboardList", rboard);
 		
 	}
+	
+	// ------------------------------------------------------------------
+	//동행 평점 개수
+	public ReviewBoard selectReviewBoardByDH(ReviewBoard rboard) {
+		return sqlSession.selectOne("MYPAGE.selectReviewBoardByDH", rboard);
+	}
+
+	public Map<String, Object> selectReviewGbAvg(int rbGbNo) {
+		return sqlSession.selectOne("MYPAGE.selectReviewGbAvg", rbGbNo);
+	}
+
+	public Map<String, Object> selectReviewDbAvg(int rbDbNo) {
+		return sqlSession.selectOne("MYPAGE.selectReviewDbAvg", rbDbNo);
+	}
+
+	public int selectReviewBoardByRbGbNo(int rbGbNo) {
+		return sqlSession.selectOne("MYPAGE.selectReviewBoardByRbGbNo", rbGbNo);
+	}
+
+	public int selectReviewBoardByRbDbNo(int rbDbNo) {
+		return sqlSession.selectOne("MYPAGE.selectReviewBoardByRbDbNo", rbDbNo);
+	}
+	
+	public int updateGoAvgByZero(Map<String, Object> reviewStarGo) {
+		return sqlSession.update("MYPAGE.updateGoAvgByZero", reviewStarGo);
+	}
+
+	public int updateDoAvgByZero(Map<String, Object> reviewStarDo) {
+		return sqlSession.update("MYPAGE.updateDoAvgByZero", reviewStarDo);
+	}
+	
+	//--------------------------------------------------------------
 //	//후기게시판 리스트 삭제(IsDel=1)
 //	public void deleteRboardList(ReviewBoard rboard) {
 ////		System.out.println(rboard);
@@ -91,7 +124,7 @@ public class FboardListDao {
 
 	//나의댓글수 카운트
 	public int selectCbContentCnt(int uno) {
-		return sqlSession.selectOne("Fboard.selectCbContentCnt", uno);
+		return sqlSession.selectOne("MYPAGE.selectCbContentCnt", uno);
 	}
 
 	//나의 댓글 리스트 띄우기
@@ -99,21 +132,21 @@ public class FboardListDao {
 		Map<String, Object> param = new HashMap<String, Object>();
 		param.put("p",p);
 		param.put("uno", uno);
-		return sqlSession.selectList("Fboard.selectFcmtList", param);
+		return sqlSession.selectList("MYPAGE.selectFcmtList", param);
 	}
 
 	//댓글(자유) 삭제
 	public void deletefcmtList(FreeComment fcmt) {
-		sqlSession.delete("Fboard.deletefcmtList", fcmt);
+		sqlSession.delete("MYPAGE.deletefcmtList", fcmt);
 	}
 //	//댓글(자유) 삭제(IsDel=1)
 //	public void deletefcmtList(FreeComment fcmt) {
-//		sqlSession.update("Fboard.deletefcmtList", fcmt);
+//		sqlSession.update("MYPAGE.deletefcmtList", fcmt);
 //	}
 
 	//후기 게시판 댓글 개수
 	public int selectRcmtContentCnt(int uno) {
-		return sqlSession.selectOne("Fboard.selectRcmtContentCnt", uno);
+		return sqlSession.selectOne("MYPAGE.selectRcmtContentCnt", uno);
 	}
 
 	//후기게시판 댓글 목록 띄우기
@@ -121,24 +154,24 @@ public class FboardListDao {
 		Map<String, Object> param = new HashMap<String, Object>();
 		param.put("p",p);
 		param.put("uno", uno);
-		return sqlSession.selectList("Fboard.selectRcmtList", param);
+		return sqlSession.selectList("MYPAGE.selectRcmtList", param);
 	}	
 	
 	
 	//댓글(후기) 삭제
 	public void deleteRcmtList(ReviewComment rcmt) {
-		sqlSession.delete("Fboard.deleteRcmtList", rcmt);
+		sqlSession.delete("MYPAGE.deleteRcmtList", rcmt);
 		
 	}
 //	//댓글(후기) 삭제(IsDel=1)
 //	public void deleteRcmtList(ReviewComment rcmt) {
-//		sqlSession.update("Fboard.deleteRcmtList", rcmt);
+//		sqlSession.update("MYPAGE.deleteRcmtList", rcmt);
 //		
 //	}
 
 	//복권 구매 내역 카운트
 	public int selectPmContentCnt(int uno) {
-		return sqlSession.selectOne("Fboard.selectPmContentCnt", uno);
+		return sqlSession.selectOne("MYPAGE.selectPmContentCnt", uno);
 	}
 
 	//복권 구매 내역 리스트
@@ -146,28 +179,28 @@ public class FboardListDao {
 		Map<String, Object> param = new HashMap<String, Object>();
 		param.put("p",p);
 		param.put("uno", uno);
-		return sqlSession.selectList("Fboard.selectPmList", param);
+		return sqlSession.selectList("MYPAGE.selectPmList", param);
 	}
 	
 	//보유복권 수량 카운트
 	public int selecTkCnt(int uno) {
-		return sqlSession.selectOne("Fboard.selecTkCnt", uno);
+		return sqlSession.selectOne("MYPAGE.selecTkCnt", uno);
 	}
 
 	//복권구매내역 삭제(isdel = 1)
 //	public void deletepmList(Order order) {
-//		sqlSession.update("Fboard.deletepmList", order);
+//		sqlSession.update("MYPAGE.deletepmList", order);
 //		
 //	}
 	//복권구매내역 삭제
 	public void deletepmList(Order order) {
-		sqlSession.delete("Fboard.deletepmList", order);
+		sqlSession.delete("MYPAGE.deletepmList", order);
 		
 	}
 
 	//(함께가요 ) 신청한 동행 카운트
 	public int selectApDhContentCnt(int uno) {
-		return sqlSession.selectOne("Fboard.selectApDhContentCnt", uno);
+		return sqlSession.selectOne("MYPAGE.selectApDhContentCnt", uno);
 	}
 
 	//(함께가요) 신청한 동행 리스트
@@ -175,17 +208,17 @@ public class FboardListDao {
 		Map<String, Object> param = new HashMap<String, Object>();
 		param.put("p",p);
 		param.put("uno", uno);
-		return sqlSession.selectList("Fboard.selectApDhList", param);
+		return sqlSession.selectList("MYPAGE.selectApDhList", param);
 	}
 
 	//(함께 가요) 신청한 동행 삭재
 	public void deleteAplyDhList(GoApply goapply) {
-		sqlSession.delete("Fboard.deleteApDhList", goapply);
+		sqlSession.delete("MYPAGE.deleteApDhList", goapply);
 	}
 
 	//(함께 해요) 신청한 동행 카운트
 	public int selectDoApDhContentCnt(int uno) {
-		return sqlSession.selectOne("Fboard.selectDoApDhContentCnt", uno);
+		return sqlSession.selectOne("MYPAGE.selectDoApDhContentCnt", uno);
 	}
 
 	//(함께 해요) 신청한 동행 리스트
@@ -193,17 +226,17 @@ public class FboardListDao {
 		Map<String, Object> param = new HashMap<String, Object>();
 		param.put("p",p);
 		param.put("uno", uno);
-		return sqlSession.selectList("Fboard.selectDoApDhList", param);
+		return sqlSession.selectList("MYPAGE.selectDoApDhList", param);
 	}
 
 	//(함께 해요) 신청한 동행 삭제
 	public void deleteDoAplyDhList(DoApply doapply) {
-		sqlSession.delete("Fboard.deleteDoAplyDhList", doapply);
+		sqlSession.delete("MYPAGE.deleteDoAplyDhList", doapply);
 	}
 
 	//나의 동행 (함께 가요) 카운트
 	public int selectMyGoDhContentCnt(int uno) {
-		return sqlSession.selectOne("Fboard.selectMyGoDhContentCnt", uno);
+		return sqlSession.selectOne("MYPAGE.selectMyGoDhContentCnt", uno);
 	}
 
 	//나의 동행 (함께 가요) 리스트
@@ -211,7 +244,7 @@ public class FboardListDao {
 		Map<String, Object> param = new HashMap<String, Object>();
 		param.put("p",p);
 		param.put("uno", uno);
-		return sqlSession.selectList("Fboard.selectMyGoDhList", param);
+		return sqlSession.selectList("MYPAGE.selectMyGoDhList", param);
 	}
 
 	//현재 수락된 인원
@@ -219,10 +252,10 @@ public class FboardListDao {
 		Map<String, Object> param = new HashMap<String, Object>();
 		param.put("gbno", gbno);
 		param.put("gbcategory", gbcategory);
-		int res = sqlSession.selectOne("Fboard.selectRecruitNumCnt", param);
+		int res = sqlSession.selectOne("MYPAGE.selectRecruitNumCnt", param);
 		System.out.println("신청자수  : " + res);
 		
-		return sqlSession.selectOne("Fboard.selectRecruitNumCnt", param);
+		return sqlSession.selectOne("MYPAGE.selectRecruitNumCnt", param);
 	}
 
 	
@@ -233,7 +266,7 @@ public class FboardListDao {
 //		param.put("gbno", gbno);
 //		param.put("gbcategory", gbcategory);
 //		System.out.println( "신청자 리스트 : " + param);
-//		return sqlSession.selectOne("Fboard.selectrecruitContentCnt",param);
+//		return sqlSession.selectOne("MYPAGE.selectrecruitContentCnt",param);
 //	}
 	
 	//신청자 리스트
@@ -241,7 +274,7 @@ public class FboardListDao {
 		Map<String, Object> param = new HashMap<String, Object>();
 		param.put("gbno", gbno);
 		param.put("gbcategory", gbcategory);
-		return sqlSession.selectList("Fboard.selectrecruitList", param);
+		return sqlSession.selectList("MYPAGE.selectrecruitList", param);
 	}
 
 	//신청 수락
@@ -250,7 +283,7 @@ public class FboardListDao {
 		param.put("aplyuno", aplyuno);
 		param.put("bano", bano);
 		param.put("cate", cate);
-		sqlSession.update("Fboard.acceptApply", param);		
+		sqlSession.update("MYPAGE.acceptApply", param);		
 	}
 
 	//신청 거절
@@ -259,7 +292,7 @@ public class FboardListDao {
 		param.put("aplyuno", aplyuno);
 		param.put("bano", bano);
 		param.put("cate", cate);
-		sqlSession.update("Fboard.acceptRefuse", param);	
+		sqlSession.update("MYPAGE.acceptRefuse", param);	
 		
 	}
 
@@ -268,15 +301,37 @@ public class FboardListDao {
 //		Map<String, Object> param = new HashMap<String, Object>();
 //		param.put("bno", bno);
 //		param.put("cate", cate);
-//		sqlSession.update("Fboard.deleteMyDhList", param);
+//		sqlSession.update("MYPAGE.deleteMyDhList", param);
 //	}
 	//나의 동행리스트 삭제
 	public void deleteMyDhList(int bno, String cate) {
 		Map<String, Object> param = new HashMap<String, Object>();
 		param.put("bno", bno);
 		param.put("cate", cate);
-		sqlSession.delete("Fboard.deleteMyDhList", param);
+		sqlSession.delete("MYPAGE.deleteMyDhList", param);
 	}
+
+	//동행복권 사용내역 개수
+	public int selectUsingContentCnt(int uno) {
+		return sqlSession.selectOne("MYPAGE.selectUsingContentCnt", uno);
+	}
+	
+	//동행복권 사용내역 리스트
+	public List<ReviewDhTicket> selectUsingdList(Paging p, int uno) {
+		Map<String, Object> param = new HashMap<String, Object>();
+		param.put("p",p);
+		param.put("uno", uno);
+		return sqlSession.selectList("MYPAGE.selectUsingdList", param);
+	}
+
+
+
+
+
+
+
+
+
 
 	
 }

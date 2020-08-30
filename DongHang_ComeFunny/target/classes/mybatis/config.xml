@@ -24,11 +24,17 @@
 		<typeAlias type="com.DongHang_ComeFunny.www.model.vo.ReviewBoard" alias="RBOARD"/>
 		<typeAlias type="com.DongHang_ComeFunny.www.model.vo.FreeComment" alias="FCOMMENT"/>
 		<typeAlias type="com.DongHang_ComeFunny.www.model.vo.ReviewComment" alias="RCOMMENT"/>
+		<typeAlias type="com.DongHang_ComeFunny.www.model.vo.ReviewDhTicket" alias="RTICKET"/>
+		
 		<typeAlias type="com.DongHang_ComeFunny.www.model.vo.Order" alias="ORDER"/>
 		<typeAlias type="com.DongHang_ComeFunny.www.model.vo.GoBoard" alias="GOBOARD"/>
 		<typeAlias type="com.DongHang_ComeFunny.www.model.vo.GoApply" alias="GOAPPLY"/>
+		
 		<typeAlias type="com.DongHang_ComeFunny.www.model.vo.User" alias="USER"/>
-		<typeAlias type="com.DongHang_ComeFunny.www.model.vo.Message" alias="MESSAGE"/>
+		
+		<typeAlias type="com.DongHang_ComeFunny.www.model.vo.UserFile" alias="USERFILE"/>
+      	<typeAlias type="com.DongHang_ComeFunny.www.model.vo.GoCheck" alias="GOCHECK"/>
+        <typeAlias type="com.DongHang_ComeFunny.www.model.vo.Message" alias="MESSAGE"/>
 	</typeAliases>
 
 
