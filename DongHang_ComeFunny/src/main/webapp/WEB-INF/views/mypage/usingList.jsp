@@ -52,7 +52,7 @@
 		<div id="myPaymentTitle">나의 동행복권</div>
 		<div id="ticketBox">
 			<img id="ticket" alt="나의 동행" src="/resources/image/mypage/coupon.png"/>
-			<div id="reserveTicket">보유중인 동행복권 <p id="reserveTicketNum">28</p> 장</div>
+			<div id="reserveTicket">보유중인 동행복권 <p id="reserveTicketNum">${usingData.tkCnt}</p> 장</div>
 			<button id="chargeBtn" type="button">충전</button>
 		</div>		
 		
@@ -68,48 +68,71 @@
 				<th style="width: 25%">잔여 수량</th>
 		
 			</tr>
-			
-			<tr>			
-				<td style="vertical-align: inherit;"><input type="checkbox" class="deleteChk"/></td>
-				<td style="vertical-align: inherit;"><a>2020-08-04</a></td>
-				<td style="vertical-align: inherit;"><a>후기 보기</a></td>
-				<td style="vertical-align: inherit;"><a>30 장</a></td>
-				<td style="vertical-align: inherit;"><a>30 장</a></td>
-			</tr>
-			<tr>			
-				<td style="vertical-align: inherit;"><input type="checkbox" class="deleteChk"/></td>
-				<td style="vertical-align: inherit;"><a>2020-08-04</a></td>
-				<td style="vertical-align: inherit;"><a>후기 보기</a></td>
-				<td style="vertical-align: inherit;"><a>30 장</a></td>
-				<td style="vertical-align: inherit;"><a>30 장</a></td>
-			</tr>
-			
-			<tr>			
-				<td style="vertical-align: inherit;"><input type="checkbox" class="deleteChk"/></td>
-				<td style="vertical-align: inherit;"><a>2020-08-04</a></td>
-				<td style="vertical-align: inherit;"><a>후기 보기</a></td>
-				<td style="vertical-align: inherit;"><a>30 장</a></td>
-				<td style="vertical-align: inherit;"><a>30 장</a></td>
-			</tr>
-			
-			<tr>			
-				<td style="vertical-align: inherit;"><input type="checkbox" class="deleteChk"/></td>
-				<td style="vertical-align: inherit;"><a>2020-08-04</a></td>
-				<td style="vertical-align: inherit;"><a>후기 보기</a></td>
-				<td style="vertical-align: inherit;"><a>30 장</a></td>
-				<td style="vertical-align: inherit;"><a>30 장</a></td>
-			</tr>
-			
-			<tr>			
-				<td style="vertical-align: inherit;"><input type="checkbox" class="deleteChk"/></td>
-				<td style="vertical-align: inherit;"><a>2020-08-04</a></td>
-				<td style="vertical-align: inherit;"><a>후기 보기</a></td>
-				<td style="vertical-align: inherit;"><a>30 장</a></td>
-				<td style="vertical-align: inherit;"><a>30 장</a></td>
-			</tr>
-			
+			<c:forEach items="${usingData.ulist}" var="ticket">				
+				<tr>
+					<td style="vertical-align: inherit;"><input type="checkbox" class="deleteChk" value="${ticket.dhtNo}"/></td>
+					<td style="vertical-align: inherit;"><a>${ticket.dhtUsedDate}</a></td>
+					<td style="vertical-align: inherit;"><a>후기 보기</a></td>
+					<td style="vertical-align: inherit;"><a>1 장</a></td>
+					<td style="vertical-align: inherit;"><a>${usingData.tkCnt} 장</a></td>
+				</tr>
+			</c:forEach>
 		</table>
 	</div>
+		<nav aria-label="Page navigation" style="text-align: center;">
+		  <ul class="pagination">
+		    <li>
+		      <a href="<%= request.getContextPath() %>/mypage/usingList" aria-label="Previous">
+		        <span aria-hidden="true">&laquo;</span>
+		      </a>
+		      
+		      <c:choose>
+		      	<c:when test="${paging.blockStart > 1 }">
+		      		<a href="<%= request.getContextPath() %>/mypage/usingList?cPage=${paging.currentPage-1}" aria-label="Previous">
+		        		<span aria-hidden="true">&lt;</span>
+		      		</a>
+		      	</c:when>
+		      	
+		      	<c:when test="${paging.currentPage eq 1 }">
+		      		<a href="<%= request.getContextPath() %>/mypage/usingList?cPage=${paging.blockStart}" aria-label="Previous">
+		        		<span aria-hidden="true">&lt;</span>
+		      		</a>
+		      	</c:when>
+		      	
+		      	<c:otherwise>
+		      		<a href="<%= request.getContextPath() %>/mypage/usingList?cPage=${paging.currentPage-1}" aria-label="Previous">
+		        		<span aria-hidden="true">&lt;</span>
+		      		</a>
+          		 </c:otherwise>
+		      </c:choose>
+		      
+		      <c:forEach begin="${paging.blockStart}" end="${paging.blockEnd}" var="page">
+         			<li><a href="<%= request.getContextPath() %>/mypage/usingList?cPage=${page}"><span>${page}</span></a></li>
+        	  </c:forEach> 
+		      
+		    </li>
+		    
+		    <li>
+		    	<c:choose>
+           			<c:when test="${paging.currentPage eq paging.lastPage }">
+               			<a href="<%= request.getContextPath() %>/mypage/usingList?cPage=${paging.blockEnd}" aria-label="Next">
+		       	 			<span aria-hidden="true">&gt;</span>
+		      			</a>
+          			 </c:when>
+          		 <c:otherwise>
+              			 <a href="<%= request.getContextPath() %>/mypage/usingList?cPage=${paging.currentPage+1}" aria-label="Next">
+		       	 			<span aria-hidden="true">&gt;</span>
+		      			</a>
+         		 </c:otherwise>
+          	 	 </c:choose>
+		    
+		    
+		      <a href="<%= request.getContextPath() %>/mypage/usingList?cPage=${paging.lastPage}" aria-label="Next">
+		        <span aria-hidden="true">&raquo;</span>
+		      </a>
+		    </li>
+		  </ul>
+	</nav>
 
 </div><!-- containerEND  -->
 

@@ -17,6 +17,7 @@ import com.DongHang_ComeFunny.www.model.vo.Order;
 import com.DongHang_ComeFunny.www.model.vo.PayMent;
 import com.DongHang_ComeFunny.www.model.vo.ReviewBoard;
 import com.DongHang_ComeFunny.www.model.vo.ReviewComment;
+import com.DongHang_ComeFunny.www.model.vo.ReviewDhTicket;
 import com.DongHang_ComeFunny.www.model.vo.User;
 
 import common.util.Paging;
@@ -309,6 +310,23 @@ public class FboardListDao {
 		param.put("cate", cate);
 		sqlSession.delete("MYPAGE.deleteMyDhList", param);
 	}
+
+	//동행복권 사용내역 개수
+	public int selectUsingContentCnt(int uno) {
+		return sqlSession.selectOne("MYPAGE.selectUsingContentCnt", uno);
+	}
+	
+	//동행복권 사용내역 리스트
+	public List<ReviewDhTicket> selectUsingdList(Paging p, int uno) {
+		Map<String, Object> param = new HashMap<String, Object>();
+		param.put("p",p);
+		param.put("uno", uno);
+		return sqlSession.selectList("MYPAGE.selectUsingdList", param);
+	}
+
+
+
+
 
 
 

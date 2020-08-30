@@ -2,7 +2,6 @@ package com.DongHang_ComeFunny.www.model.service.mypage;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -19,6 +18,7 @@ import com.DongHang_ComeFunny.www.model.vo.Order;
 import com.DongHang_ComeFunny.www.model.vo.PayMent;
 import com.DongHang_ComeFunny.www.model.vo.ReviewBoard;
 import com.DongHang_ComeFunny.www.model.vo.ReviewComment;
+import com.DongHang_ComeFunny.www.model.vo.ReviewDhTicket;
 import com.DongHang_ComeFunny.www.model.vo.User;
 
 import common.util.Paging;
@@ -278,8 +278,23 @@ public class FboardListServiceImpl implements FboardListService{
 		
 	}
 
-	
+	//동행복권 사용내역
+	@Override
+	public Map<String, Object> selectUsingList(int cPage, int cntPerPage, int uno) {
+			
+		Map<String, Object> commandMap = new HashMap<String, Object>();
+		Paging p = new Paging(fboardlistDao.selectUsingContentCnt(uno), cPage, cntPerPage);
 		
+		int tkCnt = fboardlistDao.selecTkCnt(uno);
+		List<ReviewDhTicket> ulist = fboardlistDao.selectUsingdList(p,uno);
+		commandMap.put("tkCnt", tkCnt);
+		commandMap.put("ulist", ulist);
+		commandMap.put("paging",p);
+		
+//			System.out.println(commandMap);
+		
+		return commandMap;
+	}
 
 
 //	@Override

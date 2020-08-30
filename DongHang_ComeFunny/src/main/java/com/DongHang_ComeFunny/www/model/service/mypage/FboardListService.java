@@ -151,8 +151,6 @@ public interface FboardListService {
 	 */
 	public Map<String, Object> selectrecruitList(String gbcategory, int gbno, int cPage, int cntPerPage);
 
-	
-
 	/**
 	 * 신청 수락
 	 * @param aplyuno : 신청자 uno
@@ -174,6 +172,15 @@ public interface FboardListService {
 	 * @param param
 	 */
 	public void deleteMyDhList(String param);
+
+	/**
+	 * 동행복권 사용내역 조회
+	 * @param cPage
+	 * @param cntPerPage
+	 * @param uno
+	 * @return
+	 */
+	public Map<String, Object> selectUsingList(int cPage, int cntPerPage, int uno);
 
 	
 

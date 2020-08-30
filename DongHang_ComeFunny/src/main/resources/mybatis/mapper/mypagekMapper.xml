@@ -602,7 +602,25 @@
 		where gluno = #{glUNo } and glgbno = #{glGbNo }
  	</delete>
 	
+	<!-- 동행복권 사용내역 갯수 -->
+	<select id="selectUsingContentCnt" resultType="int">
+		SELECT count(*) FROM tb_reviewdhticket
+		WHERE dhtuno=#{uno}
+	</select>
 	
+	<!-- 동행복권 사용내역 목록 -->
+	<select id="selectUsingdList" resultType="RTICKET">
+		SELECT *
+		FROM(
+			SELECT rownum rnum, n1.*
+			FROM(
+				SELECT * FROM tb_reviewdhticket
+				WHERE dhtuno=#{uno}
+				ORDER BY dhtuseddate desc
+			)n1				
+		)WHERE rnum BETWEEN #{p.start} AND #{p.end}
+		AND dhtuno=#{uno}	
+	</select>
 	
 	
 	

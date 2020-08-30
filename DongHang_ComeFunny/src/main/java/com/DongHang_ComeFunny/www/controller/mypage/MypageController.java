@@ -1,10 +1,10 @@
 package com.DongHang_ComeFunny.www.controller.mypage;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import javax.naming.spi.DirStateFactory.Result;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -887,7 +887,21 @@ public class MypageController {
 
 	//동행복권 사용내역 JSP 띄우기
 	@RequestMapping(value = "/usingList",  method = RequestMethod.GET)
-	public void usingList() {
+	public ModelAndView usingList(@RequestParam(required = false, defaultValue = "1")int cPage, HttpSession session) {
+		//세션정보 불러오기
+		User sessionUser = (User)session.getAttribute("logInInfo");
+		
+		int uno = sessionUser.getuNo();
+		
+		ModelAndView mav = new ModelAndView();
+		//페이징 
+		int cntPerPage = 5;
+		Map<String, Object> commandMap = fboardlistservice.selectUsingList(cPage, cntPerPage, uno);		
+		mav.addObject("paging", commandMap.get("paging"));
+		mav.addObject("usingData", commandMap);
+		mav.setViewName("mypage/usingList");	
+		
+		return mav;
 						
 	}	
 	
