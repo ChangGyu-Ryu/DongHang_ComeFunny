@@ -1,5 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+
+    
 <!DOCTYPE html>
 <html>
 <head>
@@ -27,14 +31,48 @@ $(document).ready(function() {
 	});	 
 	
 });
-
 //하트 누르면 이미지 변경 //수정하자
 	function toggleImg() {
       document.getElementById("change").src="/resources/image/go/heart_pick.png" ;
     }
-
-
 </script>
+<script type="text/javascript">
+	function selectUrl(url){
+		console.log("클릭됨됨됨됨");
+		var root = '<%=request.getContextPath()%>';
+		document.querySelector('#form-data').action = root + url;
+	}
+</script>
+
+<script type="text/javascript">
+$(document).ready(function() {
+	
+	$("#goDhApplyBtn").click(function() {
+		console.log("클릭됨");
+		
+		 $.ajax({
+			url: "/go/goApply",
+			type: "POST",
+			data: {
+				gbNo: '${goDetailInfo.goBoardUserInfo.GBNO }' 
+			}
+			, success: function(result) {
+				if(result == 1){
+                	alert("동행 신청 완료되었습니다.");
+                	location.href=window.document.URL;
+             	}else{
+                	alert("동행 신청 실패되었습니다.");
+                	location.href=window.document.URL;
+             	}
+			}
+			
+		});
+	
+	}); 
+	
+});
+</script>
+
 </head>
 <body>
 <div class="detail-container">
@@ -43,18 +81,17 @@ $(document).ready(function() {
 	<div>
 	   <div class="logo">
 	      <div class="logo-img">
-	      <a href="/main/main.jsp"><img class="logo-img" alt="로고이미지" src="/resources/image/header/logo.png" ></a>
+	      <a href="/"><img class="logo-img" alt="로고이미지" src="/resources/image/header/logo.png" ></a>
 	      </div>
 		</div>
 	</div>
-	
   	<!-- 메뉴바 -->
 	<div class="main_menu">
 		<div class="dropdown">
-	 		<div class="dropbtn"><a href="../go/go.jsp">함께가요</a></div>
+	 		<div class="dropbtn"><a href="/go">함께가요</a></div>
 		</div>			
 		<div class="dropdown">
-	  		<div class="dropbtn"><a href="../do/do.jsp">함께해요</a></div>
+	  		<div class="dropbtn"><a href="/do">함께해요</a></div>
 		</div>
 		<div class="dropdown">
 	  		<div class="dropbtn"><a href="#">커뮤니티</a></div>
@@ -79,28 +116,91 @@ $(document).ready(function() {
 	<div class="contentbox">
 		<!-- 상단타이틀부분-->
 		<div class="contitle">
-			<div class="gotag">모집중</div>
-			<div class="float-right"><a href="#" class="goatag"><span class="glyphicon glyphicon-remove"></span></a></div>
+<!-- 			<div class="gotag"> -->
+				<c:choose>
+                     <c:when test="${goDetailInfo.goBoardUserInfo.GBRECRUITSTATUS eq 0 }" ><span class="gotag">모집중</span></c:when>
+                     <c:when test="${goDetailInfo.goBoardUserInfo.GBRECRUITSTATUS eq 1 }" ><span class="gotag2">모집마감</span></c:when>
+                 </c:choose>  
+<!-- 			</div> -->
+			<div class="float-right"><a href="/go" class="goatag"><span class="glyphicon glyphicon-remove"></span></a></div>
 		</div>
 		
 		<!-- 프로필 부분 -->
 		<div class="profile">
 			<div class="profile-img">
-				<img src="/resources/image/main/profileex.jpg" class="img-circle" />
+				<!-- 프로필 기본 이미지 -->
+				<c:if test="${empty goDetailInfo.goBoardUserInfo.UFSTOREDFILENAME }">
+					<img src="<%=request.getContextPath() %>/resources/upload/default.png" class="img-circle profile-img" />
+				</c:if>
+				<!-- 사용자가 등록한 프로필 이미지 -->
+				<c:if test="${not empty goDetailInfo.goBoardUserInfo.UFSTOREDFILENAME }">
+					<img src="<%=request.getContextPath() %>/resources/upload/${goDetailInfo.goBoardUserInfo.UFSTOREDFILENAME }" class="img-circle profile-img" />
+				</c:if>
 				<div class="goheart"><img id="change" src="/resources/image/go/heart.png" alt="찜하트" onclick="toggleImg()"/></div>
 			</div>
 			<div class="profile-name">
-				<h3>동행러버 <small>20대 · 여</small></h3>
+				<h3>${goDetailInfo.goBoardUserInfo.USERID }
+					<small>
+						${goDetailInfo.goBoardUserInfo.AGE} · 
+						<c:choose>
+							<c:when test="${goDetailInfo.goBoardUserInfo.UGENDER eq '1'}">
+								남
+							</c:when>
+							<c:when test="${goDetailInfo.goBoardUserInfo.UGENDER eq '2'}">
+								여
+							</c:when> 
+						</c:choose>
+					</small>
+				</h3>
 			</div>
 			<div class="profile-type">
 				<!-- 반복으로 체크박스 내용 뿌려주기 -->
-				<span class="typelist">20대</span>
-				<span class="typelist">30대</span>
-				<span class="typelist">대구</span>
-				<span class="typelist">여성</span>
-				<span class="typelist">사진</span>
-				<span class="typelist">음식</span>
-				<span class="typelist">쇼핑</span>
+				<!-- 성별 -->
+				<span class="typelist">
+					<c:choose>
+							<c:when test="${goDetailInfo.goBoardUserInfo.UGENDER eq '1'}">
+								남자
+							</c:when>
+							<c:when test="${goDetailInfo.goBoardUserInfo.UGENDER eq '2'}">
+								여자
+							</c:when> 
+					</c:choose>
+				</span>
+				<c:forEach items="${goDetailInfo.goCheck }" var="goCheck">
+					<span class="typelist">
+						<c:choose>
+							<c:when test="${goCheck.gcValue eq '20'}">
+								20대
+							</c:when>
+							<c:when test="${goCheck.gcValue eq '30'}">
+								30대
+							</c:when>
+							<c:when test="${goCheck.gcValue eq '40'}">
+								40대
+							</c:when>
+							
+							<c:when test="${goCheck.gcValue eq 'food'}">
+								음식
+							</c:when>
+							<c:when test="${goCheck.gcValue eq 'photo'}">
+								사진
+							</c:when>
+							<c:when test="${goCheck.gcValue eq 'seeing'}">
+								관광
+							</c:when>
+							<c:when test="${goCheck.gcValue eq 'drink'}">
+								술
+							</c:when>
+							<c:when test="${goCheck.gcValue eq 'shopping'}">
+								쇼핑
+							</c:when>
+							<c:when test="${goCheck.gcValue eq 'etc'}">
+								기타
+							</c:when>
+						</c:choose>
+						</span>
+				</c:forEach>	
+				
 			</div>
 		</div>
 		
@@ -109,17 +209,11 @@ $(document).ready(function() {
 			<!-- 본문제목 -->
 			<div class="article-title">
 				<span><img src="/resources/image/go/quotes_icon.png" alt="아이콘"/></span>
-				<span>2월에 같이 gasdsf대f구gsdgasd여행 하실분 구해dsdgsdga용!!!</span>
+				<span>${goDetailInfo.goBoardUserInfo.GBTITLE }</span>
 			</div>
 			<!-- 본문 내용 -->
 			<div class="article-text">
-				같이 대구 관광하면서 맛난거 먹고 사진남겨요!!! <br>
-				같이 숙소도 쉐어할  한두명만 구해여 ㅎ ㅎ ㅎ<br>
-				궁금하신거 있으면 쪽지로 연락주세요~~!! 등등 자유롭게 작성 <br>
-				작성한 양식대로 올라가야하는데 말이지...dsg
-				gg
-				g
-				
+				${goDetailInfo.goBoardUserInfo.GBCONTENT }
 			</div>
 		</div>
 		
@@ -127,56 +221,36 @@ $(document).ready(function() {
 		<div class="rvtop3">
 			<!-- 타이틀-->
 			<div class="rvtop3-title"> 
-				호스트 후기 <span>★★★★★</span> <span>( 6 )</span>
+				호스트 후기 <span>★★★★★</span> <span>( ${goDetailInfo.hostReviewCnt } )</span>
 				<div class="ialign float-right"><a href="#">더보기</a></div>
 			</div>
 		
 			<div class="rvmargin">
 			<!-- 이부분 반복 -->
+			<c:forEach items="${goDetailInfo.hostReview }" var="host">
 			<div class="rvtop3-mate">
 				<div class="rvtitle">
-				<div class="rvttitle"><img src="/resources/image/main/profileex.jpg" class="img-circle"/></div>
 				<div class="rvttitle">
-					<h4>동행lover</h4>
-					<h6>2020-05-12</h6>
+					<!-- 프로필 기본 이미지 -->
+					<c:if test="${empty host.UFSTOREDFILENAME }">
+						<img src="<%=request.getContextPath() %>/resources/upload/default.png" class="img-circle" />
+					</c:if>
+					
+					<!-- 사용자가 등록한 프로필 이미지 -->
+					<c:if test="${not empty host.UFSTOREDFILENAME }">
+						<img src="<%=request.getContextPath() %>/resources/upload/${host.UFSTOREDFILENAME }" class="img-circle" />
+					</c:if>		
+				</div>
+				<div class="rvttitle">
+					<h4>${host.USERID }</h4>
+					<h6><fmt:formatDate var="date" value="${host.RBWRITTENDATE}" pattern="YYYY-MM-dd"/>${date}</h6>
 				</div>
 				</div>
 				<div class="rvtext">
-					너무좋았어요 호스트분도 친절하고 최고 ㅎㅎ
-					길게써본다...어쩌꾸젂ㅉㄲ쩌꺼쭈꺼ㅉㅉ꺼
+					${host.RBCONTENT }
 				</div>
 			</div>
-			
-			<!-- 이부분 반복 -->
-			<div class="rvtop3-mate">
-				<div class="rvtitle">
-				<div class="rvttitle"><img src="/resources/image/main/profileex.jpg" class="img-circle"/></div>
-				<div class="rvttitle">
-					<h4>동행lover</h4>
-					<h6>2020-05-12</h6>
-				</div>
-				</div>
-				<div class="rvtext">
-					너무좋았어요 호스트분도 친절하고 최고 ㅎㅎ
-					길게써본다...어쩌꾸젂ㅉㄲ쩌꺼쭈꺼ㅉㅉ꺼
-				</div>
-			</div>
-			
-			<!-- 이부분 반복 -->
-			<div class="rvtop3-mate">
-				<div class="rvtitle">
-				<div class="rvttitle"><img src="/resources/image/main/profileex.jpg" class="img-circle"/></div>
-				<div class="rvttitle">
-					<h4>동행lover</h4>
-					<h6>2020-05-12</h6>
-				</div>
-				</div>
-				<div class="rvtext">
-					너무좋았어요 호스트분도 친절하고 최고 ㅎㅎ
-					길게써본다...어쩌꾸젂ㅉㄲ쩌꺼쭈꺼ㅉㅉ꺼
-				</div>
-			</div>
-			
+			</c:forEach>
 			</div>
 		</div>
 		
@@ -184,7 +258,7 @@ $(document).ready(function() {
 		
 		<!-- 글쓴이한테만 보임 -->
 		<div class="dobtn" style="width: 850px; margin: auto; margin-top: 5%; height: 35px;">
-			<a class="btn btn-warning ">수정</a> 
+			<a class="btn btn-warning " href="/go/modify?gbNo=${goDetailInfo.goBoardUserInfo.GBNO}" >수정</a> 
 	        <a class="btn btn-danger ">삭제</a> 
 		</div>
 			
@@ -195,7 +269,7 @@ $(document).ready(function() {
 	            
 	            <div class="ialign btncen">
 	            <a class="btn btn-default ">쪽지보내기</a>
-				<a class="btn btn-primary ">신청하기</a>
+				<button class="btn btn-primary" id="goDhApplyBtn">신청하기</button>
 	            </div>
 			</div>
 			
@@ -218,44 +292,37 @@ $(document).ready(function() {
 		<div class="mate-list">
 		
 			<!-- 이부분 반복 -->
+			<c:forEach items="${goDetailInfo.goDhApplylist }" var="goApplylist">
 			<div class="mateone">
-				<div class="mtitle"><img src="/resources/image/main/profileex.jpg" class="img-circle"/></div>
 				<div class="mtitle">
-					<h4>lover</h4>
-					<h5>20대 · 여자</h5>
+					<!-- 프로필 기본 이미지 -->
+					<c:if test="${empty goApplylist.UFSTOREDFILENAME }">
+						<img src="<%=request.getContextPath() %>/resources/upload/default.png" class="img-circle"/>
+					</c:if>
+					<!-- 사용자가 등록한 프로필 이미지 -->
+					<c:if test="${not empty goApplylist.UFSTOREDFILENAME }">
+						<img src="<%=request.getContextPath() %>/resources/upload/${goApplylist.UFSTOREDFILENAME }" class="img-circle"/>
+					</c:if>
+				</div>
+				<div class="mtitle">
+					<h4>${goApplylist.USERID }</h4>
+					<h5>${goApplylist.AGE } ·
+						<c:choose>
+							<c:when test="${goApplylist.UGENDER eq '1'}">
+								남
+							</c:when>
+							<c:when test="${goApplylist.UGENDER eq '2'}">
+								여
+							</c:when> 
+						</c:choose>
+					</h5>
 				</div>
 				<div class="mbtn"> <!-- 작성자만 볼수 있음 -->
 					<a class="btn btn-primary">수락</a>
 					<a class="btn btn-default">거절</a>
 				</div>
 			</div>
-			
-			<!-- 이부분 반복 -->
-			<div class="mateone">
-				<div class="mtitle"><img src="/resources/image/main/profileex.jpg" class="img-circle"/></div>
-				<div class="mtitle">
-					<h4>lover</h4>
-					<h5>20대 · 여자</h5>
-				</div>
-				<div class="mbtn"> <!-- 작성자만 볼수 있음 -->
-					<a class="btn btn-primary">수락</a>
-					<a class="btn btn-default">거절</a>
-				</div>
-			</div>
-			
-			<!-- 이부분 반복 -->
-			<div class="mateone">
-				<div class="mtitle"><img src="/resources/image/main/profileex.jpg" class="img-circle"/></div>
-				<div class="mtitle">
-					<h4>lover</h4>
-					<h5>20대 · 여자</h5>
-				</div>
-				<div class="mbtn"> <!-- 작성자만 볼수 있음 -->
-					<a class="btn btn-primary">수락</a>
-					<a class="btn btn-default">거절</a>
-				</div>
-			</div>
-			
+			</c:forEach>
 		</div>
 	</div>
 		

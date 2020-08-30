@@ -38,18 +38,23 @@ public class GoService {
 //		}
 //	}
 	
-	//insertGoForm( 파일 제외 )
-	public void insertGoForm(GoBoard goBoard, GoCheck goCheck) 
-	{
-		//체크박스 String -> List 변환
-		List<String> age = Arrays.asList(goCheck.getGcAgeGroup().split(","));
-		List<String> theme = Arrays.asList(goCheck.getGcTheme().split(","));
-		
-		goDao.insertGoForm(goBoard); 
-		goDao.insertGoAge(age); 
-		goDao.insertGoTheme(theme);
+	//------------ 글쓰기 ----------------
+	
+		//insertGoForm( 파일 제외 )
+		public void insertGoForm(GoBoard goBoard, GoCheck goCheck) 
+		{
+			//체크박스 String -> List 변환
+			List<String> age = Arrays.asList(goCheck.getGcAgeGroup().split(","));
+			List<String> theme = Arrays.asList(goCheck.getGcTheme().split(","));
+			
+			goDao.insertGoForm(goBoard); 
+			goDao.insertGoAge(age); 
+			goDao.insertGoTheme(theme);
 
-	}
+		}
+		
+		
+	//------------ GO 리스트 ----------------
 	
 	//리스트전체 불러오기 최신순으로
 	public List<Map<String, Object>> selectGoList(Map<String, Object> map) {
@@ -80,36 +85,69 @@ public class GoService {
 			
 		return commandMap;
 	}
-	
+
+
 	//ajax 필터링 검색
-	public Map<String, Object> selectFilterList(Map<String, Object> search, Map<String, Object> map, Map<String, Object> filter) {
-		
+	public Map<String, Object> selectFilterList(Map<String, Object> filter) {
+
+		System.out.println("[GoService]");
 		Map<String,Object> commandMap = new HashMap<String, Object>();
-		
-		if(search != null) { //서치가 null이 아니면
-			Map<String, Object> searchMap = new HashMap<>();
-			searchMap.putAll(search); //검색값넣기
-			
-			//키워드로 검색된 게시글 조회
-			List<Map<String,Object>> list = goDao.selectFilterList(filter, search) ;
-			commandMap.put("glist", list);
-			
-		} 
-//			else if (filter != null) {
-//			List<Map<String, Object>> list = goDao.selectGoList(map);
-//			commandMap.put("glist", list);
-//		} 
-//			else { //서치하기 전에
-//			Map<String, Object> filterMap = new HashMap<>();
-//			filterMap.putAll(filter);
-//			
-//			List<Map<String,Object>> list = goDao.selectFilterList(filter) ;
-//			commandMap.put("glist",list);
-//		}
-		
-		
+
+		List<Map<String, Object>> list = goDao.selectFilterList(filter);
+		commandMap.put("glist", list);  
+		System.out.println("glist :"+ commandMap);
+
 		return commandMap;
+		
 	}
+	
+	//-------------상세보기----------------
+	
+	//함께가요 상세
+	public Map<String, Object> selectGoDetail(int gbNo) {
+
+		//함께가요 상세 글 정보, 작성자 프로필 이미지
+		Map<String, Object> goBoardUserInfo =  goDao.selectGoUserInfo(gbNo);
+		
+		//함께가요 상세 체크박스
+		List<GoCheck> goCheck = goDao.selectGocheck(gbNo);
+		
+		//함께가요 상세 체크박스(가져오는 방식 변경) //추가
+		Map<String, Object> goChecklist = goDao.selectGochklist(gbNo);
+		
+		//호스트 평점
+		List<Map<String, Object>> hostReview = goDao.selectGoHostReview(gbNo);
+		
+		//호스트 평점 후기 갯수
+		int hostReviewCnt = goDao.selecthostReviewCnt(gbNo);
+		
+		//함께가요 동행신청 목록
+		List<Map<String, Object>> goDhApplylist = goDao.selectgoDhApplylist(gbNo);
+		
+		Map<String,Object> goDetailInfo = new HashMap<String, Object>();
+		goDetailInfo.put("goBoardUserInfo", goBoardUserInfo);
+		goDetailInfo.put("goCheck", goCheck);
+		goDetailInfo.put("hostReview", hostReview);
+		goDetailInfo.put("hostReviewCnt", hostReviewCnt);
+		goDetailInfo.put("goDhApplylist", goDhApplylist);
+		goDetailInfo.put("goChecklist", goChecklist); //추가
+		
+		System.out.println(goDetailInfo);
+		return goDetailInfo;
+	}
+
+	
+	//함께가요 동행신청
+	public int insertGoDhApply(int gbNo, int uNo) {
+		return 0;
+	}
+
+	//-------------- 수정하기 ------------------
+	
+	public int updateGoboard(GoBoard goBoard) {
+		return goDao.updateGoboard(goBoard);
+	}
+
 
 	
 	
