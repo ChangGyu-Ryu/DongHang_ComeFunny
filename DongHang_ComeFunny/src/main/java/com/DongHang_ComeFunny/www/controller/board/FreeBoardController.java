@@ -36,7 +36,7 @@ public class FreeBoardController {
 	// Service 의존성 주입
 	@Autowired
 	private FreeBoardService freeBoardService;
-	
+	// 주석
 	// ⑴ 게시글 작성페이지 이동
 	// url : /board/freewirte - GET
 	// parameter : 
