@@ -9,8 +9,10 @@ import org.springframework.stereotype.Repository;
 
 import com.DongHang_ComeFunny.www.model.vo.ReviewBoard;
 import com.DongHang_ComeFunny.www.model.vo.ReviewComment;
+import com.DongHang_ComeFunny.www.model.vo.ReviewDhTicket;
 import com.DongHang_ComeFunny.www.model.vo.ReviewLike;
 import com.DongHang_ComeFunny.www.model.vo.ReviewRecommend;
+import com.DongHang_ComeFunny.www.model.vo.User;
 
 import common.util.Paging;
 
@@ -244,11 +246,11 @@ public class ReviewBoardDao {
 
 	/**
 	 * 페이징을 포함하여 동행게시글 리스트 조회
-	 * @param page - 페이징 객체
+	 * @param userno - 페이징 객체
 	 * @return 리스트로 반환
 	 */
-	public List<Map<String, Object>> selectDongHangList(Paging page) {
-		return sqlSession.selectList("REVIEW.selectDongHangList", page);
+	public List<Map<String, Object>> selectDongHangList(Map<String, Object> userno) {
+		return sqlSession.selectList("REVIEW.selectDongHangList", userno);
 	}
 	public int updateGoBoardStarCnt(Map<String, Object> donghangMap) {
 		return sqlSession.update("REVIEW.updateGoBoardStarCnt", donghangMap);
@@ -345,6 +347,66 @@ public class ReviewBoardDao {
 	public int getBoardRec(ReviewRecommend reviewrecommand) {
 		return sqlSession.selectOne("REVIEW.getBoardRec", reviewrecommand);
 	}
+
+	public int selectDHApplyList(int getuNo) {
+		return sqlSession.selectOne("REVIEW.selectDHApplyList", getuNo);
+	}
+
+	public int selectReviewNo(int rbUNo) {
+		return sqlSession.selectOne("REVIEW.selectReviewNo", rbUNo);
+	}
+	
+	public Map<String, Object> selectReviewGbAvg(int gbNo) {
+		return sqlSession.selectOne("REVIEW.selectReviewGbAvg", gbNo);
+	}
+	
+	public Map<String, Object> selectReviewDbAvg(int gbNo) {
+		return sqlSession.selectOne("REVIEW.selectReviewDbAvg", gbNo);
+	}
+
+	public int updateGoAvg(Map<String, Object> reviewStar) {
+		return sqlSession.update("REVIEW.updateGoAvg", reviewStar);
+	}
+
+	public int updateDoAvg(Map<String, Object> reviewStar) {
+		return sqlSession.update("REVIEW.updateDoAvg", reviewStar);
+	}
+
+	public int selectReviewBoardByRbGbNo(int gbNo) {
+		return sqlSession.selectOne("REVIEW.selectReviewBoardByRbGbNo", gbNo);
+	}
+
+	public int selectReviewBoardByRbDbNo(int gbNo) {
+		return sqlSession.selectOne("REVIEW.selectReviewBoardByRbDbNo", gbNo);
+	}
+
+	public int updateGoAvgByZero(Map<String, Object> reviewZero) {
+		return sqlSession.update("REVIEW.updateGoAvgByZero", reviewZero);
+	}
+
+	public int updateDoAvgByZero(Map<String, Object> reviewZero) {
+		return sqlSession.update("REVIEW.updateDoAvgByZero", reviewZero);
+	}
+
+	public int updateDhtCnt(User sessionUser) {
+		return sqlSession.update("REVIEW.updateDhtCnt", sessionUser);
+	}
+
+	public int insertReviewDht(ReviewDhTicket reviewDhTicket) {
+		return sqlSession.insert("REVIEW.insertReviewDht", reviewDhTicket);
+	}
+
+	public int selectReviewDhtCnt(ReviewDhTicket reviewDhTicket) {
+		return sqlSession.selectOne("REVIEW.selectReviewDhtCnt", reviewDhTicket);
+	}
+
+	public List<ReviewDhTicket> selectReivewDht(User sessionUser) {
+		return sqlSession.selectList("REVIEW.selectReivewDht", sessionUser);
+	}
+
+
+
+
 
 
 

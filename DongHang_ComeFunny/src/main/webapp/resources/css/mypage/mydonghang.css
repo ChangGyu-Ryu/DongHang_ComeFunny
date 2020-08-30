@@ -77,15 +77,15 @@ a,a:link,a:visited,a:hover{
 	cursor: pointer;
 }
 .adminBtn{
-/*     font-size: 11px; */
-/*     background: #bbb; */
-/*     border-radius: 2px; */
-    /* 	padding: 0.3em; */
-    margin: 0px 2.3em 0 0;
-    float: right;
     font-size: 11px;
-    background: #999;
+    background: #bbb;
     border-radius: 2px;
+    /* 	padding: 0.3em; */
+/*     margin: 0px 2.3em 0 0; */
+/*     float: right; */
+/*     font-size: 11px; */
+/*     background: #999; */
+/*     border-radius: 2px; */
 }
 
 .adminBtn:hover{

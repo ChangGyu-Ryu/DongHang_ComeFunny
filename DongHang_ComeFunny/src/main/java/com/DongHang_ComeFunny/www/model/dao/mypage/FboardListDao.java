@@ -17,6 +17,7 @@ import com.DongHang_ComeFunny.www.model.vo.Order;
 import com.DongHang_ComeFunny.www.model.vo.PayMent;
 import com.DongHang_ComeFunny.www.model.vo.ReviewBoard;
 import com.DongHang_ComeFunny.www.model.vo.ReviewComment;
+import com.DongHang_ComeFunny.www.model.vo.ReviewDhTicket;
 import com.DongHang_ComeFunny.www.model.vo.User;
 
 import common.util.Paging;
@@ -82,6 +83,38 @@ public class FboardListDao {
 		sqlSession.delete("MYPAGE.deleteRboardList", rboard);
 		
 	}
+	
+	// ------------------------------------------------------------------
+	//동행 평점 개수
+	public ReviewBoard selectReviewBoardByDH(ReviewBoard rboard) {
+		return sqlSession.selectOne("MYPAGE.selectReviewBoardByDH", rboard);
+	}
+
+	public Map<String, Object> selectReviewGbAvg(int rbGbNo) {
+		return sqlSession.selectOne("MYPAGE.selectReviewGbAvg", rbGbNo);
+	}
+
+	public Map<String, Object> selectReviewDbAvg(int rbDbNo) {
+		return sqlSession.selectOne("MYPAGE.selectReviewDbAvg", rbDbNo);
+	}
+
+	public int selectReviewBoardByRbGbNo(int rbGbNo) {
+		return sqlSession.selectOne("MYPAGE.selectReviewBoardByRbGbNo", rbGbNo);
+	}
+
+	public int selectReviewBoardByRbDbNo(int rbDbNo) {
+		return sqlSession.selectOne("MYPAGE.selectReviewBoardByRbDbNo", rbDbNo);
+	}
+	
+	public int updateGoAvgByZero(Map<String, Object> reviewStarGo) {
+		return sqlSession.update("MYPAGE.updateGoAvgByZero", reviewStarGo);
+	}
+
+	public int updateDoAvgByZero(Map<String, Object> reviewStarDo) {
+		return sqlSession.update("MYPAGE.updateDoAvgByZero", reviewStarDo);
+	}
+	
+	//--------------------------------------------------------------
 //	//후기게시판 리스트 삭제(IsDel=1)
 //	public void deleteRboardList(ReviewBoard rboard) {
 ////		System.out.println(rboard);
@@ -277,6 +310,28 @@ public class FboardListDao {
 		param.put("cate", cate);
 		sqlSession.delete("MYPAGE.deleteMyDhList", param);
 	}
+
+	//동행복권 사용내역 개수
+	public int selectUsingContentCnt(int uno) {
+		return sqlSession.selectOne("MYPAGE.selectUsingContentCnt", uno);
+	}
+	
+	//동행복권 사용내역 리스트
+	public List<ReviewDhTicket> selectUsingdList(Paging p, int uno) {
+		Map<String, Object> param = new HashMap<String, Object>();
+		param.put("p",p);
+		param.put("uno", uno);
+		return sqlSession.selectList("MYPAGE.selectUsingdList", param);
+	}
+
+
+
+
+
+
+
+
+
 
 	
 }

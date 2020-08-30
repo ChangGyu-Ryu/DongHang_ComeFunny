@@ -40,11 +40,13 @@ $(document).ready(function () {
 function sendMeData(no, title, category) {
 	console.dir(title);
 	console.dir(category);
-	document.getElementById("donghangTitle").innerHTML = title;
-	document.getElementById("donghangCategory").innerHTML = category;
-	document.getElementById("gbNo").value = no;
-	document.getElementById("gbTitle").value = title;
-	document.getElementById("gbCategory").value = category;
+	document.getElementById('gbCategory').value = category
+	document.getElementById('donghangTitle').innerHTML = title;
+	document.getElementById('donghangCategory').innerHTML = category;
+	document.getElementById('gbNo').value = no;
+	document.getElementById('gbTitle').value = title;
+
+// 	$('#goboard').val(category);
 }
 </script>
 
@@ -77,8 +79,8 @@ $(document).ready(function() {
 		console.dir(gbNo);
 		console.dir(gbTitle);
 		console.dir(gbCategory);
-		console.dir(rbDhstar);
-		console.dir(rbHoststar);
+// 		console.dir(rbDhstar);
+// 		console.dir(rbHoststar);
 	})
 });
 </script>
@@ -102,7 +104,7 @@ $(document).ready(function() {
 			      		<input type="hidden" name="beforeGbNo" id="beforeGbNo" value="${donghang.DHNO}">
 			      		<input type="hidden" name="beforeGbCategory" id="beforeGbCategory" value="${donghang.DHCATEGORY}">
 			      		<input type="hidden" name="gbNo" id="gbNo" value="${donghang.DHNO}">
-			      		<input type="hidden" name="gbCategory" id="gbCategory" value="${donghang.DHCATEGORY}">
+			      		<input type="hidden" name="gbCategory" id="gbCategory" value="${donghang.DHCATEGORY }">
 			      		<span id="donghangCategory">${donghang.DHCATEGORY}</span>
 			      		&ensp;||
 				  </div>
@@ -235,6 +237,7 @@ $(document).ready(function() {
 		<tr>			
 			<td colspan="2" class="reviewmodify__button">
 				<button class ="reviewlist__button__modify" type="submit" id="btnModify">수정하기</button>
+				<button class ="reviewlist__button__modify" type="button" id="btnConfirm">확인</button>
 			</td>
 		</tr>
 		</table>
