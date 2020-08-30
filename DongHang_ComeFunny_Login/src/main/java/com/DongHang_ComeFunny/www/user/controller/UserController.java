@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.DongHang_ComeFunny.www.user.model.dao.UserDao;
 import com.DongHang_ComeFunny.www.user.model.service.UserService;
 import com.DongHang_ComeFunny.www.user.model.vo.User;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -35,7 +36,8 @@ public class UserController {
 
    @Autowired
    public UserService userService;
-
+   private KakaoController kakaoController = new KakaoController();
+   private UserDao userDao;
 
    @RequestMapping(value="/login", method=RequestMethod.GET)
    public ModelAndView login() {
@@ -137,15 +139,44 @@ public class UserController {
  	}
  	
  	//아이디 찾기 액션
- 	@RequestMapping(value="/fId", method=RequestMethod.POST)
- 	@ResponseBody
- 	public String fId(@RequestParam(value="uname", required=true) String uname
- 			, @RequestParam(value="umail", required=true) String umail) {
- 		
- 		String result = userService.fId(uname, umail);
- 		
- 		return result;
- 	}
+// 	@RequestMapping(value="/fId", method=RequestMethod.POST)
+// 	@ResponseBody
+// 	public String fId(@RequestParam(value="uname", required=true) String uname
+// 			, @RequestParam(value="umail", required=true) String umail) {
+// 		
+// 		String result = userService.fId(uname, umail);
+// 		
+// 		return result;
+// 	}
+ 
+ 	//아이디 찾기 액션
+ 	@RequestMapping(value="/fIdResult", method=RequestMethod.POST)
+    //fIdResult함수 선언 후 매개변수는 fId.jsp에서 POST되어 보내진 uname, umail과 윈도우창에서 출력할 서블릿 객체(HttpServletResponse) 선언
+    public void fIdResult(String uname, String umail, HttpServletResponse response) throws IOException{
+       response.setCharacterEncoding("UTF-8"); // 출력시 한글 깨짐 방지를 위해 새로 인코딩
+       
+       PrintWriter out = response.getWriter(); // 자바 출력객체 printwriter에 서블릿객체의 값을 저장해 생성
+       
+       //userDao에 있는 FindId함수의 결과값이 true이면
+       if(userDao.FindId(uname, umail) == true) {
+          //User라는 value 객체 user에(VO부분에 생성한 User.java
+          //userDao에 있는 getId함수의 결과값을 저장(uname과 umail값을 담는다)
+          User user = userDao.getId(uname, umail);
+          String userid = user.getUserid(); // 문자열 변수 userid에 user에 있는 Userid를 가져와 저장
+          
+          //츨력객체 out변수를 이용해 결과값 전송
+          //result에 아이디 값을 담아 view단에 출력
+          out.write("({'result':'입력하신 정보와 일치하는 아이디는 " + userid + "입니다.'})");
+          
+          //userDao에 있는 FindId함수의 결과값이 false일때
+       } else {
+          
+          //result에 메세지를 담아 view단에서 출력함
+          out.write("({'result': '입력하신 정보로 찾을 수 없습니다.'})");
+       }
+       
+    }
+ 	
 /*
 
    //아이디 찾기
