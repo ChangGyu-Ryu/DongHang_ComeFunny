@@ -88,7 +88,7 @@ $(document).ready(function () {
 			alert("여행 타입을 하나 이상 체크해주세요.")
 		}
 		else{
-			//submit
+			//submit 추가
 			$(this).parents("form").submit();	
 		}
 
