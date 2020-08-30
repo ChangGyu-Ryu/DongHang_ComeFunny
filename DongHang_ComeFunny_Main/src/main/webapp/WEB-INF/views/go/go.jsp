@@ -404,10 +404,10 @@ $(document).ready(function() {
 					<div class="godate">
 					[ 
 						<c:choose>
-	                     <c:when test="${go.GBRECRUITDATE eq '1' }" >1월에서 3월사이</c:when>
-	                     <c:when test="${go.GBRECRUITDATE eq '2' }" >4월에서 6월사이</c:when>
-	                     <c:when test="${go.GBRECRUITDATE eq '3' }" >7월에서 9월사이</c:when>
-	                     <c:when test="${go.GBRECRUITDATE eq '4' }" >10월에서 12월사이</c:when>
+	                     <c:when test="${go.GBRECRUITDATE eq '1' }" >1월-3월</c:when>
+	                     <c:when test="${go.GBRECRUITDATE eq '2' }" >4월-6월</c:when>
+	                     <c:when test="${go.GBRECRUITDATE eq '3' }" >7월-9월</c:when>
+	                     <c:when test="${go.GBRECRUITDATE eq '4' }" >10-12월</c:when>
                  		</c:choose>
 					]
 					</div>
