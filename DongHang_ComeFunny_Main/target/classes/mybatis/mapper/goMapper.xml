@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="GO">
+
+	<!-- goboard 삽입 -->
+	<insert id="insertgoboard" > <!-- //nextval -->
+		insert into tb_goboard(GBUNO, GBTITLE, GBCONTENT,
+		GBRECRUITDATE, GBRECRUITAREA,
+		GBRECRUITSTATUS, GBRECRUITNUMBER, GBRECRUITGENDER)
+		values (
+			#{gbUNo},
+			#{gbTitle},
+			#{gbContent},
+			#{gbRecruitDate},
+			#{gbRecruitArea},
+			#{gbRecruitStatus},
+			#{gbRecruitNumber},
+			#{gbRecruitGender}
+		)
+	</insert>
+	
+	<!-- gocheck 삽입 -->
+	<insert id="insertgoage"> <!-- //currval -->
+	    <foreach collection="list" item="age" separator=" " open="INSERT ALL" close="SELECT * FROM DUAL">
+          	INTO tb_gocheck (GCGBNO, GCCATE, GCVALUE)         
+            VALUES(tb_goboard_SEQ.CURRVAL, 'age', #{age})
+       </foreach>
+	</insert>
+	
+	<insert id="insertgotheme"> 
+	    <foreach collection="list" item="theme" separator=" " open="INSERT ALL" close="SELECT * FROM DUAL">
+            INTO tb_gocheck (GCGBNO, GCCATE, GCVALUE)         
+            VALUES(tb_goboard_SEQ.CURRVAL, 'theme', #{theme})
+       </foreach>
+	</insert>
+	
+	<!-- 파일삽입 -->
+	<insert id="insertgofile">
+	    	
+	</insert>
+	
+	<!-- golist 전체 출력(default 최신순) -->
+	<select id="selectlist" resultType="hashmap">
+		Select
+		    u.uno, u.userid, u.unick, uf.uforiginfilename, uf.ufstoredfilename,
+			g.gbno, g.gbtitle, g.gbwrittendate, g.gbrecruitdate, g.gbrecruitarea, g.gbrecruitstatus, g.gbrecruitgender, g.gblikecnt,
+		    agecheck.*, themecheck.*
+		From tb_goboard g
+			left outer join tb_user u on g.gbuno = u.uno
+			left outer join tb_userfile uf on u.uno = uf.ufuno
+			left outer join (select gcgbno, LISTAGG(gcvalue, ',') WITHIN GROUP (order by gcvalue) as agecheck
+								from tb_gocheck where gccate='age' group by gcgbno) agecheck on g.gbno = agecheck.gcgbno
+			left outer join (select gcgbno, LISTAGG(gcvalue, ',') WITHIN GROUP  (order by gcvalue) as themecheck
+			from tb_gocheck where gccate='theme' group by gcgbno) themecheck on g.gbno = themecheck.gcgbno
+	</select>
+	
+	<!-- 검색기능 (리다이렉트) -->
+	<select id="selectgosearch" resultType="hashmap">
+		Select
+		    u.uno, u.userid, u.unick, uf.uforiginfilename, uf.ufstoredfilename,
+			g.gbno, g.gbtitle, g.gbwrittendate, g.gbrecruitdate, g.gbrecruitarea, g.gbrecruitstatus, g.gbrecruitgender, g.gblikecnt,
+		    agecheck.*, themecheck.*
+		From tb_goboard g
+			left outer join tb_user u on g.gbuno = u.uno
+			left outer join tb_userfile uf on u.uno = uf.ufuno
+			left outer join (select gcgbno, LISTAGG(gcvalue, ',') WITHIN GROUP (order by gcvalue) as agecheck
+								from tb_gocheck where gccate='age' group by gcgbno) agecheck on g.gbno = agecheck.gcgbno
+			left outer join (select gcgbno, LISTAGG(gcvalue, ',') WITHIN GROUP  (order by gcvalue) as themecheck
+			from tb_gocheck where gccate='theme' group by gcgbno) themecheck on g.gbno = themecheck.gcgbno
+		where  g.gbtitle || g.gbcontent LIKE '%' || #{searchText}  || '%'
+			
+	</select>
+	
+	<!-- AJAX검색 -->
+	<select id="selectfilter" resultType="hashmap">
+		Select
+		    u.uno, u.userid, u.unick, uf.uforiginfilename, uf.ufstoredfilename,
+			g.gbno, g.gbtitle, g.gbwrittendate, g.gbrecruitdate, g.gbrecruitarea, g.gbrecruitstatus, g.gbrecruitgender, g.gblikecnt,
+		    agecheck.*, themecheck.*
+		From tb_goboard g
+			left outer join tb_user u on g.gbuno = u.uno
+			left outer join tb_userfile uf on u.uno = uf.ufuno
+			left outer join (select gcgbno, LISTAGG(gcvalue, ',') WITHIN GROUP (order by gcvalue) as agecheck
+								from tb_gocheck where gccate='age' group by gcgbno) agecheck on g.gbno = agecheck.gcgbno
+			left outer join (select gcgbno, LISTAGG(gcvalue, ',') WITHIN GROUP  (order by gcvalue) as themecheck
+			from tb_gocheck where gccate='theme' group by gcgbno) themecheck on g.gbno = themecheck.gcgbno
+		where  g.gbtitle || g.gbcontent LIKE '%' || #{searchText}  || '%'
+		
+				<if test="filter.area!= null"> <!-- 지역 -->
+				and 
+					<foreach collection="filter" item="area" index="index" separator = " or ">
+						gbrecruitarea = #{area}
+					</foreach>
+				</if>
+				<if test="gender != null"> <!-- 성별 -->
+				and 
+					<foreach collection="filter" index="index" separator = " or " >
+						gbrecruitgender = #{gender}
+					</foreach>
+				</if>
+				<if test="state != null"> <!-- 상태 -->
+				and 
+					<foreach collection="filter" index="index" separator = " or " >
+						gbrecruitstatus = #{state}
+					</foreach>
+				</if>
+				<if test="theme != null"> <!-- 테마 -->
+				and 
+					<foreach collection="filter" index="index" separator = " or " >
+						themecheck like '%' || #{theme} || '%'
+					</foreach>
+				</if>
+				<if test="age != null"> <!-- 나이 -->
+				and
+					<foreach collection="filter" index="index" separator = " or " >
+						agecheck like '%' || #{age} || '%'
+					</foreach>
+				</if>
+	</select>
+	
+	
+	
+	
+</mapper>
