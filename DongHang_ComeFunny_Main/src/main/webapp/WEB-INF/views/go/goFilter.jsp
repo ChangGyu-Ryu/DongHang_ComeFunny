@@ -9,7 +9,7 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 
-<link rel="stylesheet" href="<%=request.getContextPath() %>/resources/css/go/goFilter.css" />
+<link rel="stylesheet" href="<%=request.getContextPath() %>/resources/css/go/go.css" />
 
 <!-- JQuery -->
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
@@ -25,28 +25,6 @@
 </head>
 <body>
 <div>
-	<!-- content list -->
-	<!-- 하단 리스트 -->
-	<div id="go-list">
-		
-		<div>
-		<!-- 정렬 드롭다운 -->
-		<div class="dropdown" >
-		  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
-		    	<span>정렬방식 </span><span class="caret"></span>
-		  </button>
-		  <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-		    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">최신순</a></li>
-		    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">찜순</a></li>
-		    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">날짜순</a></li>
-		  </ul>
-		</div>	
-		
-		<!-- 모집버튼 --> 
-		<div class="pull-right">
-			<a class="btn btn-default" href="/go/goform" role="button">동행 모집하기</a>
-		</div>
-		</div>
 		
 		<!-- 정렬 혹은 필터처리된 리스트 -->
 		<div id="gobest">
@@ -57,7 +35,8 @@
 		<div class="gobest">
 			<div class="gobest-title">
 				<div class="goprofile ialign">
-				<a href="/go/godetail?gbno=${go.GBNO }"> <!-- 사진 클릭시 이동 -->
+				<span aria-hidden="true"></span>
+				<a href="/go/goDetail?gbNo=${go.GBNO }"> <!-- 사진 클릭시 이동 -->
 					<c:if test="${go.UFORIGINFILENAME eq null}"> <!-- 사진이 null이면 default -->
     					<img src="<%=request.getContextPath() %>/resources/upload/default.png" alt="공백" class="img-circle" />
 					</c:if>
@@ -67,6 +46,16 @@
 				</a>
 				</div>
 				<div class="ialign marginleft">
+					<div class="godate">
+					[ 
+						<c:choose>
+	                     <c:when test="${go.GBRECRUITDATE eq '1' }" >1월에서 3월사이</c:when>
+	                     <c:when test="${go.GBRECRUITDATE eq '2' }" >4월에서 6월사이</c:when>
+	                     <c:when test="${go.GBRECRUITDATE eq '3' }" >7월에서 9월사이</c:when>
+	                     <c:when test="${go.GBRECRUITDATE eq '4' }" >10월에서 12월사이</c:when>
+                 		</c:choose>
+					]
+					</div>
 					<div class="goname"> ${go.UNICK } 
 					<small>
 					<c:choose>
@@ -120,7 +109,7 @@
                      <c:when test="${go.GBRECRUITSTATUS eq 1 }" ><span class="gotag2">모집마감</span></c:when>
                  </c:choose>  
 				</span>
-				<span class="goheart"><img src="/resources/image/go/heart.png" alt="찜하트"/></span>
+					<span><img class="goheart" onclick="likeheart(${go.GBNO})" style="cursor:pointer" src="/resources/image/go/heart.png" /></span>
 				</div>  <!-- 하트 색 변경 작동 시키기 -->
 			</div>
 		</div>
@@ -140,9 +129,8 @@
 				</div>
 			</div>
 		</div>
-		</div>
 		
-	</div>
+		</div>
 
 </div>
 </body>

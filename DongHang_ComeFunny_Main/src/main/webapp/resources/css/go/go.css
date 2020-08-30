@@ -272,6 +272,9 @@ a {
 	margin: 50px auto;
 }
 
+.listup{
+	height: 35px;
+}
 /* 정렬된 리스트 */
 
 #gobest{
@@ -308,16 +311,29 @@ a {
 	display: inline-block;
 }
 
+.godate {
+	font-size: 12px;
+	color: rgb(3, 88, 140);
+}
+
 .goname{
 	font-size: 18px;
+	line-height: 22px;
+	height: 22px;
 	font-weight: 500;
 /* 	margin-bottom: 10px; */
 }
 
+.goname > small{
+	font-size: 14px;
+	font-weight: 400;
+}
+
 .gotitle{
+	padding-top: 4px;
 	width: 180px;
-	line-height: 1.8;
-    font-size: 16px;
+    font-size: 15px;
+    line-height: 20px;
 }
 
 .gothemebox{
@@ -353,9 +369,6 @@ a {
 .goheart{
 	float:right;
 	margin-right: 10px;
-}
-
-.goheart img{
 	width: 40px;
 }
 

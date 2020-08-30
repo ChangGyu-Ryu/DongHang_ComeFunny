@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>함께가요 :: 글쓰기</title>
+<title>함께가요 :: 동행모집하기</title>
 <!-- goForm.css -->
 <link rel="stylesheet" href="<%=request.getContextPath() %>/resources/css/go/goForm.css" />
 
@@ -60,7 +60,8 @@ $(document).ready(function () {
 	$("#btnWrite").click(function() {
 		//스마트에디터의 내용을 <textarea>에 적용하는 함수 호출
 		submitContents($("#btnWrite"));
-		
+// 		var content = document.getElementById("smartEditor").value;
+
 		//공백 제어
 		if($("#inputdate").val() == null || $("#inputdate").val() == ''){
 			alert("날짜은 필수 선택 값 입니다")
@@ -248,7 +249,7 @@ $(document).ready(function () {
 				<td colspan="4">
 				<div class="tdright">
 					<span><input type="button" class ="btn btn-primary btnsize" value="등록" id="btnWrite"></span>
-					<span><input type="button" value="이전으로" class="btn btn-default btnsize" id="btnCancel"/></span>
+					<span><input type="button" value="취소" class="btn btn-default btnsize" id="btnCancel"/></span>
 				</div>
 				</td>
 			</tr>
