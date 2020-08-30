@@ -90,7 +90,11 @@
 		<dependency>
 		    <groupId>commons-fileupload</groupId>
 		    <artifactId>commons-fileupload</artifactId>
+<<<<<<< HEAD
+		    <version>1.3.3</version>
+=======
 		    <version>1.3.1</version>
+>>>>>>> initial MessagrChat setting
 		</dependency>
 		
 		<!-- 4. ajax 사용하기 위한 JSON 관련 디펜던시 추가 -->
@@ -261,7 +265,11 @@
 		<dependency>
 		    <groupId>org.springframework.security</groupId>
 		    <artifactId>spring-security-core</artifactId>
+<<<<<<< HEAD
+		    <version>5.2.5.RELEASE</version>
+=======
 		    <version>5.2.2.RELEASE</version>
+>>>>>>> initial MessagrChat setting
 		</dependency>
 		<!-- 9-2. spring-security-web 5.2.2 -->
 		<dependency>
@@ -311,7 +319,31 @@
 		    <version>1.10.19</version>
 		    <scope>test</scope>
 		</dependency>
-		
+		<!-- 14. 채팅전송을 위한 web socket -->
+		<dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-websocket</artifactId>
+            <version>${org.springframework-version}</version>
+		</dependency>
+		<!-- 15.  채팅을 위한 로거등등을 지원하는 lombok -->
+		<dependency>
+		    <groupId>org.projectlombok</groupId>
+		    <artifactId>lombok</artifactId>
+		    <version>1.18.12</version>
+		    <scope>provided</scope>
+		</dependency>
+		<dependency>
+
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.6.6</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>1.6.6</version>
+		</dependency>
+
 
 		
 		

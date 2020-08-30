@@ -6,14 +6,12 @@ public class Message {
 	private int msNo;
 	private int msUNo;
 	private int msReceiver;
-	private String msTitle;
-	private String msContent;
-	private Date msWrittenTime;
-	private int msType;
+	private int msOwnerl;
 	@Override
 	public String toString() {
-		return "Message [msNo=" + msNo + ", msUNo=" + msUNo + ", msReceiver=" + msReceiver + ", msTitle=" + msTitle
-				+ ", msContent=" + msContent + ", msWrittenTime=" + msWrittenTime + ", msType=" + msType + "]";
+		return "Message [msNo=" + msNo + ", msUNo=" + msUNo + ", msReceiver=" + msReceiver + ", msOwnerl=" + msOwnerl
+				+ ", msTitle=" + msTitle + ", msContent=" + msContent + ", msWrittenTime=" + msWrittenTime + ", msType="
+				+ msType + "]";
 	}
 	public int getMsNo() {
 		return msNo;
@@ -32,6 +30,12 @@ public class Message {
 	}
 	public void setMsReceiver(int msReceiver) {
 		this.msReceiver = msReceiver;
+	}
+	public int getMsOwnerl() {
+		return msOwnerl;
+	}
+	public void setMsOwnerl(int msOwnerl) {
+		this.msOwnerl = msOwnerl;
 	}
 	public String getMsTitle() {
 		return msTitle;
@@ -57,6 +61,11 @@ public class Message {
 	public void setMsType(int msType) {
 		this.msType = msType;
 	}
+	private String msTitle;
+	private String msContent;
+	private Date msWrittenTime;
+	private int msType;
+	
 	
 	
 
