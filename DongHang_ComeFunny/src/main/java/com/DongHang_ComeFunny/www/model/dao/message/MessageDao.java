@@ -44,14 +44,14 @@ public class MessageDao {
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("paging", page);
 		map.put("uno", uno);
-		return sqlSession.selectOne("MESSAGE.selectMyMsgList",map);
+		return sqlSession.selectList("MESSAGE.selectMyMsgList",map);
 	}
 
 	public List<Map<String, Object>> selectStoreMsgList(Paging page, int uno) {
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("paging", page);
 		map.put("uno", uno);
-		return sqlSession.selectOne("MESSAGE.selectStoreMsgList",map);
+		return sqlSession.selectList("MESSAGE.selectStoreMsgList",map);
 	}
 
 	public List<Map<String, Object>> selectSendList(Paging page, int uno) {
@@ -60,7 +60,7 @@ public class MessageDao {
 		map.put("uno", uno);
 		System.out.println("=============");
 		System.out.println(page);
-		return sqlSession.selectOne("MESSAGE.selectSendMsgList",map);
+		return sqlSession.selectList("MESSAGE.selectSendMsgList",map);
 	}
 	public int deleteArr(int[] nums) {
 		int res = 0;
