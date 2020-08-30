@@ -26,13 +26,20 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 
 <script type="text/javascript">
+jQuery( document ).ready(function( $ ) {
+
+	   $(window).on('popstate', function() {
+	      location.reload(true);
+	   });
+
+});
+</script>
+
+<script type="text/javascript">
+
 	//검색 필터 관련 속성
 	//클릭하면 클릭한 속성이 추가됨
 	var ageValue ="", genderValue="", themeValue="", areaValue="", stateValue ="";
-
-	function fixedEncodeURI (str) { //인코딩해서 [ ] 로 변환
-	    return encodeURI(str).replace(/%5B/g, '[').replace(/%5D/g, ']');
-	}
 	
 	function addKeyFilterObj(data) {
 		var textNode = $(data).parent();
@@ -73,13 +80,12 @@
 
 			$.ajax({
 				type : 'GET'
-				, url : "/go/filter?age="+ageValue + "&gender=" + genderValue 
-						+ "&theme=" + themeValue +"&area=" + areaValue + "&state=" + stateValue
+				, url : "/go/filter?age="+ageValue + "&gender=" + genderValue + "&theme=" + themeValue +"&area=" + areaValue + "&state=" + stateValue
 				, dataType: "html"
 				, success : function(data){
 					console.log("AJAX 성공");
-					console.log(data.age); //데이터안의  age?
- 					$("#go-list").html(data);
+// 					console.log(data.area); //데이터안의   area?
+ 					$("#gobest").html(data);
 				}
 				, error: function(request,status,error) {
 					console.log("/go/filter?age="+ageValue + "&gender=" + genderValue 
@@ -91,6 +97,7 @@
 			
 		} else {
 			removeKeyFilter(textNode); //클릭해제되면 필터적용 함수도 사라짐
+			
 			if( dataName == "gcAgeGroup"){
 				ageValue = ageValue.replace($(data).attr('value')+"-","");
 			}
@@ -151,12 +158,9 @@
 			, dataType: "html"
 			, success : function(data){
 				console.log("AJAX 성공 - 버튼 해제");
-// 				$("#gobest").empty(); //비우는 코드 근데 값이 다 null이면 전체보여줘야함
-				$("#go-list").html(data);
+				$("#gobest").html(data);
 			}
 			, error: function(request,status,error) {
-				console.log("/go/filter?age="+ageValue + "&gender=" + genderValue 
-						+ "&theme=" + themeValue +"&area=" + areaValue + "&state=" + stateValue)
 				console.log('AJAX fail');
 				alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error)
 			}
@@ -168,19 +172,82 @@
 	function resetKeyFilter() {
 		$('.searchtb input').prop('checked', false);
 		$('.group .tag').remove();
+		location.reload(true);
+		
 	}
 	
 </script>
-
 <script type="text/javascript">
-//드롭다운
+//이미지변경
 $(document).ready(function() {
 	
+	$('.goheart').on('click', function() {
+		if($(this).attr('src') == '/resources/image/go/heart.png'){ //찜안되어있음
+			$(this).attr('src','<%=request.getContextPath()%>/resources/image/go/heart_pick.png');
+		} else { //찜되어있음
+			$(this).attr('src','<%=request.getContextPath()%>/resources/image/go/heart.png');
+		}
+	});
+});
+
+//찜기능
+function likeheart(gbno){
+	console.log(gbno);
+		
+	//하트가 픽된 하트면
+		
+// 		$.ajax({
+// 			type: 'post'
+// 			,url: "/deletelike"
+// 			,data: {gbno : gbno}
+// 			,dataType: json
+// 				,success: function(result){
+// 				console.log('AJAX 성공')
+// 			}
+// 			,error: function(){
+// 				console.log('AJAX 실패')
+// 			}
+// 		})	
+	
+// 	} 
+// 	//하트가 빈하트면 (찜 안되어있으면)
+		
+// 		$.ajax({
+// 			type: 'post'
+// 			,url: "/insertlike"
+// 			,data: {pno : pno}
+// 			,dataType: json
+// 				,success: function(result){
+// 				console.log('AJAX 성공')
+// 			}
+// 			,error: function(){
+// 				console.log('AJAX 실패')
+// 			}
+// 		})	
+// 	}
+	
+}
+
+$(document).ready(function() {
+	
+});	
+</script>
+
+<script type="text/javascript">
+$(document).ready(function() {
+	
+	//드롭다운 토글
 	$('#dropdownMenu1').click(function() { 
-	 	$('.dropdown-menu').toggle();
+	 	$('.dropdown-menu').toggle(200);
+	});	 
+	
+	//클릭시 숨기기
+	$('.dropdown-menu > li > a').click(function() { 
+	 	$('.dropdown-menu').hide();
 	});	 
 	
 });
+
 </script>
 </head>
 <body>
@@ -238,7 +305,7 @@ $(document).ready(function() {
 		<div>
 			<p class="ialign">어떤 동행을 찾으시나요?</p>
 			<form action="/go/search" method="post" id="formid" class="ialign pull-right formbox input-group-btn">
-				<input type="text" name="searchText" class="textbox"/>
+				<input type="text" name="searchText" class="textbox" placeholder="내용 검색"/>
 				<button type="submit" id="gobtn" class="btn btn-default input-lg"><span class="glyphicon glyphicon-search"></span></button>
 			</form>
 		</div>
@@ -296,18 +363,18 @@ $(document).ready(function() {
 	<!-- 하단 리스트 -->
 	<div id="go-list">
 	
-		<div>
+		<div class="listup">
 		<!-- 정렬 드롭다운 -->
-		<div class="dropdown" >
-		  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
-		    	<span>정렬방식 </span><span class="caret"></span>
-		  </button>
-		  <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-		    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">최신순</a></li>
-		    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">찜순</a></li>
-		    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">날짜순</a></li>
-		  </ul>
-		</div>	
+<!-- 		<div class="dropdown" > -->
+<!-- 		  <button class="btn btn-default" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true"> -->
+<!-- 		    	<span>정렬방식</span><span class="caret"></span> -->
+<!-- 		  </button> -->
+<!-- 		  <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1"> -->
+<!-- 		  	<li role="presentation"><a role="menuitem" tabindex="-1" href="#">최신순</a></li> -->
+<!-- 		    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">찜순</a></li> -->
+<!-- 		    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">인원순</a></li> -->
+<!-- 		  </ul> -->
+<!-- 		</div>	 -->
 		
 		<!-- 모집버튼 --> 
 		<div class="pull-right">
@@ -320,20 +387,30 @@ $(document).ready(function() {
 		
 		<!-- 이부분 반복 -->
 		<c:forEach items="${list.glist }" var="go">
-		
 		<div class="gobest">
 			<div class="gobest-title">
 				<div class="goprofile ialign">
-				<a href="/go/godetail?gbno=${go.GBNO }"> <!-- 사진 클릭시 이동 -->
-					<c:if test="${go.UFORIGINFILENAME eq null}"> <!-- 사진이 null이면 default -->
+				<a href="/go/goDetail?gbNo=${go.GBNO }"> <!-- 사진 클릭시 이동 -->
+					<span aria-hidden="true"></span>
+					<c:if test="${go.UFSTOREDFILENAME eq null}"> <!-- 사진이 null이면 default -->
     					<img src="<%=request.getContextPath() %>/resources/upload/default.png" alt="공백" class="img-circle" />
 					</c:if>
-					<c:if test="${go.UFORIGINFILENAME ne null}">
-						<img src="<%=request.getContextPath() %>/resources/upload/${go.UFORIGINFILENAME}" alt="프로필사진" class="img-circle" />
+					<c:if test="${go.UFSTOREDFILENAME ne null}">
+						<img src="<%=request.getContextPath() %>/resources/upload/${go.UFSTOREDFILENAME}" alt="프로필사진" class="img-circle" />
 					</c:if>
 				</a>
 				</div>
 				<div class="ialign marginleft">
+					<div class="godate"> <!-- date추가 -->
+					[ 
+						<c:choose>
+	                     <c:when test="${go.GBRECRUITDATE eq '1' }" >1월-3월</c:when>
+	                     <c:when test="${go.GBRECRUITDATE eq '2' }" >4월-6월</c:when>
+	                     <c:when test="${go.GBRECRUITDATE eq '3' }" >7월-9월</c:when>
+	                     <c:when test="${go.GBRECRUITDATE eq '4' }" >10-12월</c:when>
+                 		</c:choose>
+					]
+					</div>
 					<div class="goname"> ${go.UNICK } 
 					<small>
 					<c:choose>
@@ -386,9 +463,9 @@ $(document).ready(function() {
                      <c:when test="${go.GBRECRUITSTATUS eq 0 }" ><span class="gotag">모집중</span></c:when>
                      <c:when test="${go.GBRECRUITSTATUS eq 1 }" ><span class="gotag2">모집마감</span></c:when>
                  </c:choose>  
-				</span>
-				<span class="goheart"><img src="/resources/image/go/heart.png" alt="찜하트"/></span>
-				</div>  <!-- 하트 색 변경 작동 시키기 -->
+				</span><!-- 하트 색 변경 작동 시키기 -->
+					<span><img class="goheart" onclick="likeheart(${go.GBNO})" style="cursor:pointer" src="/resources/image/go/heart.png" /></span>
+				</div>  
 			</div>
 		</div>
 		</c:forEach>
