@@ -401,7 +401,7 @@ $(document).ready(function() {
 				</a>
 				</div>
 				<div class="ialign marginleft">
-					<div class="godate">
+					<div class="godate"> <!-- date추가 -->
 					[ 
 						<c:choose>
 	                     <c:when test="${go.GBRECRUITDATE eq '1' }" >1월-3월</c:when>
