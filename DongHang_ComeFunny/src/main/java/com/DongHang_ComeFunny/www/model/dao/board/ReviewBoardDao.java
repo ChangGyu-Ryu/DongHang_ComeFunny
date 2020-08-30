@@ -9,8 +9,10 @@ import org.springframework.stereotype.Repository;
 
 import com.DongHang_ComeFunny.www.model.vo.ReviewBoard;
 import com.DongHang_ComeFunny.www.model.vo.ReviewComment;
+import com.DongHang_ComeFunny.www.model.vo.ReviewDhTicket;
 import com.DongHang_ComeFunny.www.model.vo.ReviewLike;
 import com.DongHang_ComeFunny.www.model.vo.ReviewRecommend;
+import com.DongHang_ComeFunny.www.model.vo.User;
 
 import common.util.Paging;
 
@@ -385,6 +387,23 @@ public class ReviewBoardDao {
 	public int updateDoAvgByZero(Map<String, Object> reviewZero) {
 		return sqlSession.update("REVIEW.updateDoAvgByZero", reviewZero);
 	}
+
+	public int updateDhtCnt(User sessionUser) {
+		return sqlSession.update("REVIEW.updateDhtCnt", sessionUser);
+	}
+
+	public int insertReviewDht(ReviewDhTicket reviewDhTicket) {
+		return sqlSession.insert("REVIEW.insertReviewDht", reviewDhTicket);
+	}
+
+	public int selectReviewDhtCnt(ReviewDhTicket reviewDhTicket) {
+		return sqlSession.selectOne("REVIEW.selectReviewDhtCnt", reviewDhTicket);
+	}
+
+	public List<ReviewDhTicket> selectReivewDht(User sessionUser) {
+		return sqlSession.selectList("REVIEW.selectReivewDht", sessionUser);
+	}
+
 
 
 

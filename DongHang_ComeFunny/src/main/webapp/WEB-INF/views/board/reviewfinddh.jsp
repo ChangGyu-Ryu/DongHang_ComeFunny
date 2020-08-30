@@ -35,7 +35,7 @@ function selectTitle(e) {
 	console.dir(data[e].innerText);
 	console.dir(gbCategory[e].value);
 	window.opener.sendMeData(gbNo[e].value, data[e].innerText, gbCategory[e].value);
-// 	window.close();
+	window.close();
 }
 
 

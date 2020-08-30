@@ -24,6 +24,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.DongHang_ComeFunny.www.model.service.board.ReviewBoardService;
 import com.DongHang_ComeFunny.www.model.vo.ReviewBoard;
 import com.DongHang_ComeFunny.www.model.vo.ReviewComment;
+import com.DongHang_ComeFunny.www.model.vo.ReviewDhTicket;
 import com.DongHang_ComeFunny.www.model.vo.ReviewLike;
 import com.DongHang_ComeFunny.www.model.vo.ReviewRecommend;
 import com.DongHang_ComeFunny.www.model.vo.User;
@@ -165,6 +166,7 @@ public class ReviewBoardController {
 	public ModelAndView reviewList(
 			String searchText,
 			String searchKinds,
+			HttpSession session,
 			@RequestParam(required=false, defaultValue="1")int cPage) {
 		// 1. 모델앤뷰 객체 생성
 		ModelAndView mav = new ModelAndView();
@@ -194,7 +196,13 @@ public class ReviewBoardController {
 		//    - cPage, cntPerPage, searchReviewList 
 		//     (현재페이지, 페이지당 보여줄 게시글 개수, 검색 카테고리와 키워드가 담긴 Map)
 		Map<String,Object> commandMap = reviewBoardService.selectReviewSearchList(cPage, cntPerPage, searchReviewList);
-		
+
+		User sessionUser = (User)session.getAttribute("logInInfo");
+		if(sessionUser!=null && sessionUser.getuDhtCnt() > 0) {
+		// 5-1. 사용한 동행복권 조회
+		Map<String,Object> reviewdht = reviewBoardService.selectDhTicket(sessionUser);
+		mav.addObject("rticket", reviewdht);
+		}
 		//--------------------------------------
 		// 검색키워드가 없을 시, 리스트 검색
 //		ModelAndView mav = new ModelAndView();
@@ -227,6 +235,7 @@ public class ReviewBoardController {
 	public ModelAndView reviewListSearch(
 									String searchText,
 									String searchKinds,
+									HttpSession session,
 									@RequestParam(required = false, defaultValue = "1") int cPage) {
 		// 1. 모델앤뷰 객체 생성
 		ModelAndView mav = new ModelAndView();
@@ -255,6 +264,14 @@ public class ReviewBoardController {
 		// 5. 파라미터값 Service에 전달 후 Map에 저장
 		Map<String,Object> commandMap = reviewBoardService.selectReviewSearchList(cPage, cntPerPage, searchReviewList);
 		
+		User sessionUser = (User)session.getAttribute("logInInfo");
+		if(sessionUser!=null && sessionUser.getuDhtCnt() > 0) {
+		// 5-1. 사용한 동행복권 조회
+		Map<String,Object> reviewdht = reviewBoardService.selectDhTicket(sessionUser);
+		System.out.println(reviewdht);
+		mav.addObject("rticket", reviewdht);
+		}
+		
 		//------------------ Service에서 처리한 데이터값 출력-----------------------
 		System.out.println("[controller] reviewlistSearch - commandMap : " + commandMap);
 		//--------------------------------------------------------------------------
@@ -277,7 +294,6 @@ public class ReviewBoardController {
 	public ModelAndView reviewView(
 			@RequestParam int rbNo
 			, HttpSession session
-			
 		) {
 		// 1. 모델앤뷰 객체 생성
 		ModelAndView mav = new ModelAndView();
@@ -320,7 +336,14 @@ public class ReviewBoardController {
 		}
 		
 		User sessionUser = (User)session.getAttribute("logInInfo");
-		if(sessionUser!=null) {
+		if(sessionUser!=null && sessionUser.getuDhtCnt() > 0) {
+			// 2-0.세션회원의 동행복권 개수 업데이트
+			ReviewDhTicket reviewDhTicket = new ReviewDhTicket();
+			reviewDhTicket.setDhtRbNo(rbNo);
+			reviewDhTicket.setDhtUNo(sessionUser.getuNo());
+			int reviewdht = reviewBoardService.updateDhtCnt(sessionUser, reviewDhTicket);
+			
+			
 			ReviewLike reviewlike = new ReviewLike();
 			reviewlike.setRlRbNo(rbNo);
 			reviewlike.setRlUNo(sessionUser.getuNo());
@@ -332,6 +355,10 @@ public class ReviewBoardController {
 			reviewrecommend.setRrcUNo(sessionUser.getuNo());
 			int reviewrecommendcnt = reviewBoardService.getBoardRec(reviewrecommend);
 			mav.addObject("reccnt", reviewrecommendcnt);
+		} else if(sessionUser!=null && sessionUser.getuDhtCnt() <= 0) {
+			mav.addObject("alertMsg", "사용할 수 있는 동행복권이 없습니다.");
+			mav.addObject("url", "reviewlist");
+			mav.setViewName("common/result");
 		}
 		// 6. 데이터 처리가 완료된 모델(VO)값과 보여질 페이지(jsp)를 반환한다.
 		return mav;

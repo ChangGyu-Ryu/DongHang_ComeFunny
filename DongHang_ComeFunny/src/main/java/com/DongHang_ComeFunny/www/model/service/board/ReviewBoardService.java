@@ -7,6 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.DongHang_ComeFunny.www.model.vo.ReviewBoard;
 import com.DongHang_ComeFunny.www.model.vo.ReviewComment;
+import com.DongHang_ComeFunny.www.model.vo.ReviewDhTicket;
 import com.DongHang_ComeFunny.www.model.vo.ReviewLike;
 import com.DongHang_ComeFunny.www.model.vo.ReviewRecommend;
 import com.DongHang_ComeFunny.www.model.vo.User;
@@ -156,6 +157,10 @@ public interface ReviewBoardService {
 	public int selectDHApplyList(int getuNo);
 
 	public int updateDhStarBydelete(Map<String, Object> donghangMap, int rbNo);
+
+	public int updateDhtCnt(User sessionUser, ReviewDhTicket reviewDhTicket);
+
+	public Map<String, Object> selectDhTicket(User sessionUser);
 
 
 

@@ -729,4 +729,29 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     		WHERE dbno = #{gbNo}
     	</update>
     	
+    	<update id="updateDhtCnt">
+    		UPDATE
+    			tb_user
+    		SET
+    			udhtcnt = udhtcnt -1
+    		WHERE uno = #{uNo}
+    	</update>
+    	
+    	<insert id="insertReviewDht">
+    		INSERT INTO tb_reviewdhticket(dhtrbno, dhtuno, dhtstatus, dhtuseddate)
+    		VALUES (#{dhtRbNo}, #{dhtUNo}, 1, sysdate )
+    	</insert>
+    	
+    	<select id="selectReviewDhtCnt" resultType="int">
+    		SELECT COUNT(*)
+    			FROM tb_reviewdhticket
+    		WHERE dhtrbno = #{dhtRbNo}
+    			AND dhtuno = #{dhtUNo}
+    	</select>
+    	
+    	<select id="selectReivewDht" resultType="HashMap">
+    		SELECT * FROM tb_reviewdhticket
+    		WHERE dhtuno = #{uNo}
+    	</select>
+
 </mapper>

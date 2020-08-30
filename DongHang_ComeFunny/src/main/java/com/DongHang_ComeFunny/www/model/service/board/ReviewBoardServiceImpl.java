@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.DongHang_ComeFunny.www.model.dao.board.ReviewBoardDao;
 import com.DongHang_ComeFunny.www.model.vo.ReviewBoard;
 import com.DongHang_ComeFunny.www.model.vo.ReviewComment;
+import com.DongHang_ComeFunny.www.model.vo.ReviewDhTicket;
 import com.DongHang_ComeFunny.www.model.vo.ReviewLike;
 import com.DongHang_ComeFunny.www.model.vo.ReviewRecommend;
 import com.DongHang_ComeFunny.www.model.vo.User;
@@ -599,5 +600,37 @@ public class ReviewBoardServiceImpl implements ReviewBoardService {
 		}
 		// 성공 : 1, 실패 : 0
 		return result;
+	}
+	
+	@Override
+	public int updateDhtCnt(User sessionUser, ReviewDhTicket reviewDhTicket) {
+		// 빈 int 생성
+		int result = 0;
+		// 후기 동행복권 사용여부 확인( 0 : 사용x 1: 사용 )
+		int selectres = reviewBoardDao.selectReviewDhtCnt(reviewDhTicket);
+		
+		if( selectres == 0 ) {
+			// 동행복권 개수  -1 시키기
+			reviewBoardDao.updateDhtCnt(sessionUser);
+			
+			// 후기 동행복권 테이블에 사용내역 추가하기
+			int insertres = reviewBoardDao.insertReviewDht(reviewDhTicket);
+			result = insertres;
+			return insertres;
+		}
+		
+		return result;
+		
+	}
+	
+	@Override
+	public Map<String,Object> selectDhTicket(User sessionUser) {
+		// 1. 빈 커맨드맵 객체 생성
+		Map<String, Object> commandMap = new HashMap<>();
+		// 2. 사용한 resultTicket 조회
+		List<ReviewDhTicket> tlist = reviewBoardDao.selectReivewDht(sessionUser);
+		// 3. 페이징 객체와 조회한 게시글 리스트를 커맨드맵에 넣기
+		commandMap.put("tlist", tlist);
+		return commandMap;
 	}
 }

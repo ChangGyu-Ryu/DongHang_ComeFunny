@@ -24,6 +24,7 @@
 		<typeAlias type="com.DongHang_ComeFunny.www.model.vo.ReviewBoard" alias="RBOARD"/>
 		<typeAlias type="com.DongHang_ComeFunny.www.model.vo.FreeComment" alias="FCOMMENT"/>
 		<typeAlias type="com.DongHang_ComeFunny.www.model.vo.ReviewComment" alias="RCOMMENT"/>
+		<typeAlias type="com.DongHang_ComeFunny.www.model.vo.ReviewDhTicket" alias="RTICKET"/>
 		
 		<typeAlias type="com.DongHang_ComeFunny.www.model.vo.Order" alias="ORDER"/>
 		<typeAlias type="com.DongHang_ComeFunny.www.model.vo.GoBoard" alias="GOBOARD"/>
