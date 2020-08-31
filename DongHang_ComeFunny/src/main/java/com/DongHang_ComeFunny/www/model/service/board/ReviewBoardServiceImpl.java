@@ -615,6 +615,12 @@ public class ReviewBoardServiceImpl implements ReviewBoardService {
 		// 본인글이 맞다면 동행복권 개수 그대로
 		if(sessionUser.getuNo() == gbuno) {
 			System.out.println("updateDhtCnt result : " + result);
+			result = 2;
+			return result;
+		}
+		
+		// 회원의 동행복권 개수가 0일때 
+		if( sessionUser.getuDhtCnt() == 0) {
 			return result;
 		}
 		

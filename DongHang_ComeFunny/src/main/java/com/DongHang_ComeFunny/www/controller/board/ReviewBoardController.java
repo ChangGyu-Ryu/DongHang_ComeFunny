@@ -344,11 +344,18 @@ public class ReviewBoardController {
 			int reviewdht = reviewBoardService.updateDhtCnt(sessionUser, reviewDhTicket);
 			System.out.println("[Controller] reviewdht : " + reviewdht);
 			
+			if( reviewdht == 0 ) {
+				mav.addObject("alertMsg", "사용할 수 있는 동행복권이 없습니다.");
+				mav.addObject("url", "reviewlist");
+				mav.setViewName("common/result");
+				return mav;
+			}
 			
 			ReviewLike reviewlike = new ReviewLike();
 			reviewlike.setRlRbNo(rbNo);
 			reviewlike.setRlUNo(sessionUser.getuNo());
 			int reviewlikecnt = reviewBoardService.getBoardLike(reviewlike);
+			System.out.println("[Controller] reviewlikecnt : " + reviewlikecnt);
 			mav.addObject("likecnt",reviewlikecnt);
 			
 			ReviewRecommend reviewrecommend = new ReviewRecommend();
@@ -356,11 +363,7 @@ public class ReviewBoardController {
 			reviewrecommend.setRrcUNo(sessionUser.getuNo());
 			int reviewrecommendcnt = reviewBoardService.getBoardRec(reviewrecommend);
 			mav.addObject("reccnt", reviewrecommendcnt);
-		} else {
-			mav.addObject("alertMsg", "사용할 수 있는 동행복권이 없습니다.");
-			mav.addObject("url", "reviewlist");
-			mav.setViewName("common/result");
-		}
+		} 
 		// 6. 데이터 처리가 완료된 모델(VO)값과 보여질 페이지(jsp)를 반환한다.
 		return mav;
 	}
