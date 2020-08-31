@@ -93,6 +93,7 @@ public class MessageServiceImpl implements MessageService {
 		// 메시지 보낸후 발신내역 확인용
 		Message mirrorMsg;
 		sendMessage.setMsUNo(sender.getuNo());
+		sendMessage.setMsOwner(sender.getuNo());
 		// 메시지 보내는 수신자의 정보
 		int res = 0;
 		int returnVal = 0;
@@ -105,6 +106,7 @@ public class MessageServiceImpl implements MessageService {
 				mySendMsg.setMsType(3);
 				mySendMsg.setMsUNo(sender.getuNo());
 				mySendMsg.setMsReceiver(sender.getuNo());
+				mySendMsg.setMsOwner(sender.getuNo());
 				returnVal = messageDao.insert(mySendMsg);
 				if (returnVal != 1) {
 					for (Integer sendNo : send) { // for문을 통한 전체출력
@@ -135,8 +137,8 @@ public class MessageServiceImpl implements MessageService {
 					return 0;
 				} else {
 					sendMessage.setMsReceiver(receiver.getuNo());
-					mirrorMsg = sendMessage;
-					
+					sendMessage.setMsOwner(receiver.getuNo());
+					mirrorMsg = sendMessage;		
 					sendMessage.setMsType(0);
 					returnVal = messageDao.insert(sendMessage);
 					// 전송 실패경우
@@ -152,6 +154,7 @@ public class MessageServiceImpl implements MessageService {
 						res += returnVal;
 						send.add(messageDao.selectSeq());
 						mirrorMsg.setMsType(1);
+						mirrorMsg.setMsOwner(mirrorMsg.getMsUNo());
 						returnVal = messageDao.insert(mirrorMsg);
 						if (returnVal == 0) {
 							for (Integer sendNo : send) { // for문을 통한 전체출력
@@ -189,6 +192,7 @@ public class MessageServiceImpl implements MessageService {
 			mySendMsg.setMsType(3);
 			mySendMsg.setMsUNo(sender.getuNo());
 			mySendMsg.setMsReceiver(sender.getuNo());
+			mySendMsg.setMsOwner(sender.getuNo());
 			returnVal = messageDao.insert(mySendMsg);
 			if (returnVal == 0)
 				return 0;
@@ -202,7 +206,11 @@ public class MessageServiceImpl implements MessageService {
 				return 0;
 			else {
 				sendMessage.setMsReceiver(receiver.getuNo());
+				sendMessage.setMsOwner(receiver.getuNo());
 				mirrorMsg = sendMessage;
+				System.out.println(sendMessage);
+				System.out.println("abab");
+				System.out.println(mirrorMsg);
 				
 				sendMessage.setMsType(0);
 				returnVal = messageDao.insert(sendMessage);
@@ -212,6 +220,7 @@ public class MessageServiceImpl implements MessageService {
 				else {
 					ress += returnVal;
 					mirrorMsg.setMsType(1);
+					mirrorMsg.setMsOwner(mirrorMsg.getMsUNo());
 					returnVal = messageDao.insert(mirrorMsg);
 					if (returnVal == 0) {
 						messageDao.delete(messageDao.selectSeq());
