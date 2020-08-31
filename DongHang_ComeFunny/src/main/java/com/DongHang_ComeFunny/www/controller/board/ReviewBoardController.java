@@ -336,12 +336,13 @@ public class ReviewBoardController {
 		}
 		
 		User sessionUser = (User)session.getAttribute("logInInfo");
-		if(sessionUser!=null && sessionUser.getuDhtCnt() > 0) {
+		if(sessionUser!=null) {
 			// 2-0.세션회원의 동행복권 개수 업데이트
 			ReviewDhTicket reviewDhTicket = new ReviewDhTicket();
 			reviewDhTicket.setDhtRbNo(rbNo);
 			reviewDhTicket.setDhtUNo(sessionUser.getuNo());
 			int reviewdht = reviewBoardService.updateDhtCnt(sessionUser, reviewDhTicket);
+			System.out.println("[Controller] reviewdht : " + reviewdht);
 			
 			
 			ReviewLike reviewlike = new ReviewLike();
@@ -355,7 +356,7 @@ public class ReviewBoardController {
 			reviewrecommend.setRrcUNo(sessionUser.getuNo());
 			int reviewrecommendcnt = reviewBoardService.getBoardRec(reviewrecommend);
 			mav.addObject("reccnt", reviewrecommendcnt);
-		} else if(sessionUser!=null && sessionUser.getuDhtCnt() <= 0) {
+		} else {
 			mav.addObject("alertMsg", "사용할 수 있는 동행복권이 없습니다.");
 			mav.addObject("url", "reviewlist");
 			mav.setViewName("common/result");
