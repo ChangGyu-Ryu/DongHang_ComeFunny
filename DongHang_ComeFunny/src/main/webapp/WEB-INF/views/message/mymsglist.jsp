@@ -10,7 +10,7 @@
 <div id="div_back">
 	<div id="div_left_area">
 		<div id="div_line_left_mail">
-					<div id="div_mail" onclick="location.href ='/message/mymsg'">쪽지쓰기</div>
+					<div id="div_mail" onclick="location.href ='/message/send'">쪽지쓰기</div>
 			<div>
 				<!-- [D] 마우스오버시 li에 ovr, 클릭시 li에 click 클래스 추가 -->
 				<ul class="left_mail_menu">
@@ -67,51 +67,65 @@
 			</div>
 		
 		</div>
-
+	<nav aria-label="Page navigation" style="text-align: center;">
+		  <ul class="pagination">
+		    <li>
+		      <a href="<%= request.getContextPath() %>/message/mymsglist" aria-label="Previous">
+		        <span aria-hidden="true">&laquo;</span>
+		      </a>
+		      
+		      <c:choose>
+		      	<c:when test="${paging.blockStart > 1 }">
+		      		<a href="<%= request.getContextPath() %>/message/mymsglist?cPage=${paging.currentPage-1}" aria-label="Previous">
+		        		<span aria-hidden="true">&lt;</span>
+		      		</a>
+		      	</c:when>
+		      	
+		      	<c:when test="${paging.currentPage eq 1 }">
+		      		<a href="<%= request.getContextPath() %>/message/mymsglist?cPage=${paging.blockStart}" aria-label="Previous">
+		        		<span aria-hidden="true">&lt;</span>
+		      		</a>
+		      	</c:when>
+		      	
+		      	<c:otherwise>
+		      		<a href="<%= request.getContextPath() %>/message/mymsglist?cPage=${paging.currentPage-1}" aria-label="Previous">
+		        		<span aria-hidden="true">&lt;</span>
+		      		</a>
+          		 </c:otherwise>
+		      </c:choose>
+		      
+		      <c:forEach begin="${paging.blockStart}" end="${paging.blockEnd}" var="page">
+         			<li><a href="<%= request.getContextPath() %>/message/mymsglist?cPage=${page}"><span>${page}</span></a></li>
+        	  </c:forEach> 
+		      
+		    </li>
+		    
+		    <li>
+		    	<c:choose>
+           			<c:when test="${paging.currentPage eq paging.lastPage }">
+               			<a href="<%= request.getContextPath() %>/message/mymsglist?cPage=${paging.blockEnd}" aria-label="Next">
+		       	 			<span aria-hidden="true">&gt;</span>
+		      			</a>
+          			 </c:when>
+          		 <c:otherwise>
+              			 <a href="<%= request.getContextPath() %>/message/mymsglist?cPage=${paging.currentPage+1}" aria-label="Next">
+		       	 			<span aria-hidden="true">&gt;</span>
+		      			</a>
+         		 </c:otherwise>
+          	 	 </c:choose>
+		    
+		    
+		      <a href="<%= request.getContextPath() %>/message/mymsglist?cPage=${paging.lastPage}" aria-label="Next">
+		        <span aria-hidden="true">&raquo;</span>
+		      </a>
+		    </li>			
+		    
+		  </ul>
+	</nav>
 
 	</div>
 
 </div>
-<%-- 	<c:choose>
-				<li><a
-					href="<%=request.getContextPath()%>/message/mymsglist"
-					aria-label="Previous"> <span aria-hidden="true"><i
-							class="fas fa-angle-double-left"></i></span>
-				</a></li>
-				<c:choose>
-					<c:when test="${paging.cPage > 1 }">
-						<li><a href="<%=request.getContextPath() %>/message/mymsglist?cPage=${paging.cPage-1}">
-								<i class="fas fa-angle-left"></i>
-						</a></li>
-					</c:when>
-					<c:otherwise>
-						<li><a href="<%=request.getContextPath() %>/message/mymsglist?cPage=${paging.cPage}">
-								<i class="fas fa-angle-left"></i>
-						</a></li>
-					</c:otherwise>
-				</c:choose>
-
-				<c:forEach begin="${paging.blockStart }" end="${paging.blockEnd }" var="page">
-					<c:choose>
-						<c:when test="${paging.cPage eq page}">
-							<li class="active"><a href="<%=request.getContextPath() %>/message/mymsglist?cPage=${page}"><span>${page}</span></a></li>
-						</c:when>
-						<c:otherwise>
-							<li><a href="<%=request.getContextPath() %>/message/mymsglist?cPage=${page}"><span>${page}</span></a></li>
-						</c:otherwise>
-					</c:choose>
-				</c:forEach>
-				<c:choose>
-					<c:when test="${paging.cPage eq paging.lastPage }">
-						<li><a href="<%= request.getContextPath() %>/message/mymsglist?cPage=${paging.cPage}"><iclass="fas fa-angle-right"></i></a></li>
-					</c:when>
-					<c:otherwise>
-						<li><a href="<%= request.getContextPath() %>/message/mymsglist?cPage=${paging.cPage+1}"><iclass="fas fa-angle-right"></i></a></li>
-					</c:otherwise>
-				</c:choose>
-				<li><a href="<%= request.getContextPath() %>/message/mymsglist=${paging.lastPage }"aria-label="Next"><i class="fas fa-angle-double-right"></i></a></li>
-			</c:choose>	
- --%>
 
 
 <c:import url="/WEB-INF/views/board/boardfooter.jsp" />
@@ -183,7 +197,7 @@
 
 		var agree = confirm("보관 하시겠습니까?");
 		if (agree) {
-			location.href = "/message/delete?msno=" + recMsg;
+			location.href = "/message/store?msno=" + recMsg;
 			;
 		}
 	}
