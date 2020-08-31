@@ -1,106 +1,208 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-
-<%@ include file="loginheader.jsp"%>
+	pageEncoding="UTF-8"%>
 
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>비밀번호 찾기</title>
 </head>
-<!-- 부트스트랩 3.3.2 -->
 <link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+	href="<%=request.getContextPath() %>/resources/css/fPw.css" />
+<script src="/resources/bower_components/jquery/dist/jquery.min.js"></script> 
+<!-- fontawesome 아이콘 -->
 <link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+	href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
+	integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr"
+	crossorigin="anonymous">
+
+<!-- semantic ui -->
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css"
+	integrity="sha512-8bHTC73gkZ7rZ7vpqUQThUDhqcNFyYi2xgDgPDHc+GXVGHXq+xPjynxIopALmOPqzo9JZj0k6OqqewdGO3EsrQ=="
+	crossorigin="anonymous" />
 <script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
-<style>
-#finddiv {
-	width: 800px;
-	border: 1px solid black;
-	margin: 0px auto;
-}
+	src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js"
+	integrity="sha512-dqw6X88iGgZlTsONxZK9ePmJEFrmHwpuMrsUChjAw1mRUhUITE5QU9pkcSox+ynfLhL15Sv2al5A0LVyDCmtUw=="
+	crossorigin="anonymous"></script>
 
-#fIdfield {
-	margin: 10px 0 20px 15%;
-	background-color: #03588C;
-	border-radius: 10px;
-	width: 70%;
-}
+<!-- Standard Meta -->
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
-#fIdfield2 {
-	margin: 0 35px 0 0;
-	text-align: center;
-}
 
-legend {
-color: white;
-margin: 0;
-}
+<script type="text/javascript">
 
-ol {
-	list-style: none;
-	margin: auto;
-	padding: 0px;
-}
 
-li {
-	text-align: center;
-}
+$(function(){
+// 	/* 이메일 인증 버튼 클릭시 발생하는 이벤트 */
+// 	$(document).on("click", "#emailBtn", function(){
+		
+// 		var data = "";
+// 		var url = "${pageContext.request.contextPath}/user/createEmailCheck";
+// // 		var uid = '"uEmail=" + $("#uEmail").val() + "&random=" + $("#dice").val()';
+// 		var uEmail = encodeURIComponent(document.getElementById("uEmail"));
+// 		var dice = encodeURIComponent(document.getElementById("dice"));
+		
+// 		data = "uEmail="+uEmail+"&dice="+dice;
+// 		//data: "uEmail="+encodeURIComponent($('#uEmail').val()),
+// 		console.dir(data);
+// 		console.dir($("#uEmail").val());
+// // 		console.dir($("dice").val());
+// 	/* 이메일 중복 체크 후 메일 발송 비동기 처리 */
+// 	$.ajax({
+// 	beforeSend: function(){
+// 	},
+// 	type:"get",
+// 	url : url,
+// 	data : data,
+// 	success : function(data){
+// 		console.dir(data);
+// 		alert("인증번호를 발송하였습니다.");
+// 	},
+// 	error : function(data){
+// 		alert("인증번호 발송에 실패하였습니다.");
+// 		return false;
+// 				}
+// 		})
+// 	})
+// 	/*
+// 	이메일 인증번호 입력 후 인증 버튼 클릭 이벤트
+// 	*/
+// 	$(document).on("click", "#emailAuthBtn", function(){
+		
+// 		var url = "${pageContext.request.contextPath}/user/fPw";
+// 		var data = '"authCode=" + $("#emailAuth").val() + "&random=" + $("#random").val()';
+// 		console.dir(url);
+// 	$.ajax({
+// 	beforeSend: function(){
+// 	},
+// 	type : "get",
+// 	url : url,
+// 	data : data,
+// 	success:function(data){
+// 		if(data=="complete"){
+// 			alert("인증이 완료되었습니다.");
+// 		}else if(data == "false"){
+// 			alert("인증번호를 잘못 입력하셨습니다.")
+// 		}
+// 	},
+// 	complete: function(){
+// 	},
+// 	error:function(data){
+// 		alert("에러가 발생했습니다.");
+// 				}
+// 			});
+// 		});
+// 	});
 
-.findli {
-	width: 70%;
-	height: 5%;
-	margin: 10px auto;
-}
+	/* 이메일 인증 버튼 클릭시 발생하는 이벤트 */
+	$(document).on("click", "#emailBtn", function(){
+		
+		var url = "/user/createEmailCheck";
+		var uEmail = $("#uEmail").val();
+		var random = $("#random").val();
+		var data = "uEmail=" + uEmail + "&random=" + random;
+		console.dir(data);
+		console.dir($("#uEmail").val());
+	/* 이메일 중복 체크 후 메일 발송 비동기 처리 */
+	$.ajax({
+	beforeSend: function(){
+// 		loadingBarStart();
+	},
+	type:"get",
+	url : url,
+	data : data,
+	success : function(data){
+		console.dir(data);
+		alert("인증번호를 발송하였습니다.");
+	},
+	error : function(data){
+		alert("인증번호 발송에 실패하였습니다.");
+		return false;
+				}
+		})
+	})
+	/*
+	이메일 인증번호 입력 후 인증 버튼 클릭 이벤트
+	*/
+	$(document).on("click", "#emailAuthBtn", function(){
+		var url = "/user/emailAuth";
+		var random = $("#random").val();
+		var data = "authCode=" + ${authCode} + "&random=" + random;
+		console.dir(data);
+	$.ajax({
+	beforeSend: function(){
+// 		loadingBarStart();
+	},
+	type : "get",
+	url : url,
+	data : data,
+	success:function(data){
+		if(data=="complete"){
+			alert("인증이 완료되었습니다.");
+		}else if(data == "false"){
+			alert("인증번호를 잘못 입력하셨습니다.")
+		}
+	},
+	complete: function(){
+// 		loadingBarEnd();
+	},
+	error:function(data){
+		alert("에러가 발생했습니다.");
+				}
+			});
+		});
+	});
 
-button {
-	width: 150px;
-	height: 40px;
-	margin: 0 5% 0 75px;
-}
+</script>
 
-.form-group {
-    margin-bottom: 40px;
-    text-align: center;
-}
 
-#logoimg {
-	width: 200px;
-}
-</style>
+<div class="ui middle aligned center aligned grid "
+	id="fPw__background__image">
+	<div id="fPw__background"></div>
+	<div class="column" id="fPw__column">
+		<h2 class="ui teal image header">
+			<img
+				src="<%=request.getContextPath() %>/resources/image/header/logo.png"
+				class="image" id="fPw__logo__image">
+		</h2>
+		<form class="ui large form" action="<%=request.getContextPath()%>/user/fPwEmailCheck" method="post">
 
-<body>
-	<div id="finddiv">
-	<div class="form-group">
-		<img id="logoimg" alt="로고이미지" src="/resources/image/header/logo.png">
-	</div>
-		<form action="#">
-			<fieldset id="fIdfield">
-				<center>
-					<legend>비밀번호 찾기</legend>
-				</center>
-				<ol>
-					<li><input type="text" class="findli" name="name"
-						placeholder="이름"></li>
-					<li><input type="text" class="findli" name="id"
-						placeholder="아이디"></li>
-					<li><input type="email" class="findli" name="email"
-						placeholder="이메일"></li>
-				</ol>
-			</fieldset>
+			<div class="ui stacked segment">
+
+				<div class="field">
+					<input type="text" name="uName" placeholder="User Name">
+				</div>
+
+				<div class="field">
+					<input type="text" name="userId" placeholder="User ID">
+				</div>
+
+				<div class="field">
+					<input type="text" id="uEmail" name="ueMial" placeholder="E-mail address">
+				</div>
+				<div class="field">
+					<input type="text" id="email" name="email"
+						placeholder="Certification Number">
+					<button type="button" class="btn btn-info" id="emailBtn">인증번호
+						발송</button>
+					<button type="button" class="btn btn-info" id="emailAuthBtn">인증번호
+						확인</button>
+				</div>
+				<input type="hidden" path="random" id="random" value="${random}" />
+				<input type="hidden" path="authCode" id="authCode" value="${authCode}" />
+			</div>
+			<div class="ui error message"></div>
+
 		</form>
-		<form>
-			<fieldset id="fIdfield2">
-				<!-- Provides extra visual weight and identifies the primary action in a set of buttons -->
-				<button type="button" class="btn btn-primary">찾기</button>
-				<button type="button" class="btn btn-primary">돌아가기</button>
-			</fieldset>
-		</form>
-	</div>
 
-</body>
+		<div>
+			<button id=subBtn class="ui teal button">비밀번호 찾기</button>
+			<button id=cancelBtn class="ui teal button">돌아가기</button>
+		</div>
+	</div>
+</div>
 </html>
-<%@ include file="loginfooter.jsp"%>

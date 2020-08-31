@@ -326,7 +326,6 @@
           <scope>provided</scope>
       </dependency>
       <dependency>
-
          <groupId>org.slf4j</groupId>
          <artifactId>slf4j-api</artifactId>
          <version>1.6.6</version>
@@ -336,6 +335,20 @@
          <artifactId>slf4j-log4j12</artifactId>
          <version>1.6.6</version>
       </dependency>
+      	<!-- 16. 소셜로그인을 위한 디펜던시 -->
+      	<!-- httpcore(카카오) -->
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpcore</artifactId>
+            <version>4.4.6</version>
+        </dependency>
+ 
+        <!-- httpclient(카카오) -->
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.5.2</version>
+        </dependency>
 
 		
 		
