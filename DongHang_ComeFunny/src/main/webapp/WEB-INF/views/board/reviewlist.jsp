@@ -11,13 +11,20 @@
 
 	    function callFunction(){
 		console.dir('clicekd');
+			<c:forEach items="${reviewData.flist }" var="review">
+				<c:if test = "${logInInfo.uNo == review.RBUNO}">
+				console.dir('해당게시글은 세션회원이 작성한 게시글입니다.');
+					location.href="<%=request.getContextPath() %>/board/reviewview?rbNo=<c:out value='${review.RBNO}'/>";
+				return;
+				</c:if>
+			</c:forEach>
 		
 		<c:forEach items="${rticket.tlist}" var="ticket">
 			<c:forEach items="${reviewData.flist }" var="review">
-			<c:if test = "${ticket.DHTRBNO == review.RBNO}">
-				location.href="<%=request.getContextPath() %>/board/reviewview?rbNo=<c:out value='${review.RBNO}'/>";
-				return;
-			</c:if>
+				<c:if test = "${ticket.DHTRBNO == review.RBNO}">
+					location.href="<%=request.getContextPath() %>/board/reviewview?rbNo=<c:out value='${review.RBNO}'/>";
+					return;
+				</c:if>
 			</c:forEach>
 		</c:forEach>
 		var confirm_val = confirm("해당 후기게시글 조회 시 동행복권 1장이 소모됩니다.");

@@ -608,15 +608,30 @@ public class ReviewBoardServiceImpl implements ReviewBoardService {
 		int result = 0;
 		// 후기 동행복권 사용여부 확인( 0 : 사용x 1: 사용 )
 		int selectres = reviewBoardDao.selectReviewDhtCnt(reviewDhTicket);
+		// 본인 글 읽는지 확인
+		Map<String, Object> fdetail = reviewBoardDao.selectReviewDetail(reviewDhTicket.getDhtRbNo());
+		int gbuno = Integer.parseInt(fdetail.get("RBUNO").toString());
 		
-		if( selectres == 0 ) {
+		// 본인글이 맞다면 동행복권 개수 그대로
+		if(sessionUser.getuNo() == gbuno) {
+			System.out.println("updateDhtCnt result : " + result);
+			result = 2;
+			return result;
+		}
+		
+		// 회원의 동행복권 개수가 0일때 
+		if( sessionUser.getuDhtCnt() == 0) {
+			return result;
+		}
+		
+		if( selectres == 0 && sessionUser.getuDhtCnt() > 0) {
 			// 동행복권 개수  -1 시키기
 			reviewBoardDao.updateDhtCnt(sessionUser);
 			
 			// 후기 동행복권 테이블에 사용내역 추가하기
 			int insertres = reviewBoardDao.insertReviewDht(reviewDhTicket);
 			result = insertres;
-			return insertres;
+			return result;
 		}
 		
 		return result;

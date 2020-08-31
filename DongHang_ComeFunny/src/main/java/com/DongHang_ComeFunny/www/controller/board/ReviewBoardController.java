@@ -336,18 +336,26 @@ public class ReviewBoardController {
 		}
 		
 		User sessionUser = (User)session.getAttribute("logInInfo");
-		if(sessionUser!=null && sessionUser.getuDhtCnt() > 0) {
+		if(sessionUser!=null) {
 			// 2-0.세션회원의 동행복권 개수 업데이트
 			ReviewDhTicket reviewDhTicket = new ReviewDhTicket();
 			reviewDhTicket.setDhtRbNo(rbNo);
 			reviewDhTicket.setDhtUNo(sessionUser.getuNo());
 			int reviewdht = reviewBoardService.updateDhtCnt(sessionUser, reviewDhTicket);
+			System.out.println("[Controller] reviewdht : " + reviewdht);
 			
+			if( reviewdht == 0 ) {
+				mav.addObject("alertMsg", "사용할 수 있는 동행복권이 없습니다.");
+				mav.addObject("url", "reviewlist");
+				mav.setViewName("common/result");
+				return mav;
+			}
 			
 			ReviewLike reviewlike = new ReviewLike();
 			reviewlike.setRlRbNo(rbNo);
 			reviewlike.setRlUNo(sessionUser.getuNo());
 			int reviewlikecnt = reviewBoardService.getBoardLike(reviewlike);
+			System.out.println("[Controller] reviewlikecnt : " + reviewlikecnt);
 			mav.addObject("likecnt",reviewlikecnt);
 			
 			ReviewRecommend reviewrecommend = new ReviewRecommend();
@@ -355,11 +363,7 @@ public class ReviewBoardController {
 			reviewrecommend.setRrcUNo(sessionUser.getuNo());
 			int reviewrecommendcnt = reviewBoardService.getBoardRec(reviewrecommend);
 			mav.addObject("reccnt", reviewrecommendcnt);
-		} else if(sessionUser!=null && sessionUser.getuDhtCnt() <= 0) {
-			mav.addObject("alertMsg", "사용할 수 있는 동행복권이 없습니다.");
-			mav.addObject("url", "reviewlist");
-			mav.setViewName("common/result");
-		}
+		} 
 		// 6. 데이터 처리가 완료된 모델(VO)값과 보여질 페이지(jsp)를 반환한다.
 		return mav;
 	}
