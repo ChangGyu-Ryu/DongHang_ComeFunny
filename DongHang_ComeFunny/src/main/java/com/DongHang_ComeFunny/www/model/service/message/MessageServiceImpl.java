@@ -207,11 +207,7 @@ public class MessageServiceImpl implements MessageService {
 			else {
 				sendMessage.setMsReceiver(receiver.getuNo());
 				sendMessage.setMsOwner(receiver.getuNo());
-				mirrorMsg = sendMessage;
-				System.out.println(sendMessage);
-				System.out.println("abab");
-				System.out.println(mirrorMsg);
-				
+				mirrorMsg = sendMessage;				
 				sendMessage.setMsType(0);
 				returnVal = messageDao.insert(sendMessage);
 				if (returnVal == 0){
