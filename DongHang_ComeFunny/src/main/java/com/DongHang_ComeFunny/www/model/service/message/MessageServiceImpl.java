@@ -207,8 +207,7 @@ public class MessageServiceImpl implements MessageService {
          else {
             sendMessage.setMsReceiver(receiver.getuNo());
             sendMessage.setMsOwner(receiver.getuNo());
-            mirrorMsg = sendMessage;
-            
+            mirrorMsg = sendMessage;            
             sendMessage.setMsType(0);
             returnVal = messageDao.insert(sendMessage);
             if (returnVal == 0){

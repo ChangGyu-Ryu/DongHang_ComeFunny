@@ -25,8 +25,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     				SELECT
     					u.userid, m.msno, m.msuno, m.msreceiver, m.mstitle, m.mscontent, m.mswrittentime, m.mstype
     				FROM tb_message m, tb_user u
-    				WHERE msowner = #{uno}
+    				WHERE m.msowner = #{uno}
     					AND m.mstype= 0
+    					AND u.uno = #{uno}
     					ORDER BY m.msno DESC
     				) M
     			) MR
@@ -39,8 +40,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     				SELECT
     					u.userid, m.msno, m.msuno, m.msreceiver, m.mstitle, m.mscontent, m.mswrittentime, m.mstype
     				FROM tb_message m, tb_user u
-    				WHERE msowner = #{uno}
+    				WHERE m.msowner = #{uno}
     					AND m.mstype= 1
+    					AND u.uno = #{uno}
     					ORDER BY m.msno DESC
     				) M
     			) MR
@@ -53,8 +55,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     				SELECT
     					u.userid, m.msno, m.msuno, m.msreceiver, m.mstitle, m.mscontent, m.mswrittentime, m.mstype
     				FROM tb_message m, tb_user u
-    				WHERE msowner = #{uno}
+    				WHERE m.msowner = #{uno}
     					AND m.mstype= 3
+    					AND u.uno = #{uno}
     					ORDER BY m.msno DESC
     				) M
     			) MR
@@ -67,8 +70,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     				SELECT
     					u.userid, m.msno, m.msuno, m.msreceiver, m.mstitle, m.mscontent, m.mswrittentime, m.mstype
     				FROM tb_message m, tb_user u
-    				WHERE msowner = #{uno}
+    				WHERE m.msowner = #{uno}
     					AND m.mstype= 2
+    					AND u.uno = #{uno}
     					ORDER BY m.msno DESC
     				) M
     			) MR
