@@ -21,6 +21,8 @@
 	<typeAliases>
 		<typeAlias type="com.DongHang_ComeFunny.www.model.vo.GoBoard" alias="GoBoard"/>
 		<typeAlias type="com.DongHang_ComeFunny.www.model.vo.GoCheck" alias="GoCheck"/>
+		<typeAlias type="com.DongHang_ComeFunny.www.model.vo.DoBoard" alias="DoBoard"/>
+		<typeAlias type="com.DongHang_ComeFunny.www.model.vo.DoCheck" alias="DoCheck"/>
 	</typeAliases>
 
 	<!-- 4. mapper를 인식시켜주는 설정 -->
@@ -29,6 +31,7 @@
 	<mappers>
 		<mapper resource="/mybatis/mapper/memberMapper.xml" />
 		<mapper resource="/mybatis/mapper/goMapper.xml" />
+		<mapper resource="/mybatis/mapper/doMapper.xml" />
 	</mappers>
 
 

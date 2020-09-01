@@ -96,7 +96,7 @@ jQuery( document ).ready(function( $ ) {
 			});
 			
 		} else {
-			removeKeyFilter(textNode); //클릭해제되면 필터적용 함수도 사라짐
+			removeKeyFilter(textNode); 
 			
 			if( dataName == "gcAgeGroup"){
 				ageValue = ageValue.replace($(data).attr('value')+"-","");
@@ -190,47 +190,6 @@ $(document).ready(function() {
 	});
 });
 
-//찜기능
-function likeheart(gbno){
-	console.log(gbno);
-		
-	//하트가 픽된 하트면
-		
-// 		$.ajax({
-// 			type: 'post'
-// 			,url: "/deletelike"
-// 			,data: {gbno : gbno}
-// 			,dataType: json
-// 				,success: function(result){
-// 				console.log('AJAX 성공')
-// 			}
-// 			,error: function(){
-// 				console.log('AJAX 실패')
-// 			}
-// 		})	
-	
-// 	} 
-// 	//하트가 빈하트면 (찜 안되어있으면)
-		
-// 		$.ajax({
-// 			type: 'post'
-// 			,url: "/insertlike"
-// 			,data: {pno : pno}
-// 			,dataType: json
-// 				,success: function(result){
-// 				console.log('AJAX 성공')
-// 			}
-// 			,error: function(){
-// 				console.log('AJAX 실패')
-// 			}
-// 		})	
-// 	}
-	
-}
-
-$(document).ready(function() {
-	
-});	
 </script>
 
 <script type="text/javascript">
@@ -402,14 +361,12 @@ $(document).ready(function() {
 				</div>
 				<div class="ialign marginleft">
 					<div class="godate"> <!-- date추가 -->
-					[ 
 						<c:choose>
 	                     <c:when test="${go.GBRECRUITDATE eq '1' }" >1월-3월</c:when>
 	                     <c:when test="${go.GBRECRUITDATE eq '2' }" >4월-6월</c:when>
 	                     <c:when test="${go.GBRECRUITDATE eq '3' }" >7월-9월</c:when>
 	                     <c:when test="${go.GBRECRUITDATE eq '4' }" >10-12월</c:when>
                  		</c:choose>
-					]
 					</div>
 					<div class="goname"> ${go.UNICK } 
 					<small>
@@ -463,8 +420,8 @@ $(document).ready(function() {
                      <c:when test="${go.GBRECRUITSTATUS eq 0 }" ><span class="gotag">모집중</span></c:when>
                      <c:when test="${go.GBRECRUITSTATUS eq 1 }" ><span class="gotag2">모집마감</span></c:when>
                  </c:choose>  
-				</span><!-- 하트 색 변경 작동 시키기 -->
-					<span><img class="goheart" onclick="likeheart(${go.GBNO})" style="cursor:pointer" src="/resources/image/go/heart.png" /></span>
+				</span>
+<!-- 					<span><img class="goheart" src="/resources/image/go/heart.png" /></span> -->
 				</div>  
 			</div>
 		</div>

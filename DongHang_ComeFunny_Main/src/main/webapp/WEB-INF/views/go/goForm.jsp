@@ -150,7 +150,7 @@ $(document).ready(function () {
 			<!-- title -->
 			<div class = "gowrite-title">
 				<div class = "gowrite-label"><span>함께가요</span></div>
-				<span class="gowrite-text">동행 모집하기</span>
+				<span class="gowrite-text">동행 모집하기</span> <span>(*수정 항목이 제한적이니 신중하게 작성해주세요)</span>
 			</div>
 			
 			<!-- table -->

@@ -30,16 +30,16 @@
 
 <!-- <form>태그의 submit을 수행하면 editor에 작성한 내용을 <textarea>에 반영 -->
 <script type="text/javascript">
-	function submitContents(elClikedObj) {
-		//에디터의 내용을 #content에 반영
-		oEditors.getById["goContent"].exec("UPDATE_CONTENTS_FIELD", []);
+// 	function submitContents(elClikedObj) {
+// 		//에디터의 내용을 #content에 반영
+// 		oEditors.getById["goContent"].exec("UPDATE_CONTENTS_FIELD", []);
 
-		try {
-			elClikedObj.form.submit();
-		} catch (e) {
+// 		try {
+// 			elClikedObj.form.submit();
+// 		} catch (e) {
 
-		}
-	}
+// 		}
+// 	}
 
 </script>
 
@@ -48,15 +48,6 @@ $(document).ready(function () {
 	//체크박스, 라디오 박스 비활성화
 	$("input[type='checkbox']").prop('disabled', true);
 	$("input[type='radio']").prop('disabled', true);
-	
-// 	<c:if test="${goDetailInfo.goCheck.gcValue eq 'food'}">checked</c:if>
-// 	<c:if test="${goDetailInfo.goCheck.gcValue eq 'photo'}">checked</c:if>
-// 	<c:if test="${goDetailInfo.goCheck.gcValue eq 'seeing'}">checked</c:if>
-// 	<c:if test="${goDetailInfo.goCheck.gcValue eq 'drink'}">checked</c:if>
-// 	<c:if test="${goDetailInfo.goCheck.gcValue eq 'shopping'}">checked</c:if>	
-// 	<c:if test="${goDetailInfo.goCheck.gcValue eq 'etc'}">checked</c:if>
-	
-	//미리 체크처리하기
 	
 	//작성시 내용 연결
 	$("#btnWrite").click(function() {
@@ -219,7 +210,7 @@ $(document).ready(function () {
 			</tr>
 			<tr>
 				<td colspan="4">
-					<textarea id="goContent" name="gbContent" class="gotextarea">${goDetailInfo.goBoardUserInfo.GBCONTENT}</textarea>
+					<textarea id="goContent" name="gbContent" class="gotextarea">${goboard.goBoardUserInfo.GBCONTENT}</textarea>
 				</td>
 			</tr>
 			<tr>		
@@ -261,8 +252,11 @@ nhn.husky.EZCreator.createInIFrame({
 		bUseToolbar: true, //툴바 사용여부
 		bUseVerticalResizer: false, //입력창 크기 조절 바
 		bUseModeChanger: true //글쓰기 모드 탭
+	},
+	fOnAppLoad : function(){
+    //기존 저장된 내용의 text 내용을 에디터상에 뿌려주고자 할때 사용
+    oEditors.getById["goContent"].exec("PASTE_HTML", ['${goboard.goBoardUserInfo.GBCONTENT}']);
 	}
-	
 });
 </script>
 

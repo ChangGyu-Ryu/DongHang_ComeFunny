@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>함께해요 :: 글쓰기</title>
+<title>함께해요 :: 인원모집하기</title>
 <!-- doForm.css -->
 <link rel="stylesheet" href="<%=request.getContextPath() %>/resources/css/do/doForm.css" />
 
@@ -28,7 +28,6 @@
 <!-- <form>태그의 submit을 수행하면 editor에 작성한 내용을 <textarea>에 반영 -->
 <script type="text/javascript">
 function submitContents(elClikedObj) {
-   
    //에디터의 내용을 #content에 반영
    oEditors.getById["doContent"].exec("UPDATE_CONTENTS_FIELD", []);
    
@@ -41,17 +40,60 @@ function submitContents(elClikedObj) {
 </script> 
 
 <script type="text/javascript">
-//체크박스 해제
 $(document).ready(function () {
-	
-	$("#deleteChkAll").click(function(){
-		if($(this).prop("checked")){
-			$(".deleteChk").prop("checked", true);
-		}else{
-			$(".deleteChk").prop("checked", false);
-		}		
+
+	$("#btnWrite").click(function() {
 		
-	})
+		//스마트에디터의 내용을 <textarea>에 적용하는 함수 호출
+		submitContents($("#btnWrite"));
+// 		var content = document.getElementById("smartEditor").value;
+		var chk = /^[0-9]/g;
+		
+		//공백 제어
+		if($("#inputdate").val() == null || $("#inputdate").val() == ''){
+			alert("날짜은 필수 선택 값 입니다")
+		}
+		else if($("#inputarea").val() == null || $("#inputarea").val() ==''){
+			alert("지역은 필수 선택 값 입니다")
+		}
+		else if($("#inputstatus").val() == null || $("#inputstatus").val() ==''){
+			alert("상태는 필수 선택 값 입니다")
+		}
+		else if($("#inputtitle").val() == null || $("#inputtitle").val() ==''){
+			alert("글 제목은 필수 입력 값 입니다")
+		}
+// 		else if($("#inputcost").val() == null || $("#inputcost").val() ==''){
+// 			alert("회비는 필수 입력 값 입니다.")
+// 		}
+		else if( !chk.test( $("#inputcost").val() ) || $("#inputcost").val() == null ){
+			alert("회비는 숫자만 입력가능합니다.")
+			$("#inputcost").focus();
+		}
+		else if($("#inputrenum").val() == null || $("#inputrenum").val() ==''){
+			alert("인원수는 필수 선택 값 입니다.")
+		}
+		else if(!($("input:radio[name='dbRecruitGender']").is(':checked'))){
+			alert("성별은 필수 선택 값 입니다.")
+		}
+		else if($("input:checkbox[name='dcAgeGroup']:checked").length < 1){
+			alert("모집 연령대를 하나 이상 체크해주세요.")
+		}
+		else if($("input:checkbox[name='dcTheme']:checked").length < 1){
+			alert("여행 타입을 하나 이상 체크해주세요.")
+		}
+		else{
+			//submit 추가
+			$(this).parents("form").submit();	
+		}
+
+	});
+
+	//취소버튼 동작
+	$("#btnCancel").click(function() {
+		history.go(-1);
+	});
+	
+	
 })
 
 </script>
@@ -64,7 +106,7 @@ $(document).ready(function () {
    <div>
       <div class="logo">
          <div class="logo-img">
-         <a href="/main/main.jsp"><img class="logo-img" alt="로고이미지" src="/resources/image/header/logo.png" ></a>
+         <a href="/"><img class="logo-img" alt="로고이미지" src="/resources/image/header/logo.png" ></a>
          </div>
       </div>
    </div>
@@ -72,10 +114,10 @@ $(document).ready(function () {
    	<!-- 메뉴바 -->
 	<div class="main_menu">
 		<div class="dropdown">
-	 		<div class="dropbtn"><a href="../go/go.jsp">함께가요</a></div>
+	 		<div class="dropbtn"><a href="/go">함께가요</a></div>
 		</div>			
 		<div class="dropdown">
-	  		<div class="dropbtn"><a href="../do/do.jsp">함께해요</a></div>
+	  		<div class="dropbtn"><a href="/do">함께해요</a></div>
 		</div>
 		<div class="dropdown">
 	  		<div class="dropbtn"><a href="#">커뮤니티</a></div>
@@ -98,13 +140,13 @@ $(document).ready(function () {
    
 
 <!-- content -->
-<form action="<%= request.getContextPath() %> #" method="post" enctype="multipart/form-data">
+<form action="<%= request.getContextPath() %>/do/dowrite" method="post" enctype="multipart/form-data">
    <div class = "dowrite"> 
    <div class = "dowritebox">
    <!-- title -->
    <div class = "dowrite-title">
       <div class = "dowrite-label"><span>함께해요</span></div>
-      <span class = "dowrite-text">인원 모집하기</span>
+      <span class = "dowrite-text">인원 모집하기</span> <span>(*수정 항목이 제한적이니 신중하게 작성해주세요)</span>
    </div>
    	<!-- 테이블 설정 -->
       <table class = "dowrite-table">
@@ -112,7 +154,7 @@ $(document).ready(function () {
          <td>카테고리</td>
          <td colspan="4">
          <div class="row_left" >
-  			<select name="dodate" class="selectbox">
+  			<select name="dbRecruitDate" class="selectbox" id="inputdate">
                      <option value="none" selected="selected" disabled="disabled">날짜</option>
                      <option value="1">1월-3월</option>
                      <option value="2">4월-6월</option>
@@ -120,7 +162,7 @@ $(document).ready(function () {
                      <option value="4">10월-12월</option>
             </select>
             
-            <select name="doarea" class="selectbox">
+            <select name="dbRecruitArea" class="selectbox" id="inputarea">
                      <option value="none" selected="selected" disabled="disabled">지역</option>
 	                 <option value="seoul">서울</option>
 	                 <option value="jeju">제주</option>
@@ -131,7 +173,7 @@ $(document).ready(function () {
 	                 <option value="gyang">광주</option>
             </select>
             
-            <select name="dostate" class="selectbox">
+            <select name="dbRecruitStatus" class="selectbox" id="inputstatus">
                      <option value="none" selected="selected" disabled="disabled">상태</option>
                      <option value="0">모집중</option>
                      <option value="1">모집마감</option>
@@ -142,67 +184,76 @@ $(document).ready(function () {
       <tr>
          <td>글 제목</td>
          <td colspan="3">
-            <input type="text" name="do-title" class="form-control" placeholder="제목을 입력하세요.">
+            <input type="text" name="dbTitle" class="form-control" placeholder="제목을 입력하세요." id="inputtitle">
          </td>
       </tr>
       <tr>
           <td>회비</td>
          <td>
-            <input type="text" name="do-char" class="form-control" placeholder="비용을 입력하세요.">
+            <input type="text" name="dbRecruitCost" class="form-control" id="inputcost">
          </td>
          <td>인원</td>
          <td>
-            <input type="number" name="do-count" max="10" min="1" class="form-control" placeholder="인원을 입력하세요.">
+            		<select name="dbRecruitNumber" class="selectbox" id="inputrenum">
+	                     <option value="1" selected>1</option>
+	                     <option value="2">2</option>
+	                     <option value="3">3</option>
+	                     <option value="4">4</option>
+	                     <option value="5">5</option>
+	                     <option value="6">6</option>
+	                     <option value="7">7</option>
+	                     <option value="8">8</option>
+	                     <option value="9">9</option>
+	                     <option value="10">10</option>
+	                </select>
          </td>
       </tr>
       <tr>
       	<td>연령대</td>
            <td>
-           <div class="row_left">
-           		<span><label><input type="checkbox" name="do-age" value="all" id="deleteChkAll"><span>전체</span></label></span>
-           		<span><label><input type="checkbox" name="do-age" value="20" class="deleteChk"><span>20대</span></label></span>
-           		<span><label><input type="checkbox" name="do-age" value="30" class="deleteChk"><span>30대</span></label></span>
-           		<span><label><input type="checkbox" name="do-age" value="40" class="deleteChk"><span>40대</span></label></span>           	
+           <div class="row_left" id="inputgender">
+           		<span><label><input type="checkbox" name="dcAgeGroup" value="20" class="deleteChk"><span>20대</span></label></span>
+           		<span><label><input type="checkbox" name="dcAgeGroup" value="30" class="deleteChk"><span>30대</span></label></span>
+           		<span><label><input type="checkbox" name="dcAgeGroup" value="40" class="deleteChk"><span>40대</span></label></span>           	
            	</div>
            	</td>
          <td>성별</td>
          <td>
-         <div class="row_left">
-			<span><label><input type="radio" name="do-gender" value="n"><span>무관</span></label></span>
-			<span><label><input type="radio" name="do-gender" value="f"><span>여성만</span></label></span>
-         	<span><label><input type="radio" name="do-gender" value="m"><span>남성만</span></label></span>
+         <div class="row_left" id="inputage">
+			<span><label><input type="radio" name="dbRecruitGender" value="0"><span>무관</span></label></span>
+			<span><label><input type="radio" name="dbRecruitGender" value="1"><span>여성만</span></label></span>
+         	<span><label><input type="radio" name="dbRecruitGender" value="2"><span>남성만</span></label></span>
          </div>
          </td>   	
       </tr>
       <tr>
       	 <td>여행타입</td>
-          	<td colspan="3" class="textleft">
+          	<td colspan="3" class="textleft" id="inputtype">
           	<div class="row_left">
-				<span><label><input type="checkbox"  name="do-type" value="food"><span>맛집</span></label></span>
-             	<span><label><input type="checkbox"  name="do-type" value="activity"><span>액티비티</span></label></span>
-             	<span><label><input type="checkbox"  name="do-type" value="meseum"><span>전시/박물관</span></label></span>
-             	<span><label><input type="checkbox"  name="do-type" value="etc"><span>기타</span></label></span>
+				<span><label><input type="checkbox"  name="dcTheme" value="food"><span>맛집</span></label></span>
+             	<span><label><input type="checkbox"  name="dcTheme" value="activity"><span>액티비티</span></label></span>
+             	<span><label><input type="checkbox"  name="dcTheme" value="meseum"><span>전시/박물관</span></label></span>
+             	<span><label><input type="checkbox"  name="dcTheme" value="etc"><span>기타</span></label></span>
            	</div>
            	</td>
       </tr>
       <tr>
          <td colspan="4">
-            <textarea id="doContent" name="doContent" class="dotextarea" placeholder="글 내용을 입력하세요."></textarea>
+            <textarea id="doContent" name="dbContent" class="dotextarea"></textarea>
          </td>
       </tr>
       <tr>         
       	<td>이미지첨부</td>
          <td colspan="3">
-         	<span><input type="file" multiple/></span>
+         	<input type="file" accept="image/*" name="files" id="contract_file" multiple/>
+         	<p id="fspan">*참고용 이미지 1개이상 넣어주세요.</p>
          </td>
       </tr>
       <tr> 
       	<td colspan="4">   
       	<div class="row_right">     
-        	<span><input type="submit" value="수정" class="btn btn-warning btnsize" /></span>
-        	<span><input type="submit" value="삭제" class="btn btn-danger btnsize" /></span>
-        	<span><input type="submit" value="등록" class="btn btn-primary btnsize" /></span>
-        	<span><input type="button" value="이전으로" class="btn btn-default btnsize"/></span>
+        	<span><input id="btnWrite" type="button" value="등록" class="btn btn-primary btnsize" /></span>
+        	<span><input id="btnCancel" type="button" value="이전으로" class="btn btn-default btnsize"/></span>
       	</div>
       	</td>
       </tr>
@@ -235,8 +286,13 @@ nhn.husky.EZCreator.createInIFrame({
    oAppRef: oEditors,
    elPlaceHolder: "doContent", //에디터가 적용되는 <textarea>의 id를 입력
    sSkinURI: "/resources/se2/SmartEditor2Skin.html",
-   fCreator: "createSEditor2"
-})
+   fCreator: "createSEditor2",
+   htParams: {
+		bUseToolbar: true, //툴바 사용여부
+		bUseVerticalResizer: false, //입력창 크기 조절 바
+		bUseModeChanger: true //글쓰기 모드 탭
+	}
+});
 </script>
 
 </body>

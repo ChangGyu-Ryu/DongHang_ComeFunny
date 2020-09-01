@@ -278,10 +278,14 @@ a {
 	margin: 50px auto;
 }
 
+.listup{
+	height: 35px;
+}
 
 /* 정렬된 리스트 */
 
 #dobest{
+/* 	padding: 1px; */
 	margin-bottom: 200px;
 }
 
@@ -328,10 +332,14 @@ a {
 /* 	margin-bottom: 10px; */
 }
 
+.doname small{
+	font-size: 70%;
+}
+
 .dotitle {
 	line-height: 1.7;
 	font-size: 16px;
-	height: 70px;
+	height: 55px;
 }
 
 .dobox{
@@ -352,6 +360,18 @@ a {
     border-radius: 15px;
 }
 
+.gotag2{
+    margin: 8px 3px;
+    position: relative;
+    z-index: 1;
+    color: #fff;
+    display: inline-block;
+    font-size: 14px;
+    background: #dfdfdf; /*모집 마감*/
+    padding: 0px 20px;
+    display: inline-block;
+    border-radius: 15px;
+}
 
 .goheart{
 	float:right;

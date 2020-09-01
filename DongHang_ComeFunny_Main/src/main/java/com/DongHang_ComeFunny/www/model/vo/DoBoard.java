@@ -15,14 +15,75 @@ public class DoBoard {
 	private int dbRecruitStatus; //모집상태
 	private int dbRecruitNumber; //모집인원수
 	private int dbRecruitGender; //모집성별
+	private int dbRecruitCost; //모집회비
+	private int dbDhstarAvg;
+	private int dbHoststarAvg;
+	private int dbStarCnt;
+	private String dbCateGory;
+	
 	@Override
 	public String toString() {
 		return "DoBoard [dbNo=" + dbNo + ", dbUNo=" + dbUNo + ", dbTitle=" + dbTitle + ", dbContent=" + dbContent
 				+ ", dbWrittenDate=" + dbWrittenDate + ", dbLikeCnt=" + dbLikeCnt + ", dbIsDel=" + dbIsDel
 				+ ", dbRecruitDate=" + dbRecruitDate + ", dbRecruitArea=" + dbRecruitArea + ", dbRecruitStatus="
 				+ dbRecruitStatus + ", dbRecruitNumber=" + dbRecruitNumber + ", dbRecruitGender=" + dbRecruitGender
-				+ "]";
+				+ ", dbRecruitCost=" + dbRecruitCost + ", dbDhstarAvg=" + dbDhstarAvg + ", dbHoststarAvg="
+				+ dbHoststarAvg + ", dbStarCnt=" + dbStarCnt + ", dbCateGory=" + dbCateGory + "]";
 	}
+
+	public int getDbDhstarAvg() {
+		return dbDhstarAvg;
+	}
+
+	public void setDbDhstarAvg(int dbDhstarAvg) {
+		this.dbDhstarAvg = dbDhstarAvg;
+	}
+
+	public int getDbHoststarAvg() {
+		return dbHoststarAvg;
+	}
+
+
+
+	public void setDbHoststarAvg(int dbHoststarAvg) {
+		this.dbHoststarAvg = dbHoststarAvg;
+	}
+
+
+
+	public int getDbStarCnt() {
+		return dbStarCnt;
+	}
+
+
+
+	public void setDbStarCnt(int dbStarCnt) {
+		this.dbStarCnt = dbStarCnt;
+	}
+
+
+
+	public String getDbCateGory() {
+		return dbCateGory;
+	}
+
+
+
+	public void setDbCateGory(String dbCateGory) {
+		this.dbCateGory = dbCateGory;
+	}
+
+
+
+	public int getDbRecruitCost() {
+		return dbRecruitCost;
+	}
+
+	public void setDbRecruitCost(int dbRecruitCost) {
+		this.dbRecruitCost = dbRecruitCost;
+	}
+
+
 	public int getDbNo() {
 		return dbNo;
 	}

@@ -37,11 +37,6 @@
        </foreach>
 	</insert>
 	
-	<!-- 파일삽입 -->
-	<insert id="insertgofile">
-	    	
-	</insert>
-	
 	<!-- golist 전체 출력(default 최신순) -->
 	<select id="selectlist" resultType="hashmap">
 		Select
@@ -134,59 +129,137 @@
 		</select>
 		
 		
-		<!-- 함께가요 상세 글 정보, 작성자 프로필 이미지 -->
+	 	<!-- 함께가요 상세 글 정보, 작성자 프로필 이미지 -->
 	   <select id="selectGoUserInfo" resultType="Map">
-	   		select BOARD.*
-	    		, U.userId, u.ugender, (to_char(sysdate,'YYYY')-substr(U.ubirth,1,4)+1)age, UF.ufstoredfilename
-			from tb_goboard BOARD 
-	    		join tb_user U on BOARD.gbuno = U.uno  
-	    		left join tb_userfile UF on UF.ufuno = U.uno  
-			where gbno = #{gbNo }
+	         select BOARD.*, U.userId, U.unick, U.ugender, (to_char(sysdate,'YYYY')-substr(U.ubirth,1,4)+1)age, UF.ufstoredfilename
+	      from tb_goboard BOARD 
+	          join tb_user U on BOARD.gbuno = U.uno  
+	          left join tb_userfile UF on UF.ufuno = U.uno  
+	      where gbno = #{gbNo }
 	   </select>
-	   
+   
+	   <!-- 함께가요 찜목록 클릭 여부 -->
+	   <select id="selectGoLikeStatus" resultType="int">
+	         select count(*) 
+	         from tb_golike 
+	         where gluno = #{uNo } and glgbno = #{gbNo }
+	   </select>
+   
+   	<!-- check박스 변형해서 가지고오기 -->
+    <select id="selectGochklist" resultType="Map">
+        select gcgbno, LISTAGG(gcvalue, ',') WITHIN group(order by gcvalue) as gcvalue2
+        from tb_gocheck
+        where gcgbno = #{gbNo }
+        group by gcgbno
+    </select>
+    
 	   <!-- 함께가요 상세 체크박스 -->
 	   <select id="selectGocheck" resultType="GoCheck">
-	   		select * from tb_gocheck where gcgbno = #{gbNo }
+	         select * from tb_gocheck where gcgbno = #{gbNo }
 	   </select>
-	   
+   
 	   <!-- 함꼐가요 호스트 평점 -->
 	   <select id="selectGoHostReview" resultType="hashmap">
-	   		select *
-			from (
-	    		select rownum rnum, n1.*
-	    		from(
-	        		select RBOARD.rbcontent, RBOARD.rbhoststar, RBOARD.rbwrittendate, U.userid, UF.ufstoredfilename
-	    			FROM tb_reviewboard RBOARD
-	    			join tb_user U on RBOARD.rbuno = U.uno
-	    			left join tb_userfile UF on UF.ufuno = U.uno
-	    			where RBOARD.rbgbno = #{gbNo }
-	    			order by RBOARD.rbhoststar DESC
-	    		)n1
-			)
-			WHERE rnum BETWEEN 1 AND 3
+	         select *
+	      from (
+	          select rownum rnum, n1.*
+	          from(
+	              select RBOARD.rbcontent, RBOARD.rbhoststar, RBOARD.rbwrittendate, U.userid, UF.ufstoredfilename
+	             FROM tb_reviewboard RBOARD
+	             join tb_user U on RBOARD.rbuno = U.uno
+	             left join tb_userfile UF on UF.ufuno = U.uno
+	             where RBOARD.rbgbno = #{gbNo }
+	             order by RBOARD.rbhoststar DESC
+	          )n1
+	      )
+	      WHERE rnum BETWEEN 1 AND 3
 	   </select>
-	   
+   
 	   <!-- 함께가요 호스트 평점 갯수 -->
 	   <select id="selecthostReviewCnt" resultType="int">
-	   		select count(*)
-	   		from tb_reviewboard
-	   		where  rbgbno = #{gbNo }
+	         select count(*)
+	         from tb_reviewboard
+	         where  rbgbno = #{gbNo }
 	   </select>
-	   
+   
 	   <!-- 함께가요 동행 신청 -->
-	   <select id="insertGoDhApply">
-	   		insert into tb_goapply(GAGBNO, GAUNO, GASTATUS)
-			values(#{gbNo }, #{uNo }, 0)
-	   </select>
-	   
+	   <insert id="insertGoDhApply">
+	         insert into tb_goapply(GAGBNO, GAUNO, GASTATUS)
+	      values(#{gbNo }, #{uNo }, 0)
+	   </insert>
+   
 	   <!-- 함께가요 동행 신청 목록 -->
 	   <select id="selectgoDhApplylist" resultType="Map"> 
-	   		select U.userId, u.ugender, (to_char(sysdate,'YYYY')-substr(U.ubirth,1,4)+1)age, UF.ufstoredfilename
-			from tb_goapply GOAPPLY 
-	    		join tb_user U on GOAPPLY.gauno = U.uno  
-	    		left join tb_userfile UF on UF.ufuno = U.uno  
-			where gagbno = #{gbNo }
+	         select GOAPPLY.gastatus, GOAPPLY.gauno, U.userId, u.ugender, (to_char(sysdate,'YYYY')-substr(U.ubirth,1,4)+1)age, UF.ufstoredfilename
+	      from tb_goapply GOAPPLY 
+	          join tb_user U on GOAPPLY.gauno = U.uno  
+	          left join tb_userfile UF on UF.ufuno = U.uno  
+	      where gagbno = #{gbNo }
 	   </select>
+   
+	   <!-- 함꼐가요 새로운 동행 추가 조회 -->
+	   <select id="selectGoNewApply"  resultType="Map">
+	      select *
+	       from (
+	         select rownum rnum, n1.*
+	           from(
+	             select GOAPPLY.gastatus,GOAPPLY.gauno, U.userId, u.ugender, (to_char(sysdate,'YYYY')-substr(U.ubirth,1,4)+1)age, UF.ufstoredfilename
+	         from tb_goapply GOAPPLY 
+	             join tb_user U on GOAPPLY.gauno = U.uno  
+	             left join tb_userfile UF on UF.ufuno = U.uno  
+	         where gagbno = #{gbNo } and gauno = #{uNo }
+	          )n1
+	      )
+	      WHERE rnum = 1
+	   </select>
+   
+	   <!-- 함께가요 동행 수락 -->
+	   <update id="updateGoApplyOkStatus">
+	         update tb_goapply
+	      set gastatus = 1
+	      where gagbno = #{gbNo } and gauno = #{gaUNo }
+	   </update>
+   
+	    <!-- 함께가요 동행 거절 -->
+	   <update id="updateGoApplyNoStatus">
+	         update tb_goapply
+	      set gastatus = 2
+	      where gagbno = #{gbNo } and gauno = #{gaUNo }
+	   </update>
+   
+	   <!-- 함께가요 찜목록 추가 -->
+	   <insert id="insertGoLike">
+	         insert into tb_golike(glgbno, gluno)
+	      values (#{gbNo }, #{uNo })   
+	   </insert>
+	   
+	   <!-- 함께가요 찜목록 삭제 -->
+	   <delete id="DeleteGoLike">
+	         delete from tb_golike
+	         where glgbno = #{gbNo } and gluno = #{uNo }
+	   </delete>
+     
+     <!-- 함께가요 찜 수 증가 -->
+	   <update id="GBlikeUpCnt">
+	         update tb_goboard
+	         set gblikecnt = gblikecnt + 1
+	         where gbno = #{gbNo }
+	   </update>
+	   
+	   <!-- 함께가요 찜 수 감소 -->
+	   <update id="GBlikeDownCnt">
+	         update tb_goboard
+	         set gblikecnt = gblikecnt- 1
+	         where gbno = #{gbNo }
+	   </update>
+	   
+	   <!-- goboard 삭제 -> gbisdel = 1 로 update -->
+	   <update id="deleteGoboard">
+	         update tb_goboard
+	      set gbisdel = 1
+	      where gbno = #{gbNo }
+	   </update>
+		
 		
 		<!-- goboard 수정 -->
 		<update id="updategoboard" > 
@@ -198,47 +271,6 @@
 			where gbno = #{gbNo}
 		</update>	
 
-		<!-- check박스 변형해서 가지고오기 -->
-		<select id="selectGochklist" resultType="Map">
-			select gcgbno, LISTAGG(gcvalue, ',') WITHIN group(order by gcvalue) as gcvalue2
-			from tb_gocheck
-			where gcgbno = #{gbNo }
-			group by gcgbno
-		</select>
-				
-				
-				
-		<!-- 찜테이블 확인 -->
-		<select id="selectcnt" resultType="int">
-			select count(*)
-			from tb_golike
-			where glgbno=#{gbno} and gluno=#{uno}		
-		</select>
 		
-		<!-- 찜 테이블 추가 -->
-		<insert id="insertlike">
-			insert tb_golike (GLGBNO, GLUNO)
-			values ( #{gbno}, #{uno} )
-		</insert> 	
-
-		<!-- 찜 테이블 삭제 -->
-		<delete id="deletelike">
-			delete from tb_golike
-			where glgbno=#{gbno} and gluno=#{uno}
-		</delete>		
-		
-		<!-- 찜 + 1 -->
-		<update id="pluslikecnt" parameterType="hashmap">
-			update tb_goboard
-			set gblikecnt = gblikecnt + 1
-			where gbno=#{gbno}
-		</update>
-		
-		<!-- 찜 - 1 -->
-		<update id="canclelikecnt" parameterType="hashmap">
-			update tb_goboard
-			set gblikecnt = gblikecnt - 1
-			where gbno=#{gbno}
-		</update>
-	
+				
 </mapper>

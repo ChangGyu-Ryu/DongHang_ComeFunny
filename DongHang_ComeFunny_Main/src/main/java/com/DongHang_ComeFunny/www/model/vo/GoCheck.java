@@ -5,7 +5,7 @@ public class GoCheck {
 	private int gcNo; //체크박스번호
 	private int gcGbNo; //게시글번호
 	private String gcCate; //카테고리 
-	private String gcValue; //가격
+	private String gcValue; //값
 	
 	//------실제 DB에는 존재하지 않지만 name구분위해 사용함---------
 	private String gcAgeGroup; //모집연령대
@@ -68,8 +68,5 @@ public class GoCheck {
 	public void setGcTheme(String gcTheme) {
 		this.gcTheme = gcTheme;
 	}
-	
-	
-	
 
 }

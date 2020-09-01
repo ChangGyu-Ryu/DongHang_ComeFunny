@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -24,6 +27,9 @@
 
 	//검색 필터 관련 속성
 	//클릭하면 클릭한 속성이 추가됨
+	
+	var ageValue ="", genderValue="", themeValue="", areaValue="", stateValue ="";
+	
 	function addKeyFilterObj(data) {
 		var textNode = $(data).parent();
 		var dataName = $(data).attr('name');
@@ -34,10 +40,66 @@
 				+ '</span>'
 				+ '<a href="#this" class="delete" onclick="removeKeyFilter($(this).parent()); return false;"><span class="glyphicon glyphicon-remove"></span></a></span>');
 
-		if ($(data).prop('checked')) {
-			$('.group').prepend(btn);
+		if ($(data).prop('checked')) { //속성이 check로 바뀌면
+			$('.group').prepend(btn); //아래 group박스에 목록 추가
+			
+			if( dataName == "dcAgeGroup"){
+				ageValue += $(data).attr('value')+"-";
+			}
+			
+			else if( dataName == "dbRecruitGender"){
+				genderValue += $(data).attr('value')+"-";
+			}
+			
+			else if( dataName == "dcTheme"){
+				themeValue += $(data).attr('value')+"-";
+			}
+			
+			else if( dataName == "dbRecruitArea"){
+				areaValue += $(data).attr('value')+"-";
+			}
+			
+			else if( dataName == "dbRecruitStatus"){
+				stateValue += $(data).attr('value')+"-";
+			}
+			
+			$.ajax({
+				type : 'GET'
+				, url : "/do/filter?age="+ageValue + "&gender=" + genderValue + "&theme=" + themeValue +"&area=" + areaValue + "&state=" + stateValue
+				, dataType: "html"
+				, success : function(data){
+					console.log("AJAX 성공");
+ 					$("#dobest").html(data);
+				}
+				, error: function(request,status,error) {
+					console.log('AJAX fail');
+					alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error)
+				}
+			});
+			
 		} else {
 			removeKeyFilter(textNode); //클릭해제되면 필터적용 함수도 사라짐
+			
+			if( dataName == "dcAgeGroup"){
+				ageValue = ageValue.replace($(data).attr('value')+"-","");
+			}
+			
+			else if( dataName == "dbRecruitGender"){
+				genderValue = genderValue.replace($(data).attr('value')+"-","");
+			}
+			
+			else if( dataName == "dcTheme"){
+				themeValue = themeValue.replace($(data).attr('value')+"-","");
+			}
+			
+			else if( dataName == "dbRecruitArea"){
+				areaValue = areaValue.replace($(data).attr('value')+"-","");;
+			}
+			
+			else if( dataName == "dbRecruitStatus"){
+				stateValue = stateValue.replace($(data).attr('value')+"-","");
+			}
+			
 		}
 	}
 
@@ -45,16 +107,54 @@
 	function removeKeyFilter(data) { //$(data).parent()
 		var text = $(data).find('span').text();
 
-		$('.searchtb label span:contains(' + text + ')').prev().prop('checked',
-				false); //상단필터
+		$('.searchtb label span:contains(' + text + ')').prev().prop('checked', false); //상단필터
 		$('.group .tag span:contains(' + text + ')').parent().remove();
+	
+		var filtertest = $('.searchtb label span:contains(' + text + ')').prev();
+	
+		if( filtertest.attr('name') == "dcAgeGroup"){
+			ageValue = ageValue.replace(filtertest.val()+"-","");
+		}
+		
+		else if( filtertest.attr('name') == "dbRecruitGender"){
+			genderValue = genderValue.replace(filtertest.val()+"-","");
+		}
+		
+		else if( filtertest.attr('name') == "dcTheme"){
+			themeValue = themeValue.replace(filtertest.val()+"-","");
+		}
+		
+		else if( filtertest.attr('name') == "dbRecruitArea"){
+			areaValue = areaValue.replace(filtertest.val()+"-","");
+		}
+		
+		else if( filtertest.attr('name') == "dbRecruitStatus"){
+			stateValue = stateValue.replace(filtertest.val()+"-","");
+		}
+		
+		$.ajax({
+			type : 'GET'
+			, url : "/do/filter?age="+ageValue + "&gender=" + genderValue 
+					+ "&theme=" + themeValue +"&area=" + areaValue + "&state=" + stateValue
+			, dataType: "html"
+			, success : function(data){
+				console.log("AJAX 성공 - 버튼 해제");
+				$("#dobest").html(data);
+			}
+			, error: function(request,status,error) {
+				console.log('AJAX fail');
+				alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error)
+			}
+		});
+		
 	}
 
 	//초기화
 	function resetKeyFilter() {
 		$('.searchtb input').prop('checked', false);
 		$('.group .tag').remove();
-	}
+		location.reload(true);
+	}	
 	
 </script>
 
@@ -133,8 +233,8 @@ $(document).ready(function() {
 		<!-- 검색타이틀 -->
 		<div>
 			<p class="ialign">어떤 활동을 찾으시나요?</p>
-			<form action="#" method="post" id="formid" class="ialign pull-right formbox input-group-btn">
-				<input type="text" name="search" class="textbox"/>
+			<form action="/do/search" method="post" id="formid" class="ialign pull-right formbox input-group-btn">
+				<input type="text" name="searchText" class="textbox" placeholder="내용 검색"/>
 				<button type="submit" id="gobtn" class="btn btn-default input-lg"><span class="glyphicon glyphicon-search"></span></button>
 			</form>
 		</div>
@@ -144,35 +244,35 @@ $(document).ready(function() {
 			<table class="searchtb">
 			  <tr>
 			    <td>연령대</td>
-			    <td><label><input type="checkbox" onclick="addKeyFilterObj(this);" name="do-age" value="20"><span>20대</span></label></td>
-			    <td><label><input type="checkbox" onclick="addKeyFilterObj(this);" name="do-age" value="30"><span>30대</span></label></td>
-			    <td><label><input type="checkbox" onclick="addKeyFilterObj(this);" name="do-age" value="40"><span>40대</span></label></td>
+			    <td><label><input type="checkbox" onclick="addKeyFilterObj(this);" name="dcAgeGroup" value="20"><span>20대</span></label></td>
+			    <td><label><input type="checkbox" onclick="addKeyFilterObj(this);" name="dcAgeGroup" value="30"><span>30대</span></label></td>
+			    <td><label><input type="checkbox" onclick="addKeyFilterObj(this);" name="dcAgeGroup" value="40"><span>40대</span></label></td>
 			  </tr>
 			  <tr>
 			    <td>성별</td>
-			    <td><label><input type="checkbox" onclick="addKeyFilterObj(this);" name="do-gender" value="m"><span>남성</span></label></td>
-			    <td><label><input type="checkbox" onclick="addKeyFilterObj(this);" name="do-gender" value="f"><span>여성</span></label></td>
+			    <td><label><input type="checkbox" onclick="addKeyFilterObj(this);" name="dbRecruitGender" value="1"><span>남성</span></label></td>
+			    <td><label><input type="checkbox" onclick="addKeyFilterObj(this);" name="dbRecruitGender" value="2"><span>여성</span></label></td>
 			  </tr>
 			  <tr>
 			    <td>여행타입</td>
-			    <td><label><input type="checkbox" onclick="addKeyFilterObj(this);" name="do-type" value="food"><span>맛집</span></label></td>
-			    <td><label><input type="checkbox" onclick="addKeyFilterObj(this);" name="do-type" value="activity"><span>액티비티</span></label></td>
-			    <td><label><input type="checkbox" onclick="addKeyFilterObj(this);" name="do-type" value="meseum"><span>전시/박물관</span></label></td>
+			    <td><label><input type="checkbox" onclick="addKeyFilterObj(this);" name="dcTheme" value="food"><span>맛집</span></label></td>
+			    <td><label><input type="checkbox" onclick="addKeyFilterObj(this);" name="dcTheme" value="activity"><span>액티비티</span></label></td>
+			    <td><label><input type="checkbox" onclick="addKeyFilterObj(this);" name="dcTheme" value="meseum"><span>전시/박물관</span></label></td>
 			  </tr>
 			  <tr>
 			    <td>지역</td>
-			    <td><label><input type="checkbox" onclick="addKeyFilterObj(this);" name="do-area" value="seoul"><span>서울</span></label></td>
-			    <td><label><input type="checkbox" onclick="addKeyFilterObj(this);" name="do-area" value="jeju"><span>제주</span></label></td>
-			    <td><label><input type="checkbox" onclick="addKeyFilterObj(this);" name="do-area" value="incheon"><span>인천</span></label></td>
-			    <td><label><input type="checkbox" onclick="addKeyFilterObj(this);" name="do-area" value="daegu"><span>대구</span></label></td>
-			    <td><label><input type="checkbox" onclick="addKeyFilterObj(this);" name="do-area" value="busan"><span>부산</span></label></td>
-			    <td><label><input type="checkbox" onclick="addKeyFilterObj(this);" name="do-area" value="daejeon"><span>대전</span></label></td>
-			    <td><label><input type="checkbox" onclick="addKeyFilterObj(this);" name="do-area" value="gyang"><span>광주</span></label></td>
+			    <td><label><input type="checkbox" onclick="addKeyFilterObj(this);" name="dbRecruitArea" value="seoul"><span>서울</span></label></td>
+			    <td><label><input type="checkbox" onclick="addKeyFilterObj(this);" name="dbRecruitArea" value="jeju"><span>제주</span></label></td>
+			    <td><label><input type="checkbox" onclick="addKeyFilterObj(this);" name="dbRecruitArea" value="incheon"><span>인천</span></label></td>
+			    <td><label><input type="checkbox" onclick="addKeyFilterObj(this);" name="dbRecruitArea" value="daegu"><span>대구</span></label></td>
+			    <td><label><input type="checkbox" onclick="addKeyFilterObj(this);" name="dbRecruitArea" value="busan"><span>부산</span></label></td>
+			    <td><label><input type="checkbox" onclick="addKeyFilterObj(this);" name="dbRecruitArea" value="daejeon"><span>대전</span></label></td>
+			    <td><label><input type="checkbox" onclick="addKeyFilterObj(this);" name="dbRecruitArea" value="gyang"><span>광주</span></label></td>
 			  </tr>
 			  <tr>
 			    <td>상태</td>
-			    <td><label><input type="checkbox" onclick="addKeyFilterObj(this);" name="do-ing" value="ing"><span>모집중</span></label></td>
-			    <td><label><input type="checkbox" onclick="addKeyFilterObj(this);" name="do-ing" value="finish"><span>모집마감</span></label></td>
+			    <td><label><input type="checkbox" onclick="addKeyFilterObj(this);" name="dbRecruitStatus" value="0"><span>모집중</span></label></td>
+			    <td><label><input type="checkbox" onclick="addKeyFilterObj(this);" name="dbRecruitStatus" value="1"><span>모집마감</span></label></td>
 			  </tr>
 			</table>
 			
@@ -189,140 +289,110 @@ $(document).ready(function() {
 	<!-- content list -->
 	<!-- 하단 리스트 -->
 	<div class="do-list">
-		<!-- 정렬 드롭다운 --> <!-- 제대로 작동 안하니 다시 확인하자 -->
-		<div class="dropdown" >
-		  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
-		    	<span>정렬방식 </span><span class="caret"></span>
-		  </button>
-		  <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-		    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">최신순</a></li>
-		    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">찜순</a></li>
-		    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">날짜순</a></li>
-		  </ul>
-		</div>
+		<div class="listup">
+<!-- 		<!-- 정렬 드롭다운 --> 
+<!-- 		<div class="dropdown" > -->
+<!-- 		  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true"> -->
+<!-- 		    	<span>정렬방식 </span><span class="caret"></span> -->
+<!-- 		  </button> -->
+<!-- 		  <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1"> -->
+<!-- 		    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">최신순</a></li> -->
+<!-- 		    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">찜순</a></li> -->
+<!-- 		    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">인원순</a></li> -->
+<!-- 		  </ul> -->
+<!-- 		</div> -->
 		<!-- 모집버튼 --> 
 		<div class="float-right">
 			<a class="btn btn-default" href="/do/doform" role="button">인원 모집하기</a>
 		</div> 
-		
+		</div>
 		
 		<!-- 정렬 혹은 필터된 리스트 -->
 		<div id="dobest">
 		
 		<!-- 이부분 반복 -->
+		<c:forEach items="${list.dlist}" var="db">
 		<div class="dobest">
 			<div class="doprofile">
-			<a href="../do/doDetail.jsp">
-				<img src="/resources/image/do/sunset-3664096_1280.jpg" alt="대표사진" />
+			<a href="do/dodetail?dbNo=${db.DBNO}">
+				<c:if test="${db.DISTOREDIMGNAMESTOREDIMG eq null}"> <!-- 사진이 null이면 default -->
+    					<img src="<%=request.getContextPath() %>/resources/image/do/default2.jpg" alt="대표사진" />
+				</c:if>
+				<c:if test="${db.DISTOREDIMGNAMESTOREDIMG ne null}"> <!-- 사진이 null이면 아니면 -->
+    					<img src="<%=request.getContextPath() %>/resources/upload/${db.DISTOREDIMGNAMESTOREDIMG}" alt="대표사진"  />
+				</c:if>
 			</a>
 			</div>
 			
 			<div class="dobest-title">
 				<div class="ialign">
 					<div class="doname">
-						제주 <small>맛집</small>
+						<c:choose>
+			               <c:when test="${db.DBRECRUITAREA eq 'seoul' }" >서울 </c:when>
+			               <c:when test="${db.DBRECRUITAREA eq 'jeju' }" >제주</c:when>
+			               <c:when test="${db.DBRECRUITAREA eq 'incheon' }" >인천</c:when>
+			               <c:when test="${db.DBRECRUITAREA eq 'daegu' }" >대구</c:when>
+			               <c:when test="${db.DBRECRUITAREA eq 'busan' }" >부산</c:when>
+			               <c:when test="${db.DBRECRUITAREA eq 'daejeon' }" >대전</c:when>
+			               <c:when test="${db.DBRECRUITAREA eq 'gyang' }" >광주</c:when>
+			            </c:choose>
+						 <small>
+						 <c:set var="keyword" value="${fn:split(db.THEMECHECK,',')}"></c:set>
+							<c:forEach items="${keyword}" var="theme">
+			    				<c:choose> 
+			                     <c:when test="${theme eq 'food' }" >맛집 </c:when>
+			                     <c:when test="${theme eq 'activity' }" >액티비티 </c:when>
+			                     <c:when test="${theme eq 'meseum' }" >전시/박물관 </c:when>
+			                     <c:when test="${theme eq 'etc' }" >기타 </c:when>
+			            	 	</c:choose>
+							</c:forEach>
+						 </small>
 					</div>
-					<div class="dotitle">글제dfsdfsdf목 먹자sdsd골목투어하dsdsgsdgsdgdsgsdg실분</div>
+					<div class="dotitle">${db.DBTITLE}</div>
 					<div class="margintop">
-						<div><span>2030</span> · <span>성별 무관</span> · <span>회비 </span><span>15000원</span> </div>
+						<div>
+						<span>
+							<c:set var="keyword" value="${fn:split(db.AGECHECK,',')}"></c:set>
+							<c:forEach items="${keyword}" var="age">
+			    				<c:choose> 
+			                     <c:when test="${age eq '20' }" >20 </c:when>
+			                     <c:when test="${age eq '30' }" >30 </c:when>
+			                     <c:when test="${age eq '40' }" >40 </c:when>
+			            	 	</c:choose>
+							</c:forEach>
+						</span> 
+						· 
+						<span>
+						<c:choose> 
+			              <c:when test="${db.DBRECRUITGENDER eq 0}" >성별 무관 </c:when>
+			              <c:when test="${db.DBRECRUITGENDER eq 1}" >남성만 </c:when>
+			              <c:when test="${db.DBRECRUITGENDER eq 2}" >여성만 </c:when>
+			            </c:choose>
+						</span> 
+						· 
+						<span>회비 </span><span>${db.DBRECRUITCOST}원</span> </div>
 						<div></div>
-						<div>5명이 찜하고 있습니다</div>
+						<div>${db.DBLIKECNT} 명이 찜하고 있습니다</div>
 						<div class="dobox">
-						<span class="gotag">모집중</span>
-						<span class="goheart"><img src="/resources/image/do/heart.png" alt="찜하트"/></span>
+						<c:choose>
+                     		<c:when test="${db.DBRECRUITSTATUS eq 0 }" ><span class="gotag">모집중</span></c:when>
+                     		<c:when test="${db.DBRECRUITSTATUS eq 1 }" ><span class="gotag2">모집마감</span></c:when>
+                		</c:choose> 
+<!-- 							<span class="goheart"><img src="/resources/image/do/heart.png" alt="찜하트"/></span> -->
 						</div>
 					</div>  
 				</div>
 			</div>
 		</div>
+		</c:forEach>
 		
-		<!-- 이부분 반복 -->
-		<div class="dobest">
-			<div class="doprofile">
-			<a href="../do/doDetail.jsp">
-				<img src="/resources/image/do/sunset-3664096_1280.jpg" alt="대표사진" />
-			</a>
-			</div>
-			
-			<div class="dobest-title">
-				<div class="ialign">
-					<div class="doname">
-						제주 <small>맛집</small>
-					</div>
-					<div class="dotitle">글제dfsdfsdf목 먹자sdsd골목투어하dsdsgsdgsdgdsgsdg실분</div>
-					<div class="margintop">
-						<div><span>2030</span> · <span>성별 무관</span> · <span>회비 </span><span>15000원</span> </div>
-						<div></div>
-						<div>5명이 찜하고 있습니다</div>
-						<div class="dobox">
-						<span class="gotag">모집중</span>
-						<span class="goheart"><img src="/resources/image/do/heart.png" alt="찜하트"/></span>
-						</div>
-					</div>  
-				</div>
-			</div>
-		</div>
-		
-		<!-- 이부분 반복 -->
-		<div class="dobest">
-			<div class="doprofile">
-			<a href="../do/doDetail.jsp">
-				<img src="/resources/image/do/sunset-3664096_1280.jpg" alt="대표사진" />
-			</a>
-			</div>
-			
-			<div class="dobest-title">
-				<div class="ialign">
-					<div class="doname">
-						제주 <small>맛집</small>
-					</div>
-					<div class="dotitle">글제dfsdfsdf목 먹자sdsd골목투어하dsdsgsdgsdgdsgsdg실분</div>
-					<div class="margintop">
-						<div><span>2030</span> · <span>성별 무관</span> · <span>회비 </span><span>15000원</span> </div>
-						<div></div>
-						<div>5명이 찜하고 있습니다</div>
-						<div class="dobox">
-						<span class="gotag">모집중</span>
-						<span class="goheart"><img src="/resources/image/do/heart.png" alt="찜하트"/></span>
-						</div>
-					</div>  
-				</div>
-			</div>
-		</div>
-		
-		<!-- 이부분 반복 -->
-		<div class="dobest">
-			<div class="doprofile">
-			<a href="../do/doDetail.jsp">
-				<img src="/resources/image/do/sunset-3664096_1280.jpg" alt="대표사진" />
-			</a>
-			</div>
-			
-			<div class="dobest-title">
-				<div class="ialign">
-					<div class="doname">
-						제주 <small>맛집</small>
-					</div>
-					<div class="dotitle">글제투어 하실분 ㅎ</div>
-					<div class="margintop">
-						<div><span>2030</span> · <span>성별 무관</span> · <span>회비 </span><span>15000원</span> </div>
-						<div></div>
-						<div>5명이 찜하고 있습니다</div>
-						<div class="dobox">
-						<span class="gotag">모집중</span>
-						<span class="goheart"><img src="/resources/image/do/heart.png" alt="찜하트"/></span>
-						</div>
-					</div>  
-				</div>
-			</div>
-		</div>
 		
 		<!-- 반복끝나고 마지막에 출력하는거 -->
 		<div class="dofinish">
 			<div class="dobest-title">
 				<div class="ialign marginleft">
 					<div class="dottile">
-						<span class="">원하는 활동이 없나요?</span><br>
+						<span>원하는 활동이 없나요?</span><br>
 						<span>내가 인원모집하기</span>
 					</div>
 					<div class="doarrow">
