@@ -113,6 +113,9 @@ public class GoService {
 		//함께가요 상세 체크박스
 		List<GoCheck> goCheck = goDao.selectGocheck(gbNo);
 		
+		//함께가요 상세 체크박스(가져오는 방식 변경) - 문정 필요
+	    Map<String, Object> goChecklist = goDao.selectGochklist(gbNo);
+		
 		//호스트 평점
 		List<Map<String, Object>> hostReview = goDao.selectGoHostReview(gbNo);
 		
@@ -129,17 +132,56 @@ public class GoService {
 		goDetailInfo.put("hostReview", hostReview);
 		goDetailInfo.put("hostReviewCnt", hostReviewCnt);
 		goDetailInfo.put("goDhApplylist", goDhApplylist);
-		
+		goDetailInfo.put("goChecklist", goChecklist); //문정 필요
+
 		
 		
 				
 		return goDetailInfo;
 	}
 	
+	//함께가요 찜목록 클릭 여부
+	public int selectGoLikeStatus(int gbNo, int uNo) {
+		return goDao.selectGoLikeStatus(gbNo, uNo);
+	}
+	
 	//함께가요 동행 신청하기
 	public int insertGoDhApply(int gbNo, int uNo) {
 		return goDao.insertGoDhApply(gbNo, uNo);
 	}
+	
+	//함께가요 새로운 동행 추가 조회
+	public Map<String, Object> selectGoNewApply(int gbNo, int uNo) {
+		return goDao.selectGoNewApply(gbNo, uNo);
+	}
+	
+	//함께가요 동행 수락 
+	public int updateGoApplyOkStatus(int gbNo, int gaUNo) {
+		return goDao.updateGoApplyOkStatus(gbNo, gaUNo);
+	}
+	
+	//함께가요 동행 거절
+	public int updateGoApplyNoStatus(int gbNo, int gaUNo) {
+		return goDao.updateGoApplyNoStatus(gbNo, gaUNo);
+	}
+	
+	//함께가요 찜목록 추가
+	public int insertGoLike(int gbNo, int uNo) {
+		return goDao.insertGoLike(gbNo, uNo);
+	}
+	
+	//함께가요 찜목록 삭제
+	public int DeleteGoLike(int gbNo, int uNo) {
+		return goDao.DeleteGoLike(gbNo, uNo);
+	}
+	
+	//함께가요 삭제 -> gbisdel = 1 로 update
+	public int deleteGoboard(int gbNo) {
+		return goDao.deleteGoboard(gbNo);
+	}
+	
+	
+
 
 	
 	

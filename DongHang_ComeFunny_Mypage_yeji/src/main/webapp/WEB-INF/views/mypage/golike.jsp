@@ -123,7 +123,7 @@ $(document).ready(function() {
 			<tr>
 				<td style="vertical-align: inherit;"><input type="checkbox"class="deleteChk" value="${list.GBNO }" /></td>
 					<td style="vertical-align: inherit;"><fmt:formatDate var="date" value="${list.GBWRITTENDATE}" pattern="YYYY-MM-dd"/>${date}</td>
-					<td style="vertical-align: inherit;"><a href="<%=request.getContextPath() %>/go/godetail?gbno=${list.GBNO }">${list.GBTITLE }</a></td>
+					<td style="vertical-align: inherit;"><a href="<%=request.getContextPath() %>/go/goDetail?gbNo=${list.GBNO }">${list.GBTITLE }</a></td>
 					<td style="vertical-align: inherit;">${list.USERID }</td>
 			</tr>
 			</c:forEach>

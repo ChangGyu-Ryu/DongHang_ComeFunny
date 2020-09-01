@@ -117,7 +117,7 @@ function like_cancel(dbNo) {
 					<img class="like_img" alt="찜이미지" src="<%=request.getContextPath() %>/resources/upload/${list.DISTOREDIMGNAME }">
 				</c:if>	
 					<figcaption>
-						 <p><a style="color: white;" href="<%=request.getContextPath() %>/do/dodetail?dbno=${list.DBNO }">${list.DBTITLE }</a></p>
+						 <p><a style="color: white;" href="<%=request.getContextPath() %>/do/dodetail?dbNo=${list.DBNO }">${list.DBTITLE }</a></p>
 					</figcaption>				
 				</figure>
 				<button id="like_cancel${i.count }" class="like_cancel" style="display: none;" onclick="like_cancel(${list.DBNO})" value="${list.DBNO }">X</button>

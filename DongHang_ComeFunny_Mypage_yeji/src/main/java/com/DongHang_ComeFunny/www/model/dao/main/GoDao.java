@@ -62,7 +62,12 @@ public class GoDao {
 	public List<GoCheck> selectGocheck(int gbNo) {
 		return sqlSession.selectList("GO.selectGocheck", gbNo);
 	}
-
+	
+	//체크리스트 갖고오기 (selectGoDetail 에 put) - 문정 필요
+	public Map<String, Object> selectGochklist(int gbNo) {
+	    return sqlSession.selectOne("GO.selectGochklist", gbNo);
+	}
+	
 	//함께가요 호스트 평점
 	public List<Map<String, Object>> selectGoHostReview(int gbNo) {
 		return sqlSession.selectList("GO.selectGoHostReview", gbNo);
@@ -72,6 +77,15 @@ public class GoDao {
 	public int selecthostReviewCnt(int gbNo) {
 		return sqlSession.selectOne("GO.selecthostReviewCnt", gbNo);
 	}
+	
+	//함께가요 찜목록 클릭 여부
+	public int selectGoLikeStatus(int gbNo, int uNo) {
+		Map<Object, Object> param = new HashMap<Object, Object>();
+		param.put("gbNo", gbNo);
+		param.put("uNo", uNo);
+		
+		return sqlSession.selectOne("GO.selectGoLikeStatus", param);
+	}
 		
 	//함께가요 동행 신청
 	public int insertGoDhApply(int gbNo, int uNo) {
@@ -80,14 +94,68 @@ public class GoDao {
 		param.put("gbNo", gbNo);
 		param.put("uNo", uNo);
 		
-		System.out.println("param " + param);
 		
 		return sqlSession.insert("GO.insertGoDhApply", param);
 	}
+	
 	
 	//함께가요 동행 신청 목록
 	public List<Map<String, Object>> selectgoDhApplylist(int gbNo) {
 		return sqlSession.selectList("GO.selectgoDhApplylist", gbNo);
 	}
+	
+	//함께가요 새로운 동행 추가 조회
+	public Map<String, Object> selectGoNewApply(int gbNo, int uNo) {
+		Map<Object, Object> param = new HashMap<Object, Object>();
+		param.put("gbNo", gbNo);
+		param.put("uNo", uNo);
+		
+		return sqlSession.selectOne("GO.selectGoNewApply", param);
+	}
+	
+	//함께가요 동행 수락 
+	public int updateGoApplyOkStatus(int gbNo, int gaUNo) {
+		Map<Object, Object> param = new HashMap<Object, Object>();
+		param.put("gbNo", gbNo);
+		param.put("gaUNo", gaUNo);
+		
+		return sqlSession.update("GO.updateGoApplyOkStatus", param);
+	}
+	
+	//함께가요 동행 거절
+	public int updateGoApplyNoStatus(int gbNo, int gaUNo) {
+		Map<Object, Object> param = new HashMap<Object, Object>();
+		param.put("gbNo", gbNo);
+		param.put("gaUNo", gaUNo);
+		
+		return sqlSession.update("GO.updateGoApplyNoStatus", param);
+	}
+
+	//함께가요 찜목록 추가
+	public int insertGoLike(int gbNo, int uNo) {
+		Map<Object, Object> param = new HashMap<Object, Object>();
+		param.put("gbNo", gbNo);
+		param.put("uNo", uNo);
+		
+		return sqlSession.insert("GO.insertGoLike", param);
+	}
+
+	//함께가요 찜목록 삭제
+	public int DeleteGoLike(int gbNo, int uNo) {
+		Map<Object, Object> param = new HashMap<Object, Object>();
+		param.put("gbNo", gbNo);
+		param.put("uNo", uNo);
+		
+		return sqlSession.delete("GO.DeleteGoLike", param);
+	}
+	
+	//함께가요 삭제 -> gbisdel = 1 로 update
+	public int deleteGoboard(int gbNo) {
+		return sqlSession.update("GO.deleteGoboard", gbNo);
+	}
+
+	
+
+	
 	
 }

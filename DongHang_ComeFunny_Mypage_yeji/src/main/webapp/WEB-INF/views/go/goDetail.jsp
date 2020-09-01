@@ -32,49 +32,207 @@ $(document).ready(function() {
 	
 });
 
-//하트 누르면 이미지 변경 //수정하자
-	function toggleImg() {
-      document.getElementById("change").src="/resources/image/go/heart_pick.png" ;
-    }
 
-
-</script>
-<script type="text/javascript">
-	function selectUrl(url){
-		console.log("클릭됨됨됨됨");
-		var root = '<%=request.getContextPath()%>';
-		document.querySelector('#form-data').action = root + url;
-	}
+function selectUrl(url){
+	console.log("클릭됨됨됨됨");
+	var root = '<%=request.getContextPath()%>';
+	document.querySelector('#form-data').action = root + url;
+}
 </script>
 
+<!-- 신청하기 동행 목록 추가 -->
 <script type="text/javascript">
 $(document).ready(function() {
 	
+	var test = "";
+	
 	$("#goDhApplyBtn").click(function() {
 		console.log("클릭됨");
+		
+		
 		
 		 $.ajax({
 			url: "/go/goApply",
 			type: "POST",
 			data: {
-				gbNo: ${goDetailInfo.goBoardUserInfo.GBNO } 
+				gbNo: ${goDetailInfo.goBoardUserInfo.GBNO }
 			},
 			success: function(result) {
-				if(result == 1){
+				if(result != null){
                 	alert("동행 신청 완료되었습니다.");
-                	location.href=window.document.URL;
+                	
+                	var html = '';
+                	html += '<div class="mateone">';
+                	html += '<div class="mtitle">';
+                	
+                	if(result.UFSTOREDFILENAME == null) {
+    					html += '<img src="/resources/upload/default.png" class="img-circle"/>';
+    					
+                	} else {
+    					html += '<img src="/resources/upload/' + result.UFSTOREDFILENAME + '" class="img-circle"/>';
+                	}
+					
+                	html += '</div>';
+                	html += '<div class="mtitle">';
+                	html += '<h4>' + result.USERID +'</h4>';
+                	html += '<h5>' + result.AGE + '·';
+                	
+                	if(result.UGENDER == '1') {
+                		html += '남';
+                	} else if(result.UGENDER == '2') {
+                		html += '여';
+                	}
+					
+                	html += '</h5>';
+                	html += '</div>';
+                	
+                	html += '<div class="mbtn">';
+                	html += '<a class="btn btn-primary">수락</a>';
+                	html += '<a class="btn btn-default">거절</a>';
+                	html += '</div>';
+                	html += '</div>';
+                	
+					$(".mate-list").append(html);
+					
+                	
              	}else{
                 	alert("동행 신청 실패되었습니다.");
                 	location.href=window.document.URL;
 
              	}
+				
+				
 			}
 			
 		});
+		
 	
 	}); 
 	
+	
 });
+</script>
+
+
+<script type="text/javascript">
+/* 동행 수락 */
+function goDhOkBtn(gaUNo) {
+	
+	 $.ajax({
+			url: "/go/goDhOk",
+			type: "POST",
+			data: {
+				gbNo: ${goDetailInfo.goBoardUserInfo.GBNO },
+				gaUNo: gaUNo
+		 		
+			},
+			success: function(result) {
+				if(result != "fail"){
+             	alert("동행 요청이 수락되었습니다.");
+             	
+             	document.querySelector(result).outerHTML = '<a class="btn btn-primary">동행수락</a>';
+
+             	
+          	}else{
+          		alert("동행 요청 수락이 실패되었습니다.");
+          	}
+				
+				
+			}
+			
+		});
+}
+
+/* 동행 거절 */
+function goDhNoBtn(gaUNo) {
+	
+	 $.ajax({
+			url: "/go/goDhNo",
+			type: "POST",
+			data: {
+				gbNo: ${goDetailInfo.goBoardUserInfo.GBNO },
+				gaUNo: gaUNo
+		 		
+			},
+			success: function(result) {
+				if(result != "fail"){
+             	alert("동행 요청이 거절되었습니다.");
+             	
+             	document.querySelector(result).outerHTML = '<a class="btn btn-default">동행거절</a>';
+
+             	
+          	}else{
+          		alert("동행 요청 거절이 실패되었습니다.");
+          	}
+				
+				
+			}
+			
+		});
+}
+
+//하트 누르면 이미지 변경 
+function toggleImg() {
+	
+	if($('#change').attr('src') == '/resources/image/go/heart.png'){ //찜안되어있음
+		console.log("찜됨");
+            
+		$.ajax({
+			url: "/go/goInsertLike",
+			type: "POST",
+			data: {
+				gbNo: ${goDetailInfo.goBoardUserInfo.GBNO },
+				uNo : 2 //나중에 로그인 합치고 변경
+		 		
+			},
+			success: function(result) {
+				if(result > 0){
+             	alert("함께가요 찜목록에 추가되었습니다.");
+             	
+             	/* 찜목록 성공했을 경우 가득찬 하트사진으로 변경 */
+        		$('#change').attr('src','<%=request.getContextPath()%>/resources/image/go/heart_pick.png');
+
+             	
+          		}else{
+          			alert("함께가요 찜목록 추가에 실패했습니다.");
+          		}	
+				
+			}
+			
+		});
+		
+		
+		
+	} else { //찜되어있음
+ 		console.log("찜취소");
+			
+ 		$.ajax({
+			url: "/go/goDeleteLike",
+			type: "POST",
+			data: {
+				gbNo: ${goDetailInfo.goBoardUserInfo.GBNO },
+				uNo : 2 //나중에 로그인 합치고 변경
+		 		
+			},
+			success: function(result) {
+				if(result > 0){
+             	alert("함께가요 찜목록을 삭제하였습니다.");
+             	
+             	/* 찜목록 성공했을 경우 비워있는 하트사진으로 변경 */
+           		$('#change').attr('src','<%=request.getContextPath()%>/resources/image/go/heart.png');
+
+             	
+          		}else{
+          			alert("함께가요 찜목록 삭제에 실패했습니다.");
+          		}	
+				
+			}
+			
+		});
+
+     }
+    
+}
 </script>
 
 </head>
@@ -140,7 +298,16 @@ $(document).ready(function() {
 				<c:if test="${not empty goDetailInfo.goBoardUserInfo.UFSTOREDFILENAME }">
 					<img src="<%=request.getContextPath() %>/resources/upload/${goDetailInfo.goBoardUserInfo.UFSTOREDFILENAME }" class="img-circle profile-img" />
 				</c:if>
-				<div class="goheart"><img id="change" src="/resources/image/go/heart.png" alt="찜하트" onclick="toggleImg()"/></div>
+				<div class="goheart">
+					<c:choose>
+						<c:when test="${goLikeStatus  eq '0'}">
+							<img id="change" src="/resources/image/go/heart.png" alt="찜하트" onclick="toggleImg()"/>
+						</c:when>
+						<c:when test="${goLikeStatus  eq '1'}">
+							<img id="change" src="/resources/image/go/heart_pick.png" alt="찜하트" onclick="toggleImg()"/>
+						</c:when>
+					</c:choose>
+				</div>
 			</div>
 			<div class="profile-name">
 				<h3>${goDetailInfo.goBoardUserInfo.USERID }
@@ -263,8 +430,8 @@ $(document).ready(function() {
 		
 		<!-- 글쓴이한테만 보임 -->
 		<div class="dobtn" style="width: 850px; margin: auto; margin-top: 5%; height: 35px;">
-			<a class="btn btn-warning ">수정</a> 
-	        <a class="btn btn-danger ">삭제</a> 
+			<a class="btn btn-warning " href="/go/modify?gbNo=${goDetailInfo.goBoardUserInfo.GBNO}">수정</a> 
+	        <a class="btn btn-danger " href="/go/goDelete?gbNo=${goDetailInfo.goBoardUserInfo.GBNO}">삭제</a>
 		</div>
 			
 		<div class="dobtn" style="width: 850px; margin: auto; margin-top: 1%; text-align: center; height: 35px;">
@@ -274,12 +441,14 @@ $(document).ready(function() {
 	            
 	            <div class="ialign btncen">
 	            <a class="btn btn-default ">쪽지보내기</a>
-				<button class="btn btn-primary" id="goDhApplyBtn">신청하기</button>
+	            
+	            <!-- 모집중일때만 신청하기 버튼 보여주기 -->
+	            <c:if test="${goDetailInfo.goBoardUserInfo.GBRECRUITSTATUS eq '0' }">
+					<button class="btn btn-primary" id="goDhApplyBtn">신청하기</button>
+	            </c:if>
 	            </div>
 			</div>
 			
-			
-		
          	<div class="ialign float-right"> <!-- 공유하기 -->
             	<a class="btn btn-default">공유하기</a>
          	</div>
@@ -292,7 +461,6 @@ $(document).ready(function() {
 	<div class="contentbox2"> 
 		<!-- 타이틀 -->
 		<div class="contitle"> 신청 목록 </div>
-		
 		<!-- 신청 목록 -->
 		<div class="mate-list">
 		
@@ -323,8 +491,20 @@ $(document).ready(function() {
 					</h5>
 				</div>
 				<div class="mbtn"> <!-- 작성자만 볼수 있음 -->
-					<a class="btn btn-primary">수락</a>
-					<a class="btn btn-default">거절</a>
+					<c:choose>
+						<c:when test="${goApplylist.GASTATUS eq '0'}">
+							<div style="display: inline-block;" class="goDhApplyResult">
+								<a class="btn btn-primary" id="goDhOkBtn" onclick="goDhOkBtn(${goApplylist.GAUNO });">수락</a>
+								<a class="btn btn-default" id="goDhNoBtn" onclick="goDhNoBtn(${goApplylist.GAUNO });">거절</a>
+							</div>
+						</c:when>
+						<c:when test="${goApplylist.GASTATUS eq '1'}">
+							<a class="btn btn-primary">동행수락</a>
+						</c:when>
+						<c:when test="${goApplylist.GASTATUS eq '2'}">
+							<a class="btn btn-default">동행거절</a>
+						</c:when>
+					</c:choose>
 				</div>
 			</div>
 			</c:forEach>
