@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+	<settings>
+		<setting name="jdbcTypeForNull" value="NULL"/>
+		<setting name="mapUnderscoreToCamelCase" value="true" />
+	</settings>
+	
+	<typeAliases>
+		<typeAlias type="com.DongHang_ComeFunny.www.model.vo.FreeBoard" alias="FBOARD"/>
+		<typeAlias type="com.DongHang_ComeFunny.www.model.vo.ReviewBoard" alias="RBOARD"/>
+		<typeAlias type="com.DongHang_ComeFunny.www.model.vo.FreeComment" alias="FCOMMENT"/>
+		<typeAlias type="com.DongHang_ComeFunny.www.model.vo.ReviewComment" alias="RCOMMENT"/>
+		<typeAlias type="com.DongHang_ComeFunny.www.model.vo.Order" alias="ORDER"/>
+		<typeAlias type="com.DongHang_ComeFunny.www.model.vo.GoBoard" alias="GOBOARD"/>
+		<typeAlias type="com.DongHang_ComeFunny.www.model.vo.GoApply" alias="GOAPPLY"/>
+		<typeAlias type="com.DongHang_ComeFunny.www.model.vo.User" alias="USER"/>
+	</typeAliases>	
+	
+	<mappers>
+		<mapper resource="/mybatis/mapper/memberMapper.xml" />
+<!-- 		<mapper resource="/mybatis/mapper/mypageMapper.xml" />  -->
+		<mapper resource="/mybatis/mapper/mypagekMapper.xml" />
+
+	</mappers>
+
+</configuration>
