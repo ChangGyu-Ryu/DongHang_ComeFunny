@@ -179,7 +179,7 @@ function hiddenmodal() {
 
 <div id="applyAdminPopup" class="overlay">
 	<div class="popup">
-		<p>신청현황 관리 <small style="color: #ff5858;"> *해당창을 벗어나면 변경사항은 더 이상 수정이 불가능 합니다.</small></p>
+		<p>신청현황 관리</p>
 		<a class="close" onclick="location.href='/mypage/mydonghang?cPage=${paging.currentPage}'">&times;</a>
 <!-- 		<a class="close" onclick="history.go(-1)">&times;</a> -->
 		
