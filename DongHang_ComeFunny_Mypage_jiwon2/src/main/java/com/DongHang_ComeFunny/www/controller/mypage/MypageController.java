@@ -171,7 +171,7 @@ public class MypageController {
 	@RequestMapping(value = "/mydonghang",  method = RequestMethod.GET)
 	public ModelAndView mydonghang(@RequestParam(required = false, defaultValue = "1")int cPage, HttpSession session) {
 		User sessionUser = new User();
-		sessionUser.setuNo(5);
+		sessionUser.setuNo(2);
 	    //회원정보를 세선에 담기
 	    session.setAttribute("loginInfo", sessionUser);
 		
@@ -252,7 +252,7 @@ public class MypageController {
 		System.out.println("chArr : " + chArr);
 		
 		User sessionUser = new User();
-		sessionUser.setuNo(5);
+		sessionUser.setuNo(2);
 	    //회원정보를 세선에 담기
 	    session.setAttribute("loginInfo", sessionUser);
 		
@@ -332,7 +332,7 @@ public class MypageController {
 		
 		
 		User sessionUser = new User();
-		sessionUser.setuNo(5);
+		sessionUser.setuNo(2);
 	    //회원정보를 세선에 담기
 	    session.setAttribute("loginInfo", sessionUser);
 		
@@ -355,7 +355,7 @@ public class MypageController {
 	@RequestMapping(value = "/mydonghang/adminrecruit",  method = RequestMethod.POST)
 	public int adminRecruit(HttpSession session, @RequestParam(value="agreeChk")List<String> agreeChk) {
 		User sessionUser = new User();
-		sessionUser.setuNo(5);
+		sessionUser.setuNo(2);
 	    //회원정보를 세선에 담기
 	    session.setAttribute("loginInfo", sessionUser);
 		
@@ -387,7 +387,7 @@ public class MypageController {
 	@RequestMapping(value = "/mydonghang/refuserecruit",  method = RequestMethod.POST)
 	public int refuseRecruit(HttpSession session, @RequestParam(value="refuseChk")List<String> refuseChk) {
 		User sessionUser = new User();
-		sessionUser.setuNo(5);
+		sessionUser.setuNo(2);
 	    //회원정보를 세선에 담기
 	    session.setAttribute("loginInfo", sessionUser);
 		

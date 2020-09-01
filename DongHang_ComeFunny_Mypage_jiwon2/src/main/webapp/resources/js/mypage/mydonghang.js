@@ -389,13 +389,13 @@ $(document).ready(function () {
 								if(item.GACATEGORY == "함께가요"){
 									var cate = 0;
 //									status ='<td><button class="agreeBtn" onclick="agree('+item.UNO+','+item.GANO+');" style="color: #fff;" value="'+item.UNO+'">수락</button>'
-									status ='<td><button class="agreeBtn" onclick="agree('+item.UNO+','+item.GANO+','+cate+');" style="color: #fff;" value="'+item.UNO+'">수락</button>'
+									status ='<td id="agreebtt"><button class="agreeBtn" onclick="agree('+item.UNO+','+item.GANO+','+cate+');" style="color: #fff;" value="'+item.UNO+'">수락</button>'
 									+ '<button class="refuseBtn" onclick="disagree('+item.UNO+','+item.GANO+','+cate+');" style="color: #fff;" value="'+item.UNO+'">거절</button>'
 									+ '</td>';
 									
 								}else if(item.DACATEGORY == "함께해요"){
 									var cate = 1;
-									status ='<td><button class="agreeBtn" onclick="agree('+item.UNO+','+item.DANO+','+cate+');" style="color: #fff;" value="'+item.UNO+'">수락</button>'
+									status ='<td id="agreebtt"><button class="agreeBtn" onclick="agree('+item.UNO+','+item.DANO+','+cate+');" style="color: #fff;" value="'+item.UNO+'">수락</button>'
 									+ '<button class="refuseBtn" onclick="disagree('+item.UNO+','+item.DANO+','+cate+');" style="color: #fff;" value="'+item.UNO+'">거절</button>'
 									+ '</td>';
 									
@@ -511,6 +511,7 @@ function agree(uno, bano, cate) {
 		    ,traditional : true
 		    ,success : function(result){
 				if(result ==1){
+					document.getElementById("agreebtt").innerHTML = '수락완료';
 					$("#agreementPop2").css({
 						visibility: "visible"
 						,opacity: "1"
@@ -567,6 +568,7 @@ function disagree(uno, bano , cate) {
 		    ,traditional : true
 		    ,success : function(result){
 				if(result ==1){
+					document.getElementById("agreebtt").innerHTML = '거절완료';
 					$("#refusedPop2").css({
 						visibility: "visible"
 						,opacity: "1"
