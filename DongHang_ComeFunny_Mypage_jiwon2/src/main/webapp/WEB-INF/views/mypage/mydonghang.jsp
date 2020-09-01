@@ -248,7 +248,7 @@ function hiddenmodal() {
 		
 	</div>
 </div>
-
+ 
 
 
 <!-- refuesed Modal -->
