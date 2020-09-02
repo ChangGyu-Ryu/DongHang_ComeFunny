@@ -1,3 +1,4 @@
+<<<<<<< Upstream, based on origin/admin
 <<<<<<< HEAD
 Manifest-Version: 1.0
 Class-Path: 
@@ -7,3 +8,8 @@ Manifest-Version: 1.0
 Class-Path: 
 
 >>>>>>> admin setting
+=======
+Manifest-Version: 1.0
+Class-Path: 
+
+>>>>>>> 21b134f admin setting
