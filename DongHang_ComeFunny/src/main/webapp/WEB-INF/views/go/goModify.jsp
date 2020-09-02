@@ -30,16 +30,16 @@
 
 <!-- <form>태그의 submit을 수행하면 editor에 작성한 내용을 <textarea>에 반영 -->
 <script type="text/javascript">
-// 	function submitContents(elClikedObj) {
-// 		//에디터의 내용을 #content에 반영
-// 		oEditors.getById["goContent"].exec("UPDATE_CONTENTS_FIELD", []);
+	function submitContents(elClikedObj) {
+		//에디터의 내용을 #content에 반영
+		oEditors.getById["goContent"].exec("UPDATE_CONTENTS_FIELD", []);
 
-// 		try {
-// 			elClikedObj.form.submit();
-// 		} catch (e) {
+		try {
+			elClikedObj.form.submit();
+		} catch (e) {
 
-// 		}
-// 	}
+		}
+	}
 
 </script>
 

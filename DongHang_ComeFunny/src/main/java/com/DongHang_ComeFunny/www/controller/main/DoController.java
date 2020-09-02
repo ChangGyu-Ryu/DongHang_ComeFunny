@@ -182,15 +182,10 @@ public class DoController {
 			, HttpSession session
 			) {
 		
-		//임의로 세션값 넣기
-		User sessionUser = new User(); //임의로 세션값 생성
-		sessionUser.setuNo(2);
-		sessionUser.setUserId("testid");
-		
-		session.setAttribute("login", sessionUser); //세션에 세션값 넣기
-		
 		ModelAndView mav = new ModelAndView();
-		sessionUser = (User)session.getAttribute("login"); //세션 부르기
+		//임의로 세션값 넣기
+		// 2. 세션에 저장된 로그인 정보를 'User' VO에 저장
+		User sessionUser = (User)session.getAttribute("logInInfo");
 		String root = session.getServletContext().getRealPath("/");
 		
 		if(sessionUser != null) { //존재하면
