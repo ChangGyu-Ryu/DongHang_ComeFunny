@@ -33,59 +33,59 @@
 <script type="text/javascript">
 //checkBox 전체 체크 
 $(document).ready(function () {
-	
-	$("#deleteChkAll").click(function(){
-		if($(this).prop("checked")){
-			$(".deleteChk").prop("checked", true);
-		}else{
-			$(".deleteChk").prop("checked", false);
-		}		
-		
-	})
+   
+   $("#deleteChkAll").click(function(){
+      if($(this).prop("checked")){
+         $(".deleteChk").prop("checked", true);
+      }else{
+         $(".deleteChk").prop("checked", false);
+      }      
+      
+   })
 })
 </script>
 <script type="text/javascript">
 $(document).ready(function() {
-	
-	$(".golikedeletebtn").click(function(){
-	    console.log("삭제버튼클릭");
+   
+   $(".golikedeletebtn").click(function(){
+       console.log("삭제버튼클릭");
 
-	    var confirm_val = confirm("함께가요 찜한 목록을 삭제하시겠습니까?");
-	 
-	    if(confirm_val){
-	       
-	       var checkArr = new Array();
-	       
-	       $("input[class='deleteChk']:checked").each(function() {
-	          console.log($(this).val());
-	          checkArr.push($(this).val());
-	       });
-	       
-	       if(checkArr==null || checkArr ==""){
-	          confirm_val = confirm("삭제할 대상을 선택해 주세요.");
-	       }else{
-	          
-	          $.ajax({
-	             url : "/mypage/deletegolike"
-	             ,type : "post"
-	             ,data : { deleteChk : checkArr }
-	          	,traditional : true
-	          	,success : function(result){
-	             	if(result == 1){
-	                	alert("함께가요 찜목록이 삭제되었습니다.");
-	                	location.href=window.document.URL;
-	             	}else{
-	                	alert("삭제 실패");
-	             }
-	          }
-	          
-	          });
-	       }
-	       
-	 
-	    }
-	 })
-	
+       var confirm_val = confirm("함께가요 찜한 목록을 삭제하시겠습니까?");
+    
+       if(confirm_val){
+          
+          var checkArr = new Array();
+          
+          $("input[class='deleteChk']:checked").each(function() {
+             console.log($(this).val());
+             checkArr.push($(this).val());
+          });
+          
+          if(checkArr==null || checkArr ==""){
+             confirm_val = confirm("삭제할 대상을 선택해 주세요.");
+          }else{
+             
+             $.ajax({
+                url : "/mypage/deletegolike"
+                ,type : "post"
+                ,data : { deleteChk : checkArr }
+                ,traditional : true
+                ,success : function(result){
+                   if(result == 1){
+                      alert("함께가요 찜목록이 삭제되었습니다.");
+                      location.href=window.document.URL;
+                   }else{
+                      alert("삭제 실패");
+                }
+             }
+             
+             });
+          }
+          
+    
+       }
+    })
+   
 })
 </script>
 </head>
@@ -94,43 +94,43 @@ $(document).ready(function() {
 <c:import url="mypage_header.jsp" />
 
 
-<!-- 본문 -->	
+<!-- 본문 -->   
 <div class="container" id="myDongHang">
-	<div id="dongHangBtn">
-		<!-- 함께가요  -->
-		<div id="switchBlock1" onclick="location.href='#'"></div>
-		<!-- 함께해요  -->
-		<div id="switchBlock2" onclick="location.href='/mypage/likelist'"></div>
-		<div>
-			<img id="myDongHangBtn" alt="함께가요" src="/resources/image/mypage/golike.png">
-		</div>
-	</div>
-	
-	<!-- 함께가요 테이블 -->
-	<div id="donghangform">
-		<div id="donghangformTitle">함께가요</div>
-		<button id="deleteBtn" class="golikedeletebtn" type="button">삭제</button>
-	
-		<table id="donghangtable" class="table table-hover table-bordered">
-			<tr>
-				<th style="width: 5%"><input type="checkbox" id="deleteChkAll"/></th>
-				<th style="width: 20%">작성일</th>
-				<th style="width: 50%">제목</th>
-				<th style="width: 25%">작성자</th>
-		
-			</tr>
-			<c:forEach items="${golikeList.golist }" var="list">
-			<tr>
-				<td style="vertical-align: inherit;"><input type="checkbox"class="deleteChk" value="${list.GBNO }" /></td>
-					<td style="vertical-align: inherit;"><fmt:formatDate var="date" value="${list.GBWRITTENDATE}" pattern="YYYY-MM-dd"/>${date}</td>
-					<td style="vertical-align: inherit;"><a href="<%=request.getContextPath() %>/go/godetail?gbno=${list.GBNO }">${list.GBTITLE }</a></td>
-					<td style="vertical-align: inherit;">${list.USERID }</td>
-			</tr>
-			</c:forEach>
-		</table>
-	</div>
-	<!-- 페이징 처리 -->
-	<nav aria-label="Page navigation" style="text-align: center;">
+   <div id="dongHangBtn">
+      <!-- 함께가요  -->
+      <div id="switchBlock1" onclick="location.href='#'"></div>
+      <!-- 함께해요  -->
+      <div id="switchBlock2" onclick="location.href='/mypage/likelist'"></div>
+      <div>
+         <img id="myDongHangBtn" alt="함께가요" src="/resources/image/mypage/golike.png">
+      </div>
+   </div>
+   
+   <!-- 함께가요 테이블 -->
+   <div id="donghangform">
+      <div id="donghangformTitle">함께가요</div>
+      <button id="deleteBtn" class="golikedeletebtn" type="button">삭제</button>
+   
+      <table id="donghangtable" class="table table-hover table-bordered">
+         <tr>
+            <th style="width: 5%"><input type="checkbox" id="deleteChkAll"/></th>
+            <th style="width: 20%">작성일</th>
+            <th style="width: 50%">제목</th>
+            <th style="width: 25%">작성자</th>
+      
+         </tr>
+         <c:forEach items="${golikeList.golist }" var="list">
+         <tr>
+            <td style="vertical-align: inherit;"><input type="checkbox"class="deleteChk" value="${list.GBNO }" /></td>
+               <td style="vertical-align: inherit;"><fmt:formatDate var="date" value="${list.GBWRITTENDATE}" pattern="YYYY-MM-dd"/>${date}</td>
+               <td style="vertical-align: inherit;"><a href="<%=request.getContextPath() %>/go/goDetail?gbNo=${list.GBNO }">${list.GBTITLE }</a></td>
+               <td style="vertical-align: inherit;">${list.USERID }</td>
+         </tr>
+         </c:forEach>
+      </table>
+   </div>
+   <!-- 페이징 처리 -->
+   <nav aria-label="Page navigation" style="text-align: center;">
         <ul class="pagination">
           <li>
             <a href="<%= request.getContextPath() %>/mypage/golike" aria-label="Previous">

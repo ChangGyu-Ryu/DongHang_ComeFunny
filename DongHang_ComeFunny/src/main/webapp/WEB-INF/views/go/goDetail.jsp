@@ -127,15 +127,18 @@ function goDhOkBtn(gaUNo) {
              
          },
          success: function(result) {
-            if(result != "fail"){
-                alert("동행 요청이 수락되었습니다.");
+          if(result == "fail"){
+                alert("동행 요청 수락이 실패되었습니다.");
+                
+             }else if(result == "fail2"){
+                alert("동행 요청 수락 인원이 꽉찼습니다.");
+                
+             } else {
+            alert("동행 요청이 수락되었습니다.");
                 
                 console.log(result);
                 document.querySelector(result).outerHTML = '<a class="btn btn-primary">동행수락</a>';
 
-                
-             }else{
-                alert("동행 요청 수락이 실패되었습니다.");
              }
             
             
@@ -185,7 +188,7 @@ function toggleImg() {
          type: "POST",
          data: {
             gbNo: ${goDetailInfo.goBoardUserInfo.GBNO },
-            uNo : 2 //나중에 로그인 합치고 변경
+            uNo : ${logInInfo.uNo }
              
          },
          success: function(result) {
@@ -214,7 +217,7 @@ function toggleImg() {
          type: "POST",
          data: {
             gbNo: ${goDetailInfo.goBoardUserInfo.GBNO },
-            uNo : 2 //나중에 로그인 합치고 변경
+            uNo : ${logInInfo.uNo }
              
          },
          success: function(result) {
@@ -433,8 +436,10 @@ function toggleImg() {
       
       <!-- 글쓴이한테만 보임 -->
       <div class="dobtn" style="width: 850px; margin: auto; margin-top: 5%; height: 35px;">
-         <a class="btn btn-warning " href="/go/modify?gbNo=${goDetailInfo.goBoardUserInfo.GBNO}">수정</a> 
-           <a class="btn btn-danger " href="/go/goDelete?gbNo=${goDetailInfo.goBoardUserInfo.GBNO}">삭제</a>
+         <c:if test="${goDetailInfo.goBoardUserInfo.GBUNO == logInInfo.uNo}">
+            <a class="btn btn-warning " href="/go/modify?gbNo=${goDetailInfo.goBoardUserInfo.GBNO}">수정</a> 
+            <a class="btn btn-danger " href="/go/goDelete?gbNo=${goDetailInfo.goBoardUserInfo.GBNO}">삭제</a>
+       </c:if>      
       </div>
          
       <div class="dobtn" style="width: 850px; margin: auto; margin-top: 1%; text-align: center; height: 35px;">
@@ -495,12 +500,23 @@ function toggleImg() {
             </div>
             <div class="mbtn"> <!-- 작성자만 볼수 있음 -->
                <c:choose>
+                     
                   <c:when test="${goApplylist.GASTATUS eq '0'}">
-                     <div style="display: inline-block;" class="goDhApplyResult">
-                        <a class="btn btn-primary" id="goDhOkBtn" onclick="goDhOkBtn(${goApplylist.GAUNO });">수락</a>
-                        <a class="btn btn-default" id="goDhNoBtn" onclick="goDhNoBtn(${goApplylist.GAUNO });">거절</a>
-                     </div>
-                  </c:when>
+                  
+                     <c:if test="${goDetailInfo.goBoardUserInfo.GBUNO == logInInfo.uNo}">
+                        <div style="display: inline-block;" class="goDhApplyResult">
+                           <a class="btn btn-primary" id="goDhOkBtn" onclick="goDhOkBtn(${goApplylist.GAUNO });">수락</a>
+                           <a class="btn btn-default" id="goDhNoBtn" onclick="goDhNoBtn(${goApplylist.GAUNO });">거절</a>
+                        </div>
+                     </c:if>
+                     
+                     <c:if test="${goDetailInfo.goBoardUserInfo.GBUNO != logInInfo.uNo}">
+                        <div style="display: inline-block;" class="goDhApplyResult">
+                           <a class="btn btn-primary">대기중</a>
+                        </div>
+                     </c:if>
+                </c:when>
+                  
                   <c:when test="${goApplylist.GASTATUS eq '1'}">
                      <div style="display: inline-block;" class="goDhApplyResult">
                         <a class="btn btn-primary">동행수락</a>
@@ -511,7 +527,9 @@ function toggleImg() {
                         <a class="btn btn-default">동행거절</a>
                      </div>   
                   </c:when>
+                  
                </c:choose>
+                        
             </div>
          </div>
          </c:forEach>
