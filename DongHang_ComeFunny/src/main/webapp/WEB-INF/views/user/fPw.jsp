@@ -201,7 +201,7 @@ $(function(){
 
 		<div>
 			<button id=subBtn class="ui teal button">비밀번호 찾기</button>
-			<button id=cancelBtn class="ui teal button">돌아가기</button>
+			<button id=cancelBtn class="ui teal button" onclick='history.back()'>돌아가기</button>
 		</div>
 	</div>
 </div>

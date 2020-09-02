@@ -10,6 +10,18 @@
 	font-family: 'Noto Sans KR', sans-serif;
 }
 
+/*수정*/
+.typelist{
+	margin: 5px 3px;
+    font-size: 14px;
+    padding: 5px;
+    border-radius: 35px;
+    width: 100px;
+    display: inline-block;
+    background-color: #e4e4e4;
+    font-weight: normal;
+}
+
 .body-container {
 	margin: 0px auto;
 	width: 100%;
@@ -284,7 +296,6 @@ a {
     font-size: 12px;
     letter-spacing: -0.5px;
 }
-
 
 /* 푸터 | 구별 */
 #footer .links .footer_menu:before {

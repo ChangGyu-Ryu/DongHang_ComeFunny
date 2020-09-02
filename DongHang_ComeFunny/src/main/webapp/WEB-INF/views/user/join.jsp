@@ -7,9 +7,7 @@
 <head>
 <link rel="stylesheet"
 	href="<%=request.getContextPath() %>/resources/css/join.css" />
-<script src="https://code.jquery.com/jquery-2.2.4.min.js"
-	integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
-	crossorigin="anonymous"></script>
+<script src="/resources/bower_components/jquery/dist/jquery.min.js"></script> 
 
 <!-- fontawesome 아이콘 -->
 <link rel="stylesheet"
@@ -60,8 +58,6 @@ body>.grid {
 </style>
 
 </head>
-
-<script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
 <script type="text/javascript">
 $(function idChk(){
    $("#idChkBtn").on("click", function() {
@@ -272,7 +268,7 @@ $(document).ready(function() {
 								id="upwconfirm" name="upwconfirm" placeholder="다시 한번 입력해주세요.">
 						</div>
 						<div class="five wide field">
-							<button class="ui button" type="submit">확인</button>
+							<button class="ui button" type="button">확인</button>
 						</div>
 					</div>
 					<p id="userPwChkMsg" style="text-align: center"></p>

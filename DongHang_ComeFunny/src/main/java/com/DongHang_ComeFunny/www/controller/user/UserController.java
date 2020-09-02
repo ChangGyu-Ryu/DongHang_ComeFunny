@@ -334,7 +334,7 @@ public class UserController {
             out_equals.println("<script>alert('인증번호가 일치하지않습니다. 인증번호를 다시 입력해주세요.'); history.go(-1);</script>");
             out_equals.flush();
             
-    
+    	
             return mav2;
             
         }    

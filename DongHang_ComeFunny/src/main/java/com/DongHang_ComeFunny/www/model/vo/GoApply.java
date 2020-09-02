@@ -1,10 +1,10 @@
 package com.DongHang_ComeFunny.www.model.vo;
 
 public class GoApply {
-	private int gaNo;
-	private int gaGbNo;
-	private int gaUNo;
-	private int gaStatus;
+	private int gaNo; //신청번호
+	private int gaGbNo; //게시글번호
+	private int gaUNo; //회원번호
+	private int gaStatus; //신청상태
 	private String gaCategory;
 	
 

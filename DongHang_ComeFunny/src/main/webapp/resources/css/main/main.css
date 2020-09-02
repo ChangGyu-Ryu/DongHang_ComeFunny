@@ -193,7 +193,7 @@ a {
 
 .selectbox{
     width: 170px;
-    height: 40px;
+    height: 46px;
     padding: 6px 12px;
     font-size: 14px;
     line-height: 2;
@@ -275,7 +275,7 @@ a {
 /**do랑  go랑 이름 잘못씀... 헷갈렸다...**/
 
 #dobest{
-	padding: 0px 7px;
+	padding: 0px 6px;
 	margin-bottom: 20px;
 }
 
@@ -316,7 +316,7 @@ a {
 
 /*함께해요 전용*/
 #gobest{
-	padding: 0px 7px;
+	padding: 0px 6px;
 }
 
 .gobest{
@@ -413,7 +413,7 @@ a {
 /*best메이트 전용*/
 
 #bestmate{
-	padding: 0px 7px;
+	padding: 0px 6px;
 	text-align: center;
 }
 
@@ -535,7 +535,7 @@ figure.mateprofile.hover p {
 .reviewbest{
     display: inline-block;
     padding: 25px;
-    margin: 10px 9px;
+    margin: 10px 8px;
     line-height: 2;
     background-color: rgba(115, 162, 191, 0.5);
     border-radius: 5px;

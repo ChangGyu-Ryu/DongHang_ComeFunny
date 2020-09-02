@@ -35,6 +35,11 @@
 		<typeAlias type="com.DongHang_ComeFunny.www.model.vo.UserFile" alias="USERFILE"/>
       	<typeAlias type="com.DongHang_ComeFunny.www.model.vo.GoCheck" alias="GOCHECK"/>
         <typeAlias type="com.DongHang_ComeFunny.www.model.vo.Message" alias="MESSAGE"/>
+        
+        <typeAlias type="com.DongHang_ComeFunny.www.model.vo.GoBoard" alias="GoBoard"/>
+		<typeAlias type="com.DongHang_ComeFunny.www.model.vo.GoCheck" alias="GoCheck"/>
+		<typeAlias type="com.DongHang_ComeFunny.www.model.vo.DoBoard" alias="DoBoard"/>
+		<typeAlias type="com.DongHang_ComeFunny.www.model.vo.DoCheck" alias="DoCheck"/>
 	</typeAliases>
 
 
