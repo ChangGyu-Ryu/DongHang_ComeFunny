@@ -76,7 +76,6 @@ jQuery( document ).ready(function( $ ) {
 			else if( dataName == "gbRecruitStatus"){
 				stateValue += $(data).attr('value')+"-";
 			}
-			
 
 			$.ajax({
 				type : 'GET'
@@ -117,7 +116,6 @@ jQuery( document ).ready(function( $ ) {
 			else if( dataName == "gbRecruitStatus"){
 				stateValue = stateValue.replace($(data).attr('value')+"-","");
 			}
-			
 			
 		}
 	}

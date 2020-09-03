@@ -37,10 +37,10 @@
 				<div class="goprofile ialign">
 				<span aria-hidden="true"></span>
 				<a href="/go/goDetail?gbNo=${go.GBNO }"> <!-- 사진 클릭시 이동 -->
-					<c:if test="${go.UFORIGINFILENAME eq null}"> <!-- 사진이 null이면 default -->
+					<c:if test="${go.UFSTOREDFILENAME eq null}"> <!-- 사진이 null이면 default -->
     					<img src="<%=request.getContextPath() %>/resources/upload/default.png" alt="공백" class="img-circle" />
 					</c:if>
-					<c:if test="${go.UFORIGINFILENAME ne null}">
+					<c:if test="${go.UFSTOREDFILENAME ne null}">
 						<img src="<%=request.getContextPath() %>/resources/upload/${go.UFORIGINFILENAME}" alt="프로필사진" class="img-circle" />
 					</c:if>
 				</a>
@@ -109,8 +109,8 @@
                      <c:when test="${go.GBRECRUITSTATUS eq 1 }" ><span class="gotag2">모집마감</span></c:when>
                  </c:choose>  
 				</span>
-					<span><img class="goheart" onclick="likeheart(${go.GBNO})" style="cursor:pointer" src="/resources/image/go/heart.png" /></span>
-				</div>  <!-- 하트 색 변경 작동 시키기 -->
+<%-- 					<span><img class="goheart" onclick="likeheart(${go.GBNO})" style="cursor:pointer" src="/resources/image/go/heart.png" /></span> --%>
+				</div>  
 			</div>
 		</div>
 		</c:forEach>

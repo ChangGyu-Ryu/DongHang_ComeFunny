@@ -28,21 +28,6 @@
  src="/resources/se2/js/service/HuskyEZCreator.js" charset="utf-8"></script>
 </head>
 
-<!-- <form>태그의 submit을 수행하면 editor에 작성한 내용을 <textarea>에 반영 -->
-<script type="text/javascript">
-// 	function submitContents(elClikedObj) {
-// 		//에디터의 내용을 #content에 반영
-// 		oEditors.getById["goContent"].exec("UPDATE_CONTENTS_FIELD", []);
-
-// 		try {
-// 			elClikedObj.form.submit();
-// 		} catch (e) {
-
-// 		}
-// 	}
-
-</script>
-
 <script type="text/javascript">
 $(document).ready(function () {
 	//체크박스, 라디오 박스 비활성화

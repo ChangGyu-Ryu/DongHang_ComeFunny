@@ -208,7 +208,7 @@ $(document).ready(function() {
 	        <div class="ialign float-left btn1">  
 	            <!-- 신청목록 내용 보여짐 -->
 	            <a id="dolist" class="btn btn-primary ">신청목록</a>
-	            <a class="btn btn-warning ">수정</a> 
+	            <a class="btn btn-warning" href="/do/modify?dbNo=31">수정</a> 
 	        	<a class="btn btn-danger ">삭제</a> 
 			</div>
 		

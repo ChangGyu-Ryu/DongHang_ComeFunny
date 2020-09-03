@@ -20,6 +20,9 @@ public class DoBoard {
 	private int dbHoststarAvg;
 	private int dbStarCnt;
 	private String dbCateGory;
+	private int dbRecruitCnt;
+	
+	
 	
 	@Override
 	public String toString() {
@@ -28,8 +31,20 @@ public class DoBoard {
 				+ ", dbRecruitDate=" + dbRecruitDate + ", dbRecruitArea=" + dbRecruitArea + ", dbRecruitStatus="
 				+ dbRecruitStatus + ", dbRecruitNumber=" + dbRecruitNumber + ", dbRecruitGender=" + dbRecruitGender
 				+ ", dbRecruitCost=" + dbRecruitCost + ", dbDhstarAvg=" + dbDhstarAvg + ", dbHoststarAvg="
-				+ dbHoststarAvg + ", dbStarCnt=" + dbStarCnt + ", dbCateGory=" + dbCateGory + "]";
+				+ dbHoststarAvg + ", dbStarCnt=" + dbStarCnt + ", dbCateGory=" + dbCateGory + ", dbRecruitCnt="
+				+ dbRecruitCnt + "]";
 	}
+
+
+	public int getDbRecruitCnt() {
+		return dbRecruitCnt;
+	}
+
+
+	public void setDbRecruitCnt(int dbRecruitCnt) {
+		this.dbRecruitCnt = dbRecruitCnt;
+	}
+
 
 	public int getDbDhstarAvg() {
 		return dbDhstarAvg;

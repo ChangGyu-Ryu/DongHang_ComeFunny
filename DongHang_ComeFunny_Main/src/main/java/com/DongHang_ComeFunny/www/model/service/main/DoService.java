@@ -15,6 +15,7 @@ import com.DongHang_ComeFunny.www.model.dao.main.DoDao;
 import com.DongHang_ComeFunny.www.model.dao.main.GoDao;
 import com.DongHang_ComeFunny.www.model.vo.DoBoard;
 import com.DongHang_ComeFunny.www.model.vo.DoCheck;
+import com.DongHang_ComeFunny.www.model.vo.DoImg;
 
 import common.util.DoFileUtil;
 
@@ -39,7 +40,7 @@ public class DoService {
 			List<Map<String,String>> filedata 
 				= new DoFileUtil().fileUpload(files, root);
 			for(Map<String,String> fileInfo : filedata) {
-				doDao.insertgoImg(fileInfo);
+				doDao.insertDoImg(fileInfo);
 			}
 		}
 		
@@ -53,7 +54,6 @@ public class DoService {
 		return doDao.selectDolist(map);
 		
 	}
-	
 	
 	//검색후리스트 부르기
 	public Map<String, Object> selectsearchList(Map<String, Object> search, Map<String, Object> map) {
@@ -79,6 +79,58 @@ public class DoService {
 		System.out.println("dlist :"+ commandMap);
 		
 		return commandMap;
+	}
+	
+	//---------------------수정
+	
+	//기존 값 가지고오기
+	public Map<String, Object> selectdolist(int dbNo){
+		
+//		Map<String, Object> doinfo = doDao.selectDoboard(dbNo);
+//		Map<String, Object> docheckinfo = doDao.selectDocheck(dbNo);
+//		Map<String, Object> doimginfo = doDao.selectDoimg(dbNo);
+		HashMap<String, Object> doboard = new HashMap<String, Object>();
+		
+		DoBoard doinfo = doDao.selectDoboard(dbNo);
+		Map<String, Object> docheckinfo = doDao.selectDocheck(dbNo);
+		List<Map<String,String>> doimginfo = doDao.selectDoimg(dbNo);
+		
+		doboard.put("doinfo", doinfo);
+		doboard.put("docheckinfo", docheckinfo);
+		doboard.put("doimginfo", doimginfo);
+		
+		System.out.println("[doboard]"+doboard);
+		return doboard;
+	}
+	
+	//업데이트 하기
+	public int updateDoboard(DoBoard doboard, List<MultipartFile> files, String root) {
+
+		int res = doDao.updateDoboard(doboard);
+
+		//파일업로드
+		if(!(files.size() == 1 && files.get(0).getOriginalFilename().equals(""))) {
+			List<Map<String,String>> filedata = new DoFileUtil().fileUpload(files, root);
+
+			for(Map<String,String> fileInfo : filedata) { 
+				fileInfo.put("dbNo", String.valueOf(doboard.getDbNo()));
+				doDao.updateDoImg(fileInfo);
+			}
+		}
+
+		return res;
+
+	}
+
+	public int deletedoimg(int diNo) {
+
+		DoImg fileData = doDao.selectDinoimg(diNo);
+
+		DoFileUtil fileUtil = new DoFileUtil();
+		fileUtil.deleteFile(fileData.getDiSavePath());
+
+		int res = doDao.deletDoimg(diNo);
+		return res;
 	}
 	
 }

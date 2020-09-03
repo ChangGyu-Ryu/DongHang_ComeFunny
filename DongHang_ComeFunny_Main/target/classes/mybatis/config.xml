@@ -23,6 +23,7 @@
 		<typeAlias type="com.DongHang_ComeFunny.www.model.vo.GoCheck" alias="GoCheck"/>
 		<typeAlias type="com.DongHang_ComeFunny.www.model.vo.DoBoard" alias="DoBoard"/>
 		<typeAlias type="com.DongHang_ComeFunny.www.model.vo.DoCheck" alias="DoCheck"/>
+		<typeAlias type="com.DongHang_ComeFunny.www.model.vo.DoImg" alias="DoImg"/>
 	</typeAliases>
 
 	<!-- 4. mapper를 인식시켜주는 설정 -->

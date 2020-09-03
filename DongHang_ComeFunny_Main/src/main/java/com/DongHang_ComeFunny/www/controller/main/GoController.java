@@ -202,10 +202,10 @@ public class GoController {
 			
 			//임의로 세션값 넣기
 			User sessionUser = new User(); //임의로 세션값 생성
-			sessionUser.setuNo(4);
-			sessionUser.setUserId("test2");
+//			sessionUser.setuNo(4);
+//			sessionUser.setUserId("test2");
 			
-			session.setAttribute("login", sessionUser); //세션에 세션값 넣기
+//			session.setAttribute("login", sessionUser); //세션에 세션값 넣기
 			
 			ModelAndView mav = new ModelAndView();
 			sessionUser = (User)session.getAttribute("login"); //세션 부르기
@@ -228,7 +228,6 @@ public class GoController {
 			return mav;
 			
 		}
-		
 	//기본 최신순 정렬된 리스트 전체 띄우기
 		@RequestMapping(value="/go", method=RequestMethod.GET)
 		public ModelAndView goList(String searchText, Map<String, Object> commandMap) {
@@ -255,7 +254,7 @@ public class GoController {
 	//페이지내에서 검색하기 (기본 리다이렉트)
 		@RequestMapping(value="/go/search", method=RequestMethod.POST)
 		public ModelAndView goListSearch(String searchText, Map<String, Object> commandMap) {
-
+			
 			ModelAndView mav = new ModelAndView();
 
 			Map<String,Object> search = new HashMap<>();
@@ -407,7 +406,7 @@ public class GoController {
 
 			mav.addObject("goBoard", goBoard);
 			mav.addObject("alertMsg", "수정완료!");
-			mav.addObject("url","/go");
+			mav.addObject("url","/go"); 
 			mav.setViewName("common/result");
 
 			return mav;

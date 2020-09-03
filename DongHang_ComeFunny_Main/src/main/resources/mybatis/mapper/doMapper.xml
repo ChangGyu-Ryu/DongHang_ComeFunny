@@ -127,6 +127,52 @@
 	</select>
 	
 	
+	<!-- doboard조회 -->
+	<select id="selectdoboard" resultType="DoBoard">
+		select * from tb_doboard
+		where dbno = #{dbNo}
+	</select>
 	
-
+	<!-- docheck조회 -->
+	<select id="selectdocheck" resultType="Map">
+		select dcdbno, LISTAGG(dcvalue, ',') WITHIN group(order by dcvalue) as dcvalue2
+		from tb_docheck
+		where dcdbno = #{dbNo}
+		group by dcdbno
+	</select>
+	
+	<!-- doimg조회 -->
+	<select id="selectdoimg" resultType="Map">
+		select * from tb_doimg
+		where didbno = #{dbNo}
+	</select>
+	
+	<!-- doboard 업데이트 -->
+	<update id="updatedoboard">
+		update tb_doboard
+		set
+			dbtitle = #{dbTitle},
+			dbcontent = #{dbContent},
+			dbrecruitstatus = #{dbRecruitStatus}
+		where dbno = #{dbNo}
+	</update>
+	
+	<!-- 업데이트시 이미지 인서트 -->
+	<insert id="insertdoimg">
+		insert into tb_doimg (DIDBNO, DIORIGINIMGNAME, DISTOREDIMGNAME, DISAVEPATH)
+		values (#{dbNo}, #{diOriginImgName}, #{diStoredImgName}, #{diSavePath})
+	</insert>
+	
+	<!-- 각 doimg 정보 조회  -->
+	<select id="selectdinoimg" resultType="DoImg">
+		select * from tb_doimg
+		where dino = #{diNo}
+	</select>
+	
+	<!-- doimg 삭제 -->
+	<delete id="deletedoimg">
+		delete from tb_doimg
+		where dino=#{diNo}
+	</delete>
+	
 </mapper>
