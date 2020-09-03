@@ -40,6 +40,13 @@
 		<typeAlias type="com.DongHang_ComeFunny.www.model.vo.GoCheck" alias="GoCheck"/>
 		<typeAlias type="com.DongHang_ComeFunny.www.model.vo.DoBoard" alias="DoBoard"/>
 		<typeAlias type="com.DongHang_ComeFunny.www.model.vo.DoCheck" alias="DoCheck"/>
+		
+		<typeAlias type="com.DongHang_ComeFunny.www.model.vo.UserImg" alias="USERIMG"/>
+		<typeAlias type="com.DongHang_ComeFunny.www.model.vo.NoticeBoard" alias="NOTICE"/>
+		<typeAlias type="com.DongHang_ComeFunny.www.model.vo.NoticeFile" alias="NOTICEFILE"/>
+		<typeAlias type="com.DongHang_ComeFunny.www.model.vo.FreeFile" alias="FREEFILE"/>
+		<typeAlias type="com.DongHang_ComeFunny.www.model.vo.QuestionFile" alias="QUESTIONFILE"/>
+		<typeAlias type="com.DongHang_ComeFunny.www.model.vo.AnswerFile" alias="ANSWERFILE"/>
 	</typeAliases>
 
 

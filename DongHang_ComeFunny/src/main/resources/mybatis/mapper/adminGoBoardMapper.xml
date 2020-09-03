@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+    <mapper namespace="AdminGoBoard">
+    	<select id="selectGoBoardCnt" resultType="int">
+    		SELECT COUNT(*) FROM  
+    			(SELECT g.* FROM  tb_goboard g, tb_user u
+    				WHERE u.uno = g.gbuno
+    				<if test='searchKinds == "gbWriter" and searchKinds != null'>
+					AND u.uname LIKE '%' || #{searchText} || '%'
+					</if>) sg
+			<trim prefix= "WHERE" prefixOverrides="AND">
+				<if test='searchKinds == "gbTitle" and searchKinds != null'>
+				AND sd.gbtitle LIKE '%' || #{searchText} || '%'
+				</if>
+				<if test='searchKinds == "gbWrittenDate" and searchKinds != null'>
+				AND sd.gbwrittendate LIKE '%' || #{searchText} || '%'
+				</if>
+				<if test='searchKinds == "gbRecruitstatus" and searchKinds != null'>
+				AND sd.gbrecruitstatus LIKE '%' || #{searchText} || '%'
+				</if>
+			</trim>
+    	
+    	</select>
+    	
+    	
+    	
+    	<select id="selectGoBoardList" resultMap="GOBOARDLIST">
+		 	SELECT gbno, gbtitle, gbwrittendate, gbisdel, gbrecruitstatus, uname FROM (
+			SELECT rownum rnum,g1.*FROM(
+			SELECT * FROM tb_goboard g, tb_user u WHERE u.uno = g.gbuno ORDER BY g.gbno DESC) g1 
+			<trim prefix= "WHERE" prefixOverrides="OR">
+				<if test='searchKinds == "gbTitle" and searchKinds != null'>
+				OR gbtitle LIKE '%' || #{searchText} || '%'
+				</if>
+				<if test='searchKinds == "gbWrittenDate" and searchKinds != null'>
+				OR gbwrittendate LIKE '%' || #{searchText} || '%'
+				</if>
+				<if test='searchKinds == "gbRecruitStatus" and searchKinds != null'>
+				OR gbrecruitstatus LIKE '%' || #{searchText} || '%'
+				</if>
+				<if test='searchKinds == "gbWriter" and searchKinds != null'>
+				OR uname LIKE '%' || #{searchText} || '%'
+				</if>
+			</trim>
+			)
+			WHERE rnum between #{paging.start} and #{paging.end}
+		</select>
+		
+		<delete id="deleteGoBoard">
+			DELETE tb_goboard
+			WHERE gbno = #{gbNo}
+		</delete>
+		
+    	<resultMap type="com.DongHang_ComeFunny.www.model.vo.GoBoard" id="GOBOARDLIST">
+    		<result property="gbNo" column="gbno"/>
+    		<result property="gbTitle" column="gbtitle"/>
+    		<result property="gbWrittenDate" column="gbWrittendate"/>
+    		<result property="gbIsDel" column="gbisdel"/>
+    		<result property="gbRecruitStatus" column="gbrecruitstatus"/>
+    		<result property="gbWriter" column="uname"/>
+    	</resultMap>
+    
+    </mapper>

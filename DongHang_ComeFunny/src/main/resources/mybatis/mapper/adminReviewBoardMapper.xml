@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+    <mapper namespace="AdminReviewBoard">
+    	<select id="selectReviewBoardCnt" resultType="int">
+    		SELECT COUNT(*) FROM  
+    			(SELECT r.* FROM  tb_reviewboard r, tb_user u
+    				WHERE u.uno = r.rbuno
+    				<if test='searchKinds == "rbWriter" and searchKinds != null'>
+					AND u.uname LIKE '%' || #{searchText} || '%'
+					</if>) sr
+			<trim prefix= "WHERE" prefixOverrides="AND">
+				<if test='searchKinds == "rbTitle" and searchKinds != null'>
+				AND sr.rbtitle LIKE '%' || #{searchText} || '%'
+				</if>
+				<if test='searchKinds == "rbWrittenDate" and searchKinds != null'>
+				AND sr.rbwrittendate LIKE '%' || #{searchText} || '%'
+				</if>
+			</trim>
+    	
+    	</select>
+    	
+    	
+    	
+    	<select id="selectReviewBoardList" resultMap="REVIEWBOARDLIST">
+		 	SELECT rbno, rbtitle, rbwrittendate, rbisdel, rbhitscnt, rblikecnt, rbrecommendcnt, uname FROM (
+			SELECT rownum rnum,r1.*FROM(
+			SELECT * FROM tb_reviewboard r, tb_user u WHERE u.uno = r.rbuno ORDER BY r.rbno DESC) r1 
+			<trim prefix= "WHERE" prefixOverrides="OR">
+				<if test='searchKinds == "rbTitle" and searchKinds != null'>
+				OR rbtitle LIKE '%' || #{searchText} || '%'
+				</if>
+				<if test='searchKinds == "rbWrittenDate" and searchKinds != null'>
+				OR rbwrittendate LIKE '%' || #{searchText} || '%'
+				</if>
+				<if test='searchKinds == "rbWriter" and searchKinds != null'>
+				OR uname LIKE '%' || #{searchText} || '%'
+				</if>
+			</trim>
+			)
+			WHERE rnum between #{paging.start} and #{paging.end}
+		</select>
+		
+		<delete id="deleteReviewBoard">
+			DELETE tb_reviewboard
+			WHERE rbno = #{rbNo}
+		</delete>
+		
+    	<resultMap type="com.DongHang_ComeFunny.www.model.vo.ReviewBoard" id="REVIEWBOARDLIST">
+    		<result property="rbNo" column="rbno"/>
+    		<result property="rbTitle" column="rbtitle"/>
+    		<result property="rbWrittenDate" column="rbWrittendate"/>
+    		<result property="rbIsDel" column="rbisdel"/>
+    		<result property="rbRecommendCnt" column="rbrecommendcnt"/>
+    		<result property="rbLikeCnt" column="rblikecnt"/>
+    		<result property="rbHitsCnt" column="rbhitscnt"/>
+    		<result property="rbWriter" column="uname"/>
+    	</resultMap>
+    
+    </mapper>

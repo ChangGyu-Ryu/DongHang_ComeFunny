@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+    <mapper namespace="ServiceCenterQuestion">
+    <select id="selectQuestionCnt" resultType="int">
+		SELECT COUNT(*) FROM tb_questionboard
+		<trim prefix= "WHERE" prefixOverrides="AND">
+				<if test='searchKinds == "qbTitle" and searchKinds != null'>
+				AND qbtitle LIKE '%' || #{searchText} || '%'
+				</if>
+				<if test='searchKinds == "qbWrittenDate" and searchKinds != null'>
+				AND qbwrittendate LIKE '%' || #{searchText} || '%'
+				</if>
+				<if test='searchKinds == "qbWriter" and searchKinds != null'>
+				AND qbwrittendate LIKE '%' || #{searchText} || '%'
+				</if>
+				<if test='searchKinds == "qbAnswer" and searchKinds != null'>
+				AND qbwrittendate LIKE '%' || #{searchText} || '%'
+				</if>
+			</trim>
+	</select>
+
+
+<!-- 	<select id="selectQuestionList" resultType="QUESTIONLIST"> -->
+<!-- 		 	SELECT qbno, qbtitle, qbwrittendate, qbisdel, qbhitscnt, uname FROM ( -->
+<!-- 			SELECT rownum rnum,q1.*FROM( -->
+<!-- 			SELECT * FROM tb_questionboard a, tb_user u WHERE u.uno = q.qbuno ORDER BY q.qbno DESC) q1  -->
+<!-- 			<trim prefix= "WHERE" prefixOverrides="OR"> -->
+<!-- 				<if test='searchKinds == "qbTitle" and searchKinds != null'> -->
+<!-- 				OR qbtitle LIKE '%' || #{searchText} || '%' -->
+<!-- 				</if> -->
+<!-- 				<if test='searchKinds == "qbWrittenDate" and searchKinds != null'> -->
+<!-- 				OR qbwrittendate LIKE '%' || #{searchText} || '%' -->
+<!-- 				</if> -->
+<!-- 				<if test='searchKinds == "qbWriter" and searchKinds != null'> -->
+<!-- 				OR uname LIKE '%' || #{searchText} || '%' -->
+<!-- 				</if> -->
+<!-- 			</trim> -->
+<!-- 			) -->
+<!-- 			WHERE rnum between #{paging.start} and #{paging.end} -->
+	
+<!-- 	</select> -->
+	
+	<delete id="deleteQuestion">
+			DELETE tb_questionboard
+			WHERE qbno = #{qbNo}
+	</delete>
+	
+	<delete id="deleteQuestionFile">
+			DELETE tb_questionfile
+			WHERE qfqbno=#{qbNo}
+	</delete>
+	
+<!-- 	<insert id="insertQuestion" parameterType="QUESTION"> -->
+<!-- 			INSERT INTO tb_questionboard -->
+<!-- 			(qbtitle, qbcontent) -->
+<!-- 			VALUES -->
+<!-- 			(#{qbTitle}, #{qbContent}) -->
+<!-- 	</insert> -->
+	
+	<select id="selectWriteNbNo" resultType="int">
+			SELECT tb_noticeboard_seq.CURRVAL 
+			FROM DUAL
+	</select>
+	
+	<insert id="insertNoticeFile">
+			INSERT INTO tb_noticefile
+			(nfnbno, nforiginfilename, nfstoredfilename, nfsize, nfsavepath)
+			VALUES
+			(#{nfNbNo}, #{originFileName}, #{storedFileName}, #{fileSize}, #{savePath})
+	</insert>
+	
+	<select id="selectNoticeByNbNo" resultType="NOTICE">
+			SELECT 	nbno, nbtitle, nbcontent, nbwrittendate, nbhitscnt FROM tb_noticeboard
+			WHERE nbno = #{nbNo}
+	</select>
+	
+	<select id="selectNoticeFileByNbNo" resultType="NOTICEFILE">
+			SELECT nfno, nforiginfilename, nfstoredfilename, nfsize, nfsavepath FROM tb_noticefile
+			WHERE nfnbno = #{nbNo} 
+	</select>
+	
+	<update id="updateNotice" parameterType="NOTICE">
+		UPDATE tb_noticeboard
+			<set>
+				nbtitle = #{nbTitle},
+				nbcontent = #{nbContent}
+			</set>
+			WHERE nbno = #{nbNo}
+	</update>
+	
+	<select id="selectFile" resultType="HashMap">
+		SELECT
+    		*
+    		FROM tb_noticefile
+    		WHERE nfno = #{nfNo}
+	</select>
+	
+	<delete id="deleteFile">
+		DELETE FROM 
+    			tb_noticefile 
+    		WHERE nfno = #{nfNo}
+	</delete>
+    
+    </mapper>
