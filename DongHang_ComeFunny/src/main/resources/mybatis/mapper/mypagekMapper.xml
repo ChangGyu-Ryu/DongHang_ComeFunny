@@ -602,6 +602,13 @@
 		where gluno = #{glUNo } and glgbno = #{glGbNo }
  	</delete>
 	
+	<!-- 수정한 회원 다시 조회 -->
+	<select id="newUserInfo" resultType="USER">
+		select * from tb_user
+		where uNo = #{uNo }
+	</select>
+	
+	
 	<!-- 동행복권 사용내역 갯수 -->
 	<select id="selectUsingContentCnt" resultType="int">
 		SELECT count(*) FROM tb_reviewdhticket

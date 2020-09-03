@@ -57,16 +57,16 @@
   	<!-- 메뉴바 -->
 	<div class="main_menu">
 		<div class="dropdown">
-	 		<div class="dropbtn"><a href="../go/go.jsp">함께가요</a></div>
+	 		<div class="dropbtn"><a href="/go">함께가요</a></div>
 		</div>			
 		<div class="dropdown">
-	  		<div class="dropbtn"><a href="../do/do.jsp">함께해요</a></div>
+	  		<div class="dropbtn"><a href="/do">함께해요</a></div>
 		</div>
 		<div class="dropdown">
 	  		<div class="dropbtn"><a href="#">커뮤니티</a></div>
 	 	 	<div class="dropdown-content">
-	    		<a href="../board/freelist">자유게시판</a>
-	    		<a href="../board/reviewlist">후기게시판</a>
+	    		<a href="/board/freelist">자유게시판</a>
+	    		<a href="/board/reviewlist">후기게시판</a>
 	 	 	</div>
 		</div>
 		<div class="dropdown">

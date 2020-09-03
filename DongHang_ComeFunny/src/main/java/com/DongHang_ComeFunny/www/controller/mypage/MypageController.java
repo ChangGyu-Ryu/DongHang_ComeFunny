@@ -162,12 +162,9 @@ public class MypageController {
 		
 		user.setUserId(sessionUser.getUserId());
 		
-		//password 암호화
-		//매번 다른 방식으로 암호화가 된다.
+		
 		String password = user.getuPw();
-		password = passwordEncoder.encode(password);
-		System.out.println("암호화가 된 password" + password);
-		user.setuPw(password);
+		System.out.println("controller pass = " + password);
 		
 		//DB안에 있는 User(회원)정보 수정
 		int res = mypageService.updateUser(user);
@@ -177,10 +174,22 @@ public class MypageController {
 			model.addAttribute("alertMsg", "개인정보수정에 성공했습니다.");
 			model.addAttribute("url", "/mypage/profile");
 			
-			sessionUser.setuNick(user.getuNick());
-			sessionUser.setuMail(user.getuMail());
-			sessionUser.setuPw(user.getuPw());
-			sessionUser.setuPhone(user.getuPhone());
+			User newUserInfo = mypageService.newUserInfo(sessionUser.getuNo());
+		
+				
+			if(passwordEncoder.matches(password, newUserInfo.getuPw())) {
+				//마이페이지에 사용자가 입력했던 password로 출력(복호화)
+				newUserInfo.setuPw(password);
+				
+			}
+			
+			System.out.println("newUserInfo = " + newUserInfo);
+			
+			sessionUser.setuNick(newUserInfo.getuNick());
+			sessionUser.setuMail(newUserInfo.getuMail());
+			sessionUser.setuPw(newUserInfo.getuPw());
+			sessionUser.setuPhone(newUserInfo.getuPhone());
+			
 		} else {
 			model.addAttribute("alertMsg", "개인정보수정에 실패했습니다.");
 			model.addAttribute("url", "/mypage/profile");

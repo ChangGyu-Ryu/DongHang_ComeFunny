@@ -56,8 +56,12 @@ $(document).ready(function() {
             gbNo: ${goDetailInfo.goBoardUserInfo.GBNO }
          },
          success: function(result) {
-            if(result != null){
+        	 console.log("result" + result);
+        	
+        	 
+            if(result != ""){
                    alert("동행 신청 완료되었습니다.");
+                   
                    
                    var html = '';
                    html += '<div class="mateone">';
@@ -86,17 +90,18 @@ $(document).ready(function() {
                    
                    html += '<div class="mbtn">';
                    html += '<div style="display: inline-block;" class="goDhApplyResult">';
-                   html += '<a class="btn btn-primary" id="goDhOkBtn" onclick="goDhOkBtn(' + result.GAUNO + ');">수락</a>';
-                   html += '<a class="btn btn-default" id="goDhNoBtn" onclick="goDhNoBtn(' + result.GAUNO + ');">거절</a>';
+//                    html += '<a class="btn btn-primary" id="goDhOkBtn" onclick="goDhOkBtn(' + result.GAUNO + ');">수락</a>';
+//                    html += '<a class="btn btn-default" id="goDhNoBtn" onclick="goDhNoBtn(' + result.GAUNO + ');">거절</a>';
+				   html += '<a class="btn btn-primary">대기중</a>';
                    html += '</div>';
                    html += '</div>';
                    html += '</div>';
                    
                $(".mate-list").append(html);
                
-                }else{
-                   alert("동행 신청 실패되었습니다.");
-                   location.href=window.document.URL;
+                }else if(result == ""){
+                   alert("로그인을 해주세요");
+                   location.href="/user/login";
 
                 }
             
@@ -117,7 +122,6 @@ $(document).ready(function() {
 /* 동행 수락 */
 function goDhOkBtn(gaUNo) {
    
-   console.log("bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb");
     $.ajax({
          url: "/go/goDhOk",
          type: "POST",
@@ -127,19 +131,19 @@ function goDhOkBtn(gaUNo) {
              
          },
          success: function(result) {
-          if(result == "fail"){
-                alert("동행 요청 수락이 실패되었습니다.");
-                
-             }else if(result == "fail2"){
-                alert("동행 요청 수락 인원이 꽉찼습니다.");
-                
-             } else {
-            alert("동행 요청이 수락되었습니다.");
-                
-                console.log(result);
-                document.querySelector(result).outerHTML = '<a class="btn btn-primary">동행수락</a>';
+			 if(result == "fail"){
+          		alert("동행 요청 수락이 실패되었습니다.");
+          		
+          	}else if(result == "fail2"){
+          		alert("동행 요청 수락 인원이 꽉찼습니다.");
+          		
+          	} else {
+				alert("동행 요청이 수락되었습니다.");
+             	
+             	console.log(result);
+             	document.querySelector(result).outerHTML = '<a class="btn btn-primary">동행수락</a>';
 
-             }
+          	}
             
             
          }
@@ -150,7 +154,6 @@ function goDhOkBtn(gaUNo) {
 /* 동행 거절 */
 function goDhNoBtn(gaUNo) {
    
-   console.log("ccccccccccccccccccccccccccccccccccccccccccccccccccccc");
    
     $.ajax({
          url: "/go/goDhNo",
@@ -179,6 +182,7 @@ function goDhNoBtn(gaUNo) {
 
 //하트 누르면 이미지 변경 
 function toggleImg() {
+	
    
    if($('#change').attr('src') == '/resources/image/go/heart.png'){ //찜안되어있음
       console.log("찜됨");
@@ -192,16 +196,16 @@ function toggleImg() {
              
          },
          success: function(result) {
-            if(result > 0){
+            if(result == 1){
                 alert("함께가요 찜목록에 추가되었습니다.");
                 
                 /* 찜목록 성공했을 경우 가득찬 하트사진으로 변경 */
               $('#change').attr('src','<%=request.getContextPath()%>/resources/image/go/heart_pick.png');
 
                 
-                }else{
+                } else if(result == 0){
                    alert("함께가요 찜목록 추가에 실패했습니다.");
-                }   
+                } 
             
          }
          
@@ -238,6 +242,14 @@ function toggleImg() {
 
      }
     
+}
+
+</script>
+<script type="text/javascript">
+function toggleImg2() {
+      alert("로그인을 해주세요");
+      location.href="/user/login";
+               				
 }
 </script>
 
@@ -305,14 +317,19 @@ function toggleImg() {
                <img src="<%=request.getContextPath() %>/resources/upload/${goDetailInfo.goBoardUserInfo.UFSTOREDFILENAME }" class="img-circle profile-img" />
             </c:if>
             <div class="goheart">
-               <c:choose>
-                  <c:when test="${goLikeStatus  eq '0'}">
-                     <img id="change" src="/resources/image/go/heart.png" alt="찜하트" onclick="toggleImg()"/>
-                  </c:when>
-                  <c:when test="${goLikeStatus  eq '1'}">
-                     <img id="change" src="/resources/image/go/heart_pick.png" alt="찜하트" onclick="toggleImg()"/>
-                  </c:when>
-               </c:choose>
+            	<c:if test="${not empty logInInfo.uNo }">
+               		<c:choose>
+                  		<c:when test="${goLikeStatus  eq '0'}">
+                     		<img id="change" src="/resources/image/go/heart.png" alt="찜하트1" onclick="toggleImg();"/>
+                  		</c:when>
+                  		<c:when test="${goLikeStatus  eq '1'}">
+                     		<img id="change" src="/resources/image/go/heart_pick.png" alt="찜하트2" onclick="toggleImg();"/>
+                  		</c:when>
+               		</c:choose>
+               	</c:if>   
+                <c:if test="${empty logInInfo.uNo }">
+               		<img id="change" src="/resources/image/go/heart.png" alt="찜하트3"  onclick="toggleImg2();"/>	
+               	</c:if>
             </div>
          </div>
          <div class="profile-name">
@@ -437,9 +454,9 @@ function toggleImg() {
       <!-- 글쓴이한테만 보임 -->
       <div class="dobtn" style="width: 850px; margin: auto; margin-top: 5%; height: 35px;">
          <c:if test="${goDetailInfo.goBoardUserInfo.GBUNO == logInInfo.uNo}">
-            <a class="btn btn-warning " href="/go/modify?gbNo=${goDetailInfo.goBoardUserInfo.GBNO}">수정</a> 
-            <a class="btn btn-danger " href="/go/goDelete?gbNo=${goDetailInfo.goBoardUserInfo.GBNO}">삭제</a>
-       </c:if>      
+         	<a class="btn btn-warning " href="/go/modify?gbNo=${goDetailInfo.goBoardUserInfo.GBNO}">수정</a> 
+         	<a class="btn btn-danger " href="/go/goDelete?gbNo=${goDetailInfo.goBoardUserInfo.GBNO}">삭제</a>
+		 </c:if>      
       </div>
          
       <div class="dobtn" style="width: 850px; margin: auto; margin-top: 1%; text-align: center; height: 35px;">
@@ -452,7 +469,9 @@ function toggleImg() {
                
                <!-- 모집중일때만 신청하기 버튼 보여주기 -->
                <c:if test="${goDetailInfo.goBoardUserInfo.GBRECRUITSTATUS eq '0' }">
-               <button class="btn btn-primary" id="goDhApplyBtn">신청하기</button>
+               		<c:if test="${goDetailInfo.goBoardUserInfo.GBUNO != logInInfo.uNo}">
+               			<button class="btn btn-primary" id="goDhApplyBtn">신청하기</button>
+               		</c:if>
                </c:if>
                </div>
          </div>
@@ -500,20 +519,20 @@ function toggleImg() {
             </div>
             <div class="mbtn"> <!-- 작성자만 볼수 있음 -->
                <c:choose>
-                     
+               		
                   <c:when test="${goApplylist.GASTATUS eq '0'}">
                   
                      <c:if test="${goDetailInfo.goBoardUserInfo.GBUNO == logInInfo.uNo}">
-                        <div style="display: inline-block;" class="goDhApplyResult">
-                           <a class="btn btn-primary" id="goDhOkBtn" onclick="goDhOkBtn(${goApplylist.GAUNO });">수락</a>
-                           <a class="btn btn-default" id="goDhNoBtn" onclick="goDhNoBtn(${goApplylist.GAUNO });">거절</a>
-                        </div>
+                     	<div style="display: inline-block;" class="goDhApplyResult">
+                        	<a class="btn btn-primary" id="goDhOkBtn" onclick="goDhOkBtn(${goApplylist.GAUNO });">수락</a>
+                        	<a class="btn btn-default" id="goDhNoBtn" onclick="goDhNoBtn(${goApplylist.GAUNO });">거절</a>
+                     	</div>
                      </c:if>
                      
                      <c:if test="${goDetailInfo.goBoardUserInfo.GBUNO != logInInfo.uNo}">
-                        <div style="display: inline-block;" class="goDhApplyResult">
-                           <a class="btn btn-primary">대기중</a>
-                        </div>
+                     	<div style="display: inline-block;" class="goDhApplyResult">
+                        	<a class="btn btn-primary">대기중</a>
+                     	</div>
                      </c:if>
                 </c:when>
                   
@@ -529,7 +548,7 @@ function toggleImg() {
                   </c:when>
                   
                </c:choose>
-                        
+			               
             </div>
          </div>
          </c:forEach>

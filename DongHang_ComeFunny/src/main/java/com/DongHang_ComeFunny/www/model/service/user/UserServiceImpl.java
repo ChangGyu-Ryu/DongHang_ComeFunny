@@ -40,14 +40,15 @@ public class UserServiceImpl implements UserService {
 		//사용자가 입력한 패스원드와 인코딩된 패스워드가 일치하는지 확인
 		if(passwordEncoder.matches(password, user.getuPw())) {
 			//마이페이지에 사용자가 입력했던 password로 출력(복호화)
-			/* member.setPassword(password); */
+			user.setuPw(password);
 			return user;
 		} else {
 			//일치하지 않으면 null 반환
 			return null;
 		}
 	}
-
+	
+	
 	@Override
 	public int insertUser(User user) {
 

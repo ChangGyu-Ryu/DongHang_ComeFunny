@@ -48,6 +48,15 @@ public class MyPageServiceImpl implements MypageService{
 	//회원 정보 수정
 	@Override
 	public int updateUser(User user) {
+		
+		//password 암호화
+		//매번 다른 방식으로 암호화가 된다.
+		String password = user.getuPw();
+		password = passwordEncoder.encode(password);
+		System.out.println("암호화가 된 password(serviceimpl)" + password);
+		
+		user.setuPw(password);
+		
 		return mypageDao.updateUser(user);
 	}
 	
@@ -60,7 +69,8 @@ public class MyPageServiceImpl implements MypageService{
 	//회원정보, 프로필 이미지 조회
 	@Override
 	public Map<String, Object> selectUserInfo(int uNo) {
-
+		
+		
 		//회원 상세 정보
 		User user = mypageDao.getUserInfo(uNo);
 		
@@ -97,22 +107,7 @@ public class MyPageServiceImpl implements MypageService{
 	public int updateUserImg(int uNo, List<MultipartFile> files, String root) throws FileException {
 	
 		int res = 0;
-//		//방법1 . 기존 프로필 삭제 처리(프로필 조회시 ufisdel = 0 만 조회하기 때문)
-//		int updateisdel = mypageDao.updateUserImgIsDel();
-//		
-//		//방법 1-1. 파일업로드를 위한 객체 생성
-//		FileUtil fileUtil = new FileUtil();
-//		List<Map<String, Object>> filedata = fileUtil.fileUpload(files, root);
-//		
-//			
-//		for (Map<String, Object> map : filedata) { //사용자가 업로드 한 파일의 수만큼 돌면서
-//			map.put("uNo", uNo);
-//			//방법 1-2. 새로 파일을 삽입
-//			res = mypageDao.insertUserImg(map); 
-////			res = mypageDao.updateUserImg(map); //file테이블에 들어간다	
-//		}
-		//방법2. 기존 프로필 완전 삭제 처리
-		//방법2-1. 파일유틸 객체 생성
+
 		FileUtil fileUtil = new FileUtil();
 		
 		//방법 2-2. 해당 객체의 delete 메소드를 이용해 해당 파일 삭제
@@ -180,6 +175,14 @@ public class MyPageServiceImpl implements MypageService{
 	public int deleteGoLike(GoLike golike) {
 		return mypageDao.deleteGoLike(golike);
 	}
+	
+	//수정한 회원 다시 조회
+	@Override
+	public User newUserInfo(int uNo) {
+		return mypageDao.newUserInfo(uNo);
+	}
+	
+	
 }
 
 

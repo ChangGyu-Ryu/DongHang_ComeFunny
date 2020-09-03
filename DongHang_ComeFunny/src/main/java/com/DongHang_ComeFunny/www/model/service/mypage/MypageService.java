@@ -110,6 +110,13 @@ public interface MypageService {
 	 * @return
 	 */
 	public int deleteGoLike(GoLike golike);
+	
+	/**
+	 * 수정한 회원 정보 다시 조회
+	 * @param getuNo
+	 * @return
+	 */
+	public User newUserInfo(int uNo);
 
 
 	

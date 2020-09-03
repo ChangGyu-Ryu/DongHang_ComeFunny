@@ -122,6 +122,12 @@ public class MypageDao {
 	public int deleteGoLike(GoLike golike) {
 		return session.delete("MYPAGE.deleteGoLike", golike);
 	}
+	
+	//수정한 회원 다시 조회
+	public User newUserInfo(int uNo) {
+		return session.selectOne("MYPAGE.newUserInfo", uNo);
+
+	}
 
 
 

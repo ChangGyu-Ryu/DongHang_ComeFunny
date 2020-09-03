@@ -73,6 +73,7 @@ public class UserController {
 //		  model.addAttribute("kakao_url", kakaoUrl);
 
 		User res = userService.selectMember(commandMap);
+		
 		//로그인에 성공한다면
 		if(res != null) {
 			session.setAttribute("logInInfo", res);

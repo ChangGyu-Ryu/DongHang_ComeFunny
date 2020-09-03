@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,206 +27,230 @@ public class GoController {
    
    @Autowired GoService goService;
    
-   //기본 화면 띄우기 GET
-//   @RequestMapping(value="/go", method=RequestMethod.GET)
-//   public String goboard() {
-//      System.out.println("[GET] /go");
-//      return "/go/go";
-//   }
-   
-   @RequestMapping(value="/go/goform", method=RequestMethod.GET)
-   public String gowrite() {
-      return "/go/goForm";
-   }
-   
+   //필터검색시 검색된 페이지 띄우기
    @RequestMapping(value="/go/goFilter", method=RequestMethod.GET)
    public void gofilter() {
    }
    
    //-------------------------상세보기 ----------------------------------
    
-   //함께가요 상세
-      @RequestMapping(value="/go/goDetail", method=RequestMethod.GET)
-      public void goDetail(int gbNo, Model model, HttpSession session) {
-         
+ //함께가요 상세
+   @RequestMapping(value="/go/goDetail", method=RequestMethod.GET)
+   public void goDetail(int gbNo, Model model, HttpSession session) {
+      
 
-         //회원정보를 세선에 담기
-        User sessionUser = (User)session.getAttribute("logInInfo");
-
+      //회원정보를 세선에 담기
+     User sessionUser = (User)session.getAttribute("logInInfo");
+     int goLikeStatus = 0;
+     
+      
+     //함께가요 상세정보들
+      Map<String, Object> goDetailInfo = goService.selectGoDetail(gbNo);
+     
+     
+      if(sessionUser != null) {
          int uNo = sessionUser.getuNo();
-         
-         //함께가요 상세정보들
-         Map<String, Object> goDetailInfo = goService.selectGoDetail(gbNo);
          
          //함께가요 찜목록 클릭 여부
-         int goLikeStatus = goService.selectGoLikeStatus(gbNo, uNo);
-         
-         model.addAttribute("goDetailInfo", goDetailInfo);
-         model.addAttribute("goLikeStatus", goLikeStatus);
-         
+         goLikeStatus = goService.selectGoLikeStatus(gbNo, uNo);
+           
       }
       
-      //함께가요 동행 신청
-      @RequestMapping(value="/go/goApply", method=RequestMethod.POST)
-      @ResponseBody
-      public Map<String, Object> goApply(int gbNo, Model model, HttpSession session) {
-         
-         //회원정보를 세선에 담기
-        User sessionUser = (User)session.getAttribute("logInInfo");
-         
-         int uNo = sessionUser.getuNo();
-         
-
+      
+//      //함께가요 찜목록 클릭 여부
+//      int goLikeStatus = goService.selectGoLikeStatus(gbNo, uNo);
+        
+      
+      model.addAttribute("goDetailInfo", goDetailInfo);
+      model.addAttribute("goLikeStatus", goLikeStatus);
+      
+   }
+   
+   //함께가요 동행 신청
+   @RequestMapping(value="/go/goApply", method=RequestMethod.POST)
+   @ResponseBody
+   public Map<String, Object> goApply(int gbNo, Model model, HttpSession session) {
+      
+      //회원정보를 세선에 담기
+     User sessionUser = (User)session.getAttribute("logInInfo");
+      System.out.println("sessinUser = " + sessionUser);
+     
+      int res = 0;
+      Map<String, Object> newGoApply = null;
+     
+      //로그인이 되어있는 경우
+      if(sessionUser != null) {
+          int uNo = sessionUser.getuNo();
+                       
          //함께가요 신청
-         int res = goService.insertGoDhApply(gbNo, uNo);
+         res = goService.insertGoDhApply(gbNo, uNo);
          
-         Map<String, Object> newGoApply = goService.selectGoNewApply(gbNo, uNo);
+         //방금 함께가요 신청을 누른 사람 꺼 조회
+         newGoApply = goService.selectGoNewApply(gbNo, uNo);
          
          if(res > 0) {
             return newGoApply;
          } else {
             return null;
          }
-
+           
+      } else { //로그인이 안되어 있는 경우 
          
+         return null;
       }
+
+    
+
       
-      //동행 요청 수락
-      @RequestMapping(value="/go/goDhOk", method=RequestMethod.POST)
-      @ResponseBody
-      public String goDhOk(int gbNo, int gaUNo, HttpSession session) {
-         
-         System.out.println("gbNo = " + gbNo);
-         System.out.println("gaUNo = " + gaUNo);
-         
-         //함께가요 게시물 인원수 확인
-         int gbrecruitnumber = goService.selectGBrecruitnumber(gbNo);
-         
-         //함께가요 수락 된 인원 확인
-         int gbrecruitcnt = goService.selectGrecruitcnt(gbNo);
-         
-         System.out.println("인원 제한 gbrecruitnumber = " + gbrecruitnumber);
-         System.out.println("신청한 인원수  gbrecruitcnt = " + gbrecruitcnt);
-         System.out.println("조건 = " + (gbrecruitcnt <= gbrecruitnumber));
-         
-         int res = 0;
-         
-         //함께가요 모집인원이랑 동행수락한 인원 비교
-         if(gbrecruitcnt < gbrecruitnumber) {
-            
-            //동행 요청 수락
-            res = goService.updateGoApplyOkStatus(gbNo, gaUNo);
-            
-            //함께가요 모집인원 수 증가
-            goService.updateGBrecruitCnt(gbNo);
-            
-         } else { //함께가요 동행 수락 인원 초과했을 때
-            return "fail2";
-         }
-         
-         
-         if(res > 0) {
-            return ".goDhApplyResult";
-         } else { //함께가요 동행 수락이 실패했을 때
-            return "fail1";
-         }
-         
-      }
-      
-      //동행 요청 거절
-      @RequestMapping(value="/go/goDhNo", method=RequestMethod.POST)
-      @ResponseBody
-      public String goDhNo(int gbNo, int gaUNo, HttpSession session) {
-         
-
-         //동행 요청 거절
-         int res = goService.updateGoApplyNoStatus(gbNo, gaUNo);
-
-         if(res > 0) {
-            return ".goDhApplyResult";
-         } else {
-            return "fail";
-         }
-         
-      }
-      
-      //함께가요 찜목록 추가
-      @RequestMapping(value="/go/goInsertLike", method=RequestMethod.POST)
-      @ResponseBody
-      public int goInsertLike(int gbNo, int uNo, HttpSession session) {
-         
-
-         //함께가요 찜목록 추가
-         int res = goService.insertGoLike(gbNo, uNo);
-
-         if(res > 0) {
-          //찜 수 증가
-             goService.GBlikeUpCnt(gbNo);
-            return 1;
-         } else {
-            return 0;
-         }
-         
-      }
-      
-      //함께가요 찜목록 삭제
-      @RequestMapping(value="/go/goDeleteLike", method=RequestMethod.POST)
-      @ResponseBody
-      public int goDeleteLike(int gbNo, int uNo, HttpSession session) {
-         
-
-         //함께가요 찜목록 삭제
-         int res = goService.DeleteGoLike(gbNo, uNo);
-
-         if(res > 0) {
-          //함께가요 찜 수 감소 
-             goService.GBlikeDownCnt(gbNo); 
-            return 1;
-         } else {
-            return 0;
-         }
-         
-      }
-      
-      
-      //함께가요 삭제
-      @RequestMapping(value = "/go/goDelete", method = RequestMethod.GET)
-      public String goDelete(int gbNo, Model model, HttpSession session) {
-
-         //함께가요 삭제 -> gbisdel = 1 로 update
-         int res = goService.deleteGoboard(gbNo);
-
-         if(res > 0) {
-            model.addAttribute("alertMsg", "해당 게시글이 삭제되었습니다.");
-            model.addAttribute("url", "/go");
-         } else {
-            model.addAttribute("alertMsg", "해당 게시글이 삭제 되지 않았습니다.");
-            model.addAttribute("url", "/go");
-         }
-
-         return "common/result";
-
-      }
+   }
    
-      //------------------- 폼입력 -------------------------
+   //동행 요청 수락
+   @RequestMapping(value="/go/goDhOk", method=RequestMethod.POST)
+   @ResponseBody
+   public String goDhOk(int gbNo, int gaUNo, HttpSession session) {
       
+      //함께가요 게시물 인원수 확인
+      int gbrecruitnumber = goService.selectGBrecruitnumber(gbNo);
+      
+      //함께가요 수락 된 인원 확인
+      int gbrecruitcnt = goService.selectGrecruitcnt(gbNo);
+      
+//      System.out.println("인원 제한 gbrecruitnumber = " + gbrecruitnumber);
+//      System.out.println("신청한 인원수  gbrecruitcnt = " + gbrecruitcnt);
+//      System.out.println("조건 = " + (gbrecruitcnt <= gbrecruitnumber));
+      
+      int res = 0;
+      
+      //함께가요 모집인원이랑 동행수락한 인원 비교
+      if(gbrecruitcnt < gbrecruitnumber) {
+         
+         //동행 요청 수락
+         res = goService.updateGoApplyOkStatus(gbNo, gaUNo);
+         
+         //함께가요 모집인원 수 증가
+         goService.updateGBrecruitCnt(gbNo);
+         
+      } else { //함께가요 동행 수락 인원 초과했을 때
+         return "fail2";
+      }
+      
+      
+      if(res > 0) {
+         return ".goDhApplyResult";
+      } else { //함께가요 동행 수락이 실패했을 때
+         return "fail1";
+      }
+      
+   }
+   
+   //동행 요청 거절
+   @RequestMapping(value="/go/goDhNo", method=RequestMethod.POST)
+   @ResponseBody
+   public String goDhNo(int gbNo, int gaUNo, HttpSession session) {
+      
+
+      //동행 요청 거절
+      int res = goService.updateGoApplyNoStatus(gbNo, gaUNo);
+
+      if(res > 0) {
+         return ".goDhApplyResult";
+      } else {
+         return "fail";
+      }
+      
+   }
+   
+   //함께가요 찜목록 추가
+   @RequestMapping(value="/go/goInsertLike", method=RequestMethod.POST)
+   @ResponseBody
+   public int goInsertLike(int gbNo, int uNo, HttpSession session) {
+      
+
+      //함께가요 찜목록 추가
+      int res = goService.insertGoLike(gbNo, uNo);
+
+      if(res > 0) {
+         
+         //찜 수 증가
+         goService.GBlikeUpCnt(gbNo);
+         
+         return 1;
+      } else {
+         return 0;
+      }
+      
+   }
+   
+   
+   //함께가요 찜목록 삭제
+   @RequestMapping(value="/go/goDeleteLike", method=RequestMethod.POST)
+   @ResponseBody
+   public int goDeleteLike(int gbNo, int uNo, HttpSession session) {
+      
+
+      //함께가요 찜목록 삭제
+      int res = goService.DeleteGoLike(gbNo, uNo);
+
+      if(res > 0) {
+       //함께가요 찜 수 감소 
+          goService.GBlikeDownCnt(gbNo); 
+         return 1;
+      } else {
+         return 0;
+      }
+      
+   }
+   
+   
+   //함께가요 삭제
+   @RequestMapping(value = "/go/goDelete", method = RequestMethod.GET)
+   public String goDelete(int gbNo, Model model, HttpSession session) {
+
+      //함께가요 삭제 -> gbisdel = 1 로 update
+      int res = goService.deleteGoboard(gbNo);
+
+      if(res > 0) {
+         model.addAttribute("alertMsg", "해당 게시글이 삭제되었습니다.");
+         model.addAttribute("url", "/go");
+      } else {
+         model.addAttribute("alertMsg", "해당 게시글이 삭제 되지 않았습니다.");
+         model.addAttribute("url", "/go");
+      }
+
+      return "common/result";
+
+   }
+   
+      //-------------------동행 작성하기 -------------------------
+      
+    //goform 기본화면 띄우기 
+      @RequestMapping(value="/go/goform", method=RequestMethod.GET)
+      public ModelAndView gowrite(GoBoard goBoard, HttpSession session) {
+         
+        ModelAndView mav = new ModelAndView();
+        
+        User sessionUser = (User)session.getAttribute("logInInfo");
+        
+        if(sessionUser != null) {
+             goBoard.setGbUNo(sessionUser.getuNo());
+             mav.setViewName("/go/goForm");
+        } else {
+           mav.addObject("alertMsg", "로그인 후에 사용해주시길 바랍니다.");
+             mav.addObject("url", "/user/login"); //로그인화면으로
+             mav.setViewName("common/result");
+        }
+             
+         return mav;
+      }
       
    //폼 입력하기 (파일첨부 제외)
       @RequestMapping(value="/go/gowrite", method=RequestMethod.POST)
       public ModelAndView insertGo(GoBoard goBoard, GoCheck goCheck, HttpSession session) {
          
          ModelAndView mav = new ModelAndView();
-          //회원정보를 세선에 담기
+         
          User sessionUser = (User)session.getAttribute("logInInfo");
-         
-         
-         if(sessionUser != null) {
-            goBoard.setGbUNo(sessionUser.getuNo());
-         } else {
-            mav.addObject("alertMsg", "로그인 후에 사용해주시길 바랍니다.");
-            mav.addObject("url", "/login"); //로그인화면으로
-            mav.setViewName("common/result");
-         }
+         goBoard.setGbUNo(sessionUser.getuNo());
          
          goService.insertGoForm(goBoard, goCheck);
          
@@ -233,10 +258,12 @@ public class GoController {
          mav.addObject("url","/go");
          mav.setViewName("common/result");
          
-         
          return mav;
          
       }
+      
+      
+      //--------- 리스트 띄우기 ---------------
       
    //기본 최신순 정렬된 리스트 전체 띄우기
       @RequestMapping(value="/go", method=RequestMethod.GET)
@@ -376,15 +403,16 @@ public class GoController {
       }
 
       
+      //----------------------------수정-------------------------------
+      
       //수정 기본 값 가지고오기
       @RequestMapping(value="/go/modify", method=RequestMethod.GET)
-      public ModelAndView noticeModify(int gbNo) {
+      public ModelAndView goModify(int gbNo, HttpSession session) {
          System.out.println("[Controller] modify");
          System.out.println(gbNo);
          
          ModelAndView mav = new ModelAndView();
          Map<String,Object> goboard = goService.selectGoDetail(gbNo);
-
          
          mav.addObject("goboard", goboard);
          mav.setViewName("go/goModify");
@@ -393,26 +421,18 @@ public class GoController {
 
       //글 수정하기
       @RequestMapping(value="/go/updatemodify", method=RequestMethod.POST)
-      public ModelAndView noticeModifyImpl(
+      public ModelAndView goModifyImpl(
             GoBoard goBoard, HttpSession session) {
          System.out.println("[Controller] /updatemodify");
+        
          ModelAndView mav = new ModelAndView();
 
           //회원정보를 세선에 담기
-//         User sessionUser = (User)session.getAttribute("logInInfo");
-//
-//         session.setAttribute("login", sessionUser); //세션에 세션값 넣기
-//         User sessionUser = (User)session.getAttribute("login"); //세션 부르기
-//         sessionUser = (User)session.getAttribute("login"); //세션 부르기
+         User sessionUser = (User)session.getAttribute("logInInfo");
 
-//         int res = 0;
-//         게시글 작성자가 수정요청을 한 것이 맞는 지 확인
-//         if(sessionUser.getuNo() == goBoard.getGbUNo()) {
-//            res = goService.updateGoboard(goBoard);
-//         }
+         goBoard.setGbUNo(sessionUser.getuNo());
+         goService.updateGoboard(goBoard);
          
-         int goboard = goService.updateGoboard(goBoard);
-
          mav.addObject("goBoard", goBoard);
          mav.addObject("alertMsg", "수정완료!");
          mav.addObject("url","/go");

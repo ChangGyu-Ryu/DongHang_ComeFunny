@@ -272,7 +272,7 @@ $(document).ready(function() {
 		<div class="my_info2_list">
 			<div class="my_info2_item">비밀번호</div>
 			<input type="password" class="my_info2_data upw" readonly="readonly"
-				value="${loginInfo.user.uPw }">
+				value="${logInInfo.uPw }">
 		</div>
 	</div>
 	<div style="">
@@ -332,7 +332,7 @@ $(document).ready(function() {
         	</tr>
   			<tr>
           		<td class="modal_name">비밀번호</td>
-    			<td><input id="uPw" name="uPw" class="modal_write" type="text" value="${loginInfo.user.uPw }"  /></td>
+    			<td><input id="uPw" name="uPw" class="modal_write" type="text" value="${logInInfo.uPw }"  /></td>
     			<td class="modal_name">전화번호</td>
     			<td><input id="uPhone" name="uPhone" class="modal_write" type="text" value="${loginInfo.user.uPhone }" /></td>
         	</tr>
