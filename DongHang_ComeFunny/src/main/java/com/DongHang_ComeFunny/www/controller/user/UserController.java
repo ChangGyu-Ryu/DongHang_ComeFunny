@@ -78,13 +78,13 @@ public class UserController {
 		if(res != null) {
 			session.setAttribute("logInInfo", res);
 			model.addAttribute("alertMsg", "로그인 성공~!");
-			model.addAttribute("url", "login");
+			model.addAttribute("url", "/");
 		} else {
 			model.addAttribute("alertMsg", "로그인 실패~!");
-			model.addAttribute("url", "join");
+			model.addAttribute("url", "login");
 		}
 
-		return "/board/freelist";
+		return "/common/result";
 
 	}
 	

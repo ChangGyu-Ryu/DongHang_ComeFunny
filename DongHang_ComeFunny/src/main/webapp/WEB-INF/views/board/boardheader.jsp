@@ -3,8 +3,10 @@
 <!DOCTYPE html>
 <html>
 <head>
+
 <!-- styles.css -->
 <link rel="stylesheet" href="<%=request.getContextPath() %>/resources/css/community/styles.css" />
+<link rel="stylesheet" href="<%=request.getContextPath() %>/resources/css/community/mail.css" />
  
 <!-- jQuery -->
 <!-- <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script> -->
@@ -38,7 +40,7 @@
 <!-- semantic ui -->
 <%-- <link rel="stylesheet" type="text/css" href="<%=request.getContextPath() %>/resources/css/semantic/semantic.min.css"> --%>
 <%-- <script src="<%=request.getContextPath() %>/resources/css/semantic/semantic.min.js"></script> --%>
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta charset="UTF-8">
 <title>DHComeFunny :: 커뮤니티</title>
@@ -49,8 +51,23 @@
 	<div>
 	   <div class="logo">
 	      <div class="logo-img">
-	      <a href="/main/main.jsp"><img class="logo-img" alt="로고이미지" src="/resources/image/header/logo.png" ></a>
+	      <a href="/"><img class="logo-img" alt="로고이미지" src="/resources/image/header/logo.png" ></a>
 	      </div>
+	      <c:if test="${empty logInInfo}">
+	      
+			<div class="main_login">		
+				<a href="/user/login">로그인</a> &ensp;
+				<a href="/user/join">회원가입</a>
+			</div>
+          </c:if>
+          <c:if test="${not empty logInInfo}">
+			<div class="main_login">		
+				<a href="/message/receivelist"><i class="fas fa-envelope"></i> &nbsp;</a>	
+				<a href="javascript:void(0)" style="cursor: default;">${logInInfo.userId }&nbsp;님 환영합니다.</a> &ensp;
+				<a href="/mypage/profile">마이페이지</a>
+			</div>
+          </c:if>
+          
 		</div>
 	</div>
 		
@@ -77,8 +94,13 @@
 	  		</div>
 		</div>
 		<div class="dropdown">
-	  		<div class="dropbtn"><a href="#">실시간채팅</a></div>
+	  		<div class="dropbtn"><a href="/chat/chat">실시간채팅</a></div>
 		</div>
+		<div class="dropdown">
+	  		<div class="dropbtn"><a href="#">결제하기</a></div>
+		</div>
+
+
 	</div>
 </div>
 

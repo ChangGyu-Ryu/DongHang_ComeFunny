@@ -10,7 +10,8 @@
 <title>Insert title here</title>
 <!-- mypage_header.css -->
 <link rel="stylesheet" href="<%=request.getContextPath() %>/resources/css/mypage/mypage_header.css" />
-
+<!-- fontawesome 아이콘 -->
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
 <!-- JQuery -->
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 
@@ -21,8 +22,21 @@
    <div>
       <div class="logo">
          <div class="logo-img">
-         <a href="/main/main.jsp"><img class="logo-img" alt="로고이미지" src="/resources/image/header/logo.png" ></a>
+         <a href="/"><img class="logo-img" alt="로고이미지" src="/resources/image/header/logo.png" ></a>
          </div>
+          <c:if test="${empty logInInfo}">
+			<div class="main_login">		
+				<a href="/user/login">로그인</a> &ensp;
+				<a href="/user/join">회원가입</a>
+			</div>
+          </c:if>
+          <c:if test="${not empty logInInfo}">
+			<div class="main_login">
+				<a href="/message/receivelist"><i class="fas fa-envelope"></i> &nbsp;</a>			
+				<a href="javascript:void(0)" style="cursor: default;">${logInInfo.userId }&nbsp;님 환영합니다.</a> &ensp;
+				<a href="/mypage/profile">마이페이지</a>
+			</div>
+          </c:if>
       </div>
    </div>
       
@@ -43,6 +57,7 @@
       <div class="dropdown">
            <div class="dropbtn"><a href="/mypage/paymentlist">결제내역</a></div>
       </div>
+      
    </div>
 
 </div>

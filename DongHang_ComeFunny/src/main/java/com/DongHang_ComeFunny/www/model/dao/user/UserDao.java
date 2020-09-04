@@ -30,15 +30,15 @@ public class UserDao {
 	}
 	
 	public User selectMemberByUserId(String userid) {
-		return session.selectOne("User.selectMemberByUserId",userid);
+		return session.selectOne("USER.selectMemberByUserId",userid);
 	}
 
 	public User selectMemberByUno(int uno) {
-		return session.selectOne("User.selectMemberByUno", uno);
+		return session.selectOne("USER.selectMemberByUno", uno);
 	}
 
 	public User selectMemberByUserNick(String nick) {
-		return session.selectOne("User.selectMemberByNick",nick);
+		return session.selectOne("USER.selectMemberByNick",nick);
 	}
 	
 	public int idChk(String user) throws Exception {

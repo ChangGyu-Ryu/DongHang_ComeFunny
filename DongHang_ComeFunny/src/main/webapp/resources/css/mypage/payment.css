@@ -53,6 +53,7 @@ a,a:link,a:visited,a:hover{
 	width: 70%;
 	margin: 0 auto;
 	min-width: 500px;
+	min-height: 420px;
 }
 #myPaymentTitle{
 	margin-top: 2em;

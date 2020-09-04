@@ -630,3 +630,15 @@ figure.mateprofile.hover p {
     background: #dcdcdc;
    content: '|'; 
 }
+
+.main_login {
+	float: right;
+    position: absolute;
+    top: 4%;
+    right: 18.5%;
+    font-size: 16px;
+}
+.main_login a, .main_login a:hover, .main_login a:active, .main_login a:link, .main_login a:visited {
+    text-decoration: none;
+    color : black;
+}
