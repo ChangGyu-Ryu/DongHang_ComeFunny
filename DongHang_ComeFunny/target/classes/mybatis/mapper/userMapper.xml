@@ -42,4 +42,7 @@
 		WHERE
 			unick = #{unick} AND uisleave = 0
 	</select>
+	<update id="UpdataDHBGByUno" parameterType="HashMap">
+	UPDATE tb_user SET udhtcnt = udhtcnt + #{amount} where uno = #{uno}
+	</update>
 </mapper>

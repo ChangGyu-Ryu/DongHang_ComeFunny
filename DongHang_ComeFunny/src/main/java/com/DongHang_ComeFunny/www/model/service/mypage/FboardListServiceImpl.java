@@ -15,7 +15,6 @@ import com.DongHang_ComeFunny.www.model.vo.FreeComment;
 import com.DongHang_ComeFunny.www.model.vo.GoApply;
 import com.DongHang_ComeFunny.www.model.vo.GoBoard;
 import com.DongHang_ComeFunny.www.model.vo.Order;
-import com.DongHang_ComeFunny.www.model.vo.PayMent;
 import com.DongHang_ComeFunny.www.model.vo.ReviewBoard;
 import com.DongHang_ComeFunny.www.model.vo.ReviewComment;
 import com.DongHang_ComeFunny.www.model.vo.ReviewDhTicket;
@@ -161,10 +160,10 @@ public class FboardListServiceImpl implements FboardListService{
 		Paging p = new Paging(fboardlistDao.selectPmContentCnt(uno), cPage, cntPerPage);
 		
 		int tkCnt = fboardlistDao.selecTkCnt(uno);
-		List<PayMent> pmlist = fboardlistDao.selectPmList(p,uno);
+		List<Order> pmlist = fboardlistDao.selectPmList(p,uno);
 		commandMap.put("tkCnt", tkCnt);
 		commandMap.put("pmlist", pmlist);
-		commandMap.put("paging",p);
+		commandMap.put("paging",p);	  
 		
 //		System.out.println(commandMap);
 		

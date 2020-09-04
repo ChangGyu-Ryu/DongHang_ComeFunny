@@ -52,8 +52,8 @@
 		<div id="myPaymentTitle">나의 동행복권</div>
 		<div id="ticketBox">
 			<img id="ticket" alt="나의 동행" src="/resources/image/mypage/coupon.png"/>
-			<div id="reserveTicket">보유중인 동행복권 <p id="reserveTicketNum">28</p> 장</div>
-			<button id="chargeBtn" type="button">충전</button>
+			<div id="reserveTicket">12보유중인 동행복권 <p id="reserveTicketNum">28</p> 장</div>
+			<button id="chargeBtn" type="button" onclick="location.href='payment/paypage'">충전</button>
 		</div>		
 		
 		<div id="myPaymentTitle">복권구매 내역</div>

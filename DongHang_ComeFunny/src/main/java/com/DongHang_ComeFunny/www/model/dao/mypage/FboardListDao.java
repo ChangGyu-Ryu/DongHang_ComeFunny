@@ -14,7 +14,6 @@ import com.DongHang_ComeFunny.www.model.vo.FreeComment;
 import com.DongHang_ComeFunny.www.model.vo.GoApply;
 import com.DongHang_ComeFunny.www.model.vo.GoBoard;
 import com.DongHang_ComeFunny.www.model.vo.Order;
-import com.DongHang_ComeFunny.www.model.vo.PayMent;
 import com.DongHang_ComeFunny.www.model.vo.ReviewBoard;
 import com.DongHang_ComeFunny.www.model.vo.ReviewComment;
 import com.DongHang_ComeFunny.www.model.vo.ReviewDhTicket;
@@ -175,7 +174,7 @@ public class FboardListDao {
 	}
 
 	//복권 구매 내역 리스트
-	public List<PayMent> selectPmList(Paging p, int uno) {
+	public List<Order> selectPmList(Paging p, int uno) {
 		Map<String, Object> param = new HashMap<String, Object>();
 		param.put("p",p);
 		param.put("uno", uno);
