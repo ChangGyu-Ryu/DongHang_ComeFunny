@@ -26,8 +26,8 @@
 		style="width:685px;margin-left:100px;margin-top: 2em; padding: 0.5em; font-size: 17px; font-weight: bold; border-bottom: 2px solid #999;">결제가 완료되었습니다.</div>
 	<div
 		style="text-align: center;width:700px; margin: 1em 0;padding-top: 0.5em; border: 1px solid #ccc; height: 120px; margin-left:100px; ">
-		<p style="margin-top:30px;">결제내역  : <%=request.getParameter("count") %> 개</p>
-		<p>가격 : <%=request.getParameter("paidamount") %> 원</p>
+		<p style="margin-top:30px;">결제내역  : 동행복권 100개</p>
+		<p>10000원</p>
 	</div>
 </div>
 <div style="margin-top:330px; margin-left:400px "><button style="height:30px;background-color: rgb(93, 124, 166); border-radius: 2px; border: none; margin: 3px 0px; color: white; width:100px;"onclick="closes()">닫기</button></div>

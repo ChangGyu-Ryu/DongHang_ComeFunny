@@ -39,4 +39,12 @@ public class PaymentController {
 		int res = paymentService.insertOrder(ord);
 		return null;
 	}
+	
+	@RequestMapping(value = "/payment/result", method = RequestMethod.GET)
+	public ModelAndView result() {
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("/payment/result");
+		System.out.println("abba");
+		return mav;
+	}
 }

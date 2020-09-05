@@ -81,7 +81,8 @@ function showPopup(){
 			<c:forEach items="${paymentData.pmlist}" var="pmboard">				
 				<tr>
 					<td style="vertical-align: inherit;"><input type="checkbox" class="deleteChk" value="${pmboard.pONo}"/></td>
-					<td style="vertical-align: inherit;"><a>${pmboard.oDate}</a></td>
+					<td style="vertical-align: inherit;"><a><fmt:formatDate value="${pmboard.oDate}"
+												pattern="yyyy-MM-dd HH:mm:ss" /></a></td>
 					<td style="vertical-align: inherit;"><a>${pmboard.oName}</a></td>
 					<td style="vertical-align: inherit;"><a>${pmboard.oQunatity}</a></td>
 					<td style="vertical-align: inherit;"><a>${pmboard.oPrice}</a></td>
