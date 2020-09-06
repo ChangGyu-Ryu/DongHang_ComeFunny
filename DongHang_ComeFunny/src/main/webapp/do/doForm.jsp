@@ -140,7 +140,7 @@ $(document).ready(function () {
    
 
 <!-- content -->
-<form action="<%= request.getContextPath() %>/do/dowrite" method="post" enctype="multipart/form-data">
+<form action="<%=request.getContextPath() %>/do/dowrite" method="POST" enctype="multipart/form-data">
    <div class = "dowrite"> 
    <div class = "dowritebox">
    <!-- title -->

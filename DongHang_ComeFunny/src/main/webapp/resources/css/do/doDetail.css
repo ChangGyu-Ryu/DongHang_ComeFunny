@@ -1,7 +1,7 @@
 @charset "UTF-8";
 @import url(//fonts.googleapis.com/earlyaccess/notosanskr.css); .notosanskr * { font-family: 'Noto Sans KR', sans-serif; }
 
-/* 연한파랑 rgb(115, 162, 191) */ 
+/* 연한파랑 rgb(115, 162, 191) */
 /* 중간파랑 rgb(93, 124, 166) */
 /* 진한파랑 rgb(3, 88, 140) */
 * {
@@ -160,8 +160,17 @@ a {
     overflow: hidden;
 }
 
-.tour-img > img{
-	height: 100%;
+.tour-img>div>img{
+	position : relative;
+	width: 100%;
+}
+
+#sliderBox{
+	height : 550px;
+	margin-right: 24px;
+    float: left;
+    width: 450px;
+    display: inline-block;	
 }
 
 /*윗부분 글정보*/
@@ -176,12 +185,17 @@ a {
     display: inline-block;
     z-index: 1;
     position: relative;
-    bottom: 100%;
+    bottom: 135px;
+    left: 375px;
+    text-align: end;
+    background: #ffffffad;
+    border-radius: 50%;
 }
 .goheart > img{
-   width: 50px;
-   margin: 20px;
+   width: 35px;
+   margin: 15px;
 }
+
 
 
 /* 모집중 */
@@ -198,6 +212,22 @@ a {
 	border-radius: 30px;
 	width: 110px;
 }
+
+/* 모집마감 */
+.gotag2 {
+	float: left;
+	display: inline-block;
+	text-align: center;
+	position: relative;
+	z-index: 1;
+	color: #fff;
+	font-size: 18px;
+	background: #ccc;
+	padding: 5px 20px;
+	border-radius: 30px;
+	width: 110px;
+}
+
 	
 /* x표시 */
 .goatag{
@@ -237,7 +267,7 @@ a {
     height: 200px;
     padding: 15px; 
     transition: border .2s ease-in-out;
-    overflow: scroll;
+    overflow-y: scroll;
     width: 48%;
     margin: 10px 0px;
 }
@@ -370,7 +400,7 @@ a {
 }
 
 .rvtop3-mate{
-    padding: 15px;
+    padding: 4px 20px;
     display: inline-block;
     width: 100%;
     height: 90px;
@@ -397,6 +427,7 @@ a {
 	display: inline-block;
    	width: 65px;
    	height: 65px;
+   	border-radius: 50%;
 }
 
 .rvttitle h4{
@@ -417,7 +448,7 @@ a {
     display: inline-block;
     vertical-align: top;
     overflow: hidden;
-    margin: 0 10px;
+    margin: 8px 10px;
 }
 
 /* 유의사항 */
@@ -427,6 +458,7 @@ a {
 }
 
 #inform p{
+	line-height: 25px;
 	font-size: 15px;
     margin: 1%;
 }
@@ -446,12 +478,36 @@ a {
     border-color: rgb(93, 124, 166);
 }
 
-.dobtn .btn{
-   margin: 0px 3px;   
-   width: 90px;
+#vIconFb{
+	padding: 3px;
+	width: 36px;
+    height: 36px;
+    background: #3B5998;
+    color: #fff;
+    border-radius: inherit;
+    text-decoration: none;
+    box-shadow: none;
 }
-
-
+#vIconTw{
+	padding: 3px;
+	width: 36px;
+    height: 36px;
+    background: #00acee;
+    color: #fff;
+    border-radius: inherit;
+    text-decoration: none;
+    box-shadow: none;
+}
+#vIconNa{
+	padding: 3px;
+	width: 36px;
+    height: 36px;
+    background: #00acee;
+    color: #fff;
+    border-radius: inherit;
+    text-decoration: none;
+    box-shadow: none;
+}
 
 
 /*******************************/
@@ -464,15 +520,15 @@ a {
    display: none;
    padding: 20px;
    padding-bottom: 25px;
-    margin: auto;
-    margin-top: -130px;
-    margin-bottom: 150px;
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    transition: border .2s ease-in-out;
-    width: 1000px;
-    box-shadow: 0px 2px 4px 0px rgba(34, 36, 38, 0.12), 0px 2px 10px 0px rgba(34, 36, 38, 0.15);
+   margin: auto;
+   margin-top: -130px;
+   margin-bottom: 150px;
+   background-color: #fff;
+   border: 1px solid #ddd;
+   border-radius: 5px;
+   transition: border .2s ease-in-out;
+   width: 1000px;
+   box-shadow: 0px 2px 4px 0px rgba(34, 36, 38, 0.12), 0px 2px 10px 0px rgba(34, 36, 38, 0.15);
 }
 
 .contitle{
@@ -580,4 +636,16 @@ a {
     height: 12px;
     background: #dcdcdc;
    content: '|'; 
+}
+
+.main_login {
+	float: right;
+    position: absolute;
+    top: 4%;
+    right: 18.5%;
+    font-size: 16px;
+}
+.main_login a, .main_login a:hover, .main_login a:active, .main_login a:link, .main_login a:visited {
+    text-decoration: none;
+    color : black;
 }

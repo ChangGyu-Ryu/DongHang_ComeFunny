@@ -40,6 +40,7 @@
 		<typeAlias type="com.DongHang_ComeFunny.www.model.vo.GoCheck" alias="GoCheck"/>
 		<typeAlias type="com.DongHang_ComeFunny.www.model.vo.DoBoard" alias="DoBoard"/>
 		<typeAlias type="com.DongHang_ComeFunny.www.model.vo.DoCheck" alias="DoCheck"/>
+		<typeAlias type="com.DongHang_ComeFunny.www.model.vo.DoImg" alias="DoImg"/>
 		
 		<typeAlias type="com.DongHang_ComeFunny.www.model.vo.UserImg" alias="USERIMG"/>
 		<typeAlias type="com.DongHang_ComeFunny.www.model.vo.NoticeBoard" alias="NOTICE"/>

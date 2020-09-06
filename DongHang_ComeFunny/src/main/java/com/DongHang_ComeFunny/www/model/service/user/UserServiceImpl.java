@@ -140,29 +140,57 @@ public class UserServiceImpl implements UserService {
 	}
 
 
-	
 	public void setJavaMailSender(JavaMailSender mailSender) {
 		this.mailSender = mailSender;
+	}
+	@Override
+	public boolean send(String subject, String text, String from, String to) {
+	// javax.mail.internet.MimeMessage
+	MimeMessage message = mailSender.createMimeMessage();
+		try {
+			// org.springframework.mail.javamail.MimeMessageHelper
+			MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+			helper.setSubject(subject);
+			helper.setText(text, true);
+			helper.setFrom(from);
+			helper.setTo(to);
+			// 첨부 파일 처리
+			mailSender.send(message);
+			return true;
+		} catch (MessagingException e) {
+			e.printStackTrace();
 		}
-		@Override
-		public boolean send(String subject, String text, String from, String to) {
-		// javax.mail.internet.MimeMessage
-		MimeMessage message = mailSender.createMimeMessage();
-			try {
-				// org.springframework.mail.javamail.MimeMessageHelper
-				MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
-				helper.setSubject(subject);
-				helper.setText(text, true);
-				helper.setFrom(from);
-				helper.setTo(to);
-				// 첨부 파일 처리
-				mailSender.send(message);
-				return true;
-			} catch (MessagingException e) {
-				e.printStackTrace();
-			}
-			return false;
+		return false;
+	}
+	@Override
+	public void changePassword(User user) throws Exception {
+		userDao.changePassword(user);
+	}
+	
+	@Override
+	public int updateUser(User user) {
+		
+		String password = user.getuPw();
+		password = passwordEncoder.encode(password);
+		System.out.println("암호화가 된 password" + password);
+		user.setuPw(password);
+		
+		return userDao.updateUser(user);
+	}
+	
+	@Override
+	public String userChk(User user) {
+		User resUser = userDao.userChk(user);
+		String result = "";
+		if(resUser != null) {
+		 result = resUser.getuName();
+		 result = resUser.getUserId();
+		 result = resUser.getuMail();
+		return result;
+		} else {
+			return result;
 		}
+	}		
 
 
 	

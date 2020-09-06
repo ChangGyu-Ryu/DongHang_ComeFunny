@@ -95,7 +95,7 @@
                      		<c:when test="${db.DBRECRUITSTATUS eq 0 }" ><span class="gotag">모집중</span></c:when>
                      		<c:when test="${db.DBRECRUITSTATUS eq 1 }" ><span class="gotag2">모집마감</span></c:when>
                 		</c:choose> 
-						<span class="goheart"><img src="/resources/image/do/heart.png" alt="찜하트"/></span>
+<!-- 						<span class="goheart"><img src="/resources/image/do/heart.png" alt="찜하트"/></span> -->
 						</div>
 					</div>  
 				</div>

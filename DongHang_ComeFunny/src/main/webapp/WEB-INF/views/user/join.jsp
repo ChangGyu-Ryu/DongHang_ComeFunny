@@ -6,7 +6,10 @@
 <html>
 <head>
 <link rel="stylesheet" href="<%=request.getContextPath() %>/resources/css/login/join.css" />
-<script src="/resources/bower_components/jquery/dist/jquery.min.js"></script>  
+<script
+  src="https://code.jquery.com/jquery-2.2.4.min.js"
+  integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+  crossorigin="anonymous"></script>
 
 <!-- fontawesome 아이콘 -->
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
@@ -163,13 +166,13 @@
 			                	<label id="join__label__gender">성별</label>
 			                	<div class="five wide field"> 
 			                		<div class="ui radio checkbox">
-			                			<input type="radio" name="uGender" value="1" class="hidden">
+			                			<input type="radio" name="uGender" value="0" class="hidden">
 			                        </div>
 			                        <label>남</label>
 			                    </div>
 			                	<div class="five wide field"> 
 			                		<div class="ui radio checkbox">
-			                			<input type="radio" name="uGender" value="2" class="hidden">
+			                			<input type="radio" name="uGender" value="1" class="hidden">
 			                        </div>
 			                        <label>여</label>
 			                    </div>

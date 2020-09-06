@@ -272,8 +272,6 @@
 			where gbNo = #{gbNo }
 		</update>
 	   
-	   
-	   
 	   <!-- goboard 삭제 -> gbisdel = 1 로 update -->
 	   <update id="deleteGoboard">
 	         update tb_goboard

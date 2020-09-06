@@ -105,6 +105,7 @@
       새로 오셨나요? &emsp; <a href="<%=request.getContextPath()%>/user/join">Sign Up</a>
     </div>
     <div class="ui fluid large yellow submit button" style="background-color: #FEE500; padding: 1px 0;">
+    <a href="https://kauth.kakao.com/oauth/authorize?client_id=55deebfe6e9f733314183edf1a04228e&redirect_uri=http://localhost:8088/board/freelist&response_type=code">
       <img src="<%=request.getContextPath() %>/resources/image/login/kakao_login_medium_wide.png">
     </div>
     <div>

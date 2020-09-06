@@ -48,10 +48,23 @@
 	   SELECT COUNT(*) FROM tb_user
 	   WHERE userid = #{userId}
 	</select>
-	
+		<!-- 아이디 찾기 -->
 	<select id="selectFindId" resultType="USER">
 	  SELECT userid FROM tb_user
 	   WHERE uname = #{uName}
 	   AND umail = #{uMail}
 	</select>
+	
+		<!-- 이메일 인증 조건 -->
+	<select id="userChk" resultType="USER">
+	   SELECT uname, userid, umail FROM tb_user
+	   WHERE uname = #{uName}
+	   AND userid = #{userId}
+	   AND umail = #{uMail}
+	</select>
+	   
+	   <!-- 비밀번호 변경 -->
+	<update id="changePassword">
+       UPDATE tb_user SET upw = #{uPw} WHERE userid = #{userId}
+    </update>
 </mapper>

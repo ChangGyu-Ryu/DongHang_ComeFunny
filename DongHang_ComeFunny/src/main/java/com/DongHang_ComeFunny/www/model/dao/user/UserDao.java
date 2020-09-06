@@ -1,13 +1,9 @@
 package com.DongHang_ComeFunny.www.model.dao.user;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import com.DongHang_ComeFunny.www.model.vo.User;
@@ -51,6 +47,18 @@ public class UserDao {
 	
 	public User findPassword(String umail) {
 		return session.selectOne("USER.findPassword", umail);
+	}
+	
+	public void changePassword(User user) throws Exception {
+		session.update("USER.changePassword", user);
+	}
+
+	public int updateUser(User user) {
+		return session.update("USER.changePassword", user);
+	}
+
+	public User userChk(User user) {
+		return session.selectOne("USER.userChk", user);
 	}
 
 }

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -24,6 +25,8 @@
 <script type="text/javascript"
    src="/resources/se2/js/service/HuskyEZCreator.js" charset="utf-8"></script>
 
+<!-- fontawesome 아이콘 -->
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
 
 <!-- <form>태그의 submit을 수행하면 editor에 작성한 내용을 <textarea>에 반영 -->
 <script type="text/javascript">
@@ -108,6 +111,19 @@ $(document).ready(function () {
          <div class="logo-img">
          <a href="/"><img class="logo-img" alt="로고이미지" src="/resources/image/header/logo.png" ></a>
          </div>
+      <c:if test="${empty logInInfo}">
+		<div class="main_login">		
+			<a href="/user/login">로그인</a> &ensp;
+			<a href="/user/join">회원가입</a>
+		</div>
+      </c:if>
+      <c:if test="${not empty logInInfo}">
+		<div class="main_login">	
+		    <a href="/message/receivelist"><i class="fas fa-envelope"></i> &nbsp;</a>		
+			<a href="javascript:void(0)" style="cursor: default;">${logInInfo.userId }&nbsp;님 환영합니다.</a> &ensp;
+			<a href="/mypage/profile">마이페이지</a>
+		</div>
+      </c:if>         
       </div>
    </div>
    
@@ -134,13 +150,16 @@ $(document).ready(function () {
 	  		</div>
 		</div>
 		<div class="dropdown">
-	  		<div class="dropbtn"><a href="#">실시간채팅</a></div>
+	  		<div class="dropbtn"><a href="/chat/chat">실시간채팅</a></div>
+		</div>
+		<div class="dropdown">
+	  		<div class="dropbtn"><a href="#">결제하기</a></div>
 		</div>
 	</div>
    
 
 <!-- content -->
-<form action="<%= request.getContextPath() %>/do/dowrite" method="post" enctype="multipart/form-data">
+<form action="<%=request.getContextPath() %>/do/dowrite" method="POST" enctype="multipart/form-data">
    <div class = "dowrite"> 
    <div class = "dowritebox">
    <!-- title -->

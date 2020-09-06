@@ -53,6 +53,12 @@ public interface UserService {
 	public void mailSending(User user, String urlPath) throws MailException;
 
 	public boolean send(String subject, String text, String from, String to);
+	
+	public void changePassword(User user) throws Exception;
+
+	public int updateUser(User user);
+
+	public String userChk(User user);
 
 
 	

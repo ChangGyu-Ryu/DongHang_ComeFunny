@@ -98,9 +98,6 @@ public class GoController {
          
          return null;
       }
-
-    
-
       
    }
    
@@ -226,24 +223,24 @@ public class GoController {
     //goform 기본화면 띄우기 
       @RequestMapping(value="/go/goform", method=RequestMethod.GET)
       public ModelAndView gowrite(GoBoard goBoard, HttpSession session) {
-         
-        ModelAndView mav = new ModelAndView();
-        
-        User sessionUser = (User)session.getAttribute("logInInfo");
-        
-        if(sessionUser != null) {
+    	  
+    	 ModelAndView mav = new ModelAndView();
+    	 
+    	 User sessionUser = (User)session.getAttribute("logInInfo");
+    	 
+    	 if(sessionUser != null) {
              goBoard.setGbUNo(sessionUser.getuNo());
              mav.setViewName("/go/goForm");
-        } else {
-           mav.addObject("alertMsg", "로그인 후에 사용해주시길 바랍니다.");
+    	 } else {
+    		 mav.addObject("alertMsg", "로그인 후에 사용해주시길 바랍니다.");
              mav.addObject("url", "/user/login"); //로그인화면으로
              mav.setViewName("common/result");
-        }
+    	 }
              
          return mav;
       }
       
-   //폼 입력하기 (파일첨부 제외)
+   //폼 입력하기
       @RequestMapping(value="/go/gowrite", method=RequestMethod.POST)
       public ModelAndView insertGo(GoBoard goBoard, GoCheck goCheck, HttpSession session) {
          
@@ -440,7 +437,5 @@ public class GoController {
 
          return mav;
       }
-
-
 
 }

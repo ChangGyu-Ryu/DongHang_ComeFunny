@@ -99,7 +99,40 @@ $(function(){
 // 	});
 
 	/* 이메일 인증 버튼 클릭시 발생하는 이벤트 */
-	$(document).on("click", "#emailBtn", function(){
+	$(document).ready(function() {
+		$(document).on("click", "#emailBtn", function(){
+		var uName = document.getElementById('uName').value;
+		console.log(uName)
+		var userId = document.getElementById('userId').value;
+		console.log(userId)
+		var uMail = document.getElementById('uEmail').value;
+		console.log(uMail)
+		var url = "/user/userChk";
+		var data ="uName="+ uName+"&userId="+userId+ "&uEmail=" + uMail;		
+		$.ajax({
+			beforeSend: function(){
+//		 		loadingBarStart();
+			},
+			type:"get",
+			url : url,
+			data: data,
+			async: false,
+			success : function(data){
+				console.log(data);
+				if(data =="1"){
+				 sendMailChk();
+				}
+				else{
+					alert("존재하지 않은 회원입니다")
+				}
+			},
+			error : function(data){
+				alert("오류가 발생했습니다.");
+				return;
+						}
+				});
+		});
+	function sendMailChk(){
 		
 		var url = "/user/createEmailCheck";
 		var uEmail = $("#uEmail").val();
@@ -118,13 +151,14 @@ $(function(){
 	success : function(data){
 		console.dir(data);
 		alert("인증번호를 발송하였습니다.");
+		$('#emailAuthBtn').removeAttr("disabled");
 	},
 	error : function(data){
 		alert("인증번호 발송에 실패하였습니다.");
 		return false;
 				}
 		})
-	})
+	
 	/*
 	이메일 인증번호 입력 후 인증 버튼 클릭 이벤트
 	*/
@@ -143,6 +177,7 @@ $(function(){
 	success:function(data){
 		if(data=="complete"){
 			alert("인증이 완료되었습니다.");
+			$('#subBtn').removeAttr("disabled");
 		}else if(data == "false"){
 			alert("인증번호를 잘못 입력하셨습니다.")
 		}
@@ -155,8 +190,17 @@ $(function(){
 				}
 			});
 		});
-	});
-
+	
+	
+	
+		$("#subBtn").on("click", function(){
+			var userId = document.getElementById('userId').value
+			console.dir(userId);
+			location.href="/user/fPwChange?userId="+userId;
+		});
+	}
+});
+	})
 </script>
 
 
@@ -174,22 +218,22 @@ $(function(){
 			<div class="ui stacked segment">
 
 				<div class="field">
-					<input type="text" name="uName" placeholder="User Name">
+					<input type="text" id = "uName" name="uName" placeholder="User Name">
 				</div>
 
 				<div class="field">
-					<input type="text" name="userId" placeholder="User ID">
+					<input type="text" id="userId" name="userId" placeholder="User ID">
 				</div>
 
 				<div class="field">
-					<input type="text" id="uEmail" name="ueMial" placeholder="E-mail address">
+					<input type="text" id="uEmail" name="uEMail" placeholder="E-mail address">
 				</div>
 				<div class="field">
 					<input type="text" id="email" name="email"
 						placeholder="Certification Number">
 					<button type="button" class="btn btn-info" id="emailBtn">인증번호
 						발송</button>
-					<button type="button" class="btn btn-info" id="emailAuthBtn">인증번호
+					<button type="button" class="btn btn-info" id="emailAuthBtn" disabled>인증번호
 						확인</button>
 				</div>
 				<input type="hidden" path="random" id="random" value="${random}" />
@@ -200,8 +244,8 @@ $(function(){
 		</form>
 
 		<div>
-			<button id=subBtn class="ui teal button">비밀번호 찾기</button>
-			<button id=cancelBtn class="ui teal button" onclick='history.back()'>돌아가기</button>
+			<button id=subBtn type="button" class="ui teal button" disabled>비밀번호 변경</button>
+			<button id=cancelBtn class="ui teal button">돌아가기</button>
 		</div>
 	</div>
 </div>
