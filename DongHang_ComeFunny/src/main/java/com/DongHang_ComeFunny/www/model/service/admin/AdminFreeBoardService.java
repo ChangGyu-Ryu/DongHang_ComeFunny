@@ -5,6 +5,8 @@ import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
+import com.DongHang_ComeFunny.www.model.vo.FreeComment;
+
 @Service
 public interface AdminFreeBoardService {
 
@@ -14,6 +16,8 @@ public interface AdminFreeBoardService {
 
 	List<Map<String, Object>> viewFreeCommentList(int fbNo);
 
-	Map<String, Object> viewtFreeBoard(int fbNo);
+	Map<String, Object> viewFreeBoard(int fbNo);
+
+	int deleteFreeComment(FreeComment freeComment);
 
 }

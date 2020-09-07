@@ -12,6 +12,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.DongHang_ComeFunny.www.model.service.admin.AdminFreeBoardService;
+import com.DongHang_ComeFunny.www.model.vo.FreeComment;
 
 @Controller
 @RequestMapping("/admin/boards/freeBoard")
@@ -64,11 +66,16 @@ public class AdminFreeBoardController {
 					}
 		}
 		
+		// url : /board/freeview - GET
+		// parameter :
+		// int fbNo - 파라미터(name="fbNo") 값(value) 불러오기
 		@RequestMapping(value = "/view", method = RequestMethod.GET)
-		public ModelAndView freeView(int fbNo
+		public ModelAndView viewFreeBoard(int fbNo
 			) {
+			// 1. 모델앤뷰 객체 생성
 			ModelAndView mav = new ModelAndView();
-			Map<String, Object> commandMap = adminFreeBoardService.viewtFreeBoard(fbNo);
+			// 2. 파라미터값 Service에 전달 후 Map에 저장
+			Map<String, Object> commandMap = adminFreeBoardService.viewFreeBoard(fbNo);
 			
 			//---------------- Service에서 처리한 데이터값 출력-------------------------
 			System.out.println("[controller] freeview - commandMap : " + commandMap);
@@ -138,6 +145,27 @@ public class AdminFreeBoardController {
 			// 1. 파라미터값 Service에 전달 후 int 값 반환
 			//    ( 성공 : 1, 실패 : 0 )
 			return adminFreeBoardService.viewFreeCommentList(fbNo);
+		}
+		
+		@RequestMapping(value="/deleteReply", method = RequestMethod.PUT)
+		@ResponseBody
+		public int deleteReply(@RequestBody Map<String,Object> replyNo) {
+			
+			//-------------------RequestBody에서 요청한 값 제대로 받아왔는지 확인하기----------------------
+			System.out.println("[controller] updateReply map : "+replyNo);
+			System.out.println("[controller] updateReply fcno int: "+replyNo.get("replyNo"));
+			System.out.println("[controller] updateReply fccontent string : "+replyNo.get("replyText"));
+			//---------------------------------------------------------------------------------------------
+			
+			// 1. FreeComment fcNo에 Map에서 갖고온 Value(Object 타입)을 int형태로 바꾸기 
+			int fcNo = Integer.parseInt((String) replyNo.get("replyNo"));
+			// 2. FreeComment 빈 객체 생성
+			FreeComment freeComment = new FreeComment();
+			// 3. FreeComment에 fcNo, fcContent 값 지정
+			freeComment.setFcNo(fcNo);
+			// 4. 파라미터값 Service에 전달 후 int 값 반환
+			//    ( 성공 : 1, 실패 : 0 )
+			return adminFreeBoardService.deleteFreeComment(freeComment);
 		}
 		
 	

@@ -11,4 +11,6 @@ public interface AdminGoBoardService {
 
 	void deleteGoBoard(String[] gbNo);
 
+	Map<String, Object> selectGoDetail(int gbNo);
+
 }

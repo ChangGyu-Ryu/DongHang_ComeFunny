@@ -54,6 +54,58 @@
 			WHERE gbno = #{gbNo}
 		</delete>
 		
+		<select id="selectGoUserInfo" resultType="Map">
+            select BOARD.*, U.userId, U.unick, U.ugender, (to_char(sysdate,'YYYY')-substr(U.ubirth,1,4)+1)age, UF.ufstoredfilename
+         from tb_goboard BOARD 
+             join tb_user U on BOARD.gbuno = U.uno  
+             left join tb_userfile UF on UF.ufuno = U.uno  
+         where gbno = #{gbNo }
+      </select>
+      
+       <select id="selectGocheck" resultType="GoCheck">
+            select * from tb_gocheck where gcgbno = #{gbNo }
+      </select>
+      
+       <select id="selectGochklist" resultType="Map">
+        select gcgbno, LISTAGG(gcvalue, ',') WITHIN group(order by gcvalue) as gcvalue2
+        from tb_gocheck
+        where gcgbno = #{gbNo }
+        group by gcgbno
+    </select>
+    
+     <select id="selecthostReviewCnt" resultType="int">
+            select count(*)
+            from tb_reviewboard
+            where  rbgbno = #{gbNo }
+      </select>
+      
+      <select id="selectGoHostReview" resultType="hashmap">
+            select *
+         from (
+             select rownum rnum, n1.*
+             from(
+                 select RBOARD.rbcontent, RBOARD.rbhoststar, RBOARD.rbwrittendate, U.userid, UF.ufstoredfilename
+                FROM tb_reviewboard RBOARD
+                join tb_user U on RBOARD.rbuno = U.uno
+                left join tb_userfile UF on UF.ufuno = U.uno
+                where RBOARD.rbgbno = #{gbNo }
+                order by RBOARD.rbhoststar DESC
+             )n1
+         )
+         WHERE rnum BETWEEN 1 AND 3
+      </select>
+      
+      <select id="selectgoDhApplylist" resultType="Map"> 
+            select GOAPPLY.gastatus, GOAPPLY.gauno, U.userId, u.ugender, (to_char(sysdate,'YYYY')-substr(U.ubirth,1,4)+1)age, UF.ufstoredfilename
+         from tb_goapply GOAPPLY 
+             join tb_user U on GOAPPLY.gauno = U.uno  
+             left join tb_userfile UF on UF.ufuno = U.uno  
+         where gagbno = #{gbNo }
+      </select>
+		
+		
+		
+		
     	<resultMap type="com.DongHang_ComeFunny.www.model.vo.GoBoard" id="GOBOARDLIST">
     		<result property="gbNo" column="gbno"/>
     		<result property="gbTitle" column="gbtitle"/>

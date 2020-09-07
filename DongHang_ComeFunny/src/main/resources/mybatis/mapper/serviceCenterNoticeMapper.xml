@@ -36,9 +36,8 @@
 	
 	
 	<select id="selectNoticeByNbNo" resultType="List">
-			SELECT n.*, nf.*, ni.* FROM tb_noticeboard n, tb_noticefile nf, tb_noticeimg ni
+			SELECT n.*, nf.* FROM tb_noticeboard n, tb_noticefile nf
     			  WHERE n.nbno = nf.nfnbno
-    			  		AND nf.nfnbno = ni.ninbno
                         AND n.nbno = #{nbNo}
             ORDER BY n.nbno DESC;
 	

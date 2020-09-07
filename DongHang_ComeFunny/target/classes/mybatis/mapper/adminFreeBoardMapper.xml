@@ -89,6 +89,20 @@
     		WHERE fbno = #{fbNo}
     	</select>
     	
+    	<delete id="deleteFreeComment">
+    		DELETE FROM	tb_freecomment
+    		WHERE fcno = #{fcNo}
+    	</delete>
+    	
+    	<delete id="deleteFreeCommentByFbNo">
+    		DELETE FROM	tb_freecomment
+    		WHERE fcfbno = #{fcFbNo}
+    	</delete>
+    	
+    	<delete id="deleteFreeFileByFbNo">
+    		DELETE FROM tb_freefile
+    		WHERE fffbno = #{ffFbNo}
+    	</delete>
     	
 		
     	<resultMap type="com.DongHang_ComeFunny.www.model.vo.FreeBoard" id="FREEBOARDLIST">

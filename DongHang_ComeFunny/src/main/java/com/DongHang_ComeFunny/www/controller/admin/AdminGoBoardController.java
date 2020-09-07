@@ -3,13 +3,18 @@ package com.DongHang_ComeFunny.www.controller.admin;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.DongHang_ComeFunny.www.model.service.admin.AdminGoBoardService;
+import com.DongHang_ComeFunny.www.model.vo.User;
 
 @Controller
 @RequestMapping("/admin/boards/goBoard")
@@ -55,5 +60,17 @@ public class AdminGoBoardController {
 						return mav;
 					}
 		}
+		
+		 @RequestMapping(value="view", method=RequestMethod.GET)
+	      public void goDetail(int gbNo, Model model, HttpSession session) {
+	         
+	         //함께가요 상세정보들
+	         Map<String, Object> goDetailInfo = adminGoBoardService.selectGoDetail(gbNo);
+	         
+	         //함께가요 찜목록 클릭 여부
+	         
+	         model.addAttribute("goDetailInfo", goDetailInfo);
+	         
+	      }
 
 }

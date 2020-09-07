@@ -69,54 +69,46 @@
 			WHERE afabno = #{abNo} 
 	</select>
 		
-	<select id="selectWriteAbNo" resultType="int">
-			SELECT tb_answerboard_seq.CURRVAL 
+	<select id="selectWriteQbNo" resultType="int">
+			SELECT tb_questionboard_seq.CURRVAL 
 			FROM DUAL
 	</select>
 	
-	<insert id="insertAnswer">
-			INSERT INTO tb_answerboard
-			(abuno, abqbno, abtitle, abcontent)
+	<insert id="insertQuestion">
+			INSERT INTO tb_questionboard
+			(qbuno, qbqbno, qbtitle, qbcontent)
 			VALUES
-			(1, #{abQbNo}, #{abTitle}, #{abContent})
+			(#{qbUno}, #{qbQbNo}, #{qbTitle}, #{qbContent})
 	</insert>
 	
 	
-	<insert id="insertAnswerFile">
-			INSERT INTO tb_answerfile
-			(afabno, aforiginfilename, afstoredfilename, afsize, afsavepath)
+	<insert id="insertQuestionFile">
+			INSERT INTO tb_questionfile
+			(qfqbno, qforiginfilename, qfstoredfilename, qfsize, qfsavepath)
 			VALUES
-			(#{afAbNo}, #{originFileName}, #{storedFileName}, #{fileSize}, #{savePath})
+			(#{qfQbNo}, #{originFileName}, #{storedFileName}, #{fileSize}, #{savePath})
 	</insert>
 	
-	<update id="updateQuestionStatus">
+	<update id="updateQuestion">
 			UPDATE tb_questionboard
 			<set>
-				qbstatus = 1
+				qbtitle = #{qbTitle},
+				qbcontent = #{qbContent}
 			</set>
-			WHERE qbno = #{abQbNo}
+			WHERE qbno = #{qbNo}
 	</update>
 	
-	<update id="updateAnswer">
-			UPDATE tb_answerboard
-			<set>
-				abtitle = #{abTitle},
-				abcontent = #{abContent}
-			</set>
-			WHERE abno = #{abNo}
-	</update>
-	
-	<select id="selectAnswerFile" resultType="HashMap">
+	<select id="selectQuestionFile" resultType="HashMap">
 		SELECT
     		*
-    		FROM tb_answerfile
-    		WHERE afno = #{afNo}
+    		FROM tb_questionfile
+    		WHERE qfno = #{qfNo}
 	</select>
 	
-	<delete id="deleteAnswerFile">
+	<delete id="deleteQuestionFile">
 		DELETE FROM 
-    			tb_answerfile 
-    		WHERE afno = #{afNo}
+    			tb_questionfile 
+    		WHERE qfno = #{qfNo}
 	</delete>
 	
 	<delete id="deleteAnswer">
@@ -139,22 +131,9 @@
 			WHERE qfqbno=#{qbNo}
 	</delete>
 	
-	<update id="updateQuestionDelStatus">
-			UPDATE tb_questionboard
-			<set>
-				qbstatus = 0
-			</set>
-			WHERE qbno = #{qbNo}
-	</update>
-	
 	<select id="selectAbNoByQbNo" resultType="int">
 			SELECT abno FROM tb_answerboard
 			WHERE abqbno = #{qbNo}
-	</select>
-	
-	<select id="selectQbNoByAbNo" resultType="int">
-			SELECT abqbno FROM tb_answerboard
-			WHERE abno = #{abNo}
 	</select>
 	
 	

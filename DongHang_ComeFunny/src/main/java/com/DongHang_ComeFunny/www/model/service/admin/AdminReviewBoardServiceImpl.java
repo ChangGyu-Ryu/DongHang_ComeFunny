@@ -43,43 +43,55 @@ public class AdminReviewBoardServiceImpl implements AdminReviewBoardService {
 	@Override
 	public void deleteReviewBoard(String[] rbNo) {
 		for(int i=0; i<rbNo.length; i++) {
+			adminReviewBoardDao.deleteReviewFileByRbNo(rbNo[i]);
+			adminReviewBoardDao.deleteReviewCommentByRbNo(rbNo[i]);
 			adminReviewBoardDao.deleteReviewBoard(rbNo[i]);
 		}
 	}
 
 	@Override
 	public Map<String, Object> selectReviewView(int rbNo) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+		// 1. 게시글 번호로 게시글 상세보기 조회(회원, 리뷰게시글 테이블)
+				Map<String, Object> fdetail = adminReviewBoardDao.selectReviewDetail(rbNo);
+
+				// ----------------------DAO에서 제대로 조회되었는지 확인하기-------------------
+				System.out.println("[ServiceImpl] - fdetail Map : " + fdetail);
+				// -----------------------------------------------------------------------------
+				
+				// 4. 리뷰게시글과 업로드된 파일 목록 리스트 조회(리뷰게시글, 리뷰파일)
+				List<Map<String, Object>> filelist = adminReviewBoardDao.selectFileWithReview(rbNo);
+				// 5. 빈 커맨드 객체 생성
+				Map<String, Object> commandMap = new HashMap<>();
+				// 6. 리뷰게시글 리스트와 파일리스트를 커맨드맵에 넣기
+				commandMap.put("detail", fdetail);
+				commandMap.put("filelist", filelist);
+				// 7. 커맨드맵 반환
+				return commandMap;
+			}
 
 	@Override
 	public Map<String, Object> selectGoBoardView(int rbGbNo) {
-		// TODO Auto-generated method stub
-		return null;
+		return adminReviewBoardDao.selectGoBoardView(rbGbNo);
 	}
 
 	@Override
 	public Map<String, Object> selectDoBoardView(int rbDbNo) {
-		// TODO Auto-generated method stub
-		return null;
+		return adminReviewBoardDao.selectDoBoardView(rbDbNo);
 	}
-
+	
 	@Override
 	public List<Map<String, Object>> selectReviewCommentList(int rbNo) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public int updateReviewContent(ReviewComment reviewComment) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+		// 1. 게시글 번호로 댓글 리스트 조회
+				List<Map<String, Object>> reviewComment = adminReviewBoardDao.selectReviewCommentList(rbNo);
+				// 2. 조회된 리스트 반환
+				return reviewComment;
+			}
 
 	@Override
 	public int deleteReviewComment(ReviewComment reviewComment) {
-		// TODO Auto-generated method stub
-		return 0;
+		// 1. 댓글 삭제 시, isdel=0을 1로 변경
+//		return reviewBoardDao.updateReviewCommentIsDEl(reviewComment);
+		// 2. 댓글 완전 삭제
+		return adminReviewBoardDao.deleteReviewComment(reviewComment);
 	}
 }

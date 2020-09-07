@@ -22,8 +22,6 @@ public interface AdminReviewBoardService {
 
 	List<Map<String, Object>> selectReviewCommentList(int rbNo);
 
-	int updateReviewContent(ReviewComment reviewComment);
-
 	int deleteReviewComment(ReviewComment reviewComment);
 
 }
