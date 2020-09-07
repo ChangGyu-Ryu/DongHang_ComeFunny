@@ -5,9 +5,9 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 </head>
 <body>
-<!-- 문자보내는 폼 -->
 <form method="post" id="smsForm">
 <table border = "1" align="right" width = "300" height = "200" >
  
@@ -34,7 +34,7 @@
     function sendSMS(pageName){
  
         console.log("문자를 전송합니다.");
-        $("#smsForm").attr("action", pageName + ".do"); //위에 있는 폼태그를 컨트롤러로 전송한다.
+        $("#smsForm").attr("action", pageName); //위에 있는 폼태그를 컨트롤러로 전송한다.
         $("#smsForm").submit();
     }
   </script>

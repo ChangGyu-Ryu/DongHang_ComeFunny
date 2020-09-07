@@ -42,7 +42,9 @@
 		WHERE
 			unick = #{unick} AND uisleave = 0
 	</select>
-	
+	<update id="UpdataDHBGByUno" parameterType="HashMap">
+		UPDATE tb_user SET udhtcnt = udhtcnt + #{amount} where uno = #{uno}
+	</update>
 	   <!-- 아이디 중복 체크 -->
 	<select id="idChk" parameterType="String" resultType="int">
 	   SELECT COUNT(*) FROM tb_user

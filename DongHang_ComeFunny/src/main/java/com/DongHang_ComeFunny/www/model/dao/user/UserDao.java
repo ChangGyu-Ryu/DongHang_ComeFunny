@@ -1,5 +1,6 @@
 package com.DongHang_ComeFunny.www.model.dao.user;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
@@ -59,6 +60,10 @@ public class UserDao {
 
 	public User userChk(User user) {
 		return session.selectOne("USER.userChk", user);
+	}
+	
+	public int updateDHBG(HashMap<String, Integer> param) {
+		return session.update("User.UpdataDHBGByUno", param);
 	}
 
 }

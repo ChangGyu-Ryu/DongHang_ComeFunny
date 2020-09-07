@@ -7,7 +7,6 @@
 <head>
 <!-- jQuery -->
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-
 <!-- 부트스트랩 -->
 <!-- 합쳐지고 최소화된 최신 CSS -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
@@ -26,7 +25,15 @@
 <title>mypage</title>
 
 <script type="text/javascript" src="/resources/js/mypage/mydonghang.js"></script>
+<script type="text/javascript">
+function showPopup(){
+	var popupWidth = 900;
+	var popupHeight = 600;
+	var popupX = (window.screen.width / 2) - (popupWidth / 2);
+	var popupY= (window.screen.height / 2) - (popupHeight / 2);
+	window.open("/payment/paypage", "userSearch", "width=900, height=600, left="+popupX+", top="+popupY); }
 
+</script>
 </head>
 <body>
 
@@ -54,7 +61,7 @@
 		<div id="ticketBox">
 			<img id="ticket" alt="나의 동행" src="/resources/image/mypage/coupon.png"/>
 			<div id="reserveTicket">보유중인 동행복권 <p id="reserveTicketNum">${paymentData.tkCnt}</p> 장</div>
-			<button id="chargeBtn" type="button" onclick="location.href ='결제창'">충전</button>
+			<button id="chargeBtn" type="button" onclick="showPopup()">충전</button>
 		</div>		
 		
 		<button id="deleteBtn" class="deletePmBtn" type="button">삭제</button>
@@ -74,7 +81,7 @@
 			<c:forEach items="${paymentData.pmlist}" var="pmboard">				
 				<tr>
 					<td style="vertical-align: inherit;"><input type="checkbox" class="deleteChk" value="${pmboard.pONo}"/></td>
-					<td style="vertical-align: inherit;"><a>${pmboard.oPayDate}</a></td>
+					<td style="vertical-align: inherit;"><a>${pmboard.oDate}</a></td>
 					<td style="vertical-align: inherit;"><a>${pmboard.oName}</a></td>
 					<td style="vertical-align: inherit;"><a>${pmboard.oQunatity}</a></td>
 					<td style="vertical-align: inherit;"><a>${pmboard.oPrice}</a></td>

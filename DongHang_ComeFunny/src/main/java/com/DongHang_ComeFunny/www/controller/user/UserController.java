@@ -3,16 +3,15 @@ package com.DongHang_ComeFunny.www.controller.user;
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
-import javax.crypto.Mac;
-import javax.crypto.spec.SecretKeySpec;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.commons.codec.binary.Base64;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +28,8 @@ import com.DongHang_ComeFunny.www.model.service.user.UserService;
 import com.DongHang_ComeFunny.www.model.vo.User;
 import com.fasterxml.jackson.databind.JsonNode;
 
+import common.util.Coolsms;
+
 @Controller
 @RequestMapping("/user")
 public class UserController {
@@ -38,39 +39,47 @@ public class UserController {
 	@Autowired
 	private KakaoController kakaoController = new KakaoController();
 	
-	@RequestMapping(value="/message", method=RequestMethod.GET)
-	public void message() {
-		
-	}
-	@RequestMapping(value="/messageImpl", method=RequestMethod.POST)
-	public String messageImpl() throws NoSuchAlgorithmException, UnsupportedEncodingException, InvalidKeyException {
-		String space = " ";					// one space
-		String newLine = "\n";					// new line
-		String method = "GET";					// method
-		String url = "/photos/puppy.jpg?query1=&query2";	// url (include query string)
-		String timestamp = "{timestamp}";			// current timestamp (epoch)
-		String accessKey = "{accessKey}";			// access key id (from portal or Sub Account)
-		String secretKey = "{secretKey}";
+    @RequestMapping(value = "/sendSms", method=RequestMethod.POST)
+    public String sendSms(HttpServletRequest request) throws Exception {
 
-		String message = new StringBuilder()
-			.append(method)
-			.append(space)
-			.append(url)
-			.append(newLine)
-			.append(timestamp)
-			.append(newLine)
-			.append(accessKey)
-			.toString();
+      String api_key = "NCSIDYQ0HSU27S93"; //위에서 받은 api key를 추가
+      String api_secret = "DM4AFZ9YRSQBBBURE1ZFMYEL0COLNYP3";  //위에서 받은 api secret를 추가
 
-		SecretKeySpec signingKey = new SecretKeySpec(secretKey.getBytes("UTF-8"), "HmacSHA256");
-		Mac mac = Mac.getInstance("HmacSHA256");
-		mac.init(signingKey);
+      Coolsms coolsms = new Coolsms(api_key, api_secret);
+      //이 부분은 홈페이지에서 받은 자바파일을 추가한다음 그 클래스를 import해야 쓸 수 있는 클래스이다.
+      
 
-		byte[] rawHmac = mac.doFinal(message.getBytes("UTF-8"));
-		String encodeBase64String = Base64.encodeBase64String(rawHmac);
+      HashMap<String, String> set = new HashMap<String, String>();
+      set.put("to", "01050429097"); // 수신번호
 
-	  return encodeBase64String;
-	}
+      set.put("from", (String)request.getParameter("from")); // 발신번호, jsp에서 전송한 발신번호를 받아 map에 저장한다.
+      set.put("text", (String)request.getParameter("text")); // 문자내용, jsp에서 전송한 문자내용을 받아 map에 저장한다.
+      set.put("type", "sms"); // 문자 타입
+
+      System.out.println(set);
+
+      JSONObject result = coolsms.send(set); // 보내기&전송결과받기
+
+      if ((boolean)result.get("status") == true) {
+
+        // 메시지 보내기 성공 및 전송결과 출력
+        System.out.println("성공");
+        System.out.println(result.get("group_id")); // 그룹아이디
+        System.out.println(result.get("result_code")); // 결과코드
+        System.out.println(result.get("result_message")); // 결과 메시지
+        System.out.println(result.get("success_count")); // 메시지아이디
+        System.out.println(result.get("error_count")); // 여러개 보낼시 오류난 메시지 수
+      } else {
+
+        // 메시지 보내기 실패
+        System.out.println("실패");
+        System.out.println(result.get("code")); // REST API 에러코드
+        System.out.println(result.get("message")); // 에러메시지
+      }
+
+      return "user/login"; //문자 메시지 발송 성공했을때 number페이지로 이동함
+    }
+
 	
 	@RequestMapping(value="/login", method=RequestMethod.GET)
 	public ModelAndView login() {

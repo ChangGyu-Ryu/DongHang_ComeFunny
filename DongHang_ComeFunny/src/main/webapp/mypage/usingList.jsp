@@ -25,6 +25,15 @@
 
 <!-- checkBox 전체 체크  js-->
 <script type="text/javascript" src="/resources/js/mypage/mydonghang.js"></script>
+<script type="text/javascript">
+function showPopup(){
+	var popupWidth = 900;
+	var popupHeight = 600;
+	var popupX = (window.screen.width / 2) - (popupWidth / 2);
+	var popupY= (window.screen.height / 2) - (popupHeight / 2);
+	window.open("/payment/paypage", "userSearch", "width=900, height=600, left="+popupX+", top="+popupY); }
+
+</script>
 
 </head>
 <body>
@@ -53,7 +62,7 @@
 		<div id="ticketBox">
 			<img id="ticket" alt="나의 동행" src="/resources/image/mypage/coupon.png"/>
 			<div id="reserveTicket">보유중인 동행복권 <p id="reserveTicketNum">28</p> 장</div>
-			<button id="chargeBtn" type="button">충전</button>
+			<button id="chargeBtn" type="button" onclick="showPopup()">충전</button>
 		</div>		
 		
 		<div id="myPaymentTitle">복권사용 내역</div>

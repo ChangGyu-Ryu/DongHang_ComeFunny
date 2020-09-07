@@ -179,9 +179,7 @@ $(document).ready(function(){
 		<div class="dropdown">
 	  		<div class="dropbtn"><a href="/chat/chat">실시간채팅</a></div>
 		</div>
-		<div class="dropdown">
-	  		<div class="dropbtn"><a href="#">결제하기</a></div>
-		</div>
+
 	</div>
 
 <!-- content -->
