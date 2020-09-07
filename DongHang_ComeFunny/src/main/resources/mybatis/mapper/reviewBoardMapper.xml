@@ -481,6 +481,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     			tb_doboard
     		WHERE dbno = #{rbDbNo}
     	</select>
+    
     	
     	<select id="selectGoBoardStarCntBefore" resultType="int">
     		SELECT gbstarcnt FROM
