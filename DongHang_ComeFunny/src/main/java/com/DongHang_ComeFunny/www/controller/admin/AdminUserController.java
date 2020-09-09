@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.DongHang_ComeFunny.www.model.service.admin.AdminUserService;
+import com.DongHang_ComeFunny.www.model.vo.Admin;
 import com.DongHang_ComeFunny.www.model.vo.User;
 
 import common.exception.FileException;
@@ -30,9 +31,14 @@ public class AdminUserController {
 	public ModelAndView veiwUserList(
 								String searchText,
 								String searchKinds,
+								HttpSession session,
 								@RequestParam(required = false, defaultValue = "1") int cPage) {
 		
 		ModelAndView mav = new ModelAndView();
+		Admin sessionAdmin= (Admin)session.getAttribute("adminLoginInfo");
+		User sessionUser =(User)session.getAttribute("logInInfo");
+		if(sessionAdmin != null) {
+			
 		int cntPerPage = 10;
 		
 		System.out.println(searchText);
@@ -53,51 +59,91 @@ public class AdminUserController {
 		mav.addObject("searchKinds", searchKinds);
 		mav.setViewName("admin/user/list");
 		return mav;
-		
-		
+		}else if (sessionUser != null) {
+			mav.addObject("alertMsg", "관리자만 이용 가능합니다.");
+			mav.addObject("url", "/main");
+			mav.setViewName("common/result");
+			return mav;
+		} else {
+			mav.addObject("alertMsg", "로그인해 주세요.");
+			mav.addObject("url", "/admin/login");
+			mav.setViewName("common/result");
+			return mav;
+		}
 	}
 	
 	@RequestMapping("/delete")
 	public ModelAndView deleteUser(
-									String[] uNo)
+									String[] uNo, 
+									HttpSession session)
 									{
 		ModelAndView mav = new ModelAndView();
 		
-		
-		// delUnos의 값이 null이 아닐경우
-		// 퀵 버튼은 배열의 크기가 0일 경우 자동으로 String으로 변환되는 것을 이용
-		// 따로 변환해줄 필요가없음
-		
-		if(uNo != null) {
-//			System.out.println("****************" + uNos);
-//			System.out.println(Arrays.toString(uNos));
-			adminUserService.deleteUser(uNo);
-			mav.setViewName("redirect:/admin/user/list");
-			return mav; 
-//			return new ModelAndView("redirect:/admin/user/list");
-		}
-		// 아무것도 선택하지 않았을 때 전체 목록으로 redirect 해줌
-		else {
-			mav.setViewName("redirect:/admin/user/list");
+		Admin sessionAdmin= (Admin)session.getAttribute("adminLoginInfo");
+		User sessionUser =(User)session.getAttribute("logInInfo");
+		if(sessionAdmin != null) {
+			
+			// delUnos의 값이 null이 아닐경우
+			// 퀵 버튼은 배열의 크기가 0일 경우 자동으로 String으로 변환되는 것을 이용
+			// 따로 변환해줄 필요가없음
+			
+			if(uNo != null) {
+	//			System.out.println("****************" + uNos);
+	//			System.out.println(Arrays.toString(uNos));
+				adminUserService.deleteUser(uNo);
+				mav.setViewName("redirect:/admin/user/list");
+				return mav; 
+	//			return new ModelAndView("redirect:/admin/user/list");
+			}
+			// 아무것도 선택하지 않았을 때 전체 목록으로 redirect 해줌
+			else {
+				mav.setViewName("redirect:/admin/user/list");
+				return mav;
+	//			return new ModelAndView("redirect:/admin/user/list");
+			}
+		}else if (sessionUser != null) {
+			mav.addObject("alertMsg", "관리자만 이용 가능합니다.");
+			mav.addObject("url", "/main");
+			mav.setViewName("common/result");
 			return mav;
-//			return new ModelAndView("redirect:/admin/user/list");
+		} else {
+			mav.addObject("alertMsg", "로그인해 주세요.");
+			mav.addObject("url", "/admin/login");
+			mav.setViewName("common/result");
+			return mav;
 		}
 	}
 	
 	@RequestMapping("/modify")
-	public ModelAndView modifyUser(int uNo) {
+	public ModelAndView modifyUser(int uNo,
+									HttpSession session) {
 		ModelAndView mav = new ModelAndView();
-		System.out.println(uNo);
-		
-		Map<String, Object> viewUserMap = adminUserService.viewUser(uNo);
-		System.out.println(viewUserMap);
-
-		if(viewUserMap.get("viewUser") != null) {
-			mav.addObject("viewUserMap",viewUserMap);
-			mav.setViewName("admin/user/modify");
+		Admin sessionAdmin= (Admin)session.getAttribute("adminLoginInfo");
+		User sessionUser =(User)session.getAttribute("logInInfo");
+		if(sessionAdmin != null) {
+			
+			System.out.println(uNo);
+			
+			Map<String, Object> viewUserMap = adminUserService.viewUser(uNo);
+			System.out.println(viewUserMap);
+	
+			if(viewUserMap.get("viewUser") != null) {
+				mav.addObject("viewUserMap",viewUserMap);
+				mav.setViewName("admin/user/modify");
+				return mav;
+			} else {
+				return new ModelAndView("redirect:/admin/user/list");
+			}
+		}else if (sessionUser != null) {
+			mav.addObject("alertMsg", "관리자만 이용 가능합니다.");
+			mav.addObject("url", "/main");
+			mav.setViewName("common/result");
 			return mav;
 		} else {
-			return new ModelAndView("redirect:/admin/user/list");
+			mav.addObject("alertMsg", "로그인해 주세요.");
+			mav.addObject("url", "/admin/login");
+			mav.setViewName("common/result");
+			return mav;
 		}
 		
 	}
@@ -108,41 +154,72 @@ public class AdminUserController {
 										HttpSession session) throws FileException
 	{
 		ModelAndView mav = new ModelAndView();
-		String root = session.getServletContext().getRealPath("/");
 		
-		System.out.println(modiUserInfo);
-		System.out.println(userImg);
-		System.out.println(root);
-		
-		if(modiUserInfo != null) {
-			adminUserService.modifyUser(modiUserInfo, userImg, root);
-			int modiUNo  = modiUserInfo.getuNo();
-			return new ModelAndView("redirect:/admin/user/view?uNo="+modiUNo);
+		Admin sessionAdmin= (Admin)session.getAttribute("adminLoginInfo");
+		User sessionUser =(User)session.getAttribute("logInInfo");
+		if(sessionAdmin != null) {
+			String root = session.getServletContext().getRealPath("/");
+			
+			System.out.println(modiUserInfo);
+			System.out.println(userImg);
+			System.out.println(root);
+			
+			if(modiUserInfo != null) {
+				adminUserService.modifyUser(modiUserInfo, userImg, root);
+				int modiUNo  = modiUserInfo.getuNo();
+				return new ModelAndView("redirect:/admin/user/view?uNo="+modiUNo);
+			} else {
+				return new ModelAndView("redirect:/admin/user/list");
+			}
+		}else if (sessionUser != null) {
+			mav.addObject("alertMsg", "관리자만 이용 가능합니다.");
+			mav.addObject("url", "/main");
+			mav.setViewName("common/result");
+			return mav;
 		} else {
-			return new ModelAndView("redirect:/admin/user/list");
+			mav.addObject("alertMsg", "로그인해 주세요.");
+			mav.addObject("url", "/admin/login");
+			mav.setViewName("common/result");
+			return mav;
 		}
 	}
 	
 	@RequestMapping("/view")
-	public ModelAndView viewUser(int uNo) {
+	public ModelAndView viewUser(int uNo,
+								HttpSession session) {
 		ModelAndView mav= new ModelAndView();
-		System.out.println(uNo);
-		
-		Map<String, Object> viewUserMap = adminUserService.viewUser(uNo);
-		System.out.println(viewUserMap);
-		
-
-		if(viewUserMap.get("viewUser") != null && viewUserMap.get("userImg") != null) {
-			mav.addObject("viewUserMap",viewUserMap);
-			mav.setViewName("admin/user/view");
-			return mav;
-		} else if (viewUserMap.get("viewUser") != null && viewUserMap.get("userImg") == null) {
-			mav.addObject("viewUserMap",viewUserMap);
-			mav.setViewName("admin/user/view");
+		Admin sessionAdmin= (Admin)session.getAttribute("adminLoginInfo");
+		User sessionUser =(User)session.getAttribute("logInInfo");
+		if(sessionAdmin != null) {
+			System.out.println(uNo);
+			
+			Map<String, Object> viewUserMap = adminUserService.viewUser(uNo);
+			System.out.println(viewUserMap);
+			
+	
+			if(viewUserMap.get("viewUser") != null && viewUserMap.get("userImg") != null) {
+				mav.addObject("viewUserMap",viewUserMap);
+				mav.setViewName("admin/user/view");
+				return mav;
+			} else if (viewUserMap.get("viewUser") != null && viewUserMap.get("userImg") == null) {
+				mav.addObject("viewUserMap",viewUserMap);
+				mav.setViewName("admin/user/view");
+				return mav;
+			} else {
+				return new ModelAndView("redirect:/admin/user/list");
+			}
+		}else if (sessionUser != null) {
+			mav.addObject("alertMsg", "관리자만 이용 가능합니다.");
+			mav.addObject("url", "/main");
+			mav.setViewName("common/result");
 			return mav;
 		} else {
-			return new ModelAndView("redirect:/admin/user/list");
+			mav.addObject("alertMsg", "로그인해 주세요.");
+			mav.addObject("url", "/admin/login");
+			mav.setViewName("common/result");
+			return mav;
 		}
+
 		
 
 	}

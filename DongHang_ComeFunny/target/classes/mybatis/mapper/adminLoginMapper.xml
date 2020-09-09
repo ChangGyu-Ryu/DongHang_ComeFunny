@@ -5,10 +5,10 @@
     
  <mapper namespace="AdminLogin">
  
- <select id="selectAdmin" parameterType="ADMIN">
+ <select id="selectAdmin" resultType="ADMIN">
  	SELECT * FROM tb_admin
  	WHERE aid = #{aId}
- 	AND apw = #{aPw}
+ 	AND apw = #{apw}
  </select>
  
  

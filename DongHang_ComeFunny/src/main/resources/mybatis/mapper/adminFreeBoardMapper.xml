@@ -9,7 +9,7 @@
     			(SELECT f.* FROM  tb_freeboard f, tb_user u
     				WHERE u.uno = f.fbuno
     				<if test='searchKinds == "fbWriter" and searchKinds != null'>
-					AND u.uname LIKE '%' || #{searchText} || '%'
+					AND u.nick LIKE '%' || #{searchText} || '%'
 					</if>) sf
 			<trim prefix= "WHERE" prefixOverrides="AND">
 				<if test='searchKinds == "dbTitle" and searchKinds != null'>
@@ -25,7 +25,7 @@
     	
     	
     	<select id="selectFreeBoardList" resultMap="FREEBOARDLIST">
-		 	SELECT fbno, fbtitle, fbwrittendate, fbisdel, fbhitscnt, uname FROM (
+		 	SELECT fbno, fbtitle, fbwrittendate, fbisdel, fbhitscnt, unick FROM (
 			SELECT rownum rnum,f1.*FROM(
 			SELECT * FROM tb_freeboard f, tb_user u WHERE u.uno = f.fbuno ORDER BY f.fbno DESC) f1 
 			<trim prefix= "WHERE" prefixOverrides="OR">
@@ -36,7 +36,7 @@
 				OR fbwrittendate LIKE '%' || #{searchText} || '%'
 				</if>
 				<if test='searchKinds == "fbWriter" and searchKinds != null'>
-				OR uname LIKE '%' || #{searchText} || '%'
+				OR unick LIKE '%' || #{searchText} || '%'
 				</if>
 			</trim>
 			)
@@ -111,7 +111,7 @@
     		<result property="fbWrittenDate" column="fbwrittendate"/>
     		<result property="fbHitsCnt" column="fbhitscnt"/>
     		<result property="fbIsDel" column="fbisdel"/>
-    		<result property="fbWriter" column="uname"/>
+    		<result property="fbWriter" column="unick"/>
     	</resultMap>
     
     </mapper>

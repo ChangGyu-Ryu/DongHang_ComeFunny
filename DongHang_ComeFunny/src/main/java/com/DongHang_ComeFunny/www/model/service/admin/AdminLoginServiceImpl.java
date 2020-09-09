@@ -1,11 +1,12 @@
 package com.DongHang_ComeFunny.www.model.service.admin;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.DongHang_ComeFunny.www.model.dao.admin.AdminLoginDao;
 import com.DongHang_ComeFunny.www.model.vo.Admin;
-import com.DongHang_ComeFunny.www.model.vo.User;
 
 @Service
 public class AdminLoginServiceImpl implements AdminLoginService {
@@ -14,9 +15,9 @@ public class AdminLoginServiceImpl implements AdminLoginService {
 	AdminLoginDao adminLoginDao;
 
 	@Override
-	public Admin loginAdmin(Admin loginInfo) {
+	public Admin loginAdmin(Map<String, Object> commandMap) {
 		
-		Admin admin = adminLoginDao.selectAdmin(loginInfo);
+		Admin admin = adminLoginDao.selectAdmin(commandMap);
 		
 		return admin;
 	}

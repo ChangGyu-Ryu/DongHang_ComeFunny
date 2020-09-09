@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.DongHang_ComeFunny.www.model.service.serviceCenter.ServiceCenterNoticeService;
+import com.DongHang_ComeFunny.www.model.vo.User;
 
 @Controller
 @RequestMapping("/serviceCenter/notice")
@@ -32,40 +33,56 @@ public class ServiceCenterNoticeController {
 											@RequestParam(required = false, defaultValue = "1")int cPage) {
 		
 		ModelAndView mav = new ModelAndView();
-		int cntPerPage = 10;
-		
-		Map<String,Object> searchNoticeBoard = new HashMap<>();
-		
-		searchNoticeBoard.put("searchKinds", searchKinds);
-		searchNoticeBoard.put("searchText", searchText);
-		Map<String,Object> noticeBoardList = serviceCenterNoticeService.viewNoticeBoardList(cPage, cntPerPage, searchNoticeBoard);
-
-		mav.addObject("paging",noticeBoardList.get("paging"));
-		mav.addObject("noticeBoardData", noticeBoardList);
-		mav.addObject("searchKinds", searchKinds);
-		mav.addObject("searchText", searchText);
-		mav.setViewName("serviceCenter/notice/list");
-		return mav;
+		User sessionUser =(User)session.getAttribute("logInInfo");
+		if(sessionUser != null) {
+			int cntPerPage = 10;
+			
+			Map<String,Object> searchNoticeBoard = new HashMap<>();
+			
+			searchNoticeBoard.put("searchKinds", searchKinds);
+			searchNoticeBoard.put("searchText", searchText);
+			Map<String,Object> noticeBoardList = serviceCenterNoticeService.viewNoticeBoardList(cPage, cntPerPage, searchNoticeBoard);
+	
+			mav.addObject("paging",noticeBoardList.get("paging"));
+			mav.addObject("noticeBoardData", noticeBoardList);
+			mav.addObject("searchKinds", searchKinds);
+			mav.addObject("searchText", searchText);
+			mav.setViewName("serviceCenter/notice/list");
+			return mav;
+		}else {
+			mav.addObject("alertMsg", "로그인해 주세요.");
+			mav.addObject("url", "/login");
+			mav.setViewName("common/result");
+			return mav;
+		}
 	}
 	
 	@RequestMapping("/view")
 	public ModelAndView viewNoticeBoard (int nbNo,
 										HttpSession session) {
 		ModelAndView mav = new ModelAndView();
-		System.out.println(nbNo);
-		
-		Map<String, Object> viewNoticeMap = serviceCenterNoticeService.viewNotice(nbNo);
-		
-		System.out.println(viewNoticeMap);
-
-		if(viewNoticeMap.get("viewNotice") != null) {
-			mav.addObject("viewNoticeMap",viewNoticeMap);
-			mav.setViewName("serviceCenter/notice/view");
+		User sessionUser =(User)session.getAttribute("logInInfo");
+		if(sessionUser != null) {
+			System.out.println(nbNo);
+			
+			Map<String, Object> viewNoticeMap = serviceCenterNoticeService.viewNotice(nbNo);
+			
+			System.out.println(viewNoticeMap);
+	
+			if(viewNoticeMap.get("viewNotice") != null) {
+				mav.addObject("viewNoticeMap",viewNoticeMap);
+				mav.setViewName("serviceCenter/notice/view");
+				return mav;
+			} else {
+				mav.setViewName("redirect:/serviceCenter/notice/list");
+				return mav; 
+			}	
+		}else {
+			mav.addObject("alertMsg", "로그인해 주세요.");
+			mav.addObject("url", "/login");
+			mav.setViewName("common/result");
 			return mav;
-		} else {
-			mav.setViewName("redirect:/serviceCenter/notice/list");
-			return mav; 
-		}	
+		}
 	}
 	
 	@RequestMapping("/download")

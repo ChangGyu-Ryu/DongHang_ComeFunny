@@ -3,14 +3,14 @@
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
     
-    <mapper namespace="ServiceCenterQuestion">
-    
-   <select id="selectQuestionCnt" resultType="int">
+<mapper namespace="ServiceCenterQuestion">
+
+	<select id="selectQuestionCnt" resultType="int">
 	SELECT COUNT(*) FROM (
 		SELECT q.* FROM tb_questionboard q, tb_user u
 		WHERE u.uno = q.qbuno
 		<if test="searchKinds == 'qbWriter' and searchKinds != null">
-		AND u.uname LIKE '%' || #{searchText} || '%'
+		AND u.unick LIKE '%' || #{searchText} || '%'
 		</if>
 		) sq
 		<trim prefix= "WHERE" prefixOverrides="AND">
@@ -25,7 +25,7 @@
 	</select>
 	
 	<select id="selectQuestionList" resultMap="QUESTIONBOARDLIST">
-		 	SELECT qbno, qbtitle, qbwrittendate, qbisdel, qbstatus, uname FROM (
+		 	SELECT qbno, qbtitle, qbwrittendate, qbisdel, qbstatus, unick FROM (
 				SELECT rownum rnum,q1.*FROM(
 					SELECT * FROM tb_questionboard q, tb_user u WHERE u.uno = q.qbuno ORDER BY q.qbno DESC
 					)q1 
@@ -37,7 +37,7 @@
 				OR qbwrittendate LIKE '%' || #{searchText} || '%'
 				</if>
 				<if test='searchKinds == "qbWriter" and searchKinds != null'>
-				OR uname LIKE '%' || #{searchText} || '%'
+				OR unick LIKE '%' || #{searchText} || '%'
 				</if>
 				</trim>
 				)
@@ -45,7 +45,7 @@
 		</select>
 		
 	<select id="selectQuestionByQbNo" resultType="HashMap">
-			SELECT q.*, a.*, u.uname   
+			SELECT q.*, a.*, u.unick
 			FROM tb_questionboard q, tb_answerboard a, tb_user u
 			WHERE q.qbno = a.abqbno
 			AND q.qbuno = u.uno
@@ -53,7 +53,7 @@
 	</select>
 	
 	<select id="selectOnlyQuestionByQbNo" resultType="HashMap">
-			SELECT q.*, u.uname   
+			SELECT q.*, u.unick   
 			FROM tb_questionboard q, tb_user u
 			WHERE q.qbuno = u.uno
 			AND q.qbno = #{qbNo}
@@ -69,54 +69,46 @@
 			WHERE afabno = #{abNo} 
 	</select>
 		
-	<select id="selectWriteAbNo" resultType="int">
-			SELECT tb_answerboard_seq.CURRVAL 
+	<select id="selectWriteQbNo" resultType="int">
+			SELECT tb_questionboard_seq.CURRVAL 
 			FROM DUAL
 	</select>
 	
-	<insert id="insertAnswer">
-			INSERT INTO tb_answerboard
-			(abuno, abqbno, abtitle, abcontent)
+	<insert id="insertQuestion">
+			INSERT INTO tb_questionboard
+			(qbuno, qbqbno, qbtitle, qbcontent)
 			VALUES
-			(1, #{abQbNo}, #{abTitle}, #{abContent})
+			(#{qbUNo}, #{qbQbNo}, #{qbTitle}, #{qbContent})
 	</insert>
 	
 	
-	<insert id="insertAnswerFile">
-			INSERT INTO tb_answerfile
-			(afabno, aforiginfilename, afstoredfilename, afsize, afsavepath)
+	<insert id="insertQuestionFile">
+			INSERT INTO tb_questionfile
+			(qfqbno, qforiginfilename, qfstoredfilename, qfsize, qfsavepath)
 			VALUES
-			(#{afAbNo}, #{originFileName}, #{storedFileName}, #{fileSize}, #{savePath})
+			(#{qfQbNo}, #{originFileName}, #{storedFileName}, #{fileSize}, #{savePath})
 	</insert>
 	
-	<update id="updateQuestionStatus">
+	<update id="updateQuestion">
 			UPDATE tb_questionboard
 			<set>
-				qbstatus = 1
+				qbtitle = #{qbTitle},
+				qbcontent = #{qbContent}
 			</set>
-			WHERE qbno = #{abQbNo}
+			WHERE qbno = #{qbNo}
 	</update>
 	
-	<update id="updateAnswer">
-			UPDATE tb_answerboard
-			<set>
-				abtitle = #{abTitle},
-				abcontent = #{abContent}
-			</set>
-			WHERE abno = #{abNo}
-	</update>
-	
-	<select id="selectAnswerFile" resultType="HashMap">
+	<select id="selectQuestionFile" resultType="HashMap">
 		SELECT
     		*
-    		FROM tb_answerfile
-    		WHERE afno = #{afNo}
+    		FROM tb_questionfile
+    		WHERE qfno = #{qfNo}
 	</select>
 	
-	<delete id="deleteAnswerFile">
+	<delete id="deleteQuestionFile">
 		DELETE FROM 
-    			tb_answerfile 
-    		WHERE afno = #{afNo}
+    			tb_questionfile 
+    		WHERE qfno = #{qfNo}
 	</delete>
 	
 	<delete id="deleteAnswer">
@@ -139,22 +131,9 @@
 			WHERE qfqbno=#{qbNo}
 	</delete>
 	
-	<update id="updateQuestionDelStatus">
-			UPDATE tb_questionboard
-			<set>
-				qbstatus = 0
-			</set>
-			WHERE qbno = #{qbNo}
-	</update>
-	
 	<select id="selectAbNoByQbNo" resultType="int">
 			SELECT abno FROM tb_answerboard
 			WHERE abqbno = #{qbNo}
-	</select>
-	
-	<select id="selectQbNoByAbNo" resultType="int">
-			SELECT abqbno FROM tb_answerboard
-			WHERE abno = #{abNo}
 	</select>
 	
 	
@@ -167,7 +146,8 @@
     		<result property="qbHitsCnt" column="qbhitscnt"/>
     		<result property="qbIsDel" column="qbisdel"/>
     		<result property="qbStatus" column="qbstatus"/>
-    		<result property="qbWriter" column="uname"/>
+    		<result property="qbWriter" column="unick"/>
     	</resultMap>
 	
-    </mapper>
+
+</mapper>

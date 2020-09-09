@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.DongHang_ComeFunny.www.model.service.admin.AdminReviewBoardService;
+import com.DongHang_ComeFunny.www.model.vo.Admin;
 import com.DongHang_ComeFunny.www.model.vo.ReviewComment;
 import com.DongHang_ComeFunny.www.model.vo.ReviewDhTicket;
 import com.DongHang_ComeFunny.www.model.vo.ReviewLike;
@@ -36,9 +37,15 @@ public class AdminReviewBoardController {
 	@RequestMapping("/list")
 	public ModelAndView viewReviewBoardList (	String searchKinds,
 											String searchText,
+											HttpSession session,
 											@RequestParam(required = false, defaultValue = "1")int cPage) {
 		
 		ModelAndView mav = new ModelAndView();
+		
+		Admin sessionAdmin= (Admin)session.getAttribute("adminLoginInfo");
+		User sessionUser =(User)session.getAttribute("logInInfo");
+		if(sessionAdmin != null) {
+			
 		int cntPerPage = 10;
 		
 		Map<String,Object> searchReviewBoard = new HashMap<>();
@@ -53,13 +60,27 @@ public class AdminReviewBoardController {
 		mav.addObject("searchText", searchText);
 		mav.setViewName("admin/boards/reviewBoard/list");
 		return mav;
+		}else if (sessionUser != null) {
+			mav.addObject("alertMsg", "관리자만 이용 가능합니다.");
+			mav.addObject("url", "/main");
+			mav.setViewName("common/result");
+			return mav;
+		} else {
+			mav.addObject("alertMsg", "로그인해 주세요.");
+			mav.addObject("url", "/admin/login");
+			mav.setViewName("common/result");
+			return mav;
+		}
 	}
 	
 		@RequestMapping("/delete")
-		public ModelAndView deleteReivewBoard(String[] rbNo) {
+		public ModelAndView deleteReivewBoard(String[] rbNo,
+												HttpSession session) {
 			
 			ModelAndView mav = new ModelAndView();
-					
+			Admin sessionAdmin= (Admin)session.getAttribute("adminLoginInfo");
+			User sessionUser =(User)session.getAttribute("logInInfo");
+			if(sessionAdmin != null) {
 					if(rbNo != null) {
 						adminReviewBoardService.deleteReviewBoard(rbNo);
 						mav.setViewName("redirect:/admin/boards/reviewBoard/list");
@@ -68,6 +89,17 @@ public class AdminReviewBoardController {
 						mav.setViewName("redirect:/admin/boards/reviewBoard/list");
 						return mav;
 					}
+			}else if (sessionUser != null) {
+				mav.addObject("alertMsg", "관리자만 이용 가능합니다.");
+				mav.addObject("url", "/main");
+				mav.setViewName("common/result");
+				return mav;
+			} else {
+				mav.addObject("alertMsg", "로그인해 주세요.");
+				mav.addObject("url", "/admin/login");
+				mav.setViewName("common/result");
+				return mav;
+			}
 		}
 		
 		@RequestMapping(value = "/reviewview", method = RequestMethod.GET)
@@ -77,6 +109,11 @@ public class AdminReviewBoardController {
 			) {
 			// 1. 모델앤뷰 객체 생성
 			ModelAndView mav = new ModelAndView();
+			
+			Admin sessionAdmin= (Admin)session.getAttribute("adminLoginInfo");
+			User sessionUser =(User)session.getAttribute("logInInfo");
+			if(sessionAdmin != null) {
+				
 			// 2. 파라미터값 Service에 전달 후 Map에 저장
 			Map<String, Object> commandMap = adminReviewBoardService.selectReviewView(rbNo);
 			
@@ -117,6 +154,17 @@ public class AdminReviewBoardController {
 				
 			// 6. 데이터 처리가 완료된 모델(VO)값과 보여질 페이지(jsp)를 반환한다.
 			return mav;
+			}else if (sessionUser != null) {
+				mav.addObject("alertMsg", "관리자만 이용 가능합니다.");
+				mav.addObject("url", "/main");
+				mav.setViewName("common/result");
+				return mav;
+			} else {
+				mav.addObject("alertMsg", "로그인해 주세요.");
+				mav.addObject("url", "/admin/login");
+				mav.setViewName("common/result");
+				return mav;
+			}
 		}
 		
 		@RequestMapping(value="/reviewdownload")

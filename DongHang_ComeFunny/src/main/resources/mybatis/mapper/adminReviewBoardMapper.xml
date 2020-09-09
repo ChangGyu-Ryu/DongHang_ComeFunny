@@ -9,7 +9,7 @@
     			(SELECT r.* FROM  tb_reviewboard r, tb_user u
     				WHERE u.uno = r.rbuno
     				<if test='searchKinds == "rbWriter" and searchKinds != null'>
-					AND u.uname LIKE '%' || #{searchText} || '%'
+					AND u.unick LIKE '%' || #{searchText} || '%'
 					</if>) sr
 			<trim prefix= "WHERE" prefixOverrides="AND">
 				<if test='searchKinds == "rbTitle" and searchKinds != null'>
@@ -25,7 +25,7 @@
     	
     	
     	<select id="selectReviewBoardList" resultMap="REVIEWBOARDLIST">
-		 	SELECT rbno, rbtitle, rbwrittendate, rbisdel, rbhitscnt, rblikecnt, rbrecommendcnt, uname FROM (
+		 	SELECT rbno, rbtitle, rbwrittendate, rbisdel, rbhitscnt, rblikecnt, rbrecommendcnt, unick FROM (
 			SELECT rownum rnum,r1.*FROM(
 			SELECT * FROM tb_reviewboard r, tb_user u WHERE u.uno = r.rbuno ORDER BY r.rbno DESC) r1 
 			<trim prefix= "WHERE" prefixOverrides="OR">
@@ -36,7 +36,7 @@
 				OR rbwrittendate LIKE '%' || #{searchText} || '%'
 				</if>
 				<if test='searchKinds == "rbWriter" and searchKinds != null'>
-				OR uname LIKE '%' || #{searchText} || '%'
+				OR unick LIKE '%' || #{searchText} || '%'
 				</if>
 			</trim>
 			)
@@ -131,7 +131,7 @@
     		<result property="rbRecommendCnt" column="rbrecommendcnt"/>
     		<result property="rbLikeCnt" column="rblikecnt"/>
     		<result property="rbHitsCnt" column="rbhitscnt"/>
-    		<result property="rbWriter" column="uname"/>
+    		<result property="rbWriter" column="unick"/>
     	</resultMap>
     
     </mapper>

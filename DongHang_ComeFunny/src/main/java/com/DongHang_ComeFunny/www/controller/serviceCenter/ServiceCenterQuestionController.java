@@ -39,27 +39,35 @@ public class ServiceCenterQuestionController {
 											@RequestParam(required = false, defaultValue = "1")int cPage) 
 										{
 		
-		User sessionUser = (User)session.getAttribute("logInInfo");
-		
 		ModelAndView mav = new ModelAndView();
-		int cntPerPage = 10;
+		User sessionUser = (User)session.getAttribute("logInInfo");
+		if(sessionUser != null) {
+			
+			int cntPerPage = 10;
+			
+			System.out.println(searchText);
+			System.out.println(searchKinds);
+			
+			Map<String,Object> searchQuestion = new HashMap<>();
+			
+			searchQuestion.put("searchKinds", searchKinds);
+			searchQuestion.put("searchText", searchText);
+			System.out.println(searchQuestion);
+			Map<String,Object> questionList = serviceCenterQuestionService.selectQuestionList(cPage, cntPerPage, searchQuestion);
+			System.out.println(questionList);
+			mav.addObject("paging", questionList.get("paging"));
+			mav.addObject("questionData", questionList);
+			mav.addObject("searchKinds", searchKinds);
+			mav.addObject("searchText", searchText);
+			mav.setViewName("serviceCenter/question/list");
+			return mav;
+		}else {
+			mav.addObject("alertMsg", "로그인해 주세요.");
+			mav.addObject("url", "/login");
+			mav.setViewName("common/result");
+			return mav;
+		}
 		
-		System.out.println(searchText);
-		System.out.println(searchKinds);
-		
-		Map<String,Object> searchQuestion = new HashMap<>();
-		
-		searchQuestion.put("searchKinds", searchKinds);
-		searchQuestion.put("searchText", searchText);
-		System.out.println(searchQuestion);
-		Map<String,Object> questionList = serviceCenterQuestionService.selectQuestionList(cPage, cntPerPage, searchQuestion);
-		System.out.println(questionList);
-		mav.addObject("paging", questionList.get("paging"));
-		mav.addObject("questionData", questionList);
-		mav.addObject("searchKinds", searchKinds);
-		mav.addObject("searchText", searchText);
-		mav.setViewName("serviceCenter/question/list");
-		return mav;
 	}
 	
 	
@@ -67,9 +75,10 @@ public class ServiceCenterQuestionController {
 	public ModelAndView viewQuestion(	int qbNo,
 										HttpSession session) {
 		
-		User sessionUser = (User)session.getAttribute("logInInfo");
-
 		ModelAndView mav = new ModelAndView();
+		User sessionUser = (User)session.getAttribute("logInInfo");
+		if(sessionUser != null) {
+			
 		System.out.println(qbNo);
 		
 		Map<String, Object> viewQuestionMap = serviceCenterQuestionService.viewQuestion(qbNo);
@@ -88,13 +97,27 @@ public class ServiceCenterQuestionController {
 			mav.setViewName("serviceCenter/question/view");
 			return mav;
 		}
+		}else {
+			mav.addObject("alertMsg", "로그인해 주세요.");
+			mav.addObject("url", "/login");
+			mav.setViewName("common/result");
+			return mav;
+		}
 	}
 	
 	@RequestMapping("/write")
 	public ModelAndView writeAnswer(HttpSession session) {
 		ModelAndView mav = new ModelAndView();
+		User sessionUser =(User)session.getAttribute("logInInfo");
+		if(sessionUser != null) {
 			mav.setViewName("serviceCenter/question/write");
 			return mav;
+		}else {
+			mav.addObject("alertMsg", "로그인해 주세요.");
+			mav.addObject("url", "/login");
+			mav.setViewName("common/result");
+			return mav;
+		}
 		}
 	
 	@RequestMapping(value ="/writeImpl", method=RequestMethod.POST)
@@ -103,18 +126,23 @@ public class ServiceCenterQuestionController {
 										HttpSession session) throws FileException 
 										{
 		ModelAndView mav = new ModelAndView();
-		String root = session.getServletContext().getRealPath("/");
+		User sessionUser =(User)session.getAttribute("logInInfo");
 		
+		if(sessionUser != null) {
+			
+		String root = session.getServletContext().getRealPath("/");
+		writeQuestionInfo.setQbUNo(sessionUser.getuNo());
 		System.out.println(writeQuestionInfo);
 		System.out.println(answerFiles);
 		System.out.println(root);
 		
-		if(writeQuestionInfo != null) {
 			serviceCenterQuestionService.writeQuestion(writeQuestionInfo, answerFiles, root);
 			mav.setViewName("redirect:/serviceCenter/question/list");
 			return mav;
-		} else {
-			mav.setViewName("serviceCenter/question/list");
+		}else {
+			mav.addObject("alertMsg", "로그인해 주세요.");
+			mav.addObject("url", "/login");
+			mav.setViewName("common/result");
 			return mav;
 		}
 	}
@@ -123,15 +151,24 @@ public class ServiceCenterQuestionController {
 	public ModelAndView modifyAnswer(	int qbNo,
 										HttpSession session) {
 		ModelAndView mav = new ModelAndView();
+		User sessionUser =(User)session.getAttribute("logInInfo");
 		
-		Map<String, Object> viewQuestionMap = serviceCenterQuestionService.viewQuestion(qbNo);
-		
-		System.out.println(viewQuestionMap);
+		if(sessionUser != null) {
+			Map<String, Object> viewQuestionMap = serviceCenterQuestionService.viewQuestion(qbNo);
+			
+			System.out.println(viewQuestionMap);
 
 			mav.addObject("viewQuestion",viewQuestionMap.get("viewQuestion"));
 			mav.addObject("viewQuestionFile",viewQuestionMap.get("viewQuestionFile"));
+			mav.addObject("loginUser", sessionUser);
 			mav.setViewName("serviceCenter/question/modify");
 			return mav;
+		}else {
+			mav.addObject("alertMsg", "로그인해 주세요.");
+			mav.addObject("url", "/login");
+			mav.setViewName("common/result");
+			return mav;
+		}
 	}
 	
 	@RequestMapping(value = "/modifyImpl", method=RequestMethod.POST)
@@ -140,6 +177,9 @@ public class ServiceCenterQuestionController {
 										HttpSession session) throws FileException 
 			{
 			ModelAndView mav = new ModelAndView();
+			User sessionUser =(User)session.getAttribute("logInInfo");
+			if(sessionUser != null) {
+				
 			String root = session.getServletContext().getRealPath("/");
 			
 			System.out.println(modiQuestionInfo);
@@ -147,14 +187,20 @@ public class ServiceCenterQuestionController {
 			System.out.println(root);
 			
 			if(modiQuestionInfo != null) {
-			serviceCenterQuestionService.modifyQuestion(modiQuestionInfo, answerFiles, root);
-			mav.setViewName("redirect:/serviceCenter/question/list");
-			return mav;
-			} else {
-			mav.setViewName("serviceCenter/question/list");
-			return mav;
+				serviceCenterQuestionService.modifyQuestion(modiQuestionInfo, answerFiles, root);
+				mav.setViewName("redirect:/serviceCenter/question/list");
+				return mav;
+				} else {
+				mav.setViewName("serviceCenter/question/list");
+				return mav;
+				}
+			}else {
+				mav.addObject("alertMsg", "로그인해 주세요.");
+				mav.addObject("url", "/login");
+				mav.setViewName("common/result");
+				return mav;
 			}
-	}
+			}
 	
 	@RequestMapping(value = "/deleteFile" , method = RequestMethod.POST)
 	@ResponseBody
@@ -216,7 +262,9 @@ public class ServiceCenterQuestionController {
 										HttpSession session) {
 		
 		ModelAndView mav = new ModelAndView();
-				
+		User sessionUser =(User)session.getAttribute("logInInfo");
+		if(sessionUser != null) {
+			
 				if(qbNos != null) {
 					serviceCenterQuestionService.deleteQuestion(qbNos);
 					mav.setViewName("redirect:/serviceCenter/question/list");
@@ -225,6 +273,12 @@ public class ServiceCenterQuestionController {
 					mav.setViewName("redirect:/serviceCenter/question/list");
 					return mav;
 				} 
+		}else {
+			mav.addObject("alertMsg", "로그인해 주세요.");
+			mav.addObject("url", "/login");
+			mav.setViewName("common/result");
+			return mav;
+		}
 	}
 	
 	

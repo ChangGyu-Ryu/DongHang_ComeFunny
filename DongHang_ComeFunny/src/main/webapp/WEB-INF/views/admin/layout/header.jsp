@@ -19,6 +19,24 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 
 
+<!-- fontawesome 아이콘 -->
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<!-- Ionicons -->
+<link rel="stylesheet" href="/resources/bower_components/Ionicons/css/ionicons.min.css">
+<!-- iCheck -->
+<link rel="stylesheet" href="/resources/plugins/iCheck/square/blue.css">
+<%--lightbox--%>
+<link rel="stylesheet" href="/resources/bower_components/lightbox/css/lightbox.css">
+<!-- Theme style -->
+<link rel="stylesheet" href="/resources/dist/css/AdminLTE.min.css">
+<!-- AdminLTE Skins. We have chosen the skin-blue for this starter
+      page. However, you can choose any other skin. Make sure you
+      apply the skin class to the body tag so the changes take effect. -->
+<link rel="stylesheet" href="/resources/dist/css/skins/skin-blue.min.css">
+<%--fileupload--%>
+<link rel="stylesheet" media="screen" href="/resources/bower_components/fileupload/css/jasny-bootstrap.min.css">
+
+
 
 <meta charset="UTF-8">
 <title>Insert title here</title>

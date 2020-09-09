@@ -2,124 +2,29 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:import url="/WEB-INF/views/admin/layout/header.jsp" />
-
-<style type="text/css">
-
-.menuBar {
-			position : fixed;
-			
-}
-
-.mainMenu {	
-			text-align : center;
-			list-style: none;
-			margin: 0px;
-			padding : 0px;
-			position: relative;
-}
-
-.mainMenu li {
-	width: 130px;
-    border-top: 5px solid white;
-    background-color: rgb(189,209,234);
-}
-
-.mainMenu li:hover {
-			background-color: rgb(156,181,183);}
-
-.mainMenu li:hover > .boardMenu {
-			display:block}
-			
-.mainMenu li a {
-			text-decoration: none;
-		    display: block;
-		    width: 140px;
-		    height: 60px;
-		    line-height: 60px;
-		    font-size: 20px;
-		    color: rgb(49,86,126);
-		    padding-right: 10px;
-}
-
-.boardMenu {
-			list-style: none;
-		    display: none;
-		    position: absolute;
-		    left: 140px;
-		    top: 135px;
-			}
-			
-.boardMenu li { 
-			width: 184px;
-			background-color: rgb(189,209,234); 
-}
-
-.boardMenu li:first-child{
-			border-top: none;}
-
-.boardMenu li a { 
-			width: 186px;
-    		display: block;
-}
-
-.adminQuestionView {
-			width: 1200px;
-		    margin: 0 auto;
-		   	text-align: center;
-}
-
-.questionInfoTable {
-			width: 1000px;
-   			text-align: center;
-    		table-layout: fixed;
-    		text-align-last : center;
-    		height: 500px;
-   			font-size: 25px;
-   			display: inline-table;
-			}
-			
-		
+<link rel="stylesheet" href="<%=request.getContextPath() %>/resources/css/community/styles.css" />
 
 
-.adminQuestionViewToolbar{
-			width: 100px;
-			text-align: center;}
-
-</style>
+<script src="/resources/bower_components/jquery/dist/jquery.min.js"></script>   
+<script type="text/javascript"
+ src="/resources/se2/js/service/HuskyEZCreator.js" charset="utf-8"></script>
 
 <script type="text/javascript">
-   
-   function submitData(url){
-      location.href = url;
-   } 
-   
-   function downloadFile(ofname, rfname){
-       location.href = "downloadFile?"
-            +"ofname="+ofname
-            +"&rfname="+rfname;
-   }
-   
-   $(document).ready(function(){
-   $("#adminAnswerModify").click(function(){
-		var qbNo = ${viewQuestion.QBNO};
-		console.log(qbNo);
-		$(location).attr("href","modifyAnswer?qbNo="+qbNo);
-		
-		});
-   
-   $("#adminAnswerWrite").click(function(){
-		var qbNo = ${viewQuestion.QBNO};
-		console.log(qbNo);
-		$(location).attr("href","writeAnswer?qbNo="+qbNo);
-		
-		});
-	
-});
-   
+// <form>이 submit되면
+// 스마트 에디터 내용을 <textarea>반영해주는 함수
+function submitContents(elClickedObj) {
+	// 에디터의 내용이 textarea에 적용된다.
+	oEditors.getById["qbContent"].exec("UPDATE_CONTENTS_FIELD", []);
+
+	try {
+		elClickedObj.form.submit(); // <form> submit 수행
+	} catch(e) {}
+}
 </script>
 
+
 <script type="text/javascript">
-      function deleteFile(afNo){
+      function deleteFile(qfNo){
          var url = 'deleteFile';
          var xhr = new XMLHttpRequest();
          //통신을 위한 시작줄 작성
@@ -128,7 +33,7 @@
          xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
          //http request body 설정
          //xhr.send() : 전송할 데이터가 있다면 파라미터에 넣어서 보내주면 된다.
-         xhr.send('afNo='+afNo);
+         xhr.send('qfNo='+qfNo);
          console.dir(xhr.response);
          xhr.addEventListener('load',function(){
              var cssSelector = xhr.response;
@@ -146,125 +51,117 @@
 $(document).ready(function() {
 	
 	//작성버튼 동작
-	$("#adminAnswerModify").click(function() {
+	$("#btnModify").click(function() {
+
+		// 스마트에디터의 내용을 <textarea>에 적용
+		submitContents( $("#btnModify") );
 		
 		// form submit
-		$("#modify").submit();
+		$("form").submit();
 	});
-});
+	
+	});
 	
 </script>
 
-<div class="menuBar">
-    	<ul class="mainMenu">
-    		<li><a href="/admin/member/list">회원관리</a></li>
-    		<li><a href="#">게시판 관리</a>
-    			<ul class="boardMenu">
-    				<li><a href="/admin/boards/goBoard/list">함께가요 게시판</a></li>
-    				<li><a href="/admin/boards/doBoard/list">함께해요 게시판</a></li>
-    				<li><a href="/admin/boards/freeBoard/list">자유 게시판</a></li>
-    				<li><a href="/admin/boards/reviewBoard/list">후기 게시판</a></li>
-    			</ul>
-    		</li>
-    		<li><a href="list">1대1문의 관리</a></li>
-    		<li><a href="/admin/notice/list">공지사항 관리</a></li>
-    		<li><a href="#">결제 관리</a></li>
-    	</ul>
-    </div>
 
 
-<div class="adminQuestionView">
-	<table class="questionInfoTable" border="1">
-		<caption>문의사항 상세정보</caption>
+
+
+	
+<div class = "freemodify"> 
+	<div class = "freemodify__border">
+	<div class = "freemodify__header">
+		<div class = "freemodify__header__label">
+			<span>1대1문의</span>
+		</div>
+		<span class = "freemodify__header__title">글 수정하기</span>
+	</div>
+	<div class = "freemodify__table">
+		<form action="<%= request.getContextPath() %>/serviceCenter/question/modifyImpl" id="modify" method="post" enctype="multipart/form-data">
+		<table>
 		<tr>
-			<td>글번호</td>
-			<td>${viewQuestion.QBNO}</td>
-		</tr>
-		<tr>
-			<td>문의글 제목</td>
-			<td>${viewQuestion.QBTITLE}</td>
+			<td>제목</td>
+			<td>
+				<input type="hidden" name="qbNo" value="${viewQuestion.qbNo}"/>
+				<input type="text" class="form-control" name = "qbTitle" value="${viewQuestion.qbTitle}" >
+			</td>
 		</tr>
 		<tr>
 			<td>작성자</td>
-			<td>${viewQuestion.UNAME}</td>
+			<td>
+					<input type="hidden" name = "qbUno" value= "${logInInfo.uNo }" />
+				<div><span>${logInInfo.uNick}</span></div>
+			</td>
 		</tr>
-		<tr style="height: 400px;">
-			<td>공지사항 내용</td>
-			<td>${viewQuestion.QBCONTENT}</td>
+		<tr>			
+			<td colspan="2">본문</td>
 		</tr>
-	<c:forEach items="${viewQuestionFile}" var="QuestionFile" varStatus="status">
+		<tr>
+			<td colspan="2">
+				<textarea id="qbContent" name="qbContent" style="width: 100%;">
+				 ${viewQuestion.qbContent }
+				</textarea>
+			</td>
+		</tr>
+		<tr>			
+			<td>파일업로드</td>
+			<td><input type="file" name="questionFiles" multiple/></td>
+		</tr>
+		
 		<tr>			
 			<td colspan="2">
-				<div class="freeview__table__download">
-					<span>${status.count}. : &nbsp;</span>
-				 <a href="javascript:downloadFile('${QuestionFile.qfOriginFileName}', '${QuestionFile.qfStoredFileName}')">
-				 	${QuestionFile.qfOriginFileName}</a>
+				<div class="freemodify__table__download">
+					<span>업로드된 파일 </span>
 			</div>
+			</td>
+			
+		</tr>
+		
+		<c:forEach items="${viewQuestionFile}" var="questionFile" varStatus="status">
+		<tr id='f${questionFile.qfNo}'>			
+			<td colspan="2">
+				<div class="freemodify__table__download">
+					<span>${status.count}. : &nbsp;</span>
+					
+				 <a href="javascript:deleteFile('${questionFile.qfNo}')" style="text-decoration: none;">
+					${questionFile.qfOriginFileName} &nbsp; <i class="fas fa-times"></i></a>
+				</div>
 			</td>
 		</tr>
 		</c:forEach>
-	</table>
-	<hr>
-<form action="modifyAnswerImpl" method="post" id="modify" enctype="multipart/form-data">
-			<table class="questionInfoTable" border="1">
-				<caption>문의사항 답장정보</caption>
-				<tr>
-					<td>답장번호</td>
-					<td><input type="text" value="${viewQuestion.ABNO}" name="abNo" hidden="" />${viewQuestion.ABNO}</td>
-				</tr>
-				<tr>
-					<td>답장글 제목</td>
-					<td><input type="text" value="${viewQuestion.ABTITLE}" name="abTitle" /></td>
-				</tr>
-				<tr>
-					<td>작성자</td>
-					<td>관리자</td>
-				</tr>
-				<tr style="height: 400px;">
-					<td>공지사항 내용</td>
-					<td><input type="text" value="${viewQuestion.ABCONTENT}" name="abContent" /></td>
-				</tr>
-				<tr>
-				<td>파일업로드</td>
-				<td><input type="file" name="answerFiles" multiple/></td>
-				</tr>
-			<c:forEach items="${viewAnswerFile}" var="answerFile" varStatus="status">
-				<tr id='f${answerFile.afNo}'>			
-					<td colspan="2">
-						<div class="freemodify__table__download">
-							<span>${status.count}. : &nbsp;</span>
-							
-						 <a href="javascript:deleteFile('${answerFile.afNo}')" style="text-decoration: none;">
-							${answerFile.afOriginFileName} &nbsp; <i class="fas fa-times"></i></a>
-						</div>
-					</td>
-				</tr>
-				</c:forEach>
-			</table>
+		<tr>			
+			<td colspan="2" class="freemodify__button">
+				<button class ="freemodify__button__modify" type="submit" id="btnModify">수정하기</button>
+			</td>
+		</tr>
+		</table>
 		</form>
-	
-	
-	
-	
-	
-	<hr>
-	<div style="text-align: center;">
-		<div>
-			<c:choose>
-				<c:when test="${viewQuestion.QBSTATUS ne 1}">
-			<button class="adminQuestionViewToolbar" id="adminAnswerWrite">작성</button>
-			<button class="adminQuestionViewToolbar" id="adminQuestionList">목록</button>
-			<button class="adminQuestionViewToolbar" id="adminAnswerDelete">삭제</button>
-				</c:when>
-				
-				<c:when test="${viewQuestion.QBSTATUS eq 1}">
-			<button class="adminQuestionViewToolbar" id="adminAnswerModify">수정</button>
-			<button class="adminQuestionViewToolbar" id="adminQuestionList">목록</button>
-			<button class="adminQuestionViewToolbar" id="adminAnswerDelete">삭제</button>
-				</c:when>
-			</c:choose>
-		</div>
 	</div>
+	
+
+	
+
+	
+	
+</div>	
 </div>
+
+<script type="text/javascript">
+var oEditors = [];
+nhn.husky.EZCreator.createInIFrame({
+	oAppRef: oEditors,
+	elPlaceHolder: "nbContent", // 에디터가 적용되는 <textarea>의 id
+	sSkinURI: "/resources/se2/SmartEditor2Skin.html", // 에디터 스킨
+	fCreator: "createSEditor2",
+	htParams: {
+		bUseToolbar: true, //툴바 사용여부
+		bUseVerticalResizer: false, //입력창 크기 조절 바
+		bUseModeChanger: true //글쓰기 모드 탭
+	}
+	
+});
+</script>
+
 
 <c:import url="/WEB-INF/views/admin/layout/footer.jsp" />    

@@ -20,7 +20,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.DongHang_ComeFunny.www.model.service.admin.AdminFreeBoardService;
+import com.DongHang_ComeFunny.www.model.vo.Admin;
 import com.DongHang_ComeFunny.www.model.vo.FreeComment;
+import com.DongHang_ComeFunny.www.model.vo.User;
 
 @Controller
 @RequestMapping("/admin/boards/freeBoard")
@@ -32,10 +34,18 @@ public class AdminFreeBoardController {
 	@RequestMapping("/list")
 	public ModelAndView viewFreeBoardList (	String searchKinds,
 											String searchText,
+											HttpSession session,
 											@RequestParam(required = false, defaultValue = "1")int cPage) {
 		
 		ModelAndView mav = new ModelAndView();
+		
+		Admin sessionAdmin= (Admin)session.getAttribute("adminLoginInfo");
+		User sessionUser =(User)session.getAttribute("logInInfo");
+		if(sessionAdmin != null) {
+			
 		int cntPerPage = 10;
+		
+		
 		
 		Map<String,Object> searchFreeBoard = new HashMap<>();
 		
@@ -49,13 +59,30 @@ public class AdminFreeBoardController {
 		mav.addObject("searchText", searchText);
 		mav.setViewName("admin/boards/freeBoard/list");
 		return mav;
+		}
+		 else if (sessionUser != null) {
+				mav.addObject("alertMsg", "관리자만 이용 가능합니다.");
+				mav.addObject("url", "/main");
+				mav.setViewName("common/result");
+				return mav;
+			} else {
+				mav.addObject("alertMsg", "로그인해 주세요.");
+				mav.addObject("url", "/admin/login");
+				mav.setViewName("common/result");
+				return mav;
+			}
 	}
 	
 		@RequestMapping("/delete")
-		public ModelAndView deleteFreeBoard(String[] fbNo) {
+		public ModelAndView deleteFreeBoard(HttpSession session,
+											String[] fbNo) {
 			
 			ModelAndView mav = new ModelAndView();
-					
+			
+			Admin sessionAdmin= (Admin)session.getAttribute("adminLoginInfo");
+			User sessionUser =(User)session.getAttribute("logInInfo");
+			if(sessionAdmin != null) {
+				
 					if(fbNo != null) {
 						adminFreeBoardService.deleteFreeBoard(fbNo);
 						mav.setViewName("redirect:/admin/boards/freeBoard/list");
@@ -64,16 +91,33 @@ public class AdminFreeBoardController {
 						mav.setViewName("redirect:/admin/boards/freeBoard/list");
 						return mav;
 					}
+			}else if (sessionUser != null) {
+				mav.addObject("alertMsg", "관리자만 이용 가능합니다.");
+				mav.addObject("url", "/main");
+				mav.setViewName("common/result");
+				return mav;
+			} else {
+				mav.addObject("alertMsg", "로그인해 주세요.");
+				mav.addObject("url", "/admin/login");
+				mav.setViewName("common/result");
+				return mav;
+			}
 		}
 		
 		// url : /board/freeview - GET
 		// parameter :
 		// int fbNo - 파라미터(name="fbNo") 값(value) 불러오기
 		@RequestMapping(value = "/view", method = RequestMethod.GET)
-		public ModelAndView viewFreeBoard(int fbNo
+		public ModelAndView viewFreeBoard(HttpSession session,
+											int fbNo
 			) {
 			// 1. 모델앤뷰 객체 생성
 			ModelAndView mav = new ModelAndView();
+			
+			Admin sessionAdmin= (Admin)session.getAttribute("adminLoginInfo");
+			User sessionUser =(User)session.getAttribute("logInInfo");
+			if(sessionAdmin != null) {
+				
 			// 2. 파라미터값 Service에 전달 후 Map에 저장
 			Map<String, Object> commandMap = adminFreeBoardService.viewFreeBoard(fbNo);
 			
@@ -96,6 +140,17 @@ public class AdminFreeBoardController {
 			}
 			// 6. 데이터 처리가 완료된 모델(VO)값과 보여질 페이지(jsp)를 반환한다.
 			return mav;
+			}else if (sessionUser != null) {
+				mav.addObject("alertMsg", "관리자만 이용 가능합니다.");
+				mav.addObject("url", "/main");
+				mav.setViewName("common/result");
+				return mav;
+			} else {
+				mav.addObject("alertMsg", "로그인해 주세요.");
+				mav.addObject("url", "/admin/login");
+				mav.setViewName("common/result");
+				return mav;
+			}
 		}
 		
 		

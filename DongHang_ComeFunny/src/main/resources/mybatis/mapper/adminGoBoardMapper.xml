@@ -9,7 +9,7 @@
     			(SELECT g.* FROM  tb_goboard g, tb_user u
     				WHERE u.uno = g.gbuno
     				<if test='searchKinds == "gbWriter" and searchKinds != null'>
-					AND u.uname LIKE '%' || #{searchText} || '%'
+					AND u.unick LIKE '%' || #{searchText} || '%'
 					</if>) sg
 			<trim prefix= "WHERE" prefixOverrides="AND">
 				<if test='searchKinds == "gbTitle" and searchKinds != null'>
@@ -28,7 +28,7 @@
     	
     	
     	<select id="selectGoBoardList" resultMap="GOBOARDLIST">
-		 	SELECT gbno, gbtitle, gbwrittendate, gbisdel, gbrecruitstatus, uname FROM (
+		 	SELECT gbno, gbtitle, gbwrittendate, gbisdel, gbrecruitstatus, unick FROM (
 			SELECT rownum rnum,g1.*FROM(
 			SELECT * FROM tb_goboard g, tb_user u WHERE u.uno = g.gbuno ORDER BY g.gbno DESC) g1 
 			<trim prefix= "WHERE" prefixOverrides="OR">
@@ -42,7 +42,7 @@
 				OR gbrecruitstatus LIKE '%' || #{searchText} || '%'
 				</if>
 				<if test='searchKinds == "gbWriter" and searchKinds != null'>
-				OR uname LIKE '%' || #{searchText} || '%'
+				OR unick LIKE '%' || #{searchText} || '%'
 				</if>
 			</trim>
 			)
@@ -112,7 +112,7 @@
     		<result property="gbWrittenDate" column="gbWrittendate"/>
     		<result property="gbIsDel" column="gbisdel"/>
     		<result property="gbRecruitStatus" column="gbrecruitstatus"/>
-    		<result property="gbWriter" column="uname"/>
+    		<result property="gbWriter" column="unick"/>
     	</resultMap>
     
     </mapper>
