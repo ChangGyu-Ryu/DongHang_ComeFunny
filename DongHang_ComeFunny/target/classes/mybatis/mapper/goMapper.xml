@@ -37,6 +37,28 @@
        </foreach>
 	</insert>
 	
+	
+	<!-- ********함께가요 리스트 ******** -->
+	<select id="selectlist2" resultType="hashmap">
+		Select
+		    u.uno, u.userid, u.unick, uf.uforiginfilename, uf.ufstoredfilename,
+			g.gbno, g.gbtitle, g.gbwrittendate, g.gbrecruitdate, g.gbrecruitarea, g.gbrecruitstatus, g.gbrecruitgender, g.gblikecnt,
+		    agecheck.*, themecheck.*
+		From tb_goboard g
+			left outer join tb_user u on g.gbuno = u.uno
+			left outer join tb_userfile uf on u.uno = uf.ufuno
+			left outer join (select gcgbno, LISTAGG(gcvalue, ',') WITHIN GROUP (order by gcvalue) as agecheck
+								from tb_gocheck where gccate='age' group by gcgbno) agecheck on g.gbno = agecheck.gcgbno
+			left outer join (select gcgbno, LISTAGG(gcvalue, ',') WITHIN GROUP  (order by gcvalue) as themecheck
+			from tb_gocheck where gccate='theme' group by gcgbno) themecheck on g.gbno = themecheck.gcgbno
+		where u.uisleave = 0 and g.gbisdel = 0  
+		and gbrecruitdate = #{date}
+   		and gbrecruitarea = #{area}
+    	and agecheck like '%' || #{age} || '%' 
+    	and themecheck like '%' || #{theme} || '%' 
+		order by g.gbwrittendate desc
+	</select>	
+	
 	<!-- golist 전체 출력(default 최신순) -->
 	<select id="selectlist" resultType="hashmap">
 		Select

@@ -71,9 +71,12 @@ $(document).ready(function() {
 				console.dir(result.uName);	
 
 				if(result == ""){
-					$('#id_value').text("회원 정보를 확인해주세요!");	
+					alert("회원 정보를 확인해주세요!");
+// 					$('#id_value').text("회원 정보를 확인해주세요!");	
 				} else {
-					$('#id_value').text(result);
+					alert("회원님의 아이디는 : " + result + " 입니다.");
+					location.href="/user/login";
+// 					$('#id_value').text(result);
 					// 아이디값 별도로 저장
 					idV = result;
 				}
@@ -117,16 +120,16 @@ $(document).ready(function() {
 
 <body>
 
-  <div id="background_modal" class="background_modal" style="display: none;">
-	<div class="modal_contents">
-		<h4>
-			<b>회원님의 아이디는</b><span class="close">&times;</span>
-		</h4><br>
-			<h2 id="id_value"></h2>
-		<br>
-		<button type="button" id="loginBtn" onclick="location.htef='login.jsp'">로그인 하기</button>
-	</div>
-</div>
+<!--   <div id="background_modal" class="background_modal" style="display: none;"> -->
+<!-- 	<div class="modal_contents"> -->
+<!-- 		<h4> -->
+<!-- 			<b>회원님의 아이디는</b><span class="close">&times;</span> -->
+<!-- 		</h4><br> -->
+<!-- 			<h2 id="id_value"></h2> -->
+<!-- 		<br> -->
+<!-- 		<button type="button" id="loginBtn" onclick="location.htef='login.jsp'">로그인 하기</button> -->
+<!-- 	</div> -->
+<!-- </div> -->
 
 <div class="ui middle aligned center aligned grid " id="fId__background__image">
   <div id="fId__background"></div>

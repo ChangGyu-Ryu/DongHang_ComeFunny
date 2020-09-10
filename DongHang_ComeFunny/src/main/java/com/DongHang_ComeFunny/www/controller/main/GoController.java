@@ -145,7 +145,6 @@ public class GoController {
    @ResponseBody
    public String goDhNo(int gbNo, int gaUNo, HttpSession session) {
       
-
       //동행 요청 거절
       int res = goService.updateGoApplyNoStatus(gbNo, gaUNo);
 
@@ -262,7 +261,7 @@ public class GoController {
       
       //--------- 리스트 띄우기 ---------------
       
-   //기본 최신순 정렬된 리스트 전체 띄우기
+      //기본 최신순 정렬된 리스트 전체 띄우기
       @RequestMapping(value="/go", method=RequestMethod.GET)
       public ModelAndView goList(String searchText, Map<String, Object> commandMap) {
          
@@ -271,6 +270,7 @@ public class GoController {
          Map<String,Object> search = new HashMap<>();
          search.put("searchText", searchText);
          
+         System.out.println("[commandMap]"+ commandMap);
          //검색 전 리스트 출력
 //         List<Map<String,Object>> list = goService.selectGoList(commandMap);
          Map<String, Object> list = goService.selectSearchList(search, commandMap);
@@ -283,9 +283,34 @@ public class GoController {
          return mav;
          
       }
-   
       
-   //페이지내에서 검색하기 (기본 리다이렉트)
+    //메인에서 넘어온 페이지 (기본 리다이렉트)
+      @RequestMapping(value="/go/list", method=RequestMethod.POST)
+      public ModelAndView goList2(
+    		  String gbRecruitArea
+    		  ,String gbRecruitDate
+    		  ,String gcAgeGroup
+    		  ,String gcTheme) {
+         
+         ModelAndView mav = new ModelAndView();
+         Map<String, Object> commandMap = new HashMap<>();
+         commandMap.put("area", gbRecruitArea);
+         commandMap.put("date", gbRecruitDate);
+         commandMap.put("age", gcAgeGroup);
+         commandMap.put("theme", gcTheme);
+         
+         System.out.println("[commandMap]"+commandMap); //파라미터 값  확인
+         Map<String, Object> list = goService.selectlist(commandMap);
+         
+         System.out.println("[list]"+list);
+         mav.addObject("list", list);
+         mav.setViewName("go/go"); 
+         
+         return mav;
+         
+      }
+      
+      //페이지내에서 검색하기 (기본 리다이렉트)
       @RequestMapping(value="/go/search", method=RequestMethod.POST)
       public ModelAndView goListSearch(String searchText, Map<String, Object> commandMap) {
 
@@ -298,7 +323,7 @@ public class GoController {
 
          mav.addObject("list", list);
          mav.addObject("searchText", searchText );
-         mav.setViewName("redirect:/go"); 
+         mav.setViewName("go/go"); 
 
          return mav;
       }

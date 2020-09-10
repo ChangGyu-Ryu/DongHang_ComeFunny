@@ -296,7 +296,7 @@ function toggleImg2() {
            </div>
       </div>
       <div class="dropdown">
-           <div class="dropbtn"><a href="#">실시간채팅</a></div>
+           <div class="dropbtn"><a href="/chat/chat">실시간채팅</a></div>
       </div>
    </div>
    
@@ -346,10 +346,10 @@ function toggleImg2() {
                   ${goDetailInfo.goBoardUserInfo.AGE} ·
                   <c:choose>
                      <c:when test="${goDetailInfo.goBoardUserInfo.UGENDER eq '1'}">
-                        남
+                           남
                      </c:when>
                      <c:when test="${goDetailInfo.goBoardUserInfo.UGENDER eq '2'}">
-                        여
+                           여
                      </c:when> 
                   </c:choose>
                </small>
@@ -360,11 +360,14 @@ function toggleImg2() {
             <!-- 성별 -->
             <span class="typelist">
                <c:choose>
+                      <c:when test="${goDetailInfo.goBoardUserInfo.GBRECRUITGENDER eq '0'}">
+                              성별무관
+                     </c:when>
                      <c:when test="${goDetailInfo.goBoardUserInfo.GBRECRUITGENDER eq '1'}">
-                        남자만
+                              남자만
                      </c:when>
                      <c:when test="${goDetailInfo.goBoardUserInfo.GBRECRUITGENDER eq '2'}">
-                        여자만
+                           여자만
                      </c:when> 
                </c:choose>
             </span>
@@ -425,7 +428,7 @@ function toggleImg2() {
          <!-- 타이틀-->
          <div class="rvtop3-title"> 
             호스트 후기 <span>★★★★★</span> <span>( ${goDetailInfo.hostReviewCnt } )</span>
-            <div class="ialign float-right"><a href="#">더보기</a></div>
+           <div class="ialign float-right"><a href="<%=request.getContextPath() %>/board/reviewlist">더보기</a></div>
          </div>
       
          <div class="rvmargin">
@@ -478,8 +481,15 @@ function toggleImg2() {
                <c:if test="${goDetailInfo.goBoardUserInfo.GBRECRUITSTATUS eq '0' }">
                      <c:if test="${goDetailInfo.goBoardUserInfo.GBUNO != logInInfo.uNo}">
                         <div class="ialign btncen">
-                        <a class="btn btn-default ">쪽지보내기</a>
-                        <button class="btn btn-primary" id="goDhApplyBtn">신청하기</button>
+                          <c:if test="${empty logInInfo.uNo }">
+                            <a class="btn btn-default " onclick="toggleImg2();">쪽지보내기</a>
+                            <button class="btn btn-primary" onclick="toggleImg2();">신청하기</button>
+                          </c:if>
+                         <c:if test="${not empty logInInfo.uNo }">
+                           <a class="btn btn-default " href="<%=request.getContextPath() %>/message/send">쪽지보내기</a>
+                            <button class="btn btn-primary" id="goDhApplyBtn">신청하기</button>
+                         </c:if>
+                         </div>   
                      </c:if>
                </c:if>
                </div>
@@ -543,7 +553,7 @@ function toggleImg2() {
          
          </script>            
       </div>   
-   </div>
+  
    
 
 <!-- content2 -->

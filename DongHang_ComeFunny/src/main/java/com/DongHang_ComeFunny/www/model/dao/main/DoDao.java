@@ -175,6 +175,16 @@ public class DoDao {
 			return sqlSession.update("DO.deleteDoDetail", dbno);
 		}
 
+		//찜수 증가
+		public int updatelikecnt(int dbno) {
+			return sqlSession.update("DO.updatelikecnt", dbno);
+		}
+
+		//찜수 감소
+		public int deletelikecnt(int dbno) {
+			return sqlSession.update("DO.deletelikecnt", dbno);
+		}
+
 
 
 	

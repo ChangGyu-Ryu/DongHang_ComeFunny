@@ -20,7 +20,9 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.DongHang_ComeFunny.www.model.service.admin.AdminQuestionService;
+import com.DongHang_ComeFunny.www.model.vo.Admin;
 import com.DongHang_ComeFunny.www.model.vo.AnswerBoard;
+import com.DongHang_ComeFunny.www.model.vo.User;
 
 import common.exception.FileException;
 
@@ -36,32 +38,54 @@ public class AdminQuestionController {
 	@RequestMapping("/list")
 	public ModelAndView viewQuestionList(	String searchKinds,
 											String searchText,
+											HttpSession session,
 											@RequestParam(required = false, defaultValue = "1")int cPage) 
 										{
 		ModelAndView mav = new ModelAndView();
-		int cntPerPage = 10;
 		
-		System.out.println(searchText);
-		System.out.println(searchKinds);
-		
-		Map<String,Object> searchQuestion = new HashMap<>();
-		
-		searchQuestion.put("searchKinds", searchKinds);
-		searchQuestion.put("searchText", searchText);
-		System.out.println(searchQuestion);
-		Map<String,Object> questionList = adminQuestionService.selectQuestionList(cPage, cntPerPage, searchQuestion);
-		System.out.println(questionList);
-		mav.addObject("paging", questionList.get("paging"));
-		mav.addObject("questionData", questionList);
-		mav.addObject("searchKinds", searchKinds);
-		mav.addObject("searchText", searchText);
-		mav.setViewName("admin/question/list");
-		return mav;
+		Admin sessionAdmin= (Admin)session.getAttribute("adminLoginInfo");
+		User sessionUser =(User)session.getAttribute("logInInfo");
+		if(sessionAdmin != null) {
+			int cntPerPage = 10;
+			
+			System.out.println(searchText);
+			System.out.println(searchKinds);
+			
+			Map<String,Object> searchQuestion = new HashMap<>();
+			
+			searchQuestion.put("searchKinds", searchKinds);
+			searchQuestion.put("searchText", searchText);
+			System.out.println(searchQuestion);
+			Map<String,Object> questionList = adminQuestionService.selectQuestionList(cPage, cntPerPage, searchQuestion);
+			System.out.println(questionList);
+			mav.addObject("paging", questionList.get("paging"));
+			mav.addObject("questionData", questionList);
+			mav.addObject("searchKinds", searchKinds);
+			mav.addObject("searchText", searchText);
+			mav.setViewName("admin/question/list");
+			return mav;
+		} else if (sessionUser != null) {
+			mav.addObject("alertMsg", "관리자만 이용 가능합니다.");
+			mav.addObject("url", "/main");
+			mav.setViewName("common/result");
+			return mav;
+		} else {
+			mav.addObject("alertMsg", "로그인해 주세요.");
+			mav.addObject("url", "/admin/login");
+			mav.setViewName("common/result");
+			return mav;
+		}
 	}
 	
 	@RequestMapping("/view")
-	public ModelAndView viewQuestion(int qbNo) {
+	public ModelAndView viewQuestion(int qbNo,
+									HttpSession session) {
 		ModelAndView mav = new ModelAndView();
+		
+		Admin sessionAdmin= (Admin)session.getAttribute("adminLoginInfo");
+		User sessionUser =(User)session.getAttribute("logInInfo");
+		if(sessionAdmin != null) {
+			
 		System.out.println(qbNo);
 		
 		Map<String, Object> viewQuestionMap = adminQuestionService.viewQuestion(qbNo);
@@ -80,11 +104,28 @@ public class AdminQuestionController {
 			mav.setViewName("admin/question/view");
 			return mav;
 		}
+		}else if (sessionUser != null) {
+			mav.addObject("alertMsg", "관리자만 이용 가능합니다.");
+			mav.addObject("url", "/main");
+			mav.setViewName("common/result");
+			return mav;
+		} else {
+			mav.addObject("alertMsg", "로그인해 주세요.");
+			mav.addObject("url", "/admin/login");
+			mav.setViewName("common/result");
+			return mav;
+		}
 	}
 	
 	@RequestMapping("/writeAnswer")
-	public ModelAndView writeAnswer(int qbNo) {
+	public ModelAndView writeAnswer(int qbNo,
+									HttpSession session) {
 		ModelAndView mav = new ModelAndView();
+		
+		Admin sessionAdmin= (Admin)session.getAttribute("adminLoginInfo");
+		User sessionUser =(User)session.getAttribute("logInInfo");
+		if(sessionAdmin != null) {
+			
 		Map<String, Object> viewQuestionMap = adminQuestionService.viewQuestion(qbNo);
 		
 		System.out.println(viewQuestionMap);
@@ -93,7 +134,19 @@ public class AdminQuestionController {
 			mav.addObject("viewQuestionFile",viewQuestionMap.get("viewQuestionFile"));
 			mav.setViewName("admin/question/writeAnswer");
 			return mav;
+		}else if (sessionUser != null) {
+			mav.addObject("alertMsg", "관리자만 이용 가능합니다.");
+			mav.addObject("url", "/main");
+			mav.setViewName("common/result");
+			return mav;
+		} else {
+			mav.addObject("alertMsg", "로그인해 주세요.");
+			mav.addObject("url", "/admin/login");
+			mav.setViewName("common/result");
+			return mav;
 		}
+	}
+	
 	
 	@RequestMapping(value ="/writeAnswerImpl", method=RequestMethod.POST)
 	public ModelAndView writeAnswerImpl(AnswerBoard writeAnswerInfo,
@@ -101,40 +154,67 @@ public class AdminQuestionController {
 										HttpSession session) throws FileException 
 										{
 		ModelAndView mav = new ModelAndView();
-		String root = session.getServletContext().getRealPath("/");
 		
+		Admin sessionAdmin= (Admin)session.getAttribute("adminLoginInfo");
+		User sessionUser =(User)session.getAttribute("logInInfo");
+		if(sessionAdmin != null) {
+			
+		String root = session.getServletContext().getRealPath("/");
+		writeAnswerInfo.setAbUno(sessionAdmin.getaNo());
 		System.out.println(writeAnswerInfo);
 		System.out.println(answerFiles);
 		System.out.println(root);
 		
-		if(writeAnswerInfo != null) {
 			adminQuestionService.writeAnswer(writeAnswerInfo, answerFiles, root);
 			mav.setViewName("redirect:/admin/question/list");
 			return mav;
+			
+		}else if (sessionUser != null) {
+			mav.addObject("alertMsg", "관리자만 이용 가능합니다.");
+			mav.addObject("url", "/main");
+			mav.setViewName("common/result");
+			return mav;
 		} else {
-			mav.setViewName("admin/question/list");
+			mav.addObject("alertMsg", "로그인해 주세요.");
+			mav.addObject("url", "/admin/login");
+			mav.setViewName("common/result");
 			return mav;
 		}
 	}
 	
 	@RequestMapping("/modifyAnswer")
-	public ModelAndView modifyAnswer(int qbNo) {
+	public ModelAndView modifyAnswer(int qbNo,
+									HttpSession session) {
 		ModelAndView mav = new ModelAndView();
-		
-		Map<String, Object> viewQuestionMap = adminQuestionService.viewQuestion(qbNo);
-		
-		System.out.println(viewQuestionMap);
-
-		if(viewQuestionMap.get("viewAnswerFile") != null) {
-			mav.addObject("viewQuestion",viewQuestionMap.get("viewQuestion"));
-			mav.addObject("viewQuestionFile",viewQuestionMap.get("viewQuestionFile"));
-			mav.addObject("viewAnswerFile", viewQuestionMap.get("viewAnswerFile"));
-			mav.setViewName("admin/question/modifyAnswer");
+		Admin sessionAdmin= (Admin)session.getAttribute("adminLoginInfo");
+		User sessionUser =(User)session.getAttribute("logInInfo");
+		if(sessionAdmin != null) {
+			
+			Map<String, Object> viewQuestionMap = adminQuestionService.viewQuestion(qbNo);
+			
+			System.out.println(viewQuestionMap);
+	
+			if(viewQuestionMap.get("viewAnswerFile") != null) {
+				mav.addObject("viewQuestion",viewQuestionMap.get("viewQuestion"));
+				mav.addObject("viewQuestionFile",viewQuestionMap.get("viewQuestionFile"));
+				mav.addObject("viewAnswerFile", viewQuestionMap.get("viewAnswerFile"));
+				mav.setViewName("admin/question/modifyAnswer");
+				return mav;
+			} else {
+				mav.addObject("viewQuestion",viewQuestionMap.get("viewQuestion"));
+				mav.addObject("viewQuestionFile",viewQuestionMap.get("viewQuestionFile"));
+				mav.setViewName("admin/question/modifyAnswer");
+				return mav;
+			}
+		}else if (sessionUser != null) {
+			mav.addObject("alertMsg", "관리자만 이용 가능합니다.");
+			mav.addObject("url", "/main");
+			mav.setViewName("common/result");
 			return mav;
 		} else {
-			mav.addObject("viewQuestion",viewQuestionMap.get("viewQuestion"));
-			mav.addObject("viewQuestionFile",viewQuestionMap.get("viewQuestionFile"));
-			mav.setViewName("admin/question/modifyAnswer");
+			mav.addObject("alertMsg", "로그인해 주세요.");
+			mav.addObject("url", "/admin/login");
+			mav.setViewName("common/result");
 			return mav;
 		}
 	}
@@ -145,19 +225,35 @@ public class AdminQuestionController {
 										HttpSession session) throws FileException 
 			{
 			ModelAndView mav = new ModelAndView();
-			String root = session.getServletContext().getRealPath("/");
 			
-			System.out.println(modiAnswerInfo);
-			System.out.println(answerFiles);
-			System.out.println(root);
-			
-			if(modiAnswerInfo != null) {
-			adminQuestionService.modiAnswer(modiAnswerInfo, answerFiles, root);
-			mav.setViewName("redirect:/admin/question/list");
-			return mav;
+			Admin sessionAdmin= (Admin)session.getAttribute("adminLoginInfo");
+			User sessionUser =(User)session.getAttribute("logInInfo");
+			if(sessionAdmin != null) {
+				
+				String root = session.getServletContext().getRealPath("/");
+				
+				System.out.println(modiAnswerInfo);
+				System.out.println(answerFiles);
+				System.out.println(root);
+				
+				if(modiAnswerInfo != null) {
+				adminQuestionService.modiAnswer(modiAnswerInfo, answerFiles, root);
+				mav.setViewName("redirect:/admin/question/list");
+				return mav;
+				} else {
+				mav.setViewName("admin/question/list");
+				return mav;
+				}
+			}else if (sessionUser != null) {
+				mav.addObject("alertMsg", "관리자만 이용 가능합니다.");
+				mav.addObject("url", "/main");
+				mav.setViewName("common/result");
+				return mav;
 			} else {
-			mav.setViewName("admin/question/list");
-			return mav;
+				mav.addObject("alertMsg", "로그인해 주세요.");
+				mav.addObject("url", "/admin/login");
+				mav.setViewName("common/result");
+				return mav;
 			}
 	}
 	
@@ -219,11 +315,14 @@ public class AdminQuestionController {
 	}
 	
 	@RequestMapping("/deleteAnswer")
-	public ModelAndView deleteAnswer(	int abNo
+	public ModelAndView deleteAnswer(	int abNo,
+										HttpSession session
 									) {
 		
 		ModelAndView mav = new ModelAndView();
-				
+		Admin sessionAdmin= (Admin)session.getAttribute("adminLoginInfo");
+		User sessionUser =(User)session.getAttribute("logInInfo");
+		if(sessionAdmin != null) {
 				if(abNo != 0) {
 					adminQuestionService.deleteAnswer(abNo);
 					mav.setViewName("redirect:/admin/question/list");
@@ -232,13 +331,30 @@ public class AdminQuestionController {
 					mav.setViewName("redirect:/admin/question/list");
 					return mav;
 				}
+		}else if (sessionUser != null) {
+			mav.addObject("alertMsg", "관리자만 이용 가능합니다.");
+			mav.addObject("url", "/main");
+			mav.setViewName("common/result");
+			return mav;
+		} else {
+			mav.addObject("alertMsg", "로그인해 주세요.");
+			mav.addObject("url", "/admin/login");
+			mav.setViewName("common/result");
+			return mav;
+		}
+		
 	}
 	
 	@RequestMapping("/delete")
-	public ModelAndView deleteQuestion(String[] qbNos) {
+	public ModelAndView deleteQuestion(String[] qbNos,
+										HttpSession session
+										) {
 		
 		ModelAndView mav = new ModelAndView();
 				
+		Admin sessionAdmin= (Admin)session.getAttribute("adminLoginInfo");
+		User sessionUser =(User)session.getAttribute("logInInfo");
+		if(sessionAdmin != null) {
 				if(qbNos != null) {
 					adminQuestionService.deleteQuestion(qbNos);
 					mav.setViewName("redirect:/admin/question/list");
@@ -247,5 +363,16 @@ public class AdminQuestionController {
 					mav.setViewName("redirect:/admin/question/list");
 					return mav;
 				} 
+		}else if (sessionUser != null) {
+			mav.addObject("alertMsg", "관리자만 이용 가능합니다.");
+			mav.addObject("url", "/main");
+			mav.setViewName("common/result");
+			return mav;
+		} else {
+			mav.addObject("alertMsg", "로그인해 주세요.");
+			mav.addObject("url", "/admin/login");
+			mav.setViewName("common/result");
+			return mav;
+		}
 	}
 }

@@ -302,6 +302,7 @@ public class ReviewBoardController {
 		
 		//---------------- Service에서 처리한 데이터값 출력-------------------------
 		System.out.println("[controller] reviewview - commandMap : " + commandMap);
+		System.out.println("[ServiceImpl] - fdetail get : " +((Map)commandMap.get("detail")));
 		System.out.println("[ServiceImpl] - fdetail get : " +((Map)commandMap.get("detail")).get("RBDBNO"));
 		System.out.println("[ServiceImpl] - fdetail get : " +((Map)commandMap.get("detail")).get("RBGBNO"));
 		int rbGbNo = Integer.parseInt(((Map)commandMap.get("detail")).get("RBGBNO").toString());
@@ -343,9 +344,8 @@ public class ReviewBoardController {
 			reviewDhTicket.setDhtUNo(sessionUser.getuNo());
 			int reviewdht = reviewBoardService.updateDhtCnt(sessionUser, reviewDhTicket);
 			System.out.println("[Controller] reviewdht : " + reviewdht);
-			
 			if( reviewdht == 0 ) {
-				mav.addObject("alertMsg", "사용할 수 있는 동행복권이 없습니다.");
+				mav.addObject("alertMsg", "사용할 수 있는 동행복권이 없습니다. 마이페이지>결제내역에서 동행복권을 충전해주시기 바랍니다.");
 				mav.addObject("url", "reviewlist");
 				mav.setViewName("common/result");
 				return mav;

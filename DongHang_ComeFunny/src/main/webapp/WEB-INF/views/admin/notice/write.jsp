@@ -1,12 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<c:import url="/WEB-INF/views/layout/header.jsp" />
+<c:import url="/WEB-INF/views/admin/layout/header.jsp" />
+<link rel="stylesheet" href="<%=request.getContextPath() %>/resources/css/community/styles.css" />
+ 
 
 <!-- 스마트 에디터2 라이브러리 -->
 <script type="text/javascript"
- src="/resources/se2/js/service/HuskyEZCreator.js" charset="utf-8">
+ src="/resources/se2/js/service/HuskyEZCreator.js" charset="utf-8"> </script>
  
+<script type="text/javascript">
 //<form>이 submit되면
 //스마트 에디터 내용을 <textarea>반영해주는 함수
 function submitContents(elClickedObj) {
@@ -63,7 +66,7 @@ $(document).ready(function() {
 		<tr>
 			<td>작성자</td>
 			<td>
-				<div><span>관리자</span></div>
+				<div><span>${adminLoginInfo.aName}</span></div>
 			</td>
 		</tr>
 		<tr>			
@@ -80,7 +83,7 @@ $(document).ready(function() {
 		</tr>
 		<tr>			
 			<td colspan="2" class="freewrite__button">
-				<button class ="freewrite__button__write" type="submit" id="btnWrite">글쓰기</button>
+				<button class ="freewrite__button__write" type="submit" id="btnWrite">작성하기</button>
 			</td>
 		</tr>
 		</table>
@@ -95,7 +98,7 @@ $(document).ready(function() {
 var oEditors = [];
 nhn.husky.EZCreator.createInIFrame({
 	oAppRef: oEditors,
-	elPlaceHolder: "fbContent", // 에디터가 적용되는 <textarea>의 id
+	elPlaceHolder: "nbContent", // 에디터가 적용되는 <textarea>의 id
 	sSkinURI: "/resources/se2/SmartEditor2Skin.html", // 에디터 스킨
 	fCreator: "createSEditor2",
 	htParams: {
@@ -108,9 +111,4 @@ nhn.husky.EZCreator.createInIFrame({
 </script>
 
 
-
-
- 
- 
-
-<c:import url="/WEB-INF/views/layout/footer.jsp" />  
+<c:import url="/WEB-INF/views/admin/layout/footer.jsp" />  

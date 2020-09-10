@@ -9,6 +9,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.DongHang_ComeFunny.www.model.dao.board.ReviewBoardDao;
+import com.DongHang_ComeFunny.www.model.vo.DoApply;
+import com.DongHang_ComeFunny.www.model.vo.DoBoard;
+import com.DongHang_ComeFunny.www.model.vo.GoApply;
+import com.DongHang_ComeFunny.www.model.vo.GoBoard;
 import com.DongHang_ComeFunny.www.model.vo.ReviewBoard;
 import com.DongHang_ComeFunny.www.model.vo.ReviewComment;
 import com.DongHang_ComeFunny.www.model.vo.ReviewDhTicket;
@@ -610,13 +614,53 @@ public class ReviewBoardServiceImpl implements ReviewBoardService {
 		int selectres = reviewBoardDao.selectReviewDhtCnt(reviewDhTicket);
 		// 본인 글 읽는지 확인
 		Map<String, Object> fdetail = reviewBoardDao.selectReviewDetail(reviewDhTicket.getDhtRbNo());
-		int gbuno = Integer.parseInt(fdetail.get("RBUNO").toString());
+		int rbuno = Integer.parseInt(fdetail.get("RBUNO").toString());
 		
 		// 본인글이 맞다면 동행복권 개수 그대로
-		if(sessionUser.getuNo() == gbuno) {
+		if(sessionUser.getuNo() == rbuno) {
 			System.out.println("updateDhtCnt result : " + result);
 			result = 2;
 			return result;
+		}
+		int rbGbNo = Integer.parseInt(fdetail.get("RBGBNO").toString());
+		int rbDbNo = Integer.parseInt(fdetail.get("RBDBNO").toString());
+		//참여한 파티원이 작성한 경우 동행복권 개수 그대로
+		if(rbGbNo != 0) {
+//			System.out.println("함께가요 게시판입니다.");
+			//빈 GoBoard
+			GoBoard goBoard = new GoBoard();
+			goBoard.setGbUNo(sessionUser.getuNo());
+			goBoard.setGbNo(rbGbNo);
+			//빈 GoApply
+			GoApply goApply = new GoApply();
+			goApply.setGaUNo(sessionUser.getuNo());
+			goApply.setGaGbNo(rbGbNo);
+			//파티장일 경우
+			int goCnt = reviewBoardDao.selectGoCnt(goBoard);
+			//파티원일 경우
+			int gaCnt = reviewBoardDao.selectGaCnt(goApply);
+			if(goCnt == 0 || gaCnt == 0 ) {
+				result = 3;
+				return result;
+			}
+		} else if(rbDbNo != 0) {
+//			System.out.println("함께해요 게시판입니다.");
+			// 빈 DoBoard
+			DoBoard doBoard = new DoBoard();
+			doBoard.setDbUNo(sessionUser.getuNo());
+			doBoard.setDbNo(rbDbNo);
+			// 빈 DoApply
+			DoApply doApply = new DoApply();
+			doApply.setDaUNo(sessionUser.getuNo());
+			doApply.setDaDbNo(rbDbNo);
+			//파티장일 경우
+			int doCnt = reviewBoardDao.selectDoCnt(doBoard);
+			//파티원일 경우
+			int daCnt = reviewBoardDao.selectDaCnt(doApply);
+			if(doCnt == 0 || daCnt == 0 ) {
+				result = 3;
+				return result;
+			}
 		}
 		
 		// 회원의 동행복권 개수가 0일때 
@@ -637,6 +681,7 @@ public class ReviewBoardServiceImpl implements ReviewBoardService {
 		return result;
 		
 	}
+	
 	
 	@Override
 	public Map<String,Object> selectDhTicket(User sessionUser) {

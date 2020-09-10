@@ -31,7 +31,7 @@
 		<c:forEach items="${list.dlist}" var="db">
 		<div class="dobest">
 			<div class="doprofile">
-			<a href="do/dodetail?dbNo=${db.DBNO}">
+			<a href="/do/dodetail?dbNo=${db.DBNO}">
 				<c:if test="${db.DISTOREDIMGNAMESTOREDIMG eq null}"> <!-- 사진이 null이면 default -->
     					<img src="<%=request.getContextPath() %>/resources/image/do/default2.jpg" alt="대표사진" />
 				</c:if>

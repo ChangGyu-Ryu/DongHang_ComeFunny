@@ -753,5 +753,31 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     		SELECT * FROM tb_reviewdhticket
     		WHERE dhtuno = #{uNo}
     	</select>
+    	
+    	<select id="selectGoCnt" resultType="int">
+    		SELECT COUNT(*)
+    			FROM tb_goboard
+    		WHERE gbno = #{gbNo}
+    			AND gbuno = #{gbUNo}
+    	</select>
+    	<select id="selectGaCnt" resultType="int">
+    		SELECT COUNT(*)
+    			FROM tb_goapply
+    		WHERE gagbno = #{gaGbNo}
+    			AND gauno = #{gaUNo}
+    	</select>
+    	<select id="selectDoCnt" resultType="int">
+    		SELECT COUNT(*)
+    			FROM tb_doboard
+    		WHERE dbno = #{dbNo}
+    			AND dbuno = #{dbUNo}
+    	</select>
+    	<select id="selectDaCnt" resultType="int">
+    		SELECT COUNT(*)
+    			FROM tb_doapply
+    		WHERE dadbno = #{daDbNo}
+    			AND dauno = #{daUNo}    		
+    	</select>
+    	
 
 </mapper>

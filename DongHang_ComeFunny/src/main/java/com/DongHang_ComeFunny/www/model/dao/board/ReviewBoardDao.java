@@ -7,6 +7,10 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.DongHang_ComeFunny.www.model.vo.DoApply;
+import com.DongHang_ComeFunny.www.model.vo.DoBoard;
+import com.DongHang_ComeFunny.www.model.vo.GoApply;
+import com.DongHang_ComeFunny.www.model.vo.GoBoard;
 import com.DongHang_ComeFunny.www.model.vo.ReviewBoard;
 import com.DongHang_ComeFunny.www.model.vo.ReviewComment;
 import com.DongHang_ComeFunny.www.model.vo.ReviewDhTicket;
@@ -402,6 +406,22 @@ public class ReviewBoardDao {
 
 	public List<ReviewDhTicket> selectReivewDht(User sessionUser) {
 		return sqlSession.selectList("REVIEW.selectReivewDht", sessionUser);
+	}
+
+	public int selectGoCnt(GoBoard goBoard) {
+		return sqlSession.selectOne("REVIEW.selectGoCnt", goBoard);
+	}
+
+	public int selectGaCnt(GoApply goApply) {
+		return sqlSession.selectOne("REVIEW.selectGaCnt", goApply);
+	}
+
+	public int selectDoCnt(DoBoard doBoard) {
+		return sqlSession.selectOne("REVIEW.selectDoCnt", doBoard);
+	}
+
+	public int selectDaCnt(DoApply doApply) {
+		return sqlSession.selectOne("REVIEW.selectDaCnt", doApply);
 	}
 
 

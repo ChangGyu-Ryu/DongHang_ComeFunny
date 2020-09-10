@@ -187,8 +187,7 @@ $(document).ready(function() {
 		
 		<div class="reviewview__button">
 			<div>
-<!-- 				<button class ="reviewview__button__list" type="button" onclick="location.href='/board/reviewlist'">목록</button> -->
-				<button class ="reviewview__button__list" type="button" onclick="history.go(-1)">목록</button>
+				<button class ="reviewview__button__list" type="button" onclick="location.href='/board/reviewlist'">목록</button>
 			</div>
 			<c:if test="${logInInfo.userId == rview.detail.USERID }">
 				<div>

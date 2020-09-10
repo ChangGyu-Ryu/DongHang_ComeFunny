@@ -291,4 +291,16 @@
 		WHERE dbno = #{dbno}
 	</update>
 	
+	<update id="updatelikecnt">
+		update tb_doboard
+		set dblikecnt = dblikecnt + 1
+		where dbno = #{dbno}
+	</update>
+	
+	<update id="deletelikecnt">
+		update tb_doboard
+		set dblikecnt = dblikecnt - 1
+		where dbno = #{dbno}
+	</update>
+	
 </mapper>

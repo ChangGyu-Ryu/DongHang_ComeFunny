@@ -199,5 +199,17 @@ public class DoService {
 		public int deleteDoDetail(int dbno) {
 			return doDao.deleteDoDetail(dbno);
 		}
+
+
+		//함께해요 찜갯수 업데이트
+		public int updatelikeCnt(int dbno) {
+			return doDao.updatelikecnt(dbno);
+			
+		}
+
+		//함께해요 찜갯수 감소
+		public int deletelikeCnt(int dbno) {
+			return doDao.deletelikecnt(dbno);
+		}
 	
 }

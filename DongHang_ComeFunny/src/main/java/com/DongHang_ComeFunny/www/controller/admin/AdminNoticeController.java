@@ -20,7 +20,9 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.DongHang_ComeFunny.www.model.service.admin.AdminNoticeService;
+import com.DongHang_ComeFunny.www.model.vo.Admin;
 import com.DongHang_ComeFunny.www.model.vo.NoticeBoard;
+import com.DongHang_ComeFunny.www.model.vo.User;
 
 import common.exception.FileException;
 
@@ -34,9 +36,14 @@ public class AdminNoticeController {
 	@RequestMapping("/list")
 	public ModelAndView viewNoticeList (	String searchKinds,
 											String searchText,
+											HttpSession session,
 											@RequestParam(required = false, defaultValue = "1")int cPage) 
 										{
 		ModelAndView mav = new ModelAndView();
+		Admin sessionAdmin= (Admin)session.getAttribute("adminLoginInfo");
+		User sessionUser =(User)session.getAttribute("logInInfo");
+		if(sessionAdmin != null) {
+			
 		int cntPerPage = 10;
 		
 		System.out.println(searchText);
@@ -55,14 +62,29 @@ public class AdminNoticeController {
 		mav.addObject("searchText", searchText);
 		mav.setViewName("admin/notice/list");
 		return mav;
+		}else if (sessionUser != null) {
+			mav.addObject("alertMsg", "관리자만 이용 가능합니다.");
+			mav.addObject("url", "/main");
+			mav.setViewName("common/result");
+			return mav;
+		} else {
+			mav.addObject("alertMsg", "로그인해 주세요.");
+			mav.addObject("url", "/admin/login");
+			mav.setViewName("common/result");
+			return mav;
+		}
 		
 	}
 	
 	@RequestMapping("/delete")
-	public ModelAndView deleteNotice(String[] nbNos) {
+	public ModelAndView deleteNotice(String[] nbNos,
+									HttpSession session) {
 		
 		ModelAndView mav = new ModelAndView();
 				
+		Admin sessionAdmin= (Admin)session.getAttribute("adminLoginInfo");
+		User sessionUser =(User)session.getAttribute("logInInfo");
+		if(sessionAdmin != null) {
 				if(nbNos != null) {
 					adminNoticeService.deleteNotice(nbNos);
 					mav.setViewName("redirect:/admin/notice/list");
@@ -71,14 +93,39 @@ public class AdminNoticeController {
 					mav.setViewName("redirect:/admin/notice/list");
 					return mav;
 				}
+		}else if (sessionUser != null) {
+			mav.addObject("alertMsg", "관리자만 이용 가능합니다.");
+			mav.addObject("url", "/main");
+			mav.setViewName("common/result");
+			return mav;
+		} else {
+			mav.addObject("alertMsg", "로그인해 주세요.");
+			mav.addObject("url", "/admin/login");
+			mav.setViewName("common/result");
+			return mav;
+		}
 	}
 	
 	@RequestMapping("/write")
-	public ModelAndView writeNotice() {
+	public ModelAndView writeNotice(HttpSession session) {
 		ModelAndView mav = new ModelAndView();
-		
-		mav.setViewName("admin/notice/write");
-		return mav;
+		Admin sessionAdmin= (Admin)session.getAttribute("adminLoginInfo");
+		User sessionUser =(User)session.getAttribute("logInInfo");
+		if(sessionAdmin != null) {
+			mav.addObject("adminLoginInfo",sessionAdmin);
+			mav.setViewName("admin/notice/write");
+			return mav;
+		}else if (sessionUser != null) {
+			mav.addObject("alertMsg", "관리자만 이용 가능합니다.");
+			mav.addObject("url", "/main");
+			mav.setViewName("common/result");
+			return mav;
+		} else {
+			mav.addObject("alertMsg", "로그인해 주세요.");
+			mav.addObject("url", "/admin/login");
+			mav.setViewName("common/result");
+			return mav;
+		}
 		
 	}
 	
@@ -88,6 +135,11 @@ public class AdminNoticeController {
 										HttpSession session) throws FileException {
 		
 		ModelAndView mav = new ModelAndView();
+		
+		Admin sessionAdmin= (Admin)session.getAttribute("adminLoginInfo");
+		User sessionUser =(User)session.getAttribute("logInInfo");
+		if(sessionAdmin != null) {
+			
 		String root = session.getServletContext().getRealPath("/");
 		
 		System.out.println(writeNoticeInfo);
@@ -102,25 +154,52 @@ public class AdminNoticeController {
 			mav.setViewName("admin/notice/list");
 			return mav;
 		}
+		}else if (sessionUser != null) {
+			mav.addObject("alertMsg", "관리자만 이용 가능합니다.");
+			mav.addObject("url", "/main");
+			mav.setViewName("common/result");
+			return mav;
+		} else {
+			mav.addObject("alertMsg", "로그인해 주세요.");
+			mav.addObject("url", "/admin/login");
+			mav.setViewName("common/result");
+			return mav;
+		}
 		
 	}
 	
 	@RequestMapping("/modify")
-	public ModelAndView modifyNotice(int nbNo) {
+	public ModelAndView modifyNotice(int nbNo,
+									HttpSession session) {
 		ModelAndView mav = new ModelAndView();
-		System.out.println(nbNo);
 		
-		Map<String, Object> viewNoticeMap = adminNoticeService.viewNotice(nbNo);
-		
-		System.out.println(viewNoticeMap);
-
-		if(viewNoticeMap.get("viewNotice") != null) {
-			mav.addObject("viewNotice",viewNoticeMap.get("viewNotice"));
-			mav.addObject("viewNoticeFile",viewNoticeMap.get("viewNoticeFile"));
-			mav.setViewName("admin/notice/modify");
+		Admin sessionAdmin= (Admin)session.getAttribute("adminLoginInfo");
+		User sessionUser =(User)session.getAttribute("logInInfo");
+		if(sessionAdmin != null) {
+			System.out.println(nbNo);
+			
+			Map<String, Object> viewNoticeMap = adminNoticeService.viewNotice(nbNo);
+			
+			System.out.println(viewNoticeMap);
+	
+			if(viewNoticeMap.get("viewNotice") != null) {
+				mav.addObject("viewNotice",viewNoticeMap.get("viewNotice"));
+				mav.addObject("viewNoticeFile",viewNoticeMap.get("viewNoticeFile"));
+				mav.setViewName("admin/notice/modify");
+				return mav;
+			} else {
+				return new ModelAndView("redirect:/admin/notice/list");
+			}
+		}else if (sessionUser != null) {
+			mav.addObject("alertMsg", "관리자만 이용 가능합니다.");
+			mav.addObject("url", "/main");
+			mav.setViewName("common/result");
 			return mav;
 		} else {
-			return new ModelAndView("redirect:/admin/notice/list");
+			mav.addObject("alertMsg", "로그인해 주세요.");
+			mav.addObject("url", "/admin/login");
+			mav.setViewName("common/result");
+			return mav;
 		}
 		
 	}
@@ -154,6 +233,10 @@ public class AdminNoticeController {
 										HttpSession session) throws FileException {
 		
 		ModelAndView mav = new ModelAndView();
+		Admin sessionAdmin= (Admin)session.getAttribute("adminLoginInfo");
+		User sessionUser =(User)session.getAttribute("logInInfo");
+		if(sessionAdmin != null) {
+			
 		String root = session.getServletContext().getRealPath("/");
 		
 		System.out.println(modiNoticeInfo);
@@ -172,27 +255,53 @@ public class AdminNoticeController {
 		}
 		
 		return new ModelAndView("redirect:/admin/notice/list");
+		}else if (sessionUser != null) {
+			mav.addObject("alertMsg", "관리자만 이용 가능합니다.");
+			mav.addObject("url", "/main");
+			mav.setViewName("common/result");
+			return mav;
+		} else {
+			mav.addObject("alertMsg", "로그인해 주세요.");
+			mav.addObject("url", "/admin/login");
+			mav.setViewName("common/result");
+			return mav;
+		}
 	}
 	
 	@RequestMapping("/view")
-	public ModelAndView viewNotice(int nbNo) {
+	public ModelAndView viewNotice(int nbNo,
+								HttpSession session) {
 		ModelAndView mav = new ModelAndView();
-		System.out.println(nbNo);
 		
-		Map<String, Object> viewNoticeMap = adminNoticeService.viewNotice(nbNo);
-		
-		System.out.println(viewNoticeMap);
-
-		if(viewNoticeMap.get("viewNotice") != null) {
-			mav.addObject("viewNotice",viewNoticeMap.get("viewNotice"));
-			mav.addObject("viewNoticeFile",viewNoticeMap.get("viewNoticeFile"));
-			mav.setViewName("admin/notice/view");
+		Admin sessionAdmin= (Admin)session.getAttribute("adminLoginInfo");
+		User sessionUser =(User)session.getAttribute("logInInfo");
+		if(sessionAdmin != null) {
+			
+			System.out.println(nbNo);
+			
+			Map<String, Object> viewNoticeMap = adminNoticeService.viewNotice(nbNo);
+			
+			System.out.println(viewNoticeMap);
+	
+			if(viewNoticeMap.get("viewNotice") != null) {
+				mav.addObject("viewNotice",viewNoticeMap.get("viewNotice"));
+				mav.addObject("viewNoticeFile",viewNoticeMap.get("viewNoticeFile"));
+				mav.setViewName("admin/notice/view");
+				return mav;
+			} else {
+				return new ModelAndView("redirect:/admin/notice/list");
+			}
+		}else if (sessionUser != null) {
+			mav.addObject("alertMsg", "관리자만 이용 가능합니다.");
+			mav.addObject("url", "/main");
+			mav.setViewName("common/result");
 			return mav;
 		} else {
-			return new ModelAndView("redirect:/admin/notice/list");
+			mav.addObject("alertMsg", "로그인해 주세요.");
+			mav.addObject("url", "/admin/login");
+			mav.setViewName("common/result");
+			return mav;
 		}
-		
-		
 	}
 	
 	@RequestMapping("/downloadFile")

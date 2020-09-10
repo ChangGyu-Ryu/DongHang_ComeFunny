@@ -9,7 +9,7 @@
     			(SELECT d.* FROM  tb_doboard d, tb_user u
     				WHERE u.uno = d.dbuno
     				<if test='searchKinds == "dbWriter" and searchKinds != null'>
-					AND u.uname LIKE '%' || #{searchText} || '%'
+					AND u.unick LIKE '%' || #{searchText} || '%'
 					</if>) sd
 			<trim prefix= "WHERE" prefixOverrides="AND">
 				<if test='searchKinds == "dbTitle" and searchKinds != null'>
@@ -28,7 +28,7 @@
     	
     	
     	<select id="selectDoBoardList" resultMap="DOBOARDLIST">
-		 	SELECT dbno, dbtitle, dbwrittendate, dbisdel, dbrecruitstatus, uname FROM (
+		 	SELECT dbno, dbtitle, dbwrittendate, dbisdel, dbrecruitstatus, unick FROM (
 			SELECT rownum rnum,d1.*FROM(
 			SELECT * FROM tb_doboard d, tb_user u WHERE u.uno = d.dbuno ORDER BY d.dbno DESC) d1 
 			<trim prefix= "WHERE" prefixOverrides="OR">
@@ -42,7 +42,7 @@
 				OR dbrecruitstatus LIKE '%' || #{searchText} || '%'
 				</if>
 				<if test='searchKinds == "dbWriter" and searchKinds != null'>
-				OR uname LIKE '%' || #{searchText} || '%'
+				OR unick LIKE '%' || #{searchText} || '%'
 				</if>
 			</trim>
 			)
@@ -60,7 +60,7 @@
     		<result property="dbWrittenDate" column="dbWrittendate"/>
     		<result property="dbIsDel" column="dbisdel"/>
     		<result property="dbRecruitStatus" column="dbrecruitstatus"/>
-    		<result property="dbWriter" column="uname"/>
+    		<result property="dbWriter" column="unick"/>
     	</resultMap>
     
     </mapper>

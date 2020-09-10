@@ -303,13 +303,16 @@ a {
 .doprofile{
 	overflow: hidden;
 	background: black;
+	width: 310px;
+    height: 200px;
 }
 
 .doprofile img{
-	height: 200px;
-	width: 100%;
-	overflow: hidden;
-	opacity: 1;
+	height: 100%;
+    width: 100%;
+    overflow: hidden;
+    opacity: 1;
+    object-fit: cover;
 }
 
 .doprofile:hover img, 

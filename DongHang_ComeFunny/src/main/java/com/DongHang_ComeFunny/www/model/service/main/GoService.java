@@ -55,6 +55,16 @@ public class GoService {
 		
 	//------------ GO 리스트 ----------------
 	
+	//-------------메인에서 넘어오는 리스트
+	public Map<String, Object> selectlist(Map<String, Object> map) {
+		Map<String,Object> commandMap = new HashMap<String, Object>();
+		
+		List<Map<String,Object>> list = goDao.selectGoList2(map) ;
+		commandMap.put("glist",list);
+		
+		return commandMap;
+	}
+		
 	//리스트전체 불러오기 최신순으로
 	public List<Map<String, Object>> selectGoList(Map<String, Object> map) {
 		
@@ -92,6 +102,7 @@ public class GoService {
 		return commandMap;
 		
 	}
+	
 	
 	//-------------상세보기----------------
 	
@@ -197,7 +208,6 @@ public class GoService {
 	public int updateGoboard(GoBoard goBoard) {
 		return goDao.updateGoboard(goBoard);
 	}
-
 
 	
 	

@@ -31,11 +31,19 @@ public class GoDao {
 		return sqlSession.insert("GO.insertgotheme", theme);
 	}
 
+	//----------------리스트
+	
+	//---메인에서 넘어오는 거
+	public List<Map<String, Object>> selectGoList2(Map<String, Object> map) {
+		return sqlSession.selectList("GO.selectlist2", map);
+	}
+		
 	//전체 게시글 리스트 보여주기 (최신순 정렬)
 	public List<Map<String, Object>> selectGoList(Map<String, Object> map){
 		System.out.println("[GODAO]"); 
 		return sqlSession.selectList("GO.selectlist", map);
 	}
+	
 	
 	//검색포함
 	public List<Map<String, Object>> selectSearchList(Map<String, Object> search) {
@@ -50,6 +58,7 @@ public class GoDao {
 		
 		return sqlSession.selectList("GO.selectfilter", filter);
 	}
+	
 	   
 	//-----------상세보기-------------
 	
@@ -190,5 +199,7 @@ public class GoDao {
 	public int updateGoboard(GoBoard goBoard) {
 		return sqlSession.update("GO.updategoboard", goBoard);
 	}
+
+	
 	
 }

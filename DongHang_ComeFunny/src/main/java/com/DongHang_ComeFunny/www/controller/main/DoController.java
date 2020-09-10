@@ -49,7 +49,7 @@ public class DoController {
 		
 		mav.addObject("list", list);
 		mav.addObject("searchText", searchText);
-		mav.setViewName("/do/do");
+		mav.setViewName("do/do");
 		
 		System.out.println("[list]" + mav);
 		return mav;
@@ -70,7 +70,7 @@ public class DoController {
 		
 		mav.addObject("list", list);
 		mav.addObject("searchText", searchText);
-		mav.setViewName("redirect:/do");
+		mav.setViewName("do/do");
 		
 		return mav;
 	}
@@ -416,6 +416,10 @@ public class DoController {
 	    	  int uno = getsession.getuNo();
 	    	  System.out.println("uno : " + uno);
 	    	  doService.insertDoLike(dbno, uno);
+	    	  
+	    	  //찜수증가
+	    	  doService.updatelikeCnt(dbno);
+	    	  
 	    	  return 1;
 	      }else {
 			  return 0;    	  
@@ -433,6 +437,9 @@ public class DoController {
 	    	  int uno = getsession.getuNo();
 	    	  System.out.println("uno : " + uno);
 	    	  doService.deleteDoLike(dbno, uno);
+	    	  
+	    	  //찜수 감소
+	    	  doService.deletelikeCnt(dbno);
 	    	  return 1;
 	      }else {
 			  return 0;    	  

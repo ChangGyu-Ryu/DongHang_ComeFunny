@@ -399,6 +399,12 @@ a {
     position: absolute;
 }
 
+.reviewnot{
+	text-align: center;
+	font-size: 25px;
+	padding-top: 140px;
+}
+
 .rvtop3-mate{
     padding: 4px 20px;
     display: inline-block;

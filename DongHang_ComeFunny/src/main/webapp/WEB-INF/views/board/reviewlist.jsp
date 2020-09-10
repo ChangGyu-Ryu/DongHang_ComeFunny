@@ -9,33 +9,18 @@
 
 <script type="text/javascript">
 
-	    function callFunction(){
-		console.dir('clicekd');
-			<c:forEach items="${reviewData.flist }" var="review">
-				<c:if test = "${logInInfo.uNo == review.RBUNO}">
-				console.dir('해당게시글은 세션회원이 작성한 게시글입니다.');
-					location.href="<%=request.getContextPath() %>/board/reviewview?rbNo=<c:out value='${review.RBNO}'/>";
-				return;
-				</c:if>
-			</c:forEach>
+// 	    function callFunction(){
+// 		console.dir('clicekd');
 		
-		<c:forEach items="${rticket.tlist}" var="ticket">
-			<c:forEach items="${reviewData.flist }" var="review">
-				<c:if test = "${ticket.DHTRBNO == review.RBNO}">
-					location.href="<%=request.getContextPath() %>/board/reviewview?rbNo=<c:out value='${review.RBNO}'/>";
-					return;
-				</c:if>
-			</c:forEach>
-		</c:forEach>
-		var confirm_val = confirm("해당 후기게시글 조회 시 동행복권 1장이 소모됩니다.");
-		console.dir(confirm_val);
-		if(confirm_val){
-			<c:forEach items="${reviewData.flist }" var="review">
-				location.href="<%=request.getContextPath() %>/board/reviewview?rbNo=<c:out value='${review.RBNO}'/>";
-			</c:forEach>
-		} else {
-			location.href='javascript:history.go(0)';
-		}
+
+// 		var confirm_val = confirm("해당 후기게시글 조회 시 동행복권 1장이 소모됩니다.");
+// 		console.dir(confirm_val);
+// 		if(confirm_val){
+			// 여기에 세션회원인지 아닌지 글쓴이가 조회쿼리 필요
+// 		} else {
+// 			location.href='javascript:history.go(0)';
+// 		}
+		
 	}
 
 </script>
@@ -60,7 +45,7 @@
 			<c:forEach items="${reviewData.flist }" var="review">
 			<tr>
 				<td>${review.RBNO}</td>
-				<td><a href="javascript:void(0)"onclick="callFunction();return false;"class="reveiwView">${review.RBTITLE }</a></td>
+				<td><a href="javascript:void(0)"onclick="location.href = '<%=request.getContextPath() %>/board/reviewview?rbNo=${review.RBNO}'; return false;" class="reveiwView"> ${review.RBTITLE }</a></td>
 				<td>${review.UNICK }</td>
 				<td><fmt:formatDate var="dateMMDD" value="${review.RBWRITTENDATE }" pattern="MM-dd"/>
 					${dateMMDD }</td>

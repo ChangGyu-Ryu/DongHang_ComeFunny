@@ -228,7 +228,6 @@ $(document).ready(function() {
 		<div class="dropdown">
 	  		<div class="dropbtn"><a href="/chat/chat">실시간채팅</a></div>
 		</div>
-
 	</div>
 
 	<!-- content-top -->
@@ -306,6 +305,9 @@ $(document).ready(function() {
 	<!-- 하단 리스트 -->
 	<div class="do-list">
 		<div class="listup">
+			<div class="pull-left">
+			<a href="/do" class="btn btn-default">전체보기</a>      
+      		</div>
 <!-- 		<!-- 정렬 드롭다운 --> 
 <!-- 		<div class="dropdown" > -->
 <!-- 		  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true"> -->
@@ -330,7 +332,7 @@ $(document).ready(function() {
 		<c:forEach items="${list.dlist}" var="db">
 		<div class="dobest">
 			<div class="doprofile">
-			<a href="do/dodetail?dbNo=${db.DBNO}">
+			<a href="/do/dodetail?dbNo=${db.DBNO}">
 				<c:if test="${db.DISTOREDIMGNAMESTOREDIMG eq null}"> <!-- 사진이 null이면 default -->
     					<img src="<%=request.getContextPath() %>/resources/image/do/default2.jpg" alt="대표사진" />
 				</c:if>

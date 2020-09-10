@@ -236,8 +236,7 @@ $(document).ready(function() {
 		
 		<tr>			
 			<td colspan="2" class="reviewmodify__button">
-				<button class ="reviewlist__button__modify" type="submit" id="btnModify">수정하기</button>
-				<button class ="reviewlist__button__modify" type="button" id="btnConfirm">확인</button>
+				<button class ="reviewmodify__button__modify" type="submit" id="btnModify">수정하기</button>
 			</td>
 		</tr>
 		</table>

@@ -65,5 +65,19 @@ public class UserDao {
 	public int updateDHBG(HashMap<String, Integer> param) {
 		return session.update("User.UpdataDHBGByUno", param);
 	}
+	
+	public User selectKakaoMember(HashMap<String, Object> userInfo) {
+		return session.selectOne("USER.selectMember", userInfo);
+	}
+
+	public int insertKakaoUser(User user) {
+		System.out.println("dao >>>>> : " + user);
+		
+		return session.insert("USER.insertKakaoUser", user);
+	}
+
+	public User selectNKMember(Map<String, Object> commandMap) {
+		return session.selectOne("USER.selectNKMember", commandMap);
+	}
 
 }

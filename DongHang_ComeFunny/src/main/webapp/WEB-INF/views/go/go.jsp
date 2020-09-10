@@ -260,7 +260,6 @@ $(document).ready(function() {
 		<div class="dropdown">
 	  		<div class="dropbtn"><a href="/chat/chat">실시간채팅</a></div>
 		</div>
-
    </div>
       
    <!-- content-top -->
@@ -338,6 +337,9 @@ $(document).ready(function() {
    <div id="go-list">
    
       <div class="listup">
+      <div class="pull-left">
+		<a href="/go" class="btn btn-default">전체보기</a>      
+      </div>
       <!-- 정렬 드롭다운 -->
 <!--       <div class="dropdown" > -->
 <!--         <button class="btn btn-default" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true"> -->
@@ -367,7 +369,7 @@ $(document).ready(function() {
             <a href="/go/goDetail?gbNo=${go.GBNO }"> <!-- 사진 클릭시 이동 -->
                <span aria-hidden="true"></span>
                <c:if test="${go.UFSTOREDFILENAME eq null}"> <!-- 사진이 null이면 default -->
-                   <img src="<%=request.getContextPath() %>/resources/upload/default.png" alt="공백" class="img-circle" />
+                   <img src="<%=request.getContextPath() %>/resources/image/go/default.png" alt="공백" class="img-circle" />
                </c:if>
                <c:if test="${go.UFSTOREDFILENAME ne null}">
                   <img src="<%=request.getContextPath() %>/resources/upload/${go.UFSTOREDFILENAME}" alt="프로필사진" class="img-circle" />
@@ -381,7 +383,7 @@ $(document).ready(function() {
                         <c:when test="${go.GBRECRUITDATE eq '2' }" >4월-6월</c:when>
                         <c:when test="${go.GBRECRUITDATE eq '3' }" >7월-9월</c:when>
                         <c:when test="${go.GBRECRUITDATE eq '4' }" >10-12월</c:when>
-                       </c:choose>
+                  </c:choose>
                </div>
                <div class="goname"> ${go.UNICK } 
                <small>

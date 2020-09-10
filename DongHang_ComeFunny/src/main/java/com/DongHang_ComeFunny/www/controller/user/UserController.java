@@ -1,8 +1,5 @@
 package com.DongHang_ComeFunny.www.controller.user;
 
-import java.io.UnsupportedEncodingException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -24,9 +21,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.DongHang_ComeFunny.www.model.service.kakao.KakaoService;
 import com.DongHang_ComeFunny.www.model.service.user.UserService;
 import com.DongHang_ComeFunny.www.model.vo.User;
-import com.fasterxml.jackson.databind.JsonNode;
 
 import common.util.Coolsms;
 
@@ -35,9 +32,10 @@ import common.util.Coolsms;
 public class UserController {
 	
 	@Autowired
-	public UserService userService;
+	public KakaoService kakaoService;
+	
 	@Autowired
-	private KakaoController kakaoController = new KakaoController();
+	public UserService userService;
 	
     @RequestMapping(value = "/sendSms", method=RequestMethod.POST)
     public String sendSms(HttpServletRequest request) throws Exception {
@@ -87,27 +85,74 @@ public class UserController {
 		mav.setViewName("/user/login");
 		return mav;
 	}
-	
-	@RequestMapping(value = "/oauth", produces = "application/json")
-    public String kakaoLogin(@RequestParam("code") String code, Model model, HttpSession session) {
-        System.out.println("로그인 할때 임시 코드값");
-        //카카오 홈페이지에서 받은 결과 코드
-        System.out.println(code);
-        System.out.println("로그인 후 결과값");
-        
-        //카카오 rest api 객체 선언
-        KakaoController kr = new KakaoController();
-        //결과값을 node에 담아줌
-        JsonNode node = kr.getKakaoUserInfo(code);
-        //결과값 출력
-        System.out.println(node);
-        //노드 안에 있는 access_token값을 꺼내 문자열로 변환
-        String token = node.get("access_token").toString();
-        //세션에 담아준다.
-        session.setAttribute("token", token);
-        
-        return "/board/freelist";
+	//카카오 로그인
+	@RequestMapping(value = "/kakaologin", produces = "application/json")
+    public String kakaoLogin(@RequestParam("code") String code , Model model, HttpSession session) {
+     
+     String token = kakaoService.getAccessToken(code);
+     HashMap<String, Object> userInfo = kakaoService.getUserInfo(token);
+     System.out.println("[userInfo] : " + userInfo);
+     
+     User res = kakaoService.selectKakaoMember(userInfo);
+     
+     if(res != null) {
+    	 session.setAttribute("logInInfo", res);
+    	 model.addAttribute("alertMsg", "로그인 성공");    	 
+    	 model.addAttribute("url", "/");
+    	 return "common/result";
+     } else {
+    	 model.addAttribute("alertMsg", "추가정보 입력 페이지로 이동합니다.");
+    	 
+    	 model.addAttribute("url", "kakaoLogin");
+    	 model.addAttribute("user", userInfo);
+    	 return "/user/kakaoLogin";
+     }
     }
+	
+	//카카오 추가정보 입력
+	@RequestMapping(value="/kakaojoin", method={RequestMethod.GET, RequestMethod.POST})
+	public String kakaoJoin(Model model, HttpServletRequest request ) {
+		String root = request.getContextPath();
+		User user = new User();
+		user.setUserId(request.getParameter("userId"));
+		user.setuPw(request.getParameter("uPw"));
+		user.setuName(request.getParameter("uName"));
+		user.setuNick(request.getParameter("uNick"));
+		user.setuPhone(request.getParameter("uPhone"));
+
+		// 생일값 불러와서 넣기(년/월/일)
+		String birthYear = request.getParameter("uBirthyy");
+		String birthMonth = request.getParameter("uBirthmm");
+		String birthDay = request.getParameter("uBirthdd");
+		user.setuBirth(birthYear+birthMonth+birthDay);
+		
+		user.setuGender(Integer.parseInt(request.getParameter("uGender")));
+		user.setuMail(request.getParameter("uMail"));
+		// 주소값 불러와서 넣기(검색한 주소 / 상세주소 / 우편번호)
+		String postNumber = request.getParameter("addr1");
+		String defaultAddress = request.getParameter("addr2");
+		String detailAddress =  user.getuAddress();
+		if(detailAddress!= null) {
+		user.setuAddress(defaultAddress +", "+detailAddress+" 우)"+postNumber);
+		} else {
+		user.setuAddress(defaultAddress +", "+ "우)"+postNumber);
+		}
+		int res = kakaoService.insertKakaoUser(user);
+		
+		 if(res > 0) { //addAttribute : ModelAndView의 addObject와 같다
+		 model.addAttribute("alertMsg", "회원가입에 성공했습니다."); model.addAttribute("url",
+		 root+"/");
+		 
+		 } else { model.addAttribute("alertMsg", "회원가입에 실패했습니다.");
+		 model.addAttribute("url", root+"/user/login");
+		 
+		 }
+		 
+		
+		return "common/result";
+		
+	}
+
 	
 	@RequestMapping(value="/loginimple", method=RequestMethod.POST)
 	public String loginImpl(
@@ -141,11 +186,18 @@ public class UserController {
 	@RequestMapping(value="/joinimple", method=RequestMethod.POST)
 	public String joinimpl(@ModelAttribute User user, Model model, HttpServletRequest request) {
 		String root = request.getContextPath();
+		// 생일값 불러와서 넣기(년/월/일)
 		String birthYear = request.getParameter("uBirthyy");
 		String birthMonth = request.getParameter("uBirthmm");
 		String birthDay = request.getParameter("uBirthdd");
 		user.setuBirth(birthYear+birthMonth+birthDay);
-
+		
+		// 주소값 불러와서 넣기(검색한 주소 / 상세주소 / 우편번호)
+		String postNumber = request.getParameter("addr1");
+		String defaultAddress = request.getParameter("addr2");
+		String detailAddress =  user.getuAddress();
+		user.setuAddress(defaultAddress +", "+detailAddress+" 우)"+postNumber+"");
+		
 		int res = userService.insertUser(user);
 		if(res > 0) {
 			//addAttribute : ModelAndView의 addObject와 같다
@@ -190,7 +242,6 @@ public class UserController {
 		return result;
 	}
 		
-
 	//비밀번호 찾기 페이지
 	@RequestMapping(value="/fPw", method=RequestMethod.GET)
 	public ModelAndView fPw(HttpSession session) {

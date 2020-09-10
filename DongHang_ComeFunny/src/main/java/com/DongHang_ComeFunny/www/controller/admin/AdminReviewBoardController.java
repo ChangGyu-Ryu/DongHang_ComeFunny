@@ -20,7 +20,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.DongHang_ComeFunny.www.model.service.admin.AdminReviewBoardService;
+import com.DongHang_ComeFunny.www.model.vo.Admin;
 import com.DongHang_ComeFunny.www.model.vo.ReviewComment;
+import com.DongHang_ComeFunny.www.model.vo.ReviewDhTicket;
+import com.DongHang_ComeFunny.www.model.vo.ReviewLike;
+import com.DongHang_ComeFunny.www.model.vo.ReviewRecommend;
+import com.DongHang_ComeFunny.www.model.vo.User;
 
 @Controller
 @RequestMapping("/admin/boards/reviewBoard")
@@ -32,9 +37,15 @@ public class AdminReviewBoardController {
 	@RequestMapping("/list")
 	public ModelAndView viewReviewBoardList (	String searchKinds,
 											String searchText,
+											HttpSession session,
 											@RequestParam(required = false, defaultValue = "1")int cPage) {
 		
 		ModelAndView mav = new ModelAndView();
+		
+		Admin sessionAdmin= (Admin)session.getAttribute("adminLoginInfo");
+		User sessionUser =(User)session.getAttribute("logInInfo");
+		if(sessionAdmin != null) {
+			
 		int cntPerPage = 10;
 		
 		Map<String,Object> searchReviewBoard = new HashMap<>();
@@ -49,13 +60,27 @@ public class AdminReviewBoardController {
 		mav.addObject("searchText", searchText);
 		mav.setViewName("admin/boards/reviewBoard/list");
 		return mav;
+		}else if (sessionUser != null) {
+			mav.addObject("alertMsg", "관리자만 이용 가능합니다.");
+			mav.addObject("url", "/main");
+			mav.setViewName("common/result");
+			return mav;
+		} else {
+			mav.addObject("alertMsg", "로그인해 주세요.");
+			mav.addObject("url", "/admin/login");
+			mav.setViewName("common/result");
+			return mav;
+		}
 	}
 	
 		@RequestMapping("/delete")
-		public ModelAndView deleteReivewBoard(String[] rbNo) {
+		public ModelAndView deleteReivewBoard(String[] rbNo,
+												HttpSession session) {
 			
 			ModelAndView mav = new ModelAndView();
-					
+			Admin sessionAdmin= (Admin)session.getAttribute("adminLoginInfo");
+			User sessionUser =(User)session.getAttribute("logInInfo");
+			if(sessionAdmin != null) {
 					if(rbNo != null) {
 						adminReviewBoardService.deleteReviewBoard(rbNo);
 						mav.setViewName("redirect:/admin/boards/reviewBoard/list");
@@ -64,19 +89,31 @@ public class AdminReviewBoardController {
 						mav.setViewName("redirect:/admin/boards/reviewBoard/list");
 						return mav;
 					}
+			}else if (sessionUser != null) {
+				mav.addObject("alertMsg", "관리자만 이용 가능합니다.");
+				mav.addObject("url", "/main");
+				mav.setViewName("common/result");
+				return mav;
+			} else {
+				mav.addObject("alertMsg", "로그인해 주세요.");
+				mav.addObject("url", "/admin/login");
+				mav.setViewName("common/result");
+				return mav;
+			}
 		}
 		
-		// ⑸ 게시글 상세보기 페이지 이동
-		// url : /board/reviewview - GET
-		// parameter :
-		// int rbNo - 파라미터(name="rbNo") 값(value) 불러오기
-		@RequestMapping(value = "/view", method = RequestMethod.GET)
+		@RequestMapping(value = "/reviewview", method = RequestMethod.GET)
 		public ModelAndView reviewView(
 				@RequestParam int rbNo
 				, HttpSession session
 			) {
 			// 1. 모델앤뷰 객체 생성
 			ModelAndView mav = new ModelAndView();
+			
+			Admin sessionAdmin= (Admin)session.getAttribute("adminLoginInfo");
+			User sessionUser =(User)session.getAttribute("logInInfo");
+			if(sessionAdmin != null) {
+				
 			// 2. 파라미터값 Service에 전달 후 Map에 저장
 			Map<String, Object> commandMap = adminReviewBoardService.selectReviewView(rbNo);
 			
@@ -106,17 +143,28 @@ public class AdminReviewBoardController {
 			if(commandMap.get("detail") != null) {
 				// 4. ModelAndView에 VO 및 View 이름값 넣기 
 				mav.addObject("rview", commandMap);
-				mav.setViewName("board/reviewview");
+				mav.setViewName("adimn/boards/reviewBoard/view");
 			} else {
 				// 5. view페이지 : /WEB-INF/views/common 폴더 안에 result.jsp
 				// 5-1. 경고메세지 출력 후 지정된 url로 페이지 이동
 				mav.addObject("alertMsg", "해당 게시물이 존재하지 않습니다.");
-				mav.addObject("url", "reviewlist");
+				mav.addObject("url", "list");
 				mav.setViewName("common/result");
 			}
 				
 			// 6. 데이터 처리가 완료된 모델(VO)값과 보여질 페이지(jsp)를 반환한다.
 			return mav;
+			}else if (sessionUser != null) {
+				mav.addObject("alertMsg", "관리자만 이용 가능합니다.");
+				mav.addObject("url", "/main");
+				mav.setViewName("common/result");
+				return mav;
+			} else {
+				mav.addObject("alertMsg", "로그인해 주세요.");
+				mav.addObject("url", "/admin/login");
+				mav.setViewName("common/result");
+				return mav;
+			}
 		}
 		
 		@RequestMapping(value="/reviewdownload")
@@ -158,35 +206,6 @@ public class AdminReviewBoardController {
 			// 1. 파라미터값 Service에 전달 후 int 값 반환
 			//    ( 성공 : 1, 실패 : 0 )
 			return adminReviewBoardService.selectReviewCommentList(rbNo);
-		}
-		
-		// ⒀ 게시글 상세보기 페이지에서, 댓글 수정하기 Ajax로 처리
-		// url : /board/updateReply - PUT
-		// parameter :
-		// RequestBody Map replyNo : 댓글번호, 댓글 내용 key-value 요청한 값 받기
-		@RequestMapping(value="updateReviewReply", method = RequestMethod.PUT)
-		@ResponseBody
-		public int updateReply(@RequestBody Map<String,Object> replyNo) {
-			
-			//-------------------RequestBody에서 요청한 값 제대로 받아왔는지 확인하기----------------------
-			System.out.println("[controller] updateReply map : "+replyNo);
-			System.out.println("[controller] updateReply fcno int: "+replyNo.get("replyNo"));
-			System.out.println("[controller] updateReply fccontent string : "+replyNo.get("replyText"));
-			//---------------------------------------------------------------------------------------------
-			
-			
-			// 1. ReviewComment fcNo에 Map에서 갖고온 Value(Object 타입)을 int형태로 바꾸기 
-			int fcNo = Integer.parseInt((String) replyNo.get("replyNo"));
-			// 2. ReviewComment fcContent에 Map에서 갖고온 Value(Object 타입)을 String형태로 바꾸기
-			String fcContent = (String) replyNo.get("replyText");
-			// 3. ReviewComment 빈 객체 생성
-			ReviewComment reviewComment = new ReviewComment();
-			// 4. ReviewComment에 fcNo, fcContent 값 지정
-			reviewComment.setRcNo(fcNo);
-			reviewComment.setRcContent(fcContent);
-			// 5. 파라미터값 Service에 전달 후 int 값 반환
-			//    ( 성공 : 1, 실패 : 0 )
-			return adminReviewBoardService.updateReviewContent(reviewComment);
 		}
 		
 		// ⒁ 게시글 상세보기 페이지에서, 댓글 삭제하기 Ajax로 처리

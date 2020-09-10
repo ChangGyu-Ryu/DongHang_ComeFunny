@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.DongHang_ComeFunny.www.model.dao.admin.AdminFreeBoardDao;
 import com.DongHang_ComeFunny.www.model.vo.FreeBoard;
+import com.DongHang_ComeFunny.www.model.vo.FreeComment;
 
 import common.util.Paging;
 
@@ -41,6 +42,8 @@ public class AdminFreeBoardServiceImpl implements AdminFreeBoardService {
 	@Override
 	public void deleteFreeBoard(String[] fbNo) {
 		for(int i=0; i<fbNo.length; i++) {
+		adminFreeBoardDao.deleteFreeCommentByFbNo(fbNo[i]);
+		adminFreeBoardDao.deleteFreeFileByFbNo(fbNo[i]);
 		adminFreeBoardDao.deleteFreeBoard(fbNo[i]);
 		}
 	}
@@ -54,7 +57,7 @@ public class AdminFreeBoardServiceImpl implements AdminFreeBoardService {
 				}
 
 	@Override
-	public Map<String, Object> viewtFreeBoard(int fbNo) {
+	public Map<String, Object> viewFreeBoard(int fbNo) {
 		// 1. 게시글 번호로 게시글 상세보기 조회(회원, 자유게시글 테이블)
 		Map<String, Object> fdetail = adminFreeBoardDao.selectFreeDetail(fbNo);
 		
@@ -72,4 +75,14 @@ public class AdminFreeBoardServiceImpl implements AdminFreeBoardService {
 		// 7. 커맨드맵 반환
 		return commandMap;
 	}
+
+	@Override
+	public int deleteFreeComment(FreeComment freeComment) {
+		// 1. 댓글 삭제 시, isdel=0을 1로 변경
+//		return freeBoardDao.updateFreeCommentIsDEl(freeComment);
+		// 2. 댓글 완전 삭제
+		return adminFreeBoardDao.deleteFreeComment(freeComment);
+	}
+	
+	
 }
