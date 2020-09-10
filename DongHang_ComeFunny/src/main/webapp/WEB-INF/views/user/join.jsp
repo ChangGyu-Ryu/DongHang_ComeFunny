@@ -79,18 +79,18 @@ $(document).ready(function () {
 <script type="text/javascript">
 $(function idChk(){
    $("#idChkBtn").on("click", function() {
-      var userid = $("#userid").val();
+      var userId = $("#userId").val();
       $.ajax({
-         url : "${pageContext.request.contextPath}/user/idChk?userid" + userid,
+         url : "${pageContext.request.contextPath}/user/idChk?userId" + userId,
          type : "POST",
          data : {
-            userid : $("#userid").val()
+            userId : $("#userId").val()
          },
          success : function(result) {
             if (result == 1) {
                $("#id_check").html("중복된 아이디가 있습니다.");
                $("#join__signin").attr("disabled", "disabled");
-            } else if (userid == "") {
+            } else if (userId == "") {
                $("#id_check").html("아이디를 입력해 주세요.");
                 $("#join__signin").attr("disabled", "disabled");
             } else {
@@ -104,13 +104,13 @@ $(function idChk(){
 
 $(document).ready(function() {
    //시작 시 아이디에 포커스
-   $('#userid').focus();
+   $('#userId').focus();
    
    //--- 비밀번호 유효성 검사 ---
    var pwReg = /^.*(?=^.{6,15}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&+=]).*$/; //6~15자 영문, 특수문자, 숫자 조합
    
    //비밀번호가 포커스를 잃었을 때
-   $('#upw').on("blur", function() {
+   $('#uPw').on("blur", function() {
       if( !pwReg.test( $(this).val() ) ) {
          $("#userPwMsg")
             .css("color", "red")
@@ -123,9 +123,9 @@ $(document).ready(function() {
    });
    
    //--- 비밀번호 일치여부 확인 ---
-   $('#upwconfirm').on("blur", function() {
-      var pw = $('#upw').val();
-      var pwChk = $('#upwconfirm').val();
+   $('#uPwconfirm').on("blur", function() {
+      var pw = $('#uPw').val();
+      var pwChk = $('#uPwconfirm').val();
       
       if( pw != pwChk ) {
          $("#userPwChkMsg")
@@ -134,7 +134,7 @@ $(document).ready(function() {
          $("#join__signin").attr("disabled", "disabled");
          
          // 작성된 내용을 지우고 비밀번호 입력창으로 포커스 이동시키기
-         $("#upwconfirm").val("") //#upw_chk 내용 지우기
+         $("#uPwconfirm").val("") //#uPw_chk 내용 지우기
       } else {
          $("#userPwChkMsg").html("")
          $("#join__signin").removeAttr("disabled");
@@ -146,7 +146,7 @@ $(document).ready(function() {
    var nameReg = /^[가-힣]{2,6}$/; //한글 2~6글자만 입력 가능
    
    //이름이 포커스를 잃었을 때
-   $('#uname').on("blur", function() {
+   $('#uName').on("blur", function() {
       if( !nameReg.test( $(this).val() ) ) {
          $("#userNameMsg")
             .css("color", "red")
@@ -162,46 +162,46 @@ $(document).ready(function() {
    var phoneReg = /^01([0|1|6|7|8|9]?)-?([0-9]{3,4})-?([0-9]{4})$/
 
    //연락처가 포커스를 잃었을 때
-   $('#uphone').on("blur", function() {
+   $('#uPhone').on("blur", function() {
       if( !phoneReg.test( $(this).val() ) ) {
-         $("#uphoneMsg")
+         $("#uPhoneMsg")
             .css("color", "red")
             .html("연락처가 올바르지 않습니다.")
             $("#join__signin").attr("disabled", "disabled");
       } else {
-         $("#uphoneMsg").html("");
+         $("#uPhoneMsg").html("");
          $("#join__signin").removeAttr("disabled");
       }
    });
    
    //--- 닉네임 유효성 검사 ---
-   var emailReg = /[0-9]|[a-z]|[A-Z]|[가-힣]/; //2~10자의 한글, 영문, 숫자만 사용
+//    var emailReg = /[0-9]|[a-z]|[A-Z]|[가-힣]/; //2~10자의 한글, 영문, 숫자만 사용
    
-   //닉네임이 포커스를 잃었을 때
-   $('#unick').on("blur", function() {
-      if( !phoneReg.test( $(this).val() ) ) {
-         $("#unickMsg")
-            .css("color", "red")
-            .html("닉네임은 2~10자의 한글, 영문, 숫자만 사용 가능합니다.")
-            $("#join__signin").attr("disabled", "disabled");
-      } else {
-         $("#unickMsg").html("");
-         $("#join__signin").removeAttr("disabled");
-      }
-   });
+//    //닉네임이 포커스를 잃었을 때
+//    $('#uNick').on("blur", function() {
+//       if( !phoneReg.test( $(this).val() ) ) {
+//          $("#uNickMsg")
+//             .css("color", "red")
+//             .html("닉네임은 2~10자의 한글, 영문, 숫자만 사용 가능합니다.")
+//             $("#join__signin").attr("disabled", "disabled");
+//       } else {
+//          $("#uNickMsg").html("");
+//          $("#join__signin").removeAttr("disabled");
+//       }
+//    });
    
    //--- 이메일 유효성 검사 ---
    var emailReg = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/;
    
    //이메일이 포커스를 잃었을 때
-   $('#umail').on("blur", function() {
+   $('#uMail').on("blur", function() {
       if( !emailReg.test( $(this).val() ) ) {
-         $("#umailMsg")
+         $("#uMailMsg")
             .css("color", "red")
             .html("이메일 형식에 맞지 않습니다.")
             $("#join__signin").attr("disabled", "disabled");
       } else {
-         $("#umailMsg").html("");
+         $("#uMailMsg").html("");
          $("#join__signin").removeAttr("disabled");
       }
    });
@@ -257,7 +257,7 @@ $(document).ready(function() {
                   <div class="three wide field"></div>
                   <div class="nine wide field">
                      <label id="join__label">아이디</label> <input type="text"
-                        id="userid" name="userid" placeholder="아이디를 입력해주세요.">
+                        id="userId" name="userId" placeholder="아이디를 입력해주세요.">
                   </div>
                   <div class="five wide field">
                      <button id="idChkBtn" class="ui button" type="button"
@@ -271,8 +271,8 @@ $(document).ready(function() {
                <div class="inline fields">
                   <div class="three wide field"></div>
                   <div class="nine wide field">
-                     <label id="join__label">비밀번호</label> <input type="password" id="upw"
-                        name="upw" placeholder="비밀번호를 입력해 주세요.">
+                     <label id="join__label">비밀번호</label> <input type="password" id="uPw"
+                        name="uPw" placeholder="비밀번호를 입력해 주세요.">
                   </div>
                   <div class="five wide field">
                      <span id="userPwMsg"></span>
@@ -283,7 +283,7 @@ $(document).ready(function() {
                   <div class="three wide field"></div>
                   <div class="nine wide field">
                      <label id="join__label">비밀번호 확인</label> <input type="password"
-                        id="upwconfirm" name="upwconfirm" placeholder="다시 한번 입력해주세요.">
+                        id="uPwconfirm" name="uPwconfirm" placeholder="다시 한번 입력해주세요.">
                   </div>
                   <div class="five wide field">
                   </div>
@@ -293,8 +293,8 @@ $(document).ready(function() {
                <div class="inline fields">
                   <div class="three wide field"></div>
                   <div class="nine wide field">
-                     <label id="join__label">이름</label> <input type="text" id="uname"
-                        name="uname" placeholder="이름을 입력해 주세요.">
+                     <label id="join__label">이름</label> <input type="text" id="uName"
+                        name="uName" placeholder="이름을 입력해 주세요.">
                   </div>
                   <div class="five wide field">
                      <span id="userNameMsg"></span>
@@ -304,31 +304,31 @@ $(document).ready(function() {
                   <div class="three wide field"></div>
                   <div class="nine wide field">
                      <label id="join__label">연락처</label> <input type="text"
-                        id="uphone" name="uphone" placeholder="-를 제외하고 입력해주세요.">
+                        id="uPhone" name="uPhone" placeholder="-를 제외하고 입력해주세요.">
                   </div>
                   <div class="five wide field">
 	                	<button class="ui button" id="authSms"type="button"> 
 			              	본인인증
 			            </button> 
-                     <span id="uphoneMsg"></span>
+                     <span id="uPhoneMsg"></span>
                   </div>
                </div>
                <div class="inline fields">
                   <div class="three wide field"></div>
                   <div class="nine wide field">
-                     <label id="join__label">닉네임</label> <input type="text" id="unick"
-                        name="unick" placeholder="닉네임을 입력해 주세요.">
+                     <label id="join__label">닉네임</label> <input type="text" id="uNick"
+                        name="uNick" placeholder="닉네임을 입력해 주세요.">
                   </div>
                   <div class="five wide field">
-                     <span id="unickMsg"></span>
+                     <span id="uNickMsg"></span>
                   </div>
                </div>
                <div class="inline fields">
                   <div class="three wide field"></div>
                   <div class="nine wide field">
                      <label id="join__label__birth">생년월일</label> <input id="yy"
-                        type="text" name="ubirthyy" placeholder="년(4자)" maxlength="4">
-                     <select id="mm" class="ui fluid dropdown" name="ubirthmm">
+                        type="text" name="uBirthyy" placeholder="년(4자)" maxlength="4">
+                     <select id="mm" class="ui fluid dropdown" name="uBirthmm">
                         <option value="">월</option>
                         <option value="01">1</option>
                         <option value="02">2</option>
@@ -342,7 +342,7 @@ $(document).ready(function() {
                         <option value="10">10</option>
                         <option value="11">11</option>
                         <option value="12">12</option>
-                     </select> <input id="dd" type="text" name="ubirthdd" placeholder="일"
+                     </select> <input id="dd" type="text" name="uBirthdd" placeholder="일"
                         maxlength="2">
 
                   </div>
@@ -357,13 +357,13 @@ $(document).ready(function() {
                      <label id="join__label__gender">성별</label>
                      <div class="five wide field">
                         <div class="ui radio checkbox">
-                           <input type="radio" name="ugender" value="1">
+                           <input type="radio" name="uGender" value="1">
                         </div>
                         <label>남</label>
                      </div>
                      <div class="five wide field">
                         <div class="ui radio checkbox">
-                           <input type="radio" name="ugender" value="2">
+                           <input type="radio" name="uGender" value="2">
                         </div>
                         <label>여</label>
                      </div>
@@ -374,17 +374,17 @@ $(document).ready(function() {
                   <div class="three wide field"></div>
                   <div class="nine wide field">
                      <label id="join__label">이메일</label> <input type="email"
-                        id="umail" name="umail" placeholder="donghang@donghang.com">
+                        id="uMail" name="uMail" placeholder="donghang@donghang.com">
                   </div>
                   <div class="five wide field">
-                     <span id="umailMsg"></span>
+                     <span id="uMailMsg"></span>
                   </div>
                </div>
                <div class="inline fields">
                   <div class="three wide field"></div>
                   <div class="nine wide field">
                      <label id="join__label">주소</label> <input type="text"
-                        name="uaddress" placeholder="donghang@donghang.com">
+                        name="uAddress" placeholder="donghang@donghang.com">
                   </div>
                   <div class="five wide field"></div>
                </div>

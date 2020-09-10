@@ -49,7 +49,7 @@
            <div class="dropbtn"><a href="/mypage/mydonghang">동행 관리</a></div>
       </div>
       <div class="dropdown">
-           <div class="dropbtn"><a href="/mypage/likelist">찜목록</a></div>
+           <div class="dropbtn"><a href="/mypage/golike">찜목록</a></div>
       </div>
       <div class="dropdown">
            <div class="dropbtn"><a href="/mypage/fboardlist">내가 쓴 글</a></div>

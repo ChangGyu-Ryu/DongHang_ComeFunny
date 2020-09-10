@@ -141,9 +141,9 @@ public class UserController {
 	@RequestMapping(value="/joinimple", method=RequestMethod.POST)
 	public String joinimpl(@ModelAttribute User user, Model model, HttpServletRequest request) {
 		String root = request.getContextPath();
-		String birthYear = request.getParameter("ubirthyy");
-		String birthMonth = request.getParameter("ubirthmm");
-		String birthDay = request.getParameter("ubirthdd");
+		String birthYear = request.getParameter("uBirthyy");
+		String birthMonth = request.getParameter("uBirthmm");
+		String birthDay = request.getParameter("uBirthdd");
 		user.setuBirth(birthYear+birthMonth+birthDay);
 
 		int res = userService.insertUser(user);

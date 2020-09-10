@@ -4,6 +4,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix ="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ page import="com.DongHang_ComeFunny.www.model.vo.User" %>
+<script src="/resources/bower_components/jquery/dist/jquery.min.js"></script>
 <script>
 var cnt= 0;
 var result;

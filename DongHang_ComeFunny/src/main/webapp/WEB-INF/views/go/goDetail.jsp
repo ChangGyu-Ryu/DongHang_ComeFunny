@@ -22,8 +22,6 @@
 <!-- 합쳐지고 최소화된 최신 자바스크립트 -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 
-<!-- fontawesome 아이콘 -->
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
 <script type="text/javascript">
 $(document).ready(function() {
    
@@ -59,9 +57,9 @@ $(document).ready(function() {
             gbNo: ${goDetailInfo.goBoardUserInfo.GBNO }
          },
          success: function(result) {
-        	 console.log("result" + result);
-        	
-        	 
+            console.log("result" + result);
+           
+            
             if(result != ""){
                    alert("동행 신청 완료되었습니다.");
                    
@@ -95,7 +93,7 @@ $(document).ready(function() {
                    html += '<div style="display: inline-block;" class="goDhApplyResult">';
 //                    html += '<a class="btn btn-primary" id="goDhOkBtn" onclick="goDhOkBtn(' + result.GAUNO + ');">수락</a>';
 //                    html += '<a class="btn btn-default" id="goDhNoBtn" onclick="goDhNoBtn(' + result.GAUNO + ');">거절</a>';
-				   html += '<a class="btn btn-primary">대기중</a>';
+               html += '<a class="btn btn-primary">대기중</a>';
                    html += '</div>';
                    html += '</div>';
                    html += '</div>';
@@ -134,19 +132,19 @@ function goDhOkBtn(gaUNo) {
              
          },
          success: function(result) {
-			 if(result == "fail"){
-          		alert("동행 요청 수락이 실패되었습니다.");
-          		
-          	}else if(result == "fail2"){
-          		alert("동행 요청 수락 인원이 꽉찼습니다.");
-          		
-          	} else {
-				alert("동행 요청이 수락되었습니다.");
-             	
-             	console.log(result);
-             	document.querySelector(result).outerHTML = '<a class="btn btn-primary">동행수락</a>';
+          if(result == "fail"){
+                alert("동행 요청 수락이 실패되었습니다.");
+                
+             }else if(result == "fail2"){
+                alert("동행 요청 수락 인원이 꽉찼습니다.");
+                
+             } else {
+            alert("동행 요청이 수락되었습니다.");
+                
+                console.log(result);
+                document.querySelector(result).outerHTML = '<a class="btn btn-primary">동행수락</a>';
 
-          	}
+             }
             
             
          }
@@ -185,7 +183,7 @@ function goDhNoBtn(gaUNo) {
 
 //하트 누르면 이미지 변경 
 function toggleImg() {
-	
+   
    
    if($('#change').attr('src') == '/resources/image/go/heart.png'){ //찜안되어있음
       console.log("찜됨");
@@ -252,10 +250,17 @@ function toggleImg() {
 function toggleImg2() {
       alert("로그인을 해주세요");
       location.href="/user/login";
-               				
+                           
 }
 </script>
-
+<script>
+  function share() {
+    var url = encodeURI(encodeURIComponent('http://localhost:8088/go/goDetail?gbNo=${goDetailInfo.goBoardUserInfo.GBNO}'));
+    var title = encodeURI('${goDetailInfo.goBoardUserInfo.GBTITLE }');
+    var shareURL = "https://share.naver.com/web/shareView.nhn?url=" + url + "&title=" + title;
+    document.location = shareURL;
+  }
+</script>
 </head>
 <body>
 <div class="detail-container">
@@ -267,19 +272,6 @@ function toggleImg2() {
          <a href="/"><img class="logo-img" alt="로고이미지" src="/resources/image/header/logo.png" ></a>
          </div>
       </div>
-      <c:if test="${empty logInInfo}">
-		<div class="main_login">		
-			<a href="/user/login">로그인</a> &ensp;
-			<a href="/user/join">회원가입</a>
-		</div>
-      </c:if>
-      <c:if test="${not empty logInInfo}">
-		<div class="main_login">	
-		    <a href="/message/receivelist"><i class="fas fa-envelope"></i> &nbsp;</a>		
-			<a href="javascript:void(0)" style="cursor: default;">${logInInfo.userId }&nbsp;님 환영합니다.</a> &ensp;
-			<a href="/mypage/profile">마이페이지</a>
-		</div>
-      </c:if>
    </div>
      <!-- 메뉴바 -->
    <div class="main_menu">
@@ -303,10 +295,9 @@ function toggleImg2() {
              <a href="#">문의게시판</a>
            </div>
       </div>
-	  <div class="dropdown">
-			<div class="dropbtn"><a href="/chat/chat">실시간채팅</a></div>
-	  </div>
-
+      <div class="dropdown">
+           <div class="dropbtn"><a href="#">실시간채팅</a></div>
+      </div>
    </div>
    
 <!-- content -->
@@ -334,19 +325,19 @@ function toggleImg2() {
                <img src="<%=request.getContextPath() %>/resources/upload/${goDetailInfo.goBoardUserInfo.UFSTOREDFILENAME }" class="img-circle profile-img" />
             </c:if>
             <div class="goheart">
-            	<c:if test="${not empty logInInfo.uNo }">
-               		<c:choose>
-                  		<c:when test="${goLikeStatus  eq '0'}">
-                     		<img id="change" src="/resources/image/go/heart.png" alt="찜하트1" onclick="toggleImg();"/>
-                  		</c:when>
-                  		<c:when test="${goLikeStatus  eq '1'}">
-                     		<img id="change" src="/resources/image/go/heart_pick.png" alt="찜하트2" onclick="toggleImg();"/>
-                  		</c:when>
-               		</c:choose>
-               	</c:if>   
+               <c:if test="${not empty logInInfo.uNo }">
+                     <c:choose>
+                        <c:when test="${goLikeStatus  eq '0'}">
+                           <img id="change" src="/resources/image/go/heart.png" alt="찜하트1" onclick="toggleImg();"/>
+                        </c:when>
+                        <c:when test="${goLikeStatus  eq '1'}">
+                           <img id="change" src="/resources/image/go/heart_pick.png" alt="찜하트2" onclick="toggleImg();"/>
+                        </c:when>
+                     </c:choose>
+                  </c:if>   
                 <c:if test="${empty logInInfo.uNo }">
-               		<img id="change" src="/resources/image/go/heart.png" alt="찜하트3"  onclick="toggleImg2();"/>	
-               	</c:if>
+                     <img id="change" src="/resources/image/go/heart.png" alt="찜하트3"  onclick="toggleImg2();"/>   
+                  </c:if>
             </div>
          </div>
          <div class="profile-name">
@@ -469,33 +460,88 @@ function toggleImg2() {
       <!-- 마지막 버튼 부분 -->   
       
       <!-- 글쓴이한테만 보임 -->
-      <div class="dobtn" style="width: 850px; margin: auto; margin-top: 5%; height: 35px;">
+      <div class="dobtn" style="margin: auto; margin-top: 5%; height: 35px;">
          <c:if test="${goDetailInfo.goBoardUserInfo.GBUNO == logInInfo.uNo}">
-         	<a class="btn btn-warning " href="/go/modify?gbNo=${goDetailInfo.goBoardUserInfo.GBNO}">수정</a> 
-         	<a class="btn btn-danger " href="/go/goDelete?gbNo=${goDetailInfo.goBoardUserInfo.GBNO}">삭제</a>
-		 </c:if>      
+            <a class="btn btn-warning " href="/go/modify?gbNo=${goDetailInfo.goBoardUserInfo.GBNO}">수정</a> 
+            <a class="btn btn-danger " href="/go/goDelete?gbNo=${goDetailInfo.goBoardUserInfo.GBNO}">삭제</a>
+       </c:if>      
       </div>
          
-      <div class="dobtn" style="width: 850px; margin: auto; margin-top: 1%; text-align: center; height: 35px;">
+      <div class="dobtn" style="display: inline-block; margin: auto; margin-top: 1%; text-align: center; height: 35px;">
            <div class="ialign float-left">  
                <!-- 신청목록 내용 보여짐 -->
                <a id="golist" class="btn btn-primary ">신청목록</a>
                
-               <div class="ialign btncen">
-               <a class="btn btn-default ">쪽지보내기</a>
+               
                
                <!-- 모집중일때만 신청하기 버튼 보여주기 -->
                <c:if test="${goDetailInfo.goBoardUserInfo.GBRECRUITSTATUS eq '0' }">
-               		<c:if test="${goDetailInfo.goBoardUserInfo.GBUNO != logInInfo.uNo}">
-               			<button class="btn btn-primary" id="goDhApplyBtn">신청하기</button>
-               		</c:if>
+                     <c:if test="${goDetailInfo.goBoardUserInfo.GBUNO != logInInfo.uNo}">
+                        <div class="ialign btncen">
+                        <a class="btn btn-default ">쪽지보내기</a>
+                        <button class="btn btn-primary" id="goDhApplyBtn">신청하기</button>
+                     </c:if>
                </c:if>
                </div>
          </div>
          
-            <div class="ialign float-right"> <!-- 공유하기 -->
-               <a class="btn btn-default">공유하기</a>
-            </div>
+           <!-- 공유하기 -->
+          <div class="ialign float-right btn3">
+                     <h5 style="display: inline-block; margin: 0 20px; color:#03588C; ">공유하기 : </h5>
+                        <a title="페이스북" class="btn btn-default" href="#" id="vIconFb" onclick="return false;"><h3 style="margin: 0;">f</h3></a>
+                        <a title="트위터" class="btn btn-default" href="#" id="vIconTw" onclick="return false;"><h3 style="margin: 0;">t</h3></a> 
+                        <span title="네이버 카페">
+                        
+                        <script type="text/javascript" src="https://ssl.pstatic.net/share/js/naver_sharebutton.js"></script>
+                        <script type="text/javascript">
+                           new ShareNaver.makeButton({"type": "e" , "title":"DongHangComeFunny_함께가요_${goDetailInfo.goBoardUserInfo.GBTITLE }"});
+                     </script>
+            </span>
+            <span title="네이버 블로그">
+               <script type="text/javascript" src="//static.naver.net/blog/share/blog_sharebutton.js?v={0}"></script>
+               <script type="text/javascript">
+               new ShareBlog.makeButton({"type": "d" , "title":"DongHangComeFunny_함께가요_${goDetailInfo.goBoardUserInfo.GBTITLE }"});
+               </script>
+            </span>
+         </div>
+         
+         
+         
+         <script type="text/javascript">
+            $(window).ready(function(){               
+                 $(".btn3 a").click(function(){
+                     shareAct(this);
+                     console.log("aa : " + this);
+                     
+                 });
+              
+            });
+              
+            function shareAct(a){
+                    var snsCode = $(a).attr('id'); 
+                    var cUrl = "window.document.URL";
+                 
+                    console.log("snsCode : " + snsCode);
+                    
+                    switch(snsCode){
+              
+                        case"vIconTw":
+                            //트위터
+                            cUrl = 'https://twitter.com/intent/tweet?text=페이지제목:&url='+cUrl;
+                        break;
+                                            
+                        case"vIconFb":
+                            //페이스북
+                            cUrl = 'http://www.facebook.com/sharer/sharer.php?u='+cUrl+'&title=${goDetailInfo.goBoardUserInfo.GBTITLE }';
+                        break;
+              
+                    }
+              
+                    window.open(cUrl,'','width=600,height=300,top=100,left=100,scrollbars=yes');
+              
+                }
+         
+         </script>            
       </div>   
    </div>
    
@@ -536,20 +582,20 @@ function toggleImg2() {
             </div>
             <div class="mbtn"> <!-- 작성자만 볼수 있음 -->
                <c:choose>
-               		
+                     
                   <c:when test="${goApplylist.GASTATUS eq '0'}">
                   
                      <c:if test="${goDetailInfo.goBoardUserInfo.GBUNO == logInInfo.uNo}">
-                     	<div style="display: inline-block;" class="goDhApplyResult">
-                        	<a class="btn btn-primary" id="goDhOkBtn" onclick="goDhOkBtn(${goApplylist.GAUNO });">수락</a>
-                        	<a class="btn btn-default" id="goDhNoBtn" onclick="goDhNoBtn(${goApplylist.GAUNO });">거절</a>
-                     	</div>
+                        <div style="display: inline-block;" class="goDhApplyResult">
+                           <a class="btn btn-primary" id="goDhOkBtn" onclick="goDhOkBtn(${goApplylist.GAUNO });">수락</a>
+                           <a class="btn btn-default" id="goDhNoBtn" onclick="goDhNoBtn(${goApplylist.GAUNO });">거절</a>
+                        </div>
                      </c:if>
                      
                      <c:if test="${goDetailInfo.goBoardUserInfo.GBUNO != logInInfo.uNo}">
-                     	<div style="display: inline-block;" class="goDhApplyResult">
-                        	<a class="btn btn-primary">대기중</a>
-                     	</div>
+                        <div style="display: inline-block;" class="goDhApplyResult">
+                           <a class="btn btn-primary">대기중</a>
+                        </div>
                      </c:if>
                 </c:when>
                   
@@ -565,7 +611,7 @@ function toggleImg2() {
                   </c:when>
                   
                </c:choose>
-			               
+                        
             </div>
          </div>
          </c:forEach>

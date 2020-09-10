@@ -562,12 +562,13 @@
  	
  	<!-- 함께해요 찜목록 조회 -->
  	<select id="selectLikelist" resultType="Map">
- 		select BOARD.dbno, BOARD.dbtitle, IMG.distoredimgname 
- 		from tb_doboard BOARD 
- 		left join tb_doimg IMG 
- 			on BOARD.dbno = IMG.didbno 
- 		where dbno IN (select dldbno from tb_dolike where dluno=#{uNo}  and DBISDEL = 0) 
- 		order by BOARD.dbno
+		select BOARD.dbno, BOARD.dbtitle, max(IMG.distoredimgname) as distoredimgname
+		from tb_doboard BOARD 
+		left join tb_doimg IMG 
+		   on BOARD.dbno = IMG.didbno 
+		where dbno IN (select dldbno from tb_dolike where dluno=#{uNo}  and DBISDEL = 0) 
+		group by BOARD.dbno, BOARD.dbtitle 
+		order by BOARD.dbno
  	</select>
  	
  	<!-- 함께해요 찜목록 삭제 -->

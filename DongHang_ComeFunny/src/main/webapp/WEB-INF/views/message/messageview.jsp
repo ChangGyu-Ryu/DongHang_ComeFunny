@@ -36,7 +36,7 @@
 			</div>
 			<div></div>	
 			<div id="div_msg_info">
-				<span id="span_msg_fixed">보낸사람</span><span>${message.sender.getUserId() }</span>
+				<span id="span_msg_fixed">받는사람</span><span>${message.sender.getUserId() }</span>
 				<br>
 				<span id="span_msg_fixed">받은시간</span><span><fmt:formatDate value="${message.message.getMsWrittenTime() }" pattern="yyyy-MM-dd HH:mm" /> </span>
 			</div>
