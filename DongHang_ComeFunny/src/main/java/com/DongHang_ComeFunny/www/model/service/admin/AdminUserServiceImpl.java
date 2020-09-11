@@ -10,7 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.DongHang_ComeFunny.www.model.dao.admin.AdminUserDao;
 import com.DongHang_ComeFunny.www.model.vo.User;
-import com.DongHang_ComeFunny.www.model.vo.UserImg;
+import com.DongHang_ComeFunny.www.model.vo.UserFile;
 
 import common.exception.FileException;
 import common.util.FileUtil;
@@ -53,14 +53,15 @@ public class AdminUserServiceImpl implements AdminUserService  {
 	@Override
 	public void deleteUser(String[] uNos) {
 		for(int i=0; i<uNos.length; i++) {
+			adminUserDao.deleteUserFile(uNos[i]);
 			adminUserDao.deleteUser(uNos[i]);
 		}
 	}
 
 	@Override
 	public Map<String,Object> viewUser(int uno) {
-		User viewUser = adminUserDao.selectUser(uno);
-		UserImg userImg = adminUserDao.selectUserImgByUNo(uno);
+		User viewUser = adminUserDao.selectUserByUNo(uno);
+		UserFile userImg = adminUserDao.selectUserFileByUNo(uno);
 		System.out.println(viewUser);
 		System.out.println(userImg);
 		Map<String,Object> viewUserMap = new HashMap<>();
@@ -75,15 +76,34 @@ public class AdminUserServiceImpl implements AdminUserService  {
 	public void modifyUser(User modiUserInfo, List<MultipartFile> userImg, String root) throws FileException {
 		adminUserDao.updateUser(modiUserInfo);
 		FileUtil fileUtil = new FileUtil();
-		List<Map<String,Object>> fileData = fileUtil.fileUpload(userImg, root);
+		long fileSize = 0;
 		
-		
-		for(Map<String, Object> data : fileData) {
-			data.put("uiUNo", modiUserInfo.getuNo());
-			adminUserDao.updateUserImg(data);
+		for(MultipartFile mf : userImg) {
+			fileSize = mf.getSize();
 		}
+		
+		System.out.println("*************************"+fileSize);
+		if(fileSize != 0){
+			
+		List<Map<String,Object>> fileData = fileUtil.fileUpload(userImg, root);
+			int fileCheck = adminUserDao.selectUserFileCount(modiUserInfo.getuNo());
+			
+				if(fileCheck != 1) {
+					for(Map<String, Object> data : fileData) {
+						data.put("ufUNo", modiUserInfo.getuNo());
+						adminUserDao.insertUserFile(data);
+					}
+				} else {
+					for(Map<String, Object> data : fileData) {
+						data.put("ufUNo", modiUserInfo.getuNo());
+						adminUserDao.updateUserFile(data);
+					}
+				}
+				
+		}
+	}
 	
 	}
 
 	
-}
+

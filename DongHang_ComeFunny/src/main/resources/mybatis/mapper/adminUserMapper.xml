@@ -51,6 +51,11 @@
 			WHERE uno = #{uNo}
 		</delete>
 		
+		<delete id="deleteUserFile">
+			DELETE tb_userfile
+			WHERE ufuno = #{uNo}
+		</delete>
+		
 		<!-- 버튼 누르면 삭제 -->
 		<!-- 매달 말 스케줄링 -->
 <!-- 		<delete id="deleteUser"> -->
@@ -64,9 +69,9 @@
 			WHERE uno = #{uNo}
 		</select>
 		
-		<select id="selectUserImgByUNo" resultType="USERIMG">
-			SELECT uisavepath FROM tb_userimg
-			WHERE uiuno = #{uNo}
+		<select id="selectUserFileByUNo" resultType="USERFILE">
+			SELECT * FROM tb_userfile
+			WHERE ufuno = #{uNo}
 		</select>
 
 		
@@ -86,15 +91,27 @@
 			</set>
 			WHERE uno = #{uNo}
 		</update>
-		<update id="updateUserImg">
-			UPDATE tb_userimg
+		<update id="updateUserFile">
+			UPDATE tb_userfile
 			<set>
-			uioriginimgname= #{originFileName},
-			uistoredimgname= #{storedFileName},
-			uisize = #{fileSize},
-			uisavepath = #{savePath}
+			uforiginfilename= #{originFileName},
+			ufstoredfilename= #{storedFileName},
+			ufsize = #{fileSize},
+			ufsavepath = #{savePath}
 			</set>		
-			WHERE uiuno = #{uiUNo} 		
+			WHERE ufuno = #{ufUNo} 		
 		</update>
+		
+		<select id="selectUserFileCount" resultType="int">
+			SELECT COUNT(*) FROM tb_userfile
+			WHERE ufuno = #{uNo}
+		</select>
+		
+		<insert id="insertUserFile">
+			INSERT INTO tb_userfile
+			(ufuno, uforiginfilename, ufstoredfilename, ufsize, ufsavepath)
+			VALUES
+			(#{ufUNo}, #{originFileName}, #{storedFileName}, #{fileSize}, #{savePath})
+		</insert>
 	</mapper>
 	

@@ -36,6 +36,8 @@
 <%--fileupload--%>
 <link rel="stylesheet" media="screen" href="/resources/bower_components/fileupload/css/jasny-bootstrap.min.css">
 
+<link rel="stylesheet" href="/resources/css/admin/adminHeader.css">
+
 
 
 <meta charset="UTF-8">
@@ -50,7 +52,7 @@
    <!-- 로고 -->
    <div class="logo">
       <div class="logo-img"><img class="logo-img" alt="로고이미지" src="<%=request.getContextPath() %>/resources/image/header/logo.png" ></div>
-      <div style="display: inline-block"></div>
+      <div id="mainMessage" style="display: inline-block">관리자 모드</div>
    </div>
 </div>
 

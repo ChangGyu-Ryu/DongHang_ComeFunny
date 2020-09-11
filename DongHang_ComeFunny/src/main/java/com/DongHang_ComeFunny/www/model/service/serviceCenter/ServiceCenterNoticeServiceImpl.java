@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.DongHang_ComeFunny.www.model.dao.serviceCenter.ServiceCenterNoticeDao;
 import com.DongHang_ComeFunny.www.model.vo.NoticeBoard;
+import com.DongHang_ComeFunny.www.model.vo.NoticeFile;
 
 import common.util.Paging;
 
@@ -42,11 +43,14 @@ public class ServiceCenterNoticeServiceImpl implements ServiceCenterNoticeServic
 	@Override
 	public Map<String, Object> viewNotice(int nbNo) {
 		
-		List<String> viewNotice = serviceCenterNoticeDao.selectNoticeByNbNo(nbNo);
-		
+		NoticeBoard viewNotice = serviceCenterNoticeDao.selectNoticeByNbNo(nbNo);
+		List<NoticeFile> viewNoticeFile = serviceCenterNoticeDao.selectNoticeFileByNbNo(nbNo);
+		System.out.println(viewNotice);
+		System.out.println(viewNoticeFile);
 		
 		Map<String,Object> viewNoticeMap = new HashMap<>();
 		viewNoticeMap.put("viewNotice",viewNotice);
+		viewNoticeMap.put("viewNoticeFile",viewNoticeFile);
 		return viewNoticeMap;
 		
 	}

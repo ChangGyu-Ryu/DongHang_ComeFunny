@@ -54,32 +54,6 @@
 		</div>
 	</div>
 		
-  	<!-- 메뉴바 -->
-	<div class="main_menu">
-		<div class="dropdown">
-	 		<div class="dropbtn"><a href="../go/go.jsp">함께가요</a></div>
-		</div>			
-		<div class="dropdown">
-	  		<div class="dropbtn"><a href="../do/do.jsp">함께해요</a></div>
-		</div>
-		<div class="dropdown">
-	  		<div class="dropbtn"><a href="#">커뮤니티</a></div>
-	 	 	<div class="dropdown-content">
-	    		<a href="../board/freelist">자유게시판</a>
-	    		<a href="../board/reviewlist">후기게시판</a>
-	 	 	</div>
-		</div>
-		<div class="dropdown">
-	  		<div class="dropbtn"><a href="#">고객센터</a></div>
-	  		<div class="dropdown-content">
-	    		<a href="#">공지사항</a>
-	    		<a href="#">문의게시판</a>
-	  		</div>
-		</div>
-		<div class="dropdown">
-	  		<div class="dropbtn"><a href="#">실시간채팅</a></div>
-		</div>
-	</div>
 </div>
 
 

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.DongHang_ComeFunny.www.model.vo.NoticeBoard;
+import com.DongHang_ComeFunny.www.model.vo.NoticeFile;
 
 @Repository
 public class ServiceCenterNoticeDao {
@@ -23,8 +24,12 @@ public class ServiceCenterNoticeDao {
 		return sqlSession.selectList("ServiceCenterNotice.selectNoticeList", searchNoticeMap);
 	}
 
-	public List<String> selectNoticeByNbNo(int nbNo) {
-		return sqlSession.selectList("ServiceCenterNotice.selectNoticeByNbNo", nbNo);
+	public NoticeBoard selectNoticeByNbNo(int nbNo) {
+		return sqlSession.selectOne("ServiceCenterNotice.selectNoticeByNbNo", nbNo);
+	}
+	
+	public List<NoticeFile> selectNoticeFileByNbNo(int nbNo) {
+		return sqlSession.selectList("ServiceCenterNotice.selectNoticeFileByNbNo", nbNo);
 	}
 
 }

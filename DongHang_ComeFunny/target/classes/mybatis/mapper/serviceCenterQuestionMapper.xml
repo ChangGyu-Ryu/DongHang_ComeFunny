@@ -76,9 +76,9 @@
 	
 	<insert id="insertQuestion">
 			INSERT INTO tb_questionboard
-			(qbuno, qbqbno, qbtitle, qbcontent)
+			(qbuno, qbtitle, qbcontent)
 			VALUES
-			(#{qbUNo}, #{qbQbNo}, #{qbTitle}, #{qbContent})
+			(#{qbUNo}, #{qbTitle}, #{qbContent})
 	</insert>
 	
 	

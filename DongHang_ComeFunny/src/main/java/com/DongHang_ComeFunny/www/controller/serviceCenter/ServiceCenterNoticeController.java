@@ -44,14 +44,14 @@ public class ServiceCenterNoticeController {
 			Map<String,Object> noticeBoardList = serviceCenterNoticeService.viewNoticeBoardList(cPage, cntPerPage, searchNoticeBoard);
 	
 			mav.addObject("paging",noticeBoardList.get("paging"));
-			mav.addObject("noticeBoardData", noticeBoardList);
+			mav.addObject("noticeData", noticeBoardList);
 			mav.addObject("searchKinds", searchKinds);
 			mav.addObject("searchText", searchText);
 			mav.setViewName("serviceCenter/notice/list");
 			return mav;
 		}else {
 			mav.addObject("alertMsg", "로그인해 주세요.");
-			mav.addObject("url", "/login");
+			mav.addObject("url", "/user/login");
 			mav.setViewName("common/result");
 			return mav;
 		}
@@ -70,7 +70,8 @@ public class ServiceCenterNoticeController {
 			System.out.println(viewNoticeMap);
 	
 			if(viewNoticeMap.get("viewNotice") != null) {
-				mav.addObject("viewNoticeMap",viewNoticeMap);
+				mav.addObject("viewNotice",viewNoticeMap.get("viewNotice"));
+				mav.addObject("viewNoticeFile",viewNoticeMap.get("viewNoticeFile"));
 				mav.setViewName("serviceCenter/notice/view");
 				return mav;
 			} else {

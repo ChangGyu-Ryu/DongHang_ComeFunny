@@ -3,6 +3,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:import url="/WEB-INF/views/admin/layout/header.jsp" />
 <link rel="stylesheet" href="<%=request.getContextPath() %>/resources/css/community/styles.css" />
+<link rel="stylesheet" href="/resources/css/admin/adminQuickBar.css">
+
 
 
 <script src="/resources/bower_components/jquery/dist/jquery.min.js"></script>   
@@ -61,11 +63,101 @@ $(document).ready(function() {
 	});
 	
 	});
+$(function() {
+
+	  var UI = {
+	    init: function() {
+	      this.quickMenuFn();
+	      this.topBtn();
+	    },
+
+	    initialize: function() {
+	      this.id = {
+	        target: {
+	          quick: '.rightQuickBar',
+	          stickyTop: '#footer'
+	        },
+	        topBtnClass: 'btn_top'
+	      };
+	      this.init();
+	    },
+
+	    quickMenuFn: function() {
+	      var quick = $(this.id.target.quick);
+	      var qTop = parseInt(quick.css('top'));
+
+	      $(window).scroll(function() {
+	        var winTop = $(window).scrollTop();
+
+	        quick.stop().animate({
+	          top: winTop + qTop
+	        }, 400);
+
+	      })
+	    },
+
+	    topBtn: function() {
+	      var btnLocation = $('.' + this.id.topBtnClass);
+	      var timerId = 0;
+
+	      $(window).on('scroll', function() {
+	        var winTop = $(window).scrollTop();
+	        if (winTop > 200) {
+	          btnLocation.fadeIn();
+	          clearInterval(timerId);
+	          timerId = setInterval(btnEffet, 2000);
+	        } else {
+	          btnLocation.fadeOut();
+	          clearInterval(timerId);
+	        }
+
+	      });
+
+	      function btnEffet() {
+	        btnLocation.fadeTo('300', 0.3).fadeTo('300', 1);
+	      }
+
+	      this.scrollTop(btnLocation);
+	    },
+
+	    scrollTop: function(eTarget, speed) {
+	      var speed = speed || null;
+	      eTarget.on('click', function() {
+	        $('html, body').animate({
+	          scrollTop: $("body").offset().top
+	        }, speed)
+	      })
+	    }
+
+	  };
+
+	  $(function() {
+	    UI.initialize();
+	  })
+
+	})
 	
+	
+	
+
 </script>
 
-
-
+<div class="rightQuickBar">
+	<ul class="mainMenu">
+		
+		<li><a href="#">함께가요</a></li>
+		<li><a href="#">함께해요</a></li>
+		<li><a href="#">자유 게시판</a></li>
+		<li><a href="#">후기 게시판</a></li>
+		<li><a href="/serviceCenter/notice/list">공지사항</a></li>
+		<li><a href="/serviceCenter/question/list">1대1문의</a></li>
+		<li><a href="#">메세지</a></li>
+		<li><a href="#">결제내역</a></li>
+		<li><a href="#">마이페이지</a></li>
+		<li><a href="#">메인페이지</a></li>
+		
+	</ul>
+</div>
 
 
 	
@@ -83,8 +175,8 @@ $(document).ready(function() {
 		<tr>
 			<td>제목</td>
 			<td>
-				<input type="hidden" name="qbNo" value="${viewQuestion.qbNo}"/>
-				<input type="text" class="form-control" name = "qbTitle" value="${viewQuestion.qbTitle}" >
+				<input type="hidden" name="qbNo" value="${viewQuestion.QBNO}"/>
+				<input type="text" class="form-control" name = "qbTitle" value="${viewQuestion.QBTITLE}" >
 			</td>
 		</tr>
 		<tr>
@@ -100,7 +192,7 @@ $(document).ready(function() {
 		<tr>
 			<td colspan="2">
 				<textarea id="qbContent" name="qbContent" style="width: 100%;">
-				 ${viewQuestion.qbContent }
+				 ${viewQuestion.QBCONTENT}
 				</textarea>
 			</td>
 		</tr>
@@ -151,7 +243,7 @@ $(document).ready(function() {
 var oEditors = [];
 nhn.husky.EZCreator.createInIFrame({
 	oAppRef: oEditors,
-	elPlaceHolder: "nbContent", // 에디터가 적용되는 <textarea>의 id
+	elPlaceHolder: "qbContent", // 에디터가 적용되는 <textarea>의 id
 	sSkinURI: "/resources/se2/SmartEditor2Skin.html", // 에디터 스킨
 	fCreator: "createSEditor2",
 	htParams: {

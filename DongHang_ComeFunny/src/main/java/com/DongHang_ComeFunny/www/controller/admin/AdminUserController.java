@@ -127,13 +127,19 @@ public class AdminUserController {
 			Map<String, Object> viewUserMap = adminUserService.viewUser(uNo);
 			System.out.println(viewUserMap);
 	
-			if(viewUserMap.get("viewUser") != null) {
-				mav.addObject("viewUserMap",viewUserMap);
+			if(viewUserMap.get("viewUser") != null && viewUserMap.get("userImg") != null) {
+				mav.addObject("viewUser",viewUserMap.get("viewUser"));
+				mav.addObject("userImg",viewUserMap.get("userImg"));
+				mav.setViewName("admin/user/modify");
+				return mav;
+			} else if (viewUserMap.get("viewUser") != null && viewUserMap.get("userImg") == null) {
+				mav.addObject("viewUser",viewUserMap.get("viewUser"));
 				mav.setViewName("admin/user/modify");
 				return mav;
 			} else {
 				return new ModelAndView("redirect:/admin/user/list");
 			}
+			
 		}else if (sessionUser != null) {
 			mav.addObject("alertMsg", "관리자만 이용 가능합니다.");
 			mav.addObject("url", "/main");
@@ -198,11 +204,12 @@ public class AdminUserController {
 			
 	
 			if(viewUserMap.get("viewUser") != null && viewUserMap.get("userImg") != null) {
-				mav.addObject("viewUserMap",viewUserMap);
+				mav.addObject("viewUser",viewUserMap.get("viewUser"));
+				mav.addObject("userImg",viewUserMap.get("userImg"));
 				mav.setViewName("admin/user/view");
 				return mav;
 			} else if (viewUserMap.get("viewUser") != null && viewUserMap.get("userImg") == null) {
-				mav.addObject("viewUserMap",viewUserMap);
+				mav.addObject("viewUser",viewUserMap.get("viewUser"));
 				mav.setViewName("admin/user/view");
 				return mav;
 			} else {

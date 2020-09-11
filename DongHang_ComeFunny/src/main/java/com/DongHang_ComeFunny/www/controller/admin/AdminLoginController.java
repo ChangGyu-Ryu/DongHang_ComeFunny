@@ -58,8 +58,7 @@ public class AdminLoginController {
 			model.addAttribute("url", "login");
 		}
 
-		return "/admin/main";
-
+		return "redirect:/admin/main";
 	}
 
 }

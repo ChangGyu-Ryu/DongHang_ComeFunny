@@ -95,16 +95,5 @@ public class AdminDoBoardController {
 			}
 					
 		}
-		
-		
-		
-		
-		
-		
-		
-		
-	
-	
-	
 	
 }
