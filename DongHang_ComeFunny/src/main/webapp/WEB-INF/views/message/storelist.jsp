@@ -25,8 +25,8 @@
 	<div id="div_right_area">
 		<div style="height: 7%;">
 
-			<div id="mail_top_btn" onclick=fn_userStore()
-				style="margin-left: 2px; border-radius: 5px 5px 5px 5px;">보관</div>
+		<div id="mail_top_btn" onclick=fn_userDel()
+				style="margin-left: 2px; border-radius: 5px 0px 0px 5px;">삭제</div>
 			
 
 		</div>
@@ -51,9 +51,9 @@
 										<td><input name="RowCheck" class="RowCheck"
 											type="checkbox" value="${store.MSNO }"
 											onclick="rowChk(this);" /></td>
+										<td>${store.USERID }</td>
 										<td><a
-											href="<%=request.getContextPath() %>/message/messageview?msno=${store.MSNO }">${store.USERID }</a></td>
-										<td>${store.MSTITLE }</td>
+											href="<%=request.getContextPath() %>/message/storemsgview?msno=${store.MSNO }">${store.MSTITLE }</a></td>
 										<td><fmt:formatDate value="${store.MSWRITTENTIME}"
 												pattern="yyyy-MM-dd HH:mm" /></td>
 									</tr>

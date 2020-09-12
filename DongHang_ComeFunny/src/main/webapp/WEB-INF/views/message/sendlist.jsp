@@ -40,7 +40,7 @@
 							<tr>
 								<th style="width: 5%;"><input id="allCheck" name="allCheck"
 									class="allCheck" type="checkbox" onclick="allChk(this);" /></th>
-								<th style="width: 20%;">보낸사람</th>
+								<th style="width: 20%;">받는사람</th>
 								<th style="width: 55%;">제목</th>
 								<th style="width: 20%;">날짜</th>
 							</tr>
@@ -53,9 +53,9 @@
 										<td><input name="RowCheck" class="RowCheck"
 											type="checkbox" value="${send.MSNO }"
 											onclick="rowChk(this);" /></td>
+										<td>${send.receiverid }</td>
 										<td><a
-											href="<%=request.getContextPath() %>/message/messageview?msno=${send.MSNO }">${send.USERID }</a></td>
-										<td>${send.MSTITLE }</td>
+											href="<%=request.getContextPath() %>/message/messagesendview?msno=${send.MSNO }">${send.MSTITLE }</a></td>
 										<td><fmt:formatDate value="${send.MSWRITTENTIME}"
 												pattern="yyyy-MM-dd HH:mm" /></td>
 									</tr>

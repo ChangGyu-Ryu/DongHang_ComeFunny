@@ -76,7 +76,7 @@
 				<span id="span_msg_fixed ">받는사람</span>
 				<input type="checkbox" onclick="check(this)"/><span style="font-size: 0.8em;">내게쓰기</span>
 				
-				<input type="text" id="userid"style="height: 20px; width: 300px" value=${message.receiver.getUserId() } />
+				<input type="text" id="userid"style="height: 20px; width: 300px" value="${message.receiver.getUserId() }" />
 				<input type="button" id="btn_msg_search" value="검색하기" onclick="showPopup();"/>
 				
 	</div>
@@ -97,6 +97,28 @@
 	</div>
 <c:import url="/WEB-INF/views/board/boardfooter.jsp" />
 <script>
+function getTimeStamp() {
+    var d = new Date();
+    var s =
+      leadingZeros(d.getFullYear(), 4)+
+      leadingZeros(d.getMonth() + 1, 2)+
+      leadingZeros(d.getDate(), 2) +
+      leadingZeros(d.getHours(), 2)+
+      leadingZeros(d.getMinutes(), 2)+
+      leadingZeros(d.getSeconds(), 2);
+		
+    return s;
+  }
+function leadingZeros(n, digits) {
+    var zero = '';
+    n = n.toString();
+
+    if (n.length < digits) {
+      for (i = 0; i < digits - n.length; i++)
+        zero += '0';
+    }
+    return zero + n;
+  }
 function fn_send(){
 	if(confirm('전송  하시겠습니까?')){
 		 var form=document.createElement("form");
@@ -122,7 +144,7 @@ function fn_send(){
 		  input4.type="hidden";
 		  input4.name='title';
 		  input4.value= document.getElementById("title").value;
-      	var fcwrittendate = d.getFullYear() + '-' + d.getMonth() + '-' + d.getDate() + ' ' + d.getHours() + ':' + d.getMinutes() + ":" + d.getSeconds(); 
+      	var fcwrittendate = getTimeStamp(); 
 		  input3.value=fcwrittendate
 		  form.appendChild(input)
 		  form.appendChild(input2)

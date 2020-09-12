@@ -24,11 +24,9 @@ public class MessageDao {
 	public int selectSendMsgCnt(int  uno) {
 		return sqlSession.selectOne("MESSAGE.selectSendMsgCnt", uno);
 	}
-
 	public int selectStoreMsgCnt(int  uno) {
 		return sqlSession.selectOne("MESSAGE.selectStoredMsgCnt", uno);
 	}
-
 	public int selectMyMsgCnt(int  uno) {
 		return sqlSession.selectOne("MESSAGE.selectMyMsgCnt", uno);
 	}
@@ -45,14 +43,12 @@ public class MessageDao {
 		System.out.println(uno);
 		return sqlSession.selectList("MESSAGE.selectMyMsgList",map);
 	}
-
 	public List<Map<String, Object>> selectStoreMsgList(Paging page, int uno) {
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("paging", page);
 		map.put("uno", uno);
 		return sqlSession.selectList("MESSAGE.selectStoreMsgList",map);
 	}
-
 	public List<Map<String, Object>> selectSendList(Paging page, int uno) {
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("paging", page);
@@ -66,15 +62,12 @@ public class MessageDao {
 		}
 		return res;
 	}
-
 	public int delete(int msno) {
 		return sqlSession.delete("MESSAGE.deleteMessage", msno);
 	}
-
 	public int update(int msno) {
 		return sqlSession.update("MESSAGE.updateMessage", msno);
 	}
-
 	public int updateArr(int[] nums) {
 		int res = 0;
 		for (int val : nums) {			
@@ -82,15 +75,12 @@ public class MessageDao {
 		}
 		return res;
 	}
-
 	public Message selectMessageList(int msno) {
 		return sqlSession.selectOne("MESSAGE.selectMessage",msno);
 	}
-
 	public int insert(Message sendMessage) {
 		return sqlSession.insert("MESSAGE.insertMessage",sendMessage);
 	}
-
 	public int selectSeq() {
 		// TODO Auto-generated method stub
 		return sqlSession.selectOne("MESSAGE.selectSequence");

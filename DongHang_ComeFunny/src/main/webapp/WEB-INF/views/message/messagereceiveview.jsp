@@ -26,13 +26,13 @@
 		<div id="div_right_area">
 			<div style="height: 7.5%;">
 		
-							<div id="mail_top_btn" onclick="fn_userDel()" style="margin-left:2px; border-radius:5px 0px 0px 5px;">
-							삭제</div>
-							<div  id="mail_top_btn" onclick="fn_userStore()" style="border-width: 2px 0px 2px 0px;">
-							보관</div>
-							<div  id="mail_top_btn" onclick = "fn_userReply()"style="border-radius:0px 5px 5px 0px;">
-							답장</div>	
-							
+				<div id="mail_top_btn" onclick=fn_userDel()
+				style="margin-left: 2px; border-radius: 5px 0px 0px 5px;">삭제</div>
+			<div id="mail_top_btn" onclick=fn_userStore()
+				style="border-width: 2px 0px 2px 0px;">보관</div>
+			<div id="mail_top_btn" onclick=fn_userReply()
+				style="border-radius: 0px 5px 5px 0px;">답장</div>
+
 			</div>
 			<div></div>	
 			<div id="div_msg_info">

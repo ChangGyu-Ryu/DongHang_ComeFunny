@@ -28,7 +28,6 @@ public class PaymentController {
 		Order ord = new Order();
 		long timestamp = Long.parseLong(date);
 		Date date1 = new java.util.Date(timestamp * 1000L);
-		
 		ord.setoPrice(Integer.parseInt(paidamount));
 		ord.setoUNo(Integer.parseInt(userno));
 		ord.setoQunatity(Integer.parseInt(count));
@@ -43,8 +42,7 @@ public class PaymentController {
 	@RequestMapping(value = "/payment/result", method = RequestMethod.GET)
 	public ModelAndView result() {
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName("/payment/result");
-		System.out.println("abba");
+		mav.setViewName("/payment/result");		
 		return mav;
 	}
 }

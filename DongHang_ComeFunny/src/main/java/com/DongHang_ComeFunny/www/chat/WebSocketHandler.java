@@ -31,7 +31,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
 		if (!message.getPayload().contains("<div")) {
 			String res = message.getPayload().substring(0, message.getPayload().indexOf("_"));
 			users.put(session.getId(), res);
-			String sndMsg = "id-"+ res + "_님이 입장 하셨습니다.";
+			String sndMsg ="<br><br><div style='text-align:center;'>"+ res + " 님이 입장 하셨습니다.</div>";
 			userId = "userId_";
 			for (String key : users.keySet()) {
 
@@ -68,7 +68,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
 		sessions.remove(session);
 		String userId;
 		if (users.get(session.getId()) != null) {
-			String sndMsg ="id-"+ users.get(session.getId()) + "_님이 퇴장 하셧습니다.";
+			String sndMsg ="<br><br><div style='text-align:center;'>"+ users.get(session.getId()) + " 님이 퇴장 하셧습니다.</div>";
 			users.remove(session.getId());
 			userId = "userId_";
 			for (String key : users.keySet()) {

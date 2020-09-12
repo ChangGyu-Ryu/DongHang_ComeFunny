@@ -3,7 +3,7 @@
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<c:import url="/WEB-INF/views/board/boardheader.jsp" />
+<c:import url="/WEB-INF/views/board/boardheader.jsp" />	
 
 <meta charset="UTF-8">
 
@@ -25,9 +25,10 @@
 	<div id="div_right_area">
 		<div style="height: 7%;">
 
-			
+		<div id="mail_top_btn" onclick=fn_userDel()
+				style="margin-left: 2px; border-radius: 5px 0px 0px 5px;">삭제</div>
 			<div id="mail_top_btn" onclick=fn_userStore()
-				style="margin-left: 2px; border-radius: 5px 5px 5px 5px;">보관</div>
+				style="border-width: 2px 2px 2px 0px; border-radius: 0px 5px 5px 0px;">보관</div>
 
 		</div>
 		<div>
@@ -51,9 +52,8 @@
 										<td><input name="RowCheck" class="RowCheck"
 											type="checkbox" value="${mymsg.MSNO }"
 											onclick="rowChk(this);" /></td>
-										<td><a
-											href="<%=request.getContextPath() %>/message/messageview?msno=${mymsg.MSNO }">${mymsg.USERID }</a></td>
-										<td>${mymsg.MSTITLE }</td>
+										<td>${mymsg.USERID }</td>
+										<td><a href="<%=request.getContextPath() %>/message/mymsgview?msno=${mymsg.MSNO }">${mymsg.MSTITLE }</a></td>
 										<td><fmt:formatDate value="${mymsg.MSWRITTENTIME}"
 												pattern="yyyy-MM-dd HH:mm" /></td>
 									</tr>

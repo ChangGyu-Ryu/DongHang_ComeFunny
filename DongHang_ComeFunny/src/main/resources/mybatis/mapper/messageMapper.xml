@@ -38,7 +38,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     			( SELECT rownum rnum,
                  M.* FROM (
     				SELECT
-    					u.userid, m.msno, m.msuno, m.msreceiver, m.mstitle, m.mscontent, m.mswrittentime, m.mstype
+    					u.userid, m.msno, m.msuno, m.msreceiver, m.mstitle, m.mscontent, m.mswrittentime, m.mstype, (
+                        select rs.userid from tb_user rs,(select ms.msreceiver from tb_message ms
+                        WHERE ms.msowner = #{uno}
+    					AND ms.mstype= 1
+    					ORDER BY ms.msno
+                        DESC) t 
+                        where rs.uno = t.msreceiver                   
+                        ) AS "receiverid"
     				FROM tb_message m, tb_user u
     				WHERE m.msowner = #{uno}
     					AND m.mstype= 1
