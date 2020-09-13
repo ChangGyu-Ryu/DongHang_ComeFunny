@@ -34,7 +34,7 @@ public class AdminLoginController {
 			return mav;
 		}else if (sessionUser != null) {
 			mav.addObject("alertMsg", "관리자만 이용 가능합니다.");
-			mav.addObject("url", "/main");
+			mav.addObject("url", "/admin/main");
 			mav.setViewName("common/result");
 			return mav;
 		}
@@ -58,8 +58,15 @@ public class AdminLoginController {
 			model.addAttribute("url", "login");
 		}
 
-		return "/admin/main";
-
+		return "redirect:/admin/main";
 	}
+	
+    @RequestMapping("/logout")
+    public String logout(Model model, HttpSession session) {
+        session.invalidate();
+        model.addAttribute("alertMsg", "로그아웃 되었습니다.");
+		model.addAttribute("url", "/admin/login");
+        return "common/result";
+    }
 
 }

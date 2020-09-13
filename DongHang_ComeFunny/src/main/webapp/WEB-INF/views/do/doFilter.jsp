@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>동행 :: 함께해요</title>
 <!-- do.css -->
 <link rel="stylesheet" href="<%=request.getContextPath() %>/resources/css/do/do.css" />
 

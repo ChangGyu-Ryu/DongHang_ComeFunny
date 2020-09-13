@@ -1,6 +1,5 @@
 package com.DongHang_ComeFunny.www.model.dao.admin;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -9,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.DongHang_ComeFunny.www.model.vo.User;
-import com.DongHang_ComeFunny.www.model.vo.UserImg;
+import com.DongHang_ComeFunny.www.model.vo.UserFile;
 
 @Repository
 public class AdminUserDao {
@@ -53,7 +52,7 @@ public class AdminUserDao {
 		sqlSession.delete("AdminUser.deleteUser", uNo);
 	}
 
-	public User selectUser(int uNo) {
+	public User selectUserByUNo(int uNo) {
 		return sqlSession.selectOne("AdminUser.selectUserByUNo", uNo);
 	}
 
@@ -61,12 +60,24 @@ public class AdminUserDao {
 		sqlSession.update("AdminUser.updateUser", modiUserInfo );
 	}
 
-	public UserImg selectUserImgByUNo(int uNo) {
-		return sqlSession.selectOne("AdminUser.selectUserImgByUNo", uNo);
+	public UserFile selectUserFileByUNo(int uNo) {
+		return sqlSession.selectOne("AdminUser.selectUserFileByUNo", uNo);
 	}
 
-	public void updateUserImg(Map<String, Object> userImg) {
-		sqlSession.update("AdminUser.updateUserImg", userImg);		
+	public void updateUserFile(Map<String, Object> userFile) {
+		sqlSession.update("AdminUser.updateUserFile", userFile);		
+	}
+
+	public int selectUserFileCount(int uNo) {
+		return sqlSession.selectOne("AdminUser.selectUserFileCount", uNo);
+	}
+
+	public void insertUserFile(Map<String, Object> data) {
+		sqlSession.insert("AdminUser.insertUserFile", data);
+	}
+
+	public void deleteUserFile(String uNo) {
+		sqlSession.delete("AdminUser.deleteUserFile", uNo);
 	}
 
 

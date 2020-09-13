@@ -24,7 +24,7 @@
 
 
 <meta charset="UTF-8">
-<title>mypage</title>
+<title>동행 :: 마이페이지</title>
 
 <!-- checkBox 전체 체크  js-->
 <script type="text/javascript" src="/resources/js/mypage/mydonghang.js"></script>
@@ -69,7 +69,7 @@
 				<tr>
 					<td style="vertical-align: inherit;"><input type="checkbox" class="deleteChk" value="${aplydh.GANO}"/></td>
 					<td style="vertical-align: inherit;"><a><fmt:formatDate var="date" value="${aplydh.GBWRITTENDATE}" pattern="YYYY-MM-dd" />${date}</a></td>
-					<td style="vertical-align: inherit;"><a href="<%= request.getContextPath()%>/board/fboarddetail?fbno=${aplydh.GBNO}">${aplydh.GBTITLE}</a></td>
+					<td style="vertical-align: inherit;"><a href="<%= request.getContextPath()%>/go/goDetail?gbNo=${aplydh.GBNO}">${aplydh.GBTITLE}</a></td>
 					<td style="vertical-align: inherit;"><a>${aplydh.UNICK}</a></td>
 					
 					<c:choose>

@@ -15,21 +15,21 @@ import common.exception.FileException;
 @Service
 public interface AdminQuestionService {
 
-	Map<String, Object> selectQuestionList(int cPage, int cntPerPage, Map<String, Object> searchQuestion);
+   Map<String, Object> selectQuestionList(int cPage, int cntPerPage, Map<String, Object> searchQuestion);
 
-	void writeAnswer(AnswerBoard writeAnswerInfo, List<MultipartFile> answerFiles, String root) throws FileException;
+   void writeAnswer(AnswerBoard writeAnswerInfo, List<MultipartFile> answerFiles, String root) throws FileException;
 
-	Map<String, Object> viewQuestion(int qbNo);
+   Map<String, Object> viewQuestion(int qbNo);
 
-	void modiAnswer(AnswerBoard modiAnswerInfo, List<MultipartFile> answerFiles, String root) throws FileException;
+   void modiAnswer(AnswerBoard modiAnswerInfo, List<MultipartFile> answerFiles, String root) throws FileException;
 
-	int deleteFile(int afNo);
+   int deleteFile(int afNo);
 
-	void deleteAnswer(int abNo);
+   void deleteAnswer(String abNo);
 
-	void deleteQuestion(String[] qbNos);
+   void deleteQuestion(String[] qbNos);
 
-	
+   
 
 
 }

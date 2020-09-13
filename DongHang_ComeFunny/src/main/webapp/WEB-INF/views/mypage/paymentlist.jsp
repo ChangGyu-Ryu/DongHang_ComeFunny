@@ -22,7 +22,7 @@
 
 
 <meta charset="UTF-8">
-<title>mypage</title>
+<title>동행 :: 마이페이지</title>
 
 <script type="text/javascript" src="/resources/js/mypage/mydonghang.js"></script>
 <script type="text/javascript">

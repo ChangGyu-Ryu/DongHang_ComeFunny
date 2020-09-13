@@ -160,8 +160,8 @@ public class UserController {
 			, HttpSession session
 			, Model model
 			) {
-		User res = userService.selectMember(commandMap);
-		
+//		User res = userService.selectMember(commandMap);
+		User res = userService.selectNKMember(commandMap);
 		//로그인에 성공한다면
 		if(res != null) {
 			session.setAttribute("logInInfo", res);
@@ -334,6 +334,16 @@ public class UserController {
 		return "common/result";
 
 	}
+	
+    @RequestMapping("/logout")
+    public String logout(Model model, HttpSession session) {
+        session.invalidate();
+        model.addAttribute("alertMsg", "로그아웃 되었습니다.");
+		model.addAttribute("url", "/user/login");
+        return "common/result";
+    }
+
+
 	
 	
 	

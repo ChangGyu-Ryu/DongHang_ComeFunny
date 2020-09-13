@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <!DOCTYPE html>
 <html>
@@ -36,10 +36,12 @@
 <%--fileupload--%>
 <link rel="stylesheet" media="screen" href="/resources/bower_components/fileupload/css/jasny-bootstrap.min.css">
 
+<link rel="stylesheet" href="/resources/css/admin/adminHeader.css">
+
 
 
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>동행 :: 관리자페이지</title>
 </head>
 
 <body>
@@ -49,8 +51,14 @@
 <div id="header">
    <!-- 로고 -->
    <div class="logo">
-      <div class="logo-img"><img class="logo-img" alt="로고이미지" src="<%=request.getContextPath() %>/resources/image/header/logo.png" ></div>
-      <div style="display: inline-block"></div>
+      <div class="logo-img"><a href="/admin/main"><img class="logo-img" alt="로고이미지" src="<%=request.getContextPath() %>/resources/image/header/logo.png"></a></div>
+      <div id="mainMessage" style="display: inline-block">관리자 모드</div>
+          <c:if test="${not empty adminLoginInfo}">
+			<div class="main_login">		
+				<a href="javascript:void(0)" style="cursor: default;"><i class="fas fa-user-secret"></i>&nbsp; ${adminLoginInfo.aName }&nbsp;님 환영합니다.</a> &ensp;
+				<a href="/admin/logout"><i class="fas fa-sign-out-alt"></i>&nbsp;로그아웃</a>
+			</div>
+          </c:if>
    </div>
 </div>
 

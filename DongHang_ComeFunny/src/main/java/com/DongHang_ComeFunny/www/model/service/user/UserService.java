@@ -59,6 +59,14 @@ public interface UserService {
 	public int updateUser(User user);
 
 	public String userChk(User user);
+	
+	/**
+	 * kakao_제외 로그인
+	 * @param commandMap
+	 * @return
+	 */
+	public User selectNKMember(Map<String, Object> commandMap);
+
 
 
 	

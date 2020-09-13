@@ -17,92 +17,92 @@ import com.DongHang_ComeFunny.www.model.vo.QuestionImg;
 
 @Repository
 public class AdminQuestionDao {
-	
-	@Autowired
-	private SqlSessionTemplate sqlSession;
+   
+   @Autowired
+   private SqlSessionTemplate sqlSession;
 
-	public int selectQuestionCnt(Map<String, Object> searchQuestion) {
-		return sqlSession.selectOne("AdminQuestion.selectQuestionCnt", searchQuestion);
-	}
+   public int selectQuestionCnt(Map<String, Object> searchQuestion) {
+      return sqlSession.selectOne("AdminQuestion.selectQuestionCnt", searchQuestion);
+   }
 
-	public List<QuestionBoard> selectQuestionList(Map<String, Object> searchQuestionMap) {
-		return sqlSession.selectList("AdminQuestion.selectQuestionList", searchQuestionMap);
-	}
+   public List<QuestionBoard> selectQuestionList(Map<String, Object> searchQuestionMap) {
+      return sqlSession.selectList("AdminQuestion.selectQuestionList", searchQuestionMap);
+   }
 
-	public void insertAnswer(AnswerBoard writeAnswerInfo) {
-		sqlSession.insert("AdminQuestion.insertAnswer", writeAnswerInfo);
-	}
+   public void insertAnswer(AnswerBoard writeAnswerInfo) {
+      sqlSession.insert("AdminQuestion.insertAnswer", writeAnswerInfo);
+   }
 
-	public int selectWriteAbNo() {
-		return sqlSession.selectOne("AdminQuestion.selectWriteAbNo");
-	}
+   public int selectWriteAbNo() {
+      return sqlSession.selectOne("AdminQuestion.selectWriteAbNo");
+   }
 
-	public void insertAnswerFile(Map<String, Object> data) {
-		sqlSession.insert("AdminQuestion.insertAnswerFile", data);
-	}
+   public void insertAnswerFile(Map<String, Object> data) {
+      sqlSession.insert("AdminQuestion.insertAnswerFile", data);
+   }
 
 
-	public List<QuestionFile> selectQuestionFileByQbNo(int qbNo) {
-		return sqlSession.selectList("AdminQuestion.selectQuestionFileByQbNo", qbNo);
-	}
+   public List<QuestionFile> selectQuestionFileByQbNo(int qbNo) {
+      return sqlSession.selectList("AdminQuestion.selectQuestionFileByQbNo", qbNo);
+   }
 
-	public Map<String, Object> selectQuestionByQbNo(int qbNo) {
-		return sqlSession.selectOne("AdminQuestion.selectQuestionByQbNo", qbNo);
-	}
+   public Map<String, Object> selectQuestionByQbNo(int qbNo) {
+      return sqlSession.selectOne("AdminQuestion.selectQuestionByQbNo", qbNo);
+   }
 
-	public void updateQuestionStatus(int abQbNo) {
-		sqlSession.update("AdminQuestion.updateQuestionStatus", abQbNo);
-	}
+   public void updateQuestionStatus(int abQbNo) {
+      sqlSession.update("AdminQuestion.updateQuestionStatus", abQbNo);
+   }
 
-	public void updateAnswer(AnswerBoard modiAnswerInfo) {
-		sqlSession.update("AdminQuestion.updateAnswer", modiAnswerInfo);
-	}
+   public void updateAnswer(AnswerBoard modiAnswerInfo) {
+      sqlSession.update("AdminQuestion.updateAnswer", modiAnswerInfo);
+   }
 
-	public Map<String, String> selectAnswerFile(int afNo) {
-		return sqlSession.selectOne("AdminQuestion.selectAnswerFile", afNo);
-	}
+   public Map<String, String> selectAnswerFile(int afNo) {
+      return sqlSession.selectOne("AdminQuestion.selectAnswerFile", afNo);
+   }
 
-	public int deleteAnswerFile(int afNo) {
-		return sqlSession.delete("AdminQuestion.deleteAnswerFile", afNo);
-	}
+   public int deleteAnswerFile(int afNo) {
+      return sqlSession.delete("AdminQuestion.deleteAnswerFile", afNo);
+   }
 
-	public void deleteAnswerFileByAbNo(int abNo) {
-		sqlSession.delete("AdminQuestion.deleteAnswerFileByAbNo", abNo);
-		
-	}
+   public void deleteAnswerFileByAbNo(String abNo) {
+      sqlSession.delete("AdminQuestion.deleteAnswerFileByAbNo", abNo);
+      
+   }
 
-	public void deleteAnswer(int abNo) {
-		sqlSession.delete("AdminQuestion.deleteAnswer", abNo);
-		
-	}
+   public void deleteAnswer(String abNo) {
+      sqlSession.delete("AdminQuestion.deleteAnswer", abNo);
+      
+   }
 
-	public void deleteQuestionFileByQbNo(String qbNo) {
-		sqlSession.delete("AdminQuestion.deleteQuestionFileByQbNo", qbNo);
-	}
+   public void deleteQuestionFileByQbNo(String qbNo) {
+      sqlSession.delete("AdminQuestion.deleteQuestionFileByQbNo", qbNo);
+   }
 
-	public void deleteQuestion(String qbNo) {
-		sqlSession.delete("AdminQuestion.deleteQuestion", qbNo);
-	}
+   public void deleteQuestion(String qbNo) {
+      sqlSession.delete("AdminQuestion.deleteQuestion", qbNo);
+   }
 
-	public List<AnswerFile> selectAnswerFileByAbNo(Object abNo) {
-		return sqlSession.selectList("AdminQuestion.selectAnswerFileByAbNo", abNo);
-	}
+   public List<AnswerFile> selectAnswerFileByAbNo(Object abNo) {
+      return sqlSession.selectList("AdminQuestion.selectAnswerFileByAbNo", abNo);
+   }
 
-	public Map<String, Object> selectOnlyQuestionByQbNo(int qbNo) {
-		return sqlSession.selectOne("AdminQuestion.selectOnlyQuestionByQbNo", qbNo);
-	}
+   public Map<String, Object> selectOnlyQuestionByQbNo(int qbNo) {
+      return sqlSession.selectOne("AdminQuestion.selectOnlyQuestionByQbNo", qbNo);
+   }
 
-	public void updateQuestionDelStatus(int qbNo) {
-		sqlSession.update("AdminQuestion.updateQuestionDelStatus", qbNo);
-	}
+   public void updateQuestionDelStatus(int qbNo) {
+      sqlSession.update("AdminQuestion.updateQuestionDelStatus", qbNo);
+   }
 
-	public int selectAbNoByQbNo(String qbNo) {
-		return sqlSession.selectOne("AdminQuestion.selectAbNoByQbNo", qbNo);
-	}
+   public String selectAbNoByQbNo(String qbNo) {
+      return sqlSession.selectOne("AdminQuestion.selectAbNoByQbNo", qbNo);
+   }
 
-	public int selectQbNoByAbNo(int abNo) {
-		return sqlSession.selectOne("AdminQuestion.selectQbNoByAbNo", abNo);
-	}
+   public int selectQbNoByAbNo(String abNo) {
+      return sqlSession.selectOne("AdminQuestion.selectQbNoByAbNo", abNo);
+   }
 
 
 

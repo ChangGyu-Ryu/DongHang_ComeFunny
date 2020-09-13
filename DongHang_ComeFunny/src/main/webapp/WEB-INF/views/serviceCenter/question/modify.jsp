@@ -1,8 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<c:import url="/WEB-INF/views/admin/layout/header.jsp" />
-<link rel="stylesheet" href="<%=request.getContextPath() %>/resources/css/community/styles.css" />
+<c:import url="/WEB-INF/views/admin/layout/serviceCenterHeader.jsp" />
 
 
 <script src="/resources/bower_components/jquery/dist/jquery.min.js"></script>   
@@ -61,11 +60,9 @@ $(document).ready(function() {
 	});
 	
 	});
-	
+
+
 </script>
-
-
-
 
 
 	
@@ -83,8 +80,8 @@ $(document).ready(function() {
 		<tr>
 			<td>제목</td>
 			<td>
-				<input type="hidden" name="qbNo" value="${viewQuestion.qbNo}"/>
-				<input type="text" class="form-control" name = "qbTitle" value="${viewQuestion.qbTitle}" >
+				<input type="hidden" name="qbNo" value="${viewQuestion.QBNO}"/>
+				<input type="text" class="form-control" name = "qbTitle" value="${viewQuestion.QBTITLE}" >
 			</td>
 		</tr>
 		<tr>
@@ -100,7 +97,7 @@ $(document).ready(function() {
 		<tr>
 			<td colspan="2">
 				<textarea id="qbContent" name="qbContent" style="width: 100%;">
-				 ${viewQuestion.qbContent }
+				 ${viewQuestion.QBCONTENT}
 				</textarea>
 			</td>
 		</tr>
@@ -151,7 +148,7 @@ $(document).ready(function() {
 var oEditors = [];
 nhn.husky.EZCreator.createInIFrame({
 	oAppRef: oEditors,
-	elPlaceHolder: "nbContent", // 에디터가 적용되는 <textarea>의 id
+	elPlaceHolder: "qbContent", // 에디터가 적용되는 <textarea>의 id
 	sSkinURI: "/resources/se2/SmartEditor2Skin.html", // 에디터 스킨
 	fCreator: "createSEditor2",
 	htParams: {

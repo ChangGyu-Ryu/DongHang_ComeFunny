@@ -12,11 +12,12 @@ public class Order {
 	private int oPrice;
 	private Date oDate;
 	private int oisdel;
+	private String buyer;
 	@Override
 	public String toString() {
 		return "Order [pONo=" + pONo + ", oUNo=" + oUNo + ", oImpUid=" + oImpUid + ", oMerChantUid=" + oMerChantUid
 				+ ", oName=" + oName + ", oQunatity=" + oQunatity + ", oPrice=" + oPrice + ", oDate=" + oDate
-				+ ", oisdel=" + oisdel + "]";
+				+ ", oisdel=" + oisdel + ", buyer=" + buyer + "]";
 	}
 	public int getpONo() {
 		return pONo;
@@ -60,17 +61,24 @@ public class Order {
 	public void setoPrice(int oPrice) {
 		this.oPrice = oPrice;
 	}
-	public Date getoDate() {
-		return oDate;
-	}
-	public void setoDate(Date oDate) {
-		this.oDate = oDate;
-	}
+	
 	public int getOisdel() {
 		return oisdel;
 	}
 	public void setOisdel(int oisdel) {
 		this.oisdel = oisdel;
+	}
+	public String getBuyer() {
+		return buyer;
+	}
+	public void setBuyer(String buyer) {
+		this.buyer = buyer;
+	}
+	public Date getoDate() {
+		return oDate;
+	}
+	public void setoDate(Date oDate) {
+		this.oDate = oDate;
 	}
 	
 }

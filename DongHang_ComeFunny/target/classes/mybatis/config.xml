@@ -49,8 +49,6 @@
 		<typeAlias type="com.DongHang_ComeFunny.www.model.vo.QuestionFile" alias="QUESTIONFILE"/>
 		<typeAlias type="com.DongHang_ComeFunny.www.model.vo.AnswerFile" alias="ANSWERFILE"/>
 		<typeAlias type="com.DongHang_ComeFunny.www.model.vo.Admin" alias="ADMIN"/>
-		
-        <typeAlias type="com.DongHang_ComeFunny.www.model.vo.Order" alias="ORDER"/>
 	</typeAliases>
 
 

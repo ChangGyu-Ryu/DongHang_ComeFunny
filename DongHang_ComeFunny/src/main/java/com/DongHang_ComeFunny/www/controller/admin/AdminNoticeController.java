@@ -77,7 +77,7 @@ public class AdminNoticeController {
 	}
 	
 	@RequestMapping("/delete")
-	public ModelAndView deleteNotice(String[] nbNos,
+	public ModelAndView deleteNotice(String[] nbNo,
 									HttpSession session) {
 		
 		ModelAndView mav = new ModelAndView();
@@ -85,8 +85,8 @@ public class AdminNoticeController {
 		Admin sessionAdmin= (Admin)session.getAttribute("adminLoginInfo");
 		User sessionUser =(User)session.getAttribute("logInInfo");
 		if(sessionAdmin != null) {
-				if(nbNos != null) {
-					adminNoticeService.deleteNotice(nbNos);
+				if(nbNo != null) {
+					adminNoticeService.deleteNotice(nbNo);
 					mav.setViewName("redirect:/admin/notice/list");
 					return mav; 
 				}else {

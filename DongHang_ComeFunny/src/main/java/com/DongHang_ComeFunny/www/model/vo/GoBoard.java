@@ -3,6 +3,7 @@ package com.DongHang_ComeFunny.www.model.vo;
 import java.sql.Date;
 
 public class GoBoard {
+	private String gbWriter;
 	private int gbNo;
 	private int gbUNo;
 	private String gbTitle;
@@ -22,12 +23,12 @@ public class GoBoard {
 	
 	@Override
 	public String toString() {
-		return "GoBoard [gbNo=" + gbNo + ", gbUNo=" + gbUNo + ", gbTitle=" + gbTitle + ", gbContent=" + gbContent
-				+ ", gbWrittenDate=" + gbWrittenDate + ", gbLikeCnt=" + gbLikeCnt + ", gbIsDel=" + gbIsDel
-				+ ", gbRecruitDate=" + gbRecruitDate + ", gbRecruitArea=" + gbRecruitArea + ", gbRecruitStatus="
-				+ gbRecruitStatus + ", gbRecruitNumber=" + gbRecruitNumber + ", gbRecruitGender=" + gbRecruitGender
-				+ ", gbDhStarAvg=" + gbDhStarAvg + ", gbHostStarAvg=" + gbHostStarAvg + ", gbStarCnt=" + gbStarCnt
-				+ ", gbCategory=" + gbCategory + "]";
+		return "GoBoard [gbWriter=" + gbWriter + ", gbNo=" + gbNo + ", gbUNo=" + gbUNo + ", gbTitle=" + gbTitle
+				+ ", gbContent=" + gbContent + ", gbWrittenDate=" + gbWrittenDate + ", gbLikeCnt=" + gbLikeCnt
+				+ ", gbIsDel=" + gbIsDel + ", gbRecruitDate=" + gbRecruitDate + ", gbRecruitArea=" + gbRecruitArea
+				+ ", gbRecruitStatus=" + gbRecruitStatus + ", gbRecruitNumber=" + gbRecruitNumber + ", gbRecruitGender="
+				+ gbRecruitGender + ", gbDhStarAvg=" + gbDhStarAvg + ", gbHostStarAvg=" + gbHostStarAvg + ", gbStarCnt="
+				+ gbStarCnt + ", gbCategory=" + gbCategory + "]";
 	}
 	public int getGbNo() {
 		return gbNo;
@@ -124,6 +125,12 @@ public class GoBoard {
 	}
 	public void setGbCategory(String gbCategory) {
 		this.gbCategory = gbCategory;
+	}
+	public String getGbWriter() {
+		return gbWriter;
+	}
+	public void setGbWriter(String gbWriter) {
+		this.gbWriter = gbWriter;
 	}
 	
 

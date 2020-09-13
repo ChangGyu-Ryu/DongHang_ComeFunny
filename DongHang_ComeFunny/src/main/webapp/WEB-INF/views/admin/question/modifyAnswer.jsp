@@ -4,6 +4,7 @@
 <c:import url="/WEB-INF/views/admin/layout/header.jsp" />
 
 <link rel="stylesheet" href="<%=request.getContextPath() %>/resources/css/community/styles.css" />
+<link rel="stylesheet" href="/resources/css/admin/adminQuickBar.css">
  
 
 <!-- 스마트 에디터2 라이브러리 -->
@@ -23,90 +24,6 @@ function submitContents(elClickedObj) {
 }
 
 </script>
-
-<style type="text/css">
-
-.menuBar {
-			position : fixed;
-			
-}
-
-.mainMenu {	
-			text-align : center;
-			list-style: none;
-			margin: 0px;
-			padding : 0px;
-			position: relative;
-}
-
-.mainMenu li {
-	width: 130px;
-    border-top: 5px solid white;
-    background-color: rgb(189,209,234);
-}
-
-.mainMenu li:hover {
-			background-color: rgb(156,181,183);}
-
-.mainMenu li:hover > .boardMenu {
-			display:block}
-			
-.mainMenu li a {
-			text-decoration: none;
-		    display: block;
-		    width: 140px;
-		    height: 60px;
-		    line-height: 60px;
-		    font-size: 20px;
-		    color: rgb(49,86,126);
-		    padding-right: 10px;
-}
-
-.boardMenu {
-			list-style: none;
-		    display: none;
-		    position: absolute;
-		    left: 140px;
-		    top: 135px;
-			}
-			
-.boardMenu li { 
-			width: 184px;
-			background-color: rgb(189,209,234); 
-}
-
-.boardMenu li:first-child{
-			border-top: none;}
-
-.boardMenu li a { 
-			width: 186px;
-    		display: block;
-}
-
-.adminQuestionView {
-			width: 1200px;
-		    margin: 0 auto;
-		   	text-align: center;
-}
-
-.questionInfoTable {
-			width: 1000px;
-   			text-align: center;
-    		table-layout: fixed;
-    		text-align-last : center;
-    		height: 500px;
-   			font-size: 25px;
-   			display: inline-table;
-			}
-			
-		
-
-
-.adminQuestionViewToolbar{
-			width: 100px;
-			text-align: center;}
-
-</style>
 
 <script type="text/javascript">
    
@@ -139,6 +56,80 @@ $(document).ready(function() {
 	
 	});
 	
+$(function() {
+
+	  var UI = {
+	    init: function() {
+	      this.quickMenuFn();
+	      this.topBtn();
+	    },
+
+	    initialize: function() {
+	      this.id = {
+	        target: {
+	          quick: '.rightQuickBar',
+	          stickyTop: '#footer'
+	        },
+	        topBtnClass: 'btn_top'
+	      };
+	      this.init();
+	    },
+
+	    quickMenuFn: function() {
+	      var quick = $(this.id.target.quick);
+	      var qTop = parseInt(quick.css('top'));
+
+	      $(window).scroll(function() {
+	        var winTop = $(window).scrollTop();
+
+	        quick.stop().animate({
+	          top: winTop + qTop
+	        }, 400);
+
+	      })
+	    },
+
+	    topBtn: function() {
+	      var btnLocation = $('.' + this.id.topBtnClass);
+	      var timerId = 0;
+
+	      $(window).on('scroll', function() {
+	        var winTop = $(window).scrollTop();
+	        if (winTop > 200) {
+	          btnLocation.fadeIn();
+	          clearInterval(timerId);
+	          timerId = setInterval(btnEffet, 2000);
+	        } else {
+	          btnLocation.fadeOut();
+	          clearInterval(timerId);
+	        }
+
+	      });
+
+	      function btnEffet() {
+	        btnLocation.fadeTo('300', 0.3).fadeTo('300', 1);
+	      }
+
+	      this.scrollTop(btnLocation);
+	    },
+
+	    scrollTop: function(eTarget, speed) {
+	      var speed = speed || null;
+	      eTarget.on('click', function() {
+	        $('html, body').animate({
+	          scrollTop: $("body").offset().top
+	        }, speed)
+	      })
+	    }
+
+	  };
+
+	  $(function() {
+	    UI.initialize();
+	  })
+
+	})
+	
 </script>
 
 <script type="text/javascript">
@@ -166,66 +157,79 @@ $(document).ready(function() {
 </script>
 
 
-<div class="menuBar">
-    	<ul class="mainMenu">
-    		<li><a href="/admin/member/list">회원관리</a></li>
-    		<li><a href="#">게시판 관리</a>
-    			<ul class="boardMenu">
-    				<li><a href="/admin/boards/goBoard/list">함께가요 게시판</a></li>
-    				<li><a href="/admin/boards/doBoard/list">함께해요 게시판</a></li>
-    				<li><a href="/admin/boards/freeBoard/list">자유 게시판</a></li>
-    				<li><a href="/admin/boards/reviewBoard/list">후기 게시판</a></li>
-    			</ul>
-    		</li>
-    		<li><a href="list">1대1문의 관리</a></li>
-    		<li><a href="/admin/notice/list">공지사항 관리</a></li>
-    		<li><a href="#">결제 관리</a></li>
-    	</ul>
-    </div>
+<div class="rightQuickBar">
+	    	<ul class="mainMenu">
+	    		<li><a href="/admin/user/list">회원관리</a></li>
+	    		<li><a href="/admin/boards/main">게시판 관리</a></li>
+	    		<li><a href="/admin/question/list">1대1문의 관리</a></li>
+	    		<li><a href="/admin/notice/list">공지사항 관리</a></li>
+	    		<li><a href="/admin/order/list">결제 관리</a></li>
+	    	</ul>
+	    </div>
+	    
+	      <p class="btn_top"><a href="#none">top</a></p>
 
 
-<div class = "freewrite"> 
-	<div class = "freewrite__border">
-	<div class = "freewrite__header">
-		<div class = "freewrite__header__label">
+<div class = "freeview"> 
+	<div class = "freeview__border">
+	<div class = "freeview__header">
+		<div class = "freeview__header__label">
 			<span>문의글</span>
 		</div>
-
-	<table class="questionInfoTable" border="1">
-		<caption>문의사항 상세정보</caption>
+		<span class = "freeview__header__title">상세보기</span>
+	</div>
+	<div class = "freeview__table">
+		<table>
 		<tr>
-			<td>글번호</td>
-			<td>${viewQuestion.QBNO}</td>
+			<td colspan="2"> 
+				<div class= "freeview__table__title">
+				제목 : &nbsp;
+					<span>${viewQuestion.QBTITLE}</span>
+				</div>
+			</td>
+		</tr>
+		<tr >			
+			<td colspan="2">
+			<div class= "freeview__table__header ">
+				<div>${viewQuestion.UNICK} &nbsp; | &nbsp; ${viewQuestion.QBWRITTENDATE}</div>
+			</div>
+			</td>
+			
 		</tr>
 		<tr>
-			<td>문의글 제목</td>
-			<td>${viewQuestion.QBTITLE}</td>
+			<td colspan="2">
+			<div class= "freeview__table__content">
+				${viewQuestion.QBCONTENT }
+			</div>
+			</td>
 		</tr>
-		<tr>
-			<td>작성자</td>
-			<td>${viewQuestion.UNICK}</td>
+		
+		<tr>			
+			<td colspan="2">
+				<div class="freeview__table__download">
+					<span>업로드된 파일 </span>
+			</div>
+			</td>
+			
 		</tr>
-		<tr style="height: 400px;">
-			<td>문의글 내용</td>
-			<td>${viewQuestion.QBCONTENT}</td>
-		</tr>
-	<c:forEach items="${viewQuestionFile}" var="QuestionFile" varStatus="status">
+		
+		<c:forEach items="${viewQuestionFile}" var="questionFile" varStatus="status">
 		<tr>			
 			<td colspan="2">
 				<div class="freeview__table__download">
 					<span>${status.count}. : &nbsp;</span>
-				 <a href="javascript:downloadFile('${QuestionFile.qfOriginFileName}', '${QuestionFile.qfStoredFileName}')">
-				 	${QuestionFile.qfOriginFileName}</a>
+				 <a href="javascript:downloadFile('${questionFile.qfOriginFileName}', '${questionFile.qfStoredFileName}')">
+				 	${questionFile.qfOriginFileName}</a>
 			</div>
 			</td>
+			
 		</tr>
 		</c:forEach>
-	</table>
-	</div>
-	
-	
-</div>	
-</div>
+
+		</table>
+		</div>
+		</div>
+		</div>
 
 	<hr>
 	

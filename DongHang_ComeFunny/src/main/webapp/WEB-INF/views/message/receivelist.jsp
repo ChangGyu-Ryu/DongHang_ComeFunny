@@ -6,7 +6,6 @@
 <c:import url="/WEB-INF/views/board/boardheader.jsp" />
 
 <meta charset="UTF-8">
-
 <div id="div_back">
 	<div id="div_left_area">
 		<div id="div_line_left_mail">

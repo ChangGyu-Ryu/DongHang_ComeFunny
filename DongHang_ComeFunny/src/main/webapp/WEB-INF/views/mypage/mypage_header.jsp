@@ -7,7 +7,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>동행 :: 마이페이지</title>
 <!-- mypage_header.css -->
 <link rel="stylesheet" href="<%=request.getContextPath() %>/resources/css/mypage/mypage_header.css" />
 <!-- fontawesome 아이콘 -->
@@ -31,10 +31,11 @@
 			</div>
           </c:if>
           <c:if test="${not empty logInInfo}">
-			<div class="main_login">
-				<a href="/message/receivelist"><i class="fas fa-envelope"></i> &nbsp;</a>			
+			<div class="main_login">		
+				<a href="/message/receivelist"><i class="fas fa-envelope"></i> &nbsp;</a>	
 				<a href="javascript:void(0)" style="cursor: default;">${logInInfo.userId }&nbsp;님 환영합니다.</a> &ensp;
-				<a href="/mypage/profile">마이페이지</a>
+				<a href="/mypage/profile"><i class="fas fa-user-circle"></i>&nbsp;마이페이지</a>  &ensp;
+				<a href="/user/logout"><i class="fas fa-sign-out-alt"></i>&nbsp;로그아웃</a>
 			</div>
           </c:if>
       </div>

@@ -150,11 +150,12 @@ $(document).ready(function(){
       </div>
       </c:if>
       <c:if test="${not empty logInInfo}">
-      <div class="main_login">   
-          <a href="/message/receivelist"><i class="fas fa-envelope"></i> &nbsp;</a>      
-         <a href="javascript:void(0)" style="cursor: default;">${logInInfo.userId }&nbsp;님 환영합니다.</a> &ensp;
-         <a href="/mypage/profile">마이페이지</a>
-      </div>
+			<div class="main_login">		
+				<a href="/message/receivelist"><i class="fas fa-envelope"></i> &nbsp;</a>	
+				<a href="javascript:void(0)" style="cursor: default;">${logInInfo.userId }&nbsp;님 환영합니다.</a> &ensp;
+				<a href="/mypage/profile"><i class="fas fa-user-circle"></i>&nbsp;마이페이지</a>  &ensp;
+				<a href="/user/logout"><i class="fas fa-sign-out-alt"></i>&nbsp;로그아웃</a>
+			</div>
       </c:if>            
       </div>
    </div>
@@ -170,15 +171,15 @@ $(document).ready(function(){
       <div class="dropdown">
            <div class="dropbtn"><a href="#">커뮤니티</a></div>
            <div class="dropdown-content">
-             <a href="../board/freelist">자유게시판</a>
-             <a href="../board/reviewlist">후기게시판</a>
+	    		<a href="/board/freelist">자유게시판</a>
+	    		<a href="/board/reviewlist">후기게시판</a>
            </div>
       </div>
       <div class="dropdown">
            <div class="dropbtn"><a href="#">고객센터</a></div>
            <div class="dropdown-content">
-             <a href="#">공지사항</a>
-             <a href="#">문의게시판</a>
+	    		<a href="/serviceCenter/notice/list">공지사항</a>
+	    		<a href="/serviceCenter/question/list">문의게시판</a>
            </div>
       </div>
       <div class="dropdown">

@@ -131,6 +131,13 @@ public class KakaoServiceImpl implements KakaoService {
 	}
 	@Override
 	public int insertKakaoUser(User user) {
-				return userDao.insertKakaoUser(user);
+		String password = user.getuPw();
+		//password 암호화
+		//매번 다른 방식으로 암호화가된다.
+		password = passwordEncoder.encode(password);
+		System.out.println("암호화가 된 password" + password);
+		user.setuPw(password);
+		
+		return userDao.insertKakaoUser(user);
 	}
 }

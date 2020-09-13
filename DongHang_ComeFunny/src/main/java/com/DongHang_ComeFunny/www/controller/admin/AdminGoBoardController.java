@@ -93,7 +93,7 @@ public class AdminGoBoardController {
 			}
 		}
 		
-		 @RequestMapping(value="view", method=RequestMethod.GET)
+		 @RequestMapping(value="/view", method=RequestMethod.GET)
 	      public void goDetail(int gbNo, Model model, HttpSession session) {
 
 			 

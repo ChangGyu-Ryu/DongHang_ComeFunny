@@ -68,7 +68,7 @@
         <div class="field">
           <div class="ui left icon input">
             <i class="lock icon"></i>
-            <input type="text" name="apw" placeholder="비밀번호">
+            <input type="password" name="apw" placeholder="비밀번호">
           </div>
         </div>
         <div class="ui fluid large teal submit button" id="loginBtn">Login</div>

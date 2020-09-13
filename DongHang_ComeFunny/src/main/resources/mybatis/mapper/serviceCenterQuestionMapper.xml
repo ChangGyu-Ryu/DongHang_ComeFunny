@@ -25,7 +25,7 @@
 	</select>
 	
 	<select id="selectQuestionList" resultMap="QUESTIONBOARDLIST">
-		 	SELECT qbno, qbtitle, qbwrittendate, qbisdel, qbstatus, unick FROM (
+		 	SELECT qbno,qbuno, qbtitle, qbwrittendate, qbisdel, qbstatus, unick FROM (
 				SELECT rownum rnum,q1.*FROM(
 					SELECT * FROM tb_questionboard q, tb_user u WHERE u.uno = q.qbuno ORDER BY q.qbno DESC
 					)q1 
@@ -76,9 +76,9 @@
 	
 	<insert id="insertQuestion">
 			INSERT INTO tb_questionboard
-			(qbuno, qbqbno, qbtitle, qbcontent)
+			(qbuno, qbtitle, qbcontent)
 			VALUES
-			(#{qbUNo}, #{qbQbNo}, #{qbTitle}, #{qbContent})
+			(#{qbUNo}, #{qbTitle}, #{qbContent})
 	</insert>
 	
 	
@@ -131,7 +131,7 @@
 			WHERE qfqbno=#{qbNo}
 	</delete>
 	
-	<select id="selectAbNoByQbNo" resultType="int">
+	<select id="selectAbNoByQbNo" resultType="String">
 			SELECT abno FROM tb_answerboard
 			WHERE abqbno = #{qbNo}
 	</select>
@@ -141,6 +141,7 @@
 	
 	<resultMap type="com.DongHang_ComeFunny.www.model.vo.QuestionBoard" id="QUESTIONBOARDLIST">
     		<result property="qbNo" column="qbno"/>
+    		<result property="qbUNo" column="qbuno"/>
     		<result property="qbTitle" column="qbtitle"/>
     		<result property="qbWrittenDate" column="qbwrittendate"/>
     		<result property="qbHitsCnt" column="qbhitscnt"/>

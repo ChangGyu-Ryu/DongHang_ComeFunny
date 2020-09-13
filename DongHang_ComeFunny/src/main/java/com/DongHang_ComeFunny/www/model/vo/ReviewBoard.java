@@ -3,6 +3,7 @@ package com.DongHang_ComeFunny.www.model.vo;
 import java.sql.Date;
 
 public class ReviewBoard {
+	private String rbWriter;
 	private int rbNo;
 	private int rbUNo;
 	private String rbTitle;
@@ -21,10 +22,10 @@ public class ReviewBoard {
 
 	@Override
 	public String toString() {
-		return "ReviewBoard [rbNo=" + rbNo + ", rbUNo=" + rbUNo + ", rbTitle=" + rbTitle + ", rbContent=" + rbContent
-				+ ", rbWrittenDate=" + rbWrittenDate + ", rbRecommendCnt=" + rbRecommendCnt + ", rbHitsCnt=" + rbHitsCnt
-				+ ", rbLikeCnt=" + rbLikeCnt + ", rbIsDel=" + rbIsDel + ", rbDhStar=" + rbDhStar + ", rbHostStar="
-				+ rbHostStar + ", rbGbNo=" + rbGbNo + ", rbDbNo=" + rbDbNo + "]";
+		return "ReviewBoard [rbWriter=" + rbWriter + ", rbNo=" + rbNo + ", rbUNo=" + rbUNo + ", rbTitle=" + rbTitle
+				+ ", rbContent=" + rbContent + ", rbWrittenDate=" + rbWrittenDate + ", rbRecommendCnt=" + rbRecommendCnt
+				+ ", rbHitsCnt=" + rbHitsCnt + ", rbLikeCnt=" + rbLikeCnt + ", rbIsDel=" + rbIsDel + ", rbDhStar="
+				+ rbDhStar + ", rbHostStar=" + rbHostStar + ", rbGbNo=" + rbGbNo + ", rbDbNo=" + rbDbNo + "]";
 	}
 
 	public int getRbNo() {
@@ -129,6 +130,14 @@ public class ReviewBoard {
 
 	public void setRbDbNo(int rbDbNo) {
 		this.rbDbNo = rbDbNo;
+	}
+
+	public String getRbWriter() {
+		return rbWriter;
+	}
+
+	public void setRbWriter(String rbWriter) {
+		this.rbWriter = rbWriter;
 	}
 
 	

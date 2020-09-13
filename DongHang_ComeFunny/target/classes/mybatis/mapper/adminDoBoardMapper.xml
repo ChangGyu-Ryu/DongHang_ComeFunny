@@ -54,6 +54,69 @@
 			WHERE dbno = #{dbNo}
 		</delete>
 		
+		
+		<select id="selectDoDetail" resultType="hashmap">
+		SELECT *
+		FROM tb_doboard, tb_docheck
+		WHERE dcdbno = dbno
+		AND dbno = #{dbno}
+	</select>
+	
+	<!-- 함께 해요 후기 리스트 -->
+	<select id="selectdoReview" resultType="Map">
+		select * from tb_reviewboard,
+		(SELECT *
+		 FROM tb_user left join tb_userimg
+		 ON uno = uiuno
+		)prfile
+		where rbuno = uno
+		AND rbdbno = #{dbno}
+		ORDER BY rbhoststar desc
+	</select>
+	
+	<!-- 호스트 정보 -->
+	<select id="selectHostInfo" resultType="Map">
+		SELECT DISTINCT(uno), unick, (to_char(sysdate,'YYYY')-substr(ubirth,1,4)+1) as age, ugender, UISTOREDIMGNAME, dbno, 
+		(select round(NVL(avg(rbhoststar), 0),2) as satr from tb_reviewboard, tb_doboard where rbdbno = dbno and dbno= #{dbNo}) star
+		FROM tb_user 
+    	left join tb_userimg ON uno = uiuno
+    	left join tb_doboard ON uno = dbuno
+		where dbno = #{dbNo}
+	</select>
+	
+	<!-- 동행 신청자 리스트 -->
+	<select id="selectApplyList" resultType="Map">
+		SELECT uno,unick,(to_char(sysdate,'YYYY')-substr(ubirth,1,4)+1)age, 
+				ugender,UISTOREDIMGNAME, dastatus 
+		FROM tb_doapply,
+		(SELECT *
+		 FROM tb_user left join tb_userimg
+		 ON uno = uiuno
+		)profile
+		WHERE dauno = uno
+		AND dadbno = #{dbno}
+		ORDER BY dano DESC
+		
+<!-- 		SELECT DISTINCT(uno),unick,(to_char(sysdate,'YYYY')-substr(ubirth,1,4)+1)age,  -->
+<!-- 				ugender,UISTOREDIMGNAME  -->
+<!-- 		FROM tb_doapply, -->
+<!-- 		(SELECT * -->
+<!-- 		 FROM tb_user left join tb_userimg -->
+<!-- 		 ON uno = uiuno -->
+<!-- 		)profile -->
+<!-- 		WHERE dauno = uno -->
+<!-- 		AND dadbno = #{dbno}; -->
+	</select>
+	
+	<!-- 장소 사진 -->
+	<select id="selectplacePhoto" resultType="Map">
+		SELECT dino,distoredimgname 
+		FROM tb_doimg
+		WHERE didbno = #{dbno}	
+	</select>
+		
+		
+		
     	<resultMap type="com.DongHang_ComeFunny.www.model.vo.DoBoard" id="DOBOARDLIST">
     		<result property="dbNo" column="dbno"/>
     		<result property="dbTitle" column="dbtitle"/>

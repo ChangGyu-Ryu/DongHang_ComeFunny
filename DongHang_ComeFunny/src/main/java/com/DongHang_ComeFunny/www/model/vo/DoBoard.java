@@ -1,8 +1,9 @@
 package com.DongHang_ComeFunny.www.model.vo;
 
-import java.util.Date;
+import java.sql.Date;
 
 public class DoBoard {
+	private String dbWriter;
 	private int dbNo; //함께해요 게시글번호
 	private int dbUNo; //함께해요게시글작성자번호
 	private String dbTitle; //게시글제목
@@ -26,13 +27,13 @@ public class DoBoard {
 	
 	@Override
 	public String toString() {
-		return "DoBoard [dbNo=" + dbNo + ", dbUNo=" + dbUNo + ", dbTitle=" + dbTitle + ", dbContent=" + dbContent
-				+ ", dbWrittenDate=" + dbWrittenDate + ", dbLikeCnt=" + dbLikeCnt + ", dbIsDel=" + dbIsDel
-				+ ", dbRecruitDate=" + dbRecruitDate + ", dbRecruitArea=" + dbRecruitArea + ", dbRecruitStatus="
-				+ dbRecruitStatus + ", dbRecruitNumber=" + dbRecruitNumber + ", dbRecruitGender=" + dbRecruitGender
-				+ ", dbRecruitCost=" + dbRecruitCost + ", dbDhstarAvg=" + dbDhstarAvg + ", dbHoststarAvg="
-				+ dbHoststarAvg + ", dbStarCnt=" + dbStarCnt + ", dbCateGory=" + dbCateGory + ", dbRecruitCnt="
-				+ dbRecruitCnt + "]";
+		return "DoBoard [dbWriter=" + dbWriter + ", dbNo=" + dbNo + ", dbUNo=" + dbUNo + ", dbTitle=" + dbTitle
+				+ ", dbContent=" + dbContent + ", dbWrittenDate=" + dbWrittenDate + ", dbLikeCnt=" + dbLikeCnt
+				+ ", dbIsDel=" + dbIsDel + ", dbRecruitDate=" + dbRecruitDate + ", dbRecruitArea=" + dbRecruitArea
+				+ ", dbRecruitStatus=" + dbRecruitStatus + ", dbRecruitNumber=" + dbRecruitNumber + ", dbRecruitGender="
+				+ dbRecruitGender + ", dbRecruitCost=" + dbRecruitCost + ", dbDhstarAvg=" + dbDhstarAvg
+				+ ", dbHoststarAvg=" + dbHoststarAvg + ", dbStarCnt=" + dbStarCnt + ", dbCateGory=" + dbCateGory
+				+ ", dbRecruitCnt=" + dbRecruitCnt + "]";
 	}
 
 
@@ -170,6 +171,16 @@ public class DoBoard {
 	}
 	public void setDbRecruitGender(int dbRecruitGender) {
 		this.dbRecruitGender = dbRecruitGender;
+	}
+
+
+	public String getDbWriter() {
+		return dbWriter;
+	}
+
+
+	public void setDbWriter(String dbWriter) {
+		this.dbWriter = dbWriter;
 	}
 	
 	

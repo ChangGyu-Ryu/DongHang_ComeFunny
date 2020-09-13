@@ -102,7 +102,7 @@ public class AdminReviewBoardController {
 			}
 		}
 		
-		@RequestMapping(value = "/reviewview", method = RequestMethod.GET)
+		@RequestMapping(value = "/view", method = RequestMethod.GET)
 		public ModelAndView reviewView(
 				@RequestParam int rbNo
 				, HttpSession session
@@ -143,7 +143,7 @@ public class AdminReviewBoardController {
 			if(commandMap.get("detail") != null) {
 				// 4. ModelAndView에 VO 및 View 이름값 넣기 
 				mav.addObject("rview", commandMap);
-				mav.setViewName("adimn/boards/reviewBoard/view");
+				mav.setViewName("admin/boards/reviewBoard/view");
 			} else {
 				// 5. view페이지 : /WEB-INF/views/common 폴더 안에 result.jsp
 				// 5-1. 경고메세지 출력 후 지정된 url로 페이지 이동

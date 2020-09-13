@@ -21,7 +21,7 @@
 <link rel="stylesheet" href="<%=request.getContextPath() %>/resources/css/mypage/mypage_header.css" >
 
 <meta charset="UTF-8">
-<title>mypage</title>
+<title>동행 :: 마이페이지</title>
 
 <!-- checkBox 전체 체크  js-->
 <script type="text/javascript" src="/resources/js/mypage/mydonghang.js"></script>

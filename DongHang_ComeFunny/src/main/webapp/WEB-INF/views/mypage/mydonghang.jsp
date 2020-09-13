@@ -25,7 +25,7 @@
 
 
 <meta charset="UTF-8">
-<title>mypage</title>
+<title>동행 :: 마이페이지</title>
 
 <!-- checkBox 전체 체크  js-->
 <script type="text/javascript" src="/resources/js/mypage/mydonghang.js"></script>
@@ -91,8 +91,14 @@ function hiddenmodal() {
 				<tr>
 					<td style="vertical-align: inherit;"><input type="checkbox" id="mygodhgbno" class="deleteChk" value="${mygodh.gbNo},${mygodh.gbCategory}"/></td>
 					<td style="vertical-align: inherit;"><a><fmt:formatDate var="date" value="${mygodh.gbWrittenDate}" pattern="YYYY-MM-dd" />${date}</a></td>
-					<td style="vertical-align: inherit;"><a href="<%= request.getContextPath()%>/board/doboard}">${mygodh.gbCategory}</a></td>
-					<td style="vertical-align: inherit;"><a href="<%= request.getContextPath()%>/board/fboarddetail?fbno=${mygodh.gbUNo}">${mygodh.gbTitle}</a></td>
+					<c:if test="${mygodh.gbCategory eq '함께가요'}">
+	                  <td style="vertical-align: inherit;"><a href="<%= request.getContextPath()%>/go/goDetail?gbNo=${mygodh.gbNo}">${mygodh.gbCategory}</a></td>
+	                  <td style="vertical-align: inherit;"><a href="<%= request.getContextPath()%>/go/goDetail?gbNo=${mygodh.gbNo}">${mygodh.gbTitle}</a></td>               
+	               </c:if>
+	               <c:if test="${mygodh.gbCategory eq '함께해요'}">
+	                  <td style="vertical-align: inherit;"><a href="<%= request.getContextPath()%>/do/dodetail?dbNo=${mygodh.gbNo}">${mygodh.gbCategory}</a></td>
+	                  <td style="vertical-align: inherit;"><a href="<%= request.getContextPath()%>/do/dodetail?dbNo=${mygodh.gbNo}">${mygodh.gbTitle}</a></td>               
+	               </c:if>
 					<c:choose>
 						<c:when test="${recruitnum[sts.index]eq mygodh.gbRecruitNumber}">
 						 	<td style="vertical-align: inherit;"><a id="joinerNum"><span style="color: red;">${recruitnum[sts.index]}</span> / ${mygodh.gbRecruitNumber}</a></td>

@@ -278,7 +278,7 @@ $(document).ready(function () {
 							,data : { deleteChk : checkArr }
 				,traditional : true
 				,success : function(mav){
-					if(result ==1){
+					if(mav ==1){
 						location.href=window.document.URL;
 					}else{
 						alert("삭제 실패");

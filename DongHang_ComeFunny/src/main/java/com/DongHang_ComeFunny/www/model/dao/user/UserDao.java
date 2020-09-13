@@ -63,7 +63,7 @@ public class UserDao {
 	}
 	
 	public int updateDHBG(HashMap<String, Integer> param) {
-		return session.update("User.UpdataDHBGByUno", param);
+		return session.update("USER.UpdataDHBGByUno", param);
 	}
 	
 	public User selectKakaoMember(HashMap<String, Object> userInfo) {

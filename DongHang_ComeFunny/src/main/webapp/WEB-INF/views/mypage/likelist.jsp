@@ -7,7 +7,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>동행 :: 마이페이지</title>
 
 <link rel="stylesheet" href="<%=request.getContextPath() %>/resources/css/mypage/mypage_profile.css" />
 <link rel="stylesheet" href="<%=request.getContextPath() %>/resources/css/mypage/mypage_likelist.css" />

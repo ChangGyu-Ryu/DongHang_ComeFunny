@@ -29,4 +29,25 @@ public class AdminDoBoardDao {
 		
 	}
 
+			public List<Object> selectDoDetail(int dbno) {
+				return sqlSession.selectList("AdminDoBoard.selectDoDetail",dbno);
+			}
+
+			//후기정보
+			public List<Object> selectdoReview(int dbno) {
+				return sqlSession.selectList("AdminDoBoard.selectdoReview",dbno);
+			}
+
+			//작성자 정보
+			public List<Object> selectHostInfo(int dbno) {
+				return sqlSession.selectList("AdminDoBoard.selectHostInfo",dbno);
+			}
+
+			public List<Object> selectApplyList(int dbno) {
+				return sqlSession.selectList("AdminDoBoard.selectApplyList",dbno);
+			}
+
+			public List<Object> selectplacePhoto(int dbno) {
+				return sqlSession.selectList("AdminDoBoard.selectplacePhoto",dbno);
+			}
 }

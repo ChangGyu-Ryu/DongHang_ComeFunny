@@ -55,6 +55,14 @@ public class AdminNoticeServiceImpl implements AdminNoticeService{
 	public void writeNotice(NoticeBoard noticeBoard, List<MultipartFile> noticeFiles, String root) throws FileException {
 		
 		adminNoticeDao.insertNotice(noticeBoard);
+		
+		
+		long fileSize = 0;
+		for(MultipartFile mf : noticeFiles) {
+			fileSize = mf.getSize();
+		}
+		
+		if(fileSize != 0){
 		if(noticeFiles!= null) {
 			FileUtil fileUtil = new FileUtil();
 			List<Map<String,Object>> fileData = fileUtil.fileUpload(noticeFiles, root);
@@ -64,6 +72,7 @@ public class AdminNoticeServiceImpl implements AdminNoticeService{
 				System.out.println(data);
 				adminNoticeDao.InsertNoticeFile(data);
 			}
+		}
 		}
 	}
 			
@@ -88,14 +97,22 @@ public class AdminNoticeServiceImpl implements AdminNoticeService{
 	public void modifyNotice(NoticeBoard modiNoticeInfo, List<MultipartFile> noticeFiles, String root) throws FileException {
 		
 		adminNoticeDao.updateNotice(modiNoticeInfo);
+		long fileSize = 0;
+		for(MultipartFile mf : noticeFiles) {
+			fileSize = mf.getSize();
+		}
+		
+		System.out.println("*************************"+fileSize);
+		if(fileSize != 0){
 		// 수정사항이 변경되지 않았을 경우의 예외 처리 필요
-		if(noticeFiles!= null) {
-			FileUtil fileUtil = new FileUtil();
-			List<Map<String,Object>> fileData = fileUtil.fileUpload(noticeFiles, root);
-			for(Map<String, Object> data : fileData) {
-				data.put("nfNbNo", modiNoticeInfo.getNbNo());
-				System.out.println(data);
-				adminNoticeDao.InsertNoticeFile(data);
+			if(noticeFiles!= null) {
+				FileUtil fileUtil = new FileUtil();
+				List<Map<String,Object>> fileData = fileUtil.fileUpload(noticeFiles, root);
+				for(Map<String, Object> data : fileData) {
+					data.put("nfNbNo", modiNoticeInfo.getNbNo());
+					System.out.println(data);
+					adminNoticeDao.InsertNoticeFile(data);
+				}
 			}
 		}
 	}

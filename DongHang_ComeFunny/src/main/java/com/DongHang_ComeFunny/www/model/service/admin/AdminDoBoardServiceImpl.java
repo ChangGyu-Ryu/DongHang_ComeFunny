@@ -44,4 +44,26 @@ public class AdminDoBoardServiceImpl implements AdminDoBoardService {
 			adminDoBoardDao.deleteDoBoard(dbNo[i]);
 		}
 	}
-}
+
+	@Override
+	public Map<String, Object> selectDoDetail(int dbno) {
+		Map<String, Object> commandMap = new HashMap<String, Object>();
+		//게시글 정보
+		List<Object> doDetailList = adminDoBoardDao.selectDoDetail(dbno);
+		//후기 정보
+		List<Object> doReviewList = adminDoBoardDao.selectdoReview(dbno);
+		//호스트 정보
+		List<Object> hostInfo = adminDoBoardDao.selectHostInfo(dbno);
+		//신청목록
+		List<Object> applyList = adminDoBoardDao.selectApplyList(dbno);
+		//장소 사진
+		List<Object> placePhoto = adminDoBoardDao.selectplacePhoto(dbno);
+		
+		commandMap.put("doDetailList", doDetailList);
+		commandMap.put("doReviewList", doReviewList);
+		commandMap.put("hostInfo", hostInfo);
+		commandMap.put("applyList", applyList);
+		commandMap.put("placePhoto", placePhoto);
+		return commandMap;
+	}
+	}

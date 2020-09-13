@@ -35,12 +35,23 @@
 	</select>
 	
 	
-	<select id="selectNoticeByNbNo" resultType="List">
-			SELECT n.*, nf.* FROM tb_noticeboard n, tb_noticefile nf
-    			  WHERE n.nbno = nf.nfnbno
-                        AND n.nbno = #{nbNo}
-            ORDER BY n.nbno DESC;
-	
+	<select id="selectNoticeByNbNo" resultType="NOTICE">
+			SELECT 	nbno, nbtitle, nbcontent, nbwrittendate, nbhitscnt FROM tb_noticeboard
+			WHERE nbno = #{nbNo}
 	</select>
+	
+	<select id="selectNoticeFileByNbNo" resultType="NOTICEFILE">
+			SELECT nfno, nforiginfilename, nfstoredfilename, nfsize, nfsavepath FROM tb_noticefile
+			WHERE nfnbno = #{nbNo} 
+	</select>
+
+	<update id="updateHits">
+		UPDATE tb_noticeboard
+		<set>
+			nbhitscnt = nbhitscnt+1
+		</set>
+		WHERE nbno = #{nbNo}
+	</update>
+		
 	</mapper>
 	

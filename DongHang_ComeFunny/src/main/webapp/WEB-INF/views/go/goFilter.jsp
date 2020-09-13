@@ -7,7 +7,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>동행 :: 함께가요</title>
 
 <link rel="stylesheet" href="<%=request.getContextPath() %>/resources/css/go/go.css" />
 

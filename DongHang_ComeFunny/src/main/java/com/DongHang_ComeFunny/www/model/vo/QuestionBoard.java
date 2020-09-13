@@ -1,6 +1,6 @@
 package com.DongHang_ComeFunny.www.model.vo;
 
-import java.util.Date;
+import java.sql.Date;
 
 public class QuestionBoard {
 	

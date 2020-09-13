@@ -8,4 +8,7 @@ public interface AdminDoBoardService {
 
 	void deleteDoBoard(String[] dbNo);
 
+	Map<String, Object> selectDoDetail(int dbno);
+
+
 }

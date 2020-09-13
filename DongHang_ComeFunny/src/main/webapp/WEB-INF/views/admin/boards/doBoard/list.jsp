@@ -3,90 +3,11 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:import url="/WEB-INF/views/admin/layout/header.jsp" />
 
-<style type="text/css">
+<link rel="stylesheet" href="/resources/css/admin/boards/doBoard/adminDoBoardList.css">
+<link rel="stylesheet" href="/resources/css/admin/adminQuickBar.css">
 
-.menuBar {
-			position : fixed;
-			
-}
 
-.mainMenu {	
-			text-align : center;
-			list-style: none;
-			margin: 0px;
-			padding : 0px;
-			position: relative;
-}
 
-.mainMenu li {
-	width: 130px;
-    border-top: 5px solid white;
-    background-color: rgb(189,209,234);
-}
-
-.mainMenu li:hover {
-			background-color: rgb(156,181,183);}
-
-.mainMenu li:hover > .boardMenu {
-			display:block}
-			
-.mainMenu li a {
-			text-decoration: none;
-		    display: block;
-		    width: 140px;
-		    height: 60px;
-		    line-height: 60px;
-		    font-size: 20px;
-		    color: rgb(49,86,126);
-		    padding-right: 10px;
-}
-
-.boardMenu {
-			list-style: none;
-		    display: none;
-		    position: absolute;
-		    left: 140px;
-		    top: 135px;
-			}
-			
-.boardMenu li { 
-			width: 184px;
-			background-color: rgb(189,209,234); 
-}
-
-.boardMenu li:first-child{
-			border-top: none;}
-
-.boardMenu li a { 
-			width: 186px;
-    		display: block;
-}
-
-.doBoardList{
-			width: 1200px;
-		    margin: 0 auto;
-}
-
-.doBoardListToolbar{
-			display: inline-block;
-}
-
-#doBoardListSearch{
-			display: inline;
-		    position: relative;
-		    margin-left: 0px;
-		    left: 200px;
-		    right: 100px;
-}
-
-#deleteSelectDoBoard{
-			width: 100px;
-		    position: relative;
-		    display: inline;
-		    left: 500px;
-}
-
-</style>
 
 <script type="text/javascript">
 $(document).ready(function(){
@@ -135,27 +56,99 @@ $(document).ready(function(){
 });
 	
 	
+$(function() {
+
+	  var UI = {
+	    init: function() {
+	      this.quickMenuFn();
+	      this.topBtn();
+	    },
+
+	    initialize: function() {
+	      this.id = {
+	        target: {
+	          quick: '.rightQuickBar',
+	          stickyTop: '#footer'
+	        },
+	        topBtnClass: 'btn_top'
+	      };
+	      this.init();
+	    },
+
+	    quickMenuFn: function() {
+	      var quick = $(this.id.target.quick);
+	      var qTop = parseInt(quick.css('top'));
+
+	      $(window).scroll(function() {
+	        var winTop = $(window).scrollTop();
+
+	        quick.stop().animate({
+	          top: winTop + qTop
+	        }, 400);
+
+	      })
+	    },
+
+	    topBtn: function() {
+	      var btnLocation = $('.' + this.id.topBtnClass);
+	      var timerId = 0;
+
+	      $(window).on('scroll', function() {
+	        var winTop = $(window).scrollTop();
+	        if (winTop > 200) {
+	          btnLocation.fadeIn();
+	          clearInterval(timerId);
+	          timerId = setInterval(btnEffet, 2000);
+	        } else {
+	          btnLocation.fadeOut();
+	          clearInterval(timerId);
+	        }
+
+	      });
+
+	      function btnEffet() {
+	        btnLocation.fadeTo('300', 0.3).fadeTo('300', 1);
+	      }
+
+	      this.scrollTop(btnLocation);
+	    },
+
+	    scrollTop: function(eTarget, speed) {
+	      var speed = speed || null;
+	      eTarget.on('click', function() {
+	        $('html, body').animate({
+	          scrollTop: $("body").offset().top
+	        }, speed)
+	      })
+	    }
+
+	  };
+
+	  $(function() {
+	    UI.initialize();
+	  })
+
+	})
+	
+	
+	
 	
 
 </script>
 
-<div class="menuBar">
-    	<ul class="mainMenu">
-    		<li><a href="/admin/user/list">회원관리</a></li>
-    		<li><a href="/admin/boards/freeBoard/list">파티관리</a></li>
-    		<li><a href="#">게시판 관리</a>
-    			<ul class="boardMenu">
-    				<li><a href="/admin/boards/goBoard/list">함께가요 게시판</a></li>
-    				<li><a href="list">함께해요 게시판</a></li>
-    				<li><a href="/admin/boards/freeBoard/list">자유 게시판</a></li>
-    				<li><a href="/admin/boards/reviewBoard/list">후기 게시판</a></li>
-    			</ul>
-    		</li>
-    		<li><a href="/admin/qeustion/list">1대1문의 관리</a></li>
-    		<li><a href="/admin/notice/list">공지사항 관리</a></li>
-    		<li><a href="#">결제 관리</a></li>
-    	</ul>
-    </div>
+<div class="rightQuickBar">
+  	<ul class="mainMenu">
+  		<li><a href="/admin/user/list">회원관리</a></li>
+  		<li><a href="/admin/boards/main">게시판 관리</a></li>
+  		<li><a href="/admin/question/list">1대1문의 관리</a></li>
+  		<li><a href="/admin/notice/list">공지사항 관리</a></li>
+  		<li><a href="/admin/order/list">결제 관리</a></li>
+  	</ul>
+  </div>
+  
+    <p class="btn_top"><a href="#none">top</a></p>
+
+
 
 
     
@@ -198,17 +191,39 @@ $(document).ready(function(){
 	<div class="doBoardListToolbar">
 	<ul class="pagination" style="text-align: center; display: inline;">
 	    <li>
-	      <a href="#" aria-label="Previous">
-	        <span aria-hidden="true">«</span>
+	      <a href="list?searchKinds=${searchKinds}&searchText=${searchText}&cPage=1" aria-label="Previous">
+	        <span aria-hidden="true"><<</span>
 	      </a>
+	      <c:choose>
+	      	<c:when test="${paging.currentPage >= paging.blockStart && paging.currentPage ne 1}">
+			   	<a href="list?searchKinds=${searchKinds}&searchText=${searchText}&cPage=${paging.currentPage-1}" aria-label="Previous">
+		        <span aria-hidden="true"><</span>
+			   	</a>
+	      	</c:when>
+	      	<c:when test="${paging.currentPage eq 1 }">
+		      	<a href="list?searchKinds=${searchKinds}&searchText=${searchText}&cPage=${paging.currentPage}" aria-label="Previous">
+		        <span aria-hidden="true"><</span>
+		      	</a>
+	      	</c:when>
+	      </c:choose>
 	     </li>
-	    <li><a href="list?searchKinds=${searchKinds}&searchText=${searchText}&cPage=${paging.blockStart }">1</a></li>
-	    <li><a href="list?searchKinds=${searchKinds}&searchText=${searchText}&cPage=2">2</a></li>
-	    <li><a href="list?searchKinds=${searchKinds}&searchText=${searchText}&cPage=3">3</a></li>
-	    <li><a href="list?searchKinds=${searchKinds}&searchText=${searchText}&cPage=4">4</a></li>
-	    <li><a href="#">5</a></li>
+	     <c:forEach var="page" begin="${paging.blockStart}" end="${paging.blockEnd}">
+	    <li><a href="list?searchKinds=${searchKinds}&searchText=${searchText}&cPage=${page}">${page}</a></li>
+	     </c:forEach>
 	    <li>
-	      <a href="#" aria-label="Next">
+	    <c:choose>
+	      	<c:when test="${paging.blockEnd+1 > paging.lastPage}">
+			   	<a href="list?searchKinds=${searchKinds}&searchText=${searchText}&cPage=${paging.currentPage}" aria-label="Previous">
+		        <span aria-hidden="true">></span>
+			   	</a>
+	      	</c:when>
+	      	<c:otherwise>
+		      	<a href="list?searchKinds=${searchKinds}&searchText=${searchText}&cPage=${paging.currentPage+1}" aria-label="Previous">
+		        <span aria-hidden="true">></span>
+		      	</a>
+	      	</c:otherwise>
+	      </c:choose>
+	      <a href="list?searchKinds=${searchKinds}&searchText=${searchText}&cPage=${paging.lastPage}" aria-label="Next">
 	        <span aria-hidden="true">>></span>
 	      </a>
 	    </li>
