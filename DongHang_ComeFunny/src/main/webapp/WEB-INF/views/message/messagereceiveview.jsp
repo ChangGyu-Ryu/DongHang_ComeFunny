@@ -8,6 +8,7 @@
 <meta charset="UTF-8">
 <link rel="stylesheet"
 	href="//unpkg.com/bootstrap@4/dist/css/bootstrap.min.css">
+
 	<div id="div_back" style="min-height:33500px;">
 		<div id="div_left_area">
 			<div id="div_line_left_mail">
@@ -35,10 +36,13 @@
 
 			</div>
 			<div></div>	
-			<div id="div_msg_info">
-				<span id="span_msg_fixed">보낸사람</span><span>${message.sender.getUserId() }</span>
+			
+			<div id="div_msg_info" style="">
+				<span id="span_msg_fixed">보낸사람</span><span>${message.receiver.getUserId() }</span>
 				<br>
-				<span id="span_msg_fixed">받은시간</span><span><fmt:formatDate value="${message.message.getMsWrittenTime() }" pattern="yyyy-MM-dd HH:mm" /> </span>
+					<span id="span_msg_fixed">받는사람</span><span>${message.sender.getUserId() }</span>
+				<br>
+				<span style="margin-left: 302px;"id="span_msg_fixed">받은시간</span><span><fmt:formatDate value="${message.message.getMsWrittenTime() }" pattern="yyyy-MM-dd HH:mm" /> </span>
 			</div>
 			<div id="div_msg_content">
 				<pre style="white-space: pre-wrap;">

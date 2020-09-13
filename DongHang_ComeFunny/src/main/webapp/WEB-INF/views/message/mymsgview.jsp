@@ -24,20 +24,21 @@
 			</div>
 		</div>
 		<div id="div_right_area">
-			<div style="height: 7.5%;">
+	<div style="height: 7.5%;">
 		
-		<div id="mail_top_btn" onclick=fn_userDel()
+					<div id="mail_top_btn" onclick=fn_userDel()
 				style="margin-left: 2px; border-radius: 5px 0px 0px 5px;">삭제</div>
 			<div id="mail_top_btn" onclick=fn_userStore()
 				style="border-width: 2px 2px 2px 0px; border-radius: 0px 5px 5px 0px;">보관</div>
-</div>
 
 			</div>
 			<div></div>	
 			<div id="div_msg_info">
 				<span id="span_msg_fixed">보낸사람</span><span>${message.sender.getUserId() }</span>
 				<br>
-				<span id="span_msg_fixed">받은시간</span><span><fmt:formatDate value="${message.message.getMsWrittenTime() }" pattern="yyyy-MM-dd HH:mm" /> </span>
+					<span id="span_msg_fixed">받는사람</span><span>${message.sender.getUserId() }</span>
+				<br>
+				<span style="margin-left: 202px;" id="span_msg_fixed">받은시간</span><span><fmt:formatDate value="${message.message.getMsWrittenTime() }" pattern="yyyy-MM-dd HH:mm" /> </span>
 			</div>
 			<div id="div_msg_content">
 				<pre style="white-space: pre-wrap;">

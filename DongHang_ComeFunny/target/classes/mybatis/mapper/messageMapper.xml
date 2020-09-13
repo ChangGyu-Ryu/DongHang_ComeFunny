@@ -21,67 +21,60 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
    	 	<select id="selectMessageList" resultType="HashMap">
  			SELECT * FROM
     			( SELECT rownum rnum,
-                 M.* FROM (
+    			 M.*,  us.userid as "senderid" FROM (
     				SELECT
-    					u.userid, m.msno, m.msuno, m.msreceiver, m.mstitle, m.mscontent, m.mswrittentime, m.mstype
+    					u.userid, m.msno, m.msuno, m.msreceiver, m.mstitle, m.mscontent, m.mswrittentime, m.mstype                        
     				FROM tb_message m, tb_user u
     				WHERE m.msowner = #{uno}
     					AND m.mstype= 0
     					AND u.uno = #{uno}
     					ORDER BY m.msno DESC
-    				) M
+    				) M, tb_user us where M.msuno = us.uno
     			) MR
     		WHERE rnum BETWEEN #{paging.start} and #{paging.end} 
     	</select>
     		 	<select id="selectSendMsgList" resultType="HashMap">
- 			SELECT * FROM
+ 				SELECT * FROM
     			( SELECT rownum rnum,
-                 M.* FROM (
+    			 M.*,  us.userid as "receiverid" FROM (
     				SELECT
-    					u.userid, m.msno, m.msuno, m.msreceiver, m.mstitle, m.mscontent, m.mswrittentime, m.mstype, (
-                        select rs.userid from tb_user rs,(select ms.msreceiver from tb_message ms
-                        WHERE ms.msowner = #{uno}
-    					AND ms.mstype= 1
-    					ORDER BY ms.msno
-                        DESC) t 
-                        where rs.uno = t.msreceiver                   
-                        ) AS "receiverid"
+    					u.userid, m.msno, m.msuno, m.msreceiver, m.mstitle, m.mscontent, m.mswrittentime, m.mstype                        
     				FROM tb_message m, tb_user u
     				WHERE m.msowner = #{uno}
     					AND m.mstype= 1
     					AND u.uno = #{uno}
     					ORDER BY m.msno DESC
-    				) M
+    				) M, tb_user us where M.msreceiver = us.uno
     			) MR
     		WHERE rnum BETWEEN #{paging.start} and #{paging.end} 
     	</select>
     		 	<select id="selectMyMsgList" resultType="HashMap">
  			SELECT * FROM
     			( SELECT rownum rnum,
-                 M.* FROM (
+    			 M.*,  us.userid as "senderid" FROM (
     				SELECT
-    					u.userid, m.msno, m.msuno, m.msreceiver, m.mstitle, m.mscontent, m.mswrittentime, m.mstype
+    					u.userid, m.msno, m.msuno, m.msreceiver, m.mstitle, m.mscontent, m.mswrittentime, m.mstype                        
     				FROM tb_message m, tb_user u
     				WHERE m.msowner = #{uno}
     					AND m.mstype= 3
     					AND u.uno = #{uno}
     					ORDER BY m.msno DESC
-    				) M
+    				) M, tb_user us where M.msuno = us.uno
     			) MR
     		WHERE rnum BETWEEN #{paging.start} and #{paging.end} 
     	</select>
     		 	<select id="selectStoreMsgList" resultType="HashMap">
- 			SELECT * FROM
+ 		SELECT * FROM
     			( SELECT rownum rnum,
-                 M.* FROM (
+    			 M.*,  us.userid as "senderid" FROM (
     				SELECT
-    					u.userid, m.msno, m.msuno, m.msreceiver, m.mstitle, m.mscontent, m.mswrittentime, m.mstype
+    					u.userid, m.msno, m.msuno, m.msreceiver, m.mstitle, m.mscontent, m.mswrittentime, m.mstype                        
     				FROM tb_message m, tb_user u
     				WHERE m.msowner = #{uno}
     					AND m.mstype= 2
     					AND u.uno = #{uno}
     					ORDER BY m.msno DESC
-    				) M
+    				) M, tb_user us where M.msuno = us.uno
     			) MR
     		WHERE rnum BETWEEN #{paging.start} and #{paging.end} 
     	</select>
@@ -102,4 +95,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   			insert into tb_message (msuno,msowner,msreceiver,mstitle, mscontent,mswrittentime,mstype)
   			values(#{msUNo},#{msOwner},#{msReceiver},#{msTitle},#{msContent},#{msWrittenTime},#{msType})
   		</insert>
+  		
+  		
+  		
 </mapper>

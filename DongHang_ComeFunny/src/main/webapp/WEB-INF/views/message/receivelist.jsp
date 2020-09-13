@@ -54,7 +54,7 @@
 										<td><input name="RowCheck" class="RowCheck"
 											type="checkbox" value="${receive.MSNO }"
 											onclick="rowChk(this);" /></td>
-										<td>${receive.USERID }</td>
+										<td>${receive.senderid }</td>
 										<td><a
 											href="<%=request.getContextPath() %>/message/messagereceiveview?msno=${receive.MSNO }">${receive.MSTITLE }</a></td>
 										<td><fmt:formatDate value="${receive.MSWRITTENTIME}"

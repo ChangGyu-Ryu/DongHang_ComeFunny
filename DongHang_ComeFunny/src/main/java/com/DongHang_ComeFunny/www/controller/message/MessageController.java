@@ -43,6 +43,7 @@ public class MessageController {
 		mav.addObject("paging", commandMap.get("paging"));
 		mav.addObject("ReceiveMsgData", commandMap);
 		mav.setViewName("message/receivelist");
+		System.out.println(commandMap);
 		return mav;
 	}
 
