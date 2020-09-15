@@ -337,6 +337,7 @@ public class ReviewBoardController {
 		}
 		
 		User sessionUser = (User)session.getAttribute("logInInfo");
+		System.out.println("[controller] sessionUser" + sessionUser);
 		if(sessionUser!=null) {
 			// 2-0.세션회원의 동행복권 개수 업데이트
 			ReviewDhTicket reviewDhTicket = new ReviewDhTicket();

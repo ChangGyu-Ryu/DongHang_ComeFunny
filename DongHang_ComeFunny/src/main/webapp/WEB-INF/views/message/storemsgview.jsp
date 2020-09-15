@@ -8,7 +8,7 @@
 <meta charset="UTF-8">
 <link rel="stylesheet"
    href="//unpkg.com/bootstrap@4/dist/css/bootstrap.min.css">
-   <div id="div_back" style="min-height:33500px;">
+   <div id="div_back" style="min-height:500px;">
       <div id="div_left_area">
          <div id="div_line_left_mail">
                      <div id="div_mail" onclick="location.href ='/message/send'">쪽지쓰기</div>

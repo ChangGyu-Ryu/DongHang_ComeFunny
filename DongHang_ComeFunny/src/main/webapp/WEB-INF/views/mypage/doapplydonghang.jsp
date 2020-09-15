@@ -67,9 +67,9 @@
 			<c:forEach items="${DoAplyDhData.doapdhList}" var="doaplydh">				
 				<tr>
 					<td style="vertical-align: inherit;"><input type="checkbox" class="deleteChk" value="${doaplydh.DANO}"/></td>
-					<td style="vertical-align: inherit;"><a>${doaplydh.DBRECRUITDATE}</a></td>
+					<td style="vertical-align: inherit;"><a>${doaplydh.DBWRITTENDATE}</a></td>
 					<td style="vertical-align: inherit;"><a href="<%= request.getContextPath()%>/do/dodetail?dbNo=${doaplydh.DBNO}">${doaplydh.DBTITLE}</a></td>
-					<td style="vertical-align: inherit;"><a>${doaplydh.DBUNO}</a></td>
+					<td style="vertical-align: inherit;"><a>${doaplydh.UNICK}</a></td>
 					
 					<c:choose>
 						<c:when test="${doaplydh.DASTATUS eq 0}">

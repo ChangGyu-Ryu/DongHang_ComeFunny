@@ -25,15 +25,15 @@ public class AdminGoBoardServiceImpl implements AdminGoBoardService {
 		
 		Paging p = new Paging(adminGoBoardDao.selectGoBoardCnt(searchGoBoard), cPage, cntPerPage);
 		
-		Map<String,Object> searchDoBoardMap = new HashMap<>();
-		searchDoBoardMap.put("paging",p);
-		searchDoBoardMap.putAll(searchGoBoard);
-		System.out.println(searchDoBoardMap);
+		Map<String,Object> searchGoBoardMap = new HashMap<>();
+		searchGoBoardMap.put("paging",p);
+		searchGoBoardMap.putAll(searchGoBoard);
+		System.out.println(searchGoBoardMap);
 		
-		List<GoBoard> doBoardList = adminGoBoardDao.selectGoBoardList(searchDoBoardMap);
+		List<GoBoard> goBoardList = adminGoBoardDao.selectGoBoardList(searchGoBoardMap);
 		
 		commandMap.put("paging", p);
-		commandMap.put("doBoardList", doBoardList);
+		commandMap.put("goBoardList", goBoardList);
 		
 		
 		return commandMap;

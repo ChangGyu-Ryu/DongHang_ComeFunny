@@ -4,6 +4,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:import url="/WEB-INF/views/board/boardheader.jsp" />   
 <script src="/resources/bower_components/jquery/dist/jquery.min.js"></script>  
+<!-- bxslider  -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.css">
+<script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
  $("#btnRecommend").click(function() {
@@ -66,6 +69,31 @@ $(document).ready(function() {
 	})
 });
 </script>
+<script type="text/javascript">
+$(document).ready(function() {
+   $(".bxslider").bxSlider({
+       speed: 300,        // 이동 속도를 설정
+       auto: true,        // 자동 실행 여부
+       autoHover: true,   // 마우스 호버시 정지 여부
+       controls: true,    // 이전 다음 버튼 노출 여부
+       mode: 'fade',
+       captions: true,
+       slideWidth: 450,
+       slideHeight: 750,
+   })
+});
+</script>
+<style>
+.bx-wrapper{
+   min-height: 520px;
+}
+.bx-viewport{
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    height: 520px;
+}   
+</style>
 <div class = "reviewview"> 
 	<div class = "reviewview__border">
 	<div class = "reviewview__header">
@@ -140,7 +168,20 @@ $(document).ready(function() {
 			<td colspan="2">
 			<div class= "reviewview__table__content">
 				${rview.detail.RBCONTENT }
-			</div>	
+			</div>
+			 <div id = "sliderBox" style="margin-left: 28%; margin-right: 28%;">
+              <div class="bxslider">
+                  <!-- 장소사진 -->
+                  <c:forEach items="${rview.filelist}" var="photo">
+                     <c:if test="${photo.RFSTOREDFILENAME ne null}">
+                        <img height="510px" style="width: 100%; object-fit: cover" src="<%=request.getContextPath() %>/resources/upload/${photo.RFSTOREDFILENAME}" alt="대표사진"/>
+                     </c:if>
+                     <c:if test="${photo.RFSTOREDFILENAME eq null}">
+                     <img height="510px" style="width: 100%; object-fit: cover" src="<%=request.getContextPath() %>/resources/image/do/default2.jpg"/>            
+                     </c:if>      
+                  </c:forEach>
+               </div>
+             </div>
 			</td>
 		</tr>
 		<c:forEach items="${rview.filelist }" var="file" varStatus="status">

@@ -342,11 +342,11 @@ function applyDh(dbno) {
          <div id="hostInfo">
             <div class="profile">
                   <div class="profile-img">
-                     <c:if test="${doDetail.hostInfo[0].UISTOREDIMGNAME eq null}"> <!-- 사진이 null이면 default -->
+                     <c:if test="${doDetail.hostInfo[0].UFSTOREDFILENAME eq null}"> <!-- 사진이 null이면 default -->
                       <img class="img-circle" src="<%=request.getContextPath() %>/resources/image/go/default.png" alt="대표사진" />
                   </c:if>
-                  <c:if test="${doDetail.hostInfo[0].UISTOREDIMGNAME ne null}"> <!-- 사진이 null이면 아니면 -->
-                      <img class="img-circle" src="<%=request.getContextPath() %>/resources/upload/${doDetail.hostInfo[0].UISTOREDIMGNAME}" alt="대표사진"  />
+                  <c:if test="${doDetail.hostInfo[0].UFSTOREDFILENAME ne null}"> <!-- 사진이 null이면 아니면 -->
+                      <img class="img-circle" src="<%=request.getContextPath() %>/resources/upload/${doDetail.hostInfo[0].UFSTOREDFILENAME}" alt="대표사진"  />
                   </c:if>
                   </div>
                   
@@ -435,11 +435,11 @@ function applyDh(dbno) {
                      <div class="rvtop3-mate">
                         <div class="rvtitle">
                            <div class="rvtimg">
-                           <c:if test="${reviewList.UISTOREDIMGNAME eq null}"> <!-- 사진이 null이면 default -->
+                           <c:if test="${reviewList.UFSTOREDFILENAME eq null}"> <!-- 사진이 null이면 default -->
                                <img src="<%=request.getContextPath() %>/resources/image/go/default.png" alt="대표사진" />
                            </c:if>
-                           <c:if test="${reviewList.UISTOREDIMGNAME ne null}"> <!-- 사진이 null이면 아니면 -->
-                               <img src="<%=request.getContextPath() %>/resources/upload/${reviewList.UISTOREDIMGNAME}" alt="대표사진"  />
+                           <c:if test="${reviewList.UFSTOREDFILENAME ne null}"> <!-- 사진이 null이면 아니면 -->
+                               <img src="<%=request.getContextPath() %>/resources/upload/${reviewList.UFSTOREDFILENAME}" alt="대표사진"  />
                            </c:if>
                         </div>
 <!--                            <div class="rvtimg"><img src="/resources/image/main/profileex.jpg" class="img-circle"/></div> -->
@@ -579,11 +579,11 @@ function applyDh(dbno) {
       <c:forEach items="${doDetail.applyList}" var="aplyList">
          <div class="mateone">
             <div class="mtitle">
-               <c:if test="${aplyList.UISTOREDIMGNAME eq null}"> <!-- 사진이 null이면 default -->
+               <c:if test="${aplyList.UFSTOREDFILENAME eq null}"> <!-- 사진이 null이면 default -->
                      <img class="img-circle" src="<%=request.getContextPath() %>/resources/image/go/default.png" alt="대표사진" />
                </c:if>
-               <c:if test="${aplyList.UISTOREDIMGNAME ne null}"> <!-- 사진이 null이면 아니면 -->
-                     <img class="img-circle" src="<%=request.getContextPath() %>/resources/upload/${aplyList.UISTOREDIMGNAME}" alt="대표사진"  />
+               <c:if test="${aplyList.UFSTOREDFILENAME ne null}"> <!-- 사진이 null이면 아니면 -->
+                     <img class="img-circle" src="<%=request.getContextPath() %>/resources/upload/${aplyList.UFSTOREDFILENAME}" alt="대표사진"  />
                </c:if>
 <!--             <img src="/resources/image/main/profileex.jpg" class="img-circle"/></div> -->
             <div class="mtitle">

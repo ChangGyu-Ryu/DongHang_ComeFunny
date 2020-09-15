@@ -187,8 +187,8 @@
 	<select id="selectdoReview" resultType="Map">
 		select * from tb_reviewboard,
 		(SELECT *
-		 FROM tb_user left join tb_userimg
-		 ON uno = uiuno
+		 FROM tb_user left join tb_userfile
+		 ON uno = ufuno
 		)prfile
 		where rbuno = uno
 		AND rbdbno = #{dbno}
@@ -197,10 +197,10 @@
 	
 	<!-- 호스트 정보 -->
 	<select id="selectHostInfo" resultType="Map">
-		SELECT DISTINCT(uno), unick, (to_char(sysdate,'YYYY')-substr(ubirth,1,4)+1) as age, ugender, UISTOREDIMGNAME, dbno, 
+		SELECT DISTINCT(uno), unick, (to_char(sysdate,'YYYY')-substr(ubirth,1,4)+1) as age, ugender, UFSTOREDFILENAME, dbno, 
 		(select round(NVL(avg(rbhoststar), 0),2) as satr from tb_reviewboard, tb_doboard where rbdbno = dbno and dbno= #{dbNo}) star
 		FROM tb_user 
-    	left join tb_userimg ON uno = uiuno
+    	left join tb_userfile ON uno = ufuno
     	left join tb_doboard ON uno = dbuno
 		where dbno = #{dbNo}
 	</select>
@@ -208,11 +208,11 @@
 	<!-- 동행 신청자 리스트 -->
 	<select id="selectApplyList" resultType="Map">
 		SELECT uno,unick,(to_char(sysdate,'YYYY')-substr(ubirth,1,4)+1)age, 
-				ugender,UISTOREDIMGNAME, dastatus 
+				ugender,UFSTOREDFILENAME, dastatus 
 		FROM tb_doapply,
 		(SELECT *
-		 FROM tb_user left join tb_userimg
-		 ON uno = uiuno
+		 FROM tb_user left join tb_userfile
+		 ON uno = ufuno
 		)profile
 		WHERE dauno = uno
 		AND dadbno = #{dbno}

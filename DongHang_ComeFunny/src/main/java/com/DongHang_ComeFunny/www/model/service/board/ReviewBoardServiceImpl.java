@@ -615,13 +615,15 @@ public class ReviewBoardServiceImpl implements ReviewBoardService {
 		// 본인 글 읽는지 확인
 		Map<String, Object> fdetail = reviewBoardDao.selectReviewDetail(reviewDhTicket.getDhtRbNo());
 		int rbuno = Integer.parseInt(fdetail.get("RBUNO").toString());
-		
+		System.out.println("rbuno 값은?" + rbuno);
+		System.out.println("session uno 값은 ? " + sessionUser.getuNo());
 		// 본인글이 맞다면 동행복권 개수 그대로
 		if(sessionUser.getuNo() == rbuno) {
 			System.out.println("updateDhtCnt result : " + result);
 			result = 2;
 			return result;
 		}
+
 		int rbGbNo = Integer.parseInt(fdetail.get("RBGBNO").toString());
 		int rbDbNo = Integer.parseInt(fdetail.get("RBDBNO").toString());
 		//참여한 파티원이 작성한 경우 동행복권 개수 그대로
@@ -641,7 +643,6 @@ public class ReviewBoardServiceImpl implements ReviewBoardService {
 			int gaCnt = reviewBoardDao.selectGaCnt(goApply);
 			if(goCnt == 0 || gaCnt == 0 ) {
 				result = 3;
-				return result;
 			}
 		} else if(rbDbNo != 0) {
 //			System.out.println("함께해요 게시판입니다.");
@@ -659,12 +660,11 @@ public class ReviewBoardServiceImpl implements ReviewBoardService {
 			int daCnt = reviewBoardDao.selectDaCnt(doApply);
 			if(doCnt == 0 || daCnt == 0 ) {
 				result = 3;
-				return result;
 			}
 		}
-		
 		// 회원의 동행복권 개수가 0일때 
 		if( sessionUser.getuDhtCnt() == 0) {
+			result = 0;
 			return result;
 		}
 		
@@ -677,6 +677,8 @@ public class ReviewBoardServiceImpl implements ReviewBoardService {
 			result = insertres;
 			return result;
 		}
+		
+
 		
 		return result;
 		
